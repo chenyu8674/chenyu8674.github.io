@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+</head>
+<style type="text/css">
+body{margin:0;padding:0;overflow-x:hidden;font-family:"微软雅黑"}
+div{width:1000px;float:left;margin-bottom:20px;}
+a{font-size:24px;height:40px;line-height:40px;padding:3px 15px 3px 15px;margin:7px 10px 7px 10px;float:left;text-decoration:none;background:#666;color:#fff;border-radius:10px;}
+select{width:90px;height:40px;line-height:40px;font-size:20px;}
+</style>
+<script type="text/javascript">
+function init() {
+    var screenZoom = document.body.clientWidth / 1000;
+    document.body.style.zoom = screenZoom * 100 + "%";
+
+    var aList = document.getElementsByTagName("a");
+    for (var i = 0; i < aList.length; i++) {
+        var item = aList[i];
+        item.onclick = function() {
+            var href = this.href;
+            var language = document.getElementById("language").value;
+            var brain = document.getElementById("brain").value;
+            var level = document.getElementById("level").value;
+            href += "&language=" + language;
+            href += "&brain=" + brain;
+            href += "&level=" + level;
+            window.location.href = href;
+            return false;
+        };
+    }
+
+    var aList = document.getElementsByTagName("a");
+    document.getElementById("count").innerText = aList.length - 6;
+}
+</script>
+<body onload="init();">
+    <div style="height:40px;line-height:40px;padding:10px;background:#bbb;margin-bottom:20px;font-size:24px;">
+        语言：
+        <select id="language">
+            <option value = "CN">中文</option>
+            <option value = "EN">英文</option>
+            <option value = "JP">日文</option>
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        设备：
+        <select id="brain">
+            <option value = "">无</option>
+            <option value = "hht">脑血流</option>
+            <option value = "thinkgear">脑电波</option>
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        难度：
+        <select id="level">
+            <option value = "1">1级</option>
+            <option value = "2">2级</option>
+            <option value = "3">3级</option>
+            <option value = "4">4级</option>
+            <option value = "5">5级</option>
+        </select>
+    </div>
+    <div id="count" style="position:fixed;width:100px;height:60px;right:20px;line-height:60px;font-size:24px;text-align:right;">0</div>
+    <div>
+        <a href="game.html?name=evaluation_aercihaimo">阿尔茨海默风险测评</a>
+        <a href="game.html?name=evaluation_pajinsen">帕金森风险测评</a>
+        <a href="game.html?name=evaluation_laonianyiyu">老年抑郁风险测评</a>
+    </div>
+    <div>
+        <a href="game.html?name=brain_wave_demo">脑设备测试</a>
+        <a href="game.html?name=brain_naodianjiaohua">脑电浇花</a>
+        <a href="game.html?name=brain_naodiansaiche">脑电赛车</a>
+    </div>
+    <div>
+        <a href="game.html?name=game_shengjiangxudianqiu">升降序点球</a>
+        <a href="game.html?name=game_shengxudianqiu">升序点球</a>
+        <a href="game.html?name=game_jiangxudianqiu">降序点球</a>
+        <a href="game.html?name=game_jiyishengjiangxudianqiu">记忆升降序点球</a>
+        <a href="game.html?name=game_jiyishengxudianqiu">记忆升序点球</a>
+        <a href="game.html?name=game_jiyijiangxudianqiu">记忆降序点球</a>
+        <a href="game.html?name=game_shengjiangxujiaotidianqiu">升降序交替点球</a>
+        <a href="game.html?name=game_shengxujiaotidianqiu">升序交替点球</a>
+        <a href="game.html?name=game_jiangxujiaotidianqiu">降序交替点球</a>
+        <a href="game.html?name=game_jiyipeiduidianqiu">记忆配对点球</a>
+        <a href="game.html?name=game_peiduidianqiu">配对点球</a>
+        <a href="game.html?name=game_jiyidiancaiqiu">记忆点彩球</a>
+        <a href="game.html?name=game_diancaiqiu">点彩球</a>
+    </div>
+    <div>
+    <div>
+        <a href="game.html?name=game_shunxushuziguangdujiyi">顺序数字广度记忆</a>
+        <a href="game.html?name=game_nixushuziguangdujiyi">逆序数字广度记忆</a>
+        <a href="game.html?name=game_dancijiyi">单词记忆</a>
+        <a href="game.html?name=game_shuzijiyi">数字记忆</a>
+        <a href="game.html?name=game_wupinjiyi">物品记忆</a>
+        <a href="game.html?name=game_dancichongdiejiyi">单词重叠记忆</a>
+        <a href="game.html?name=game_shuzichongdiejiyi">数字重叠记忆</a>
+        <a href="game.html?name=game_wupinchongdiejiyi">物品重叠记忆</a>
+    </div>
+        <a href="game.html?name=game_dadishu">打海豹</a>
+        <a href="game.html?name=game_duibizhaobutong">对比找不同</a>
+        <a href="game.html?name=game_fangxiangjiyi">方向记忆</a>
+        <a href="game.html?name=game_fangxiangfanying">方向反应</a>
+        <a href="game.html?name=game_jioufanying">奇偶反应</a>
+        <a href="game.html?name=game_yansefanying">颜色反应</a>
+        <a href="game.html?name=game_jiyifangkuai">记忆方块</a>
+        <a href="game.html?name=game_dianqizi">点棋子</a>
+        <a href="game.html?name=game_jisuanjiyishuzibeishu">计算记忆数字倍数</a>
+        <a href="game.html?name=game_renwuyuzhongbutong">人物与众不同</a>
+        <a href="game.html?name=game_zhaolingqian">找零钱</a>
+        <a href="game.html?name=game_zhaowupin">找物品</a>
+        <a href="game.html?name=game_hannuota">汉诺塔</a>
+        <a href="game.html?name=game_xiehanzi">写汉字</a>
+        <a href="game.html?name=game_shudu">数独</a>
+        <a href="game.html?name=game_langduxunlian">朗读训练</a>
+    </div>
+</body>
+</html>

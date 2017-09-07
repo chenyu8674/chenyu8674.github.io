@@ -1,0 +1,47 @@
+.tower{
+	position: absolute;
+	top:50px;
+	width: 20px;
+	-webkit-border-radius: 10px 10px 0px 0px;
+	background: -webkit-linear-gradient(left,#666,#444);
+}
+.base{
+	position: absolute;
+	width: 300px;
+	height: 50px;
+	-webkit-border-radius: 10px;
+	background: -webkit-linear-gradient(left,#777,#333);
+}
+.area{
+	position: absolute;
+	width: 300px;
+	top:50px;
+}
+.block{
+	position: absolute;
+	opacity: 0.95;
+}
+.block0{
+	background: -webkit-linear-gradient(#d00,#500);
+}
+.block1{
+	background: -webkit-linear-gradient(#0d0,#050);
+}
+.block2{
+	background: -webkit-linear-gradient(#05d,#015);
+}
+.block3{
+	background: -webkit-linear-gradient(#dd0,#550);
+}
+.block4{
+	background: -webkit-linear-gradient(#0dd,#055);
+}
+.block5{
+	background: -webkit-linear-gradient(#d0d,#505);
+}
+.block6{
+	background: -webkit-linear-gradient(#f90,#730);
+}
+.block7{
+	background: -webkit-linear-gradient(#79b,#357);
+}
