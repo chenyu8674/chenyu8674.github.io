@@ -64,11 +64,11 @@ function loadsound(name) {
     audio.id = "sound_" + name;
     audio.addEventListener("canplaythrough", function() {soundloaded();}, false);
     audio.load();
+    document.body.appendChild(audio);
 }
 
 var soundLoadedCount = 0;
 function soundloaded() {
-    log("soundloaded");
     soundLoadedCount ++;
     if (soundLoadedCount == 6) {
         START_BUTTON.text("开始");
