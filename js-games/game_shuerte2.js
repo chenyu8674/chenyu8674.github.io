@@ -64,6 +64,7 @@ var ON_ITEM_CLICK = function(item) {
     var number = item.text();
     clickCount++;
     if (clickCount == number) {
+        $("#sound_pop" + getrandomnumber(1, 5)).get(0).play();
         $(".ball").fadeOut(FADE_TIME);
         numberList.push(numberList[numberList.length - 1] + 1);
         numberList.push(numberList[numberList.length - 1] + 1);
@@ -71,6 +72,7 @@ var ON_ITEM_CLICK = function(item) {
         colorList.push(getrandomcolor());
         setTimeout(startNewGame, FADE_TIME);
     } else {
+        $("#sound_wrong").get(0).play();
         clickCount--;
     }
 }
