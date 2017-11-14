@@ -66,7 +66,15 @@ function init() {
     START_BUTTON.attr("class", "start_button");
     START_BUTTON.text("开始");
     START_BUTTON.unbind("mousedown");
-    START_BUTTON.mousedown(starttoplay);
+    // START_BUTTON.mousedown(starttoplay);
+    START_BUTTON[0].addEventListener('mousedown', starttoplay, false);
+
+    document.getElementById('sound_pop1').volume = 0.0;
+    document.getElementById('sound_pop2').volume = 0.0;
+    document.getElementById('sound_pop3').volume = 0.0;
+    document.getElementById('sound_pop4').volume = 0.0;
+    document.getElementById('sound_pop5').volume = 0.0;
+    document.getElementById('sound_wrong').volume = 0.0;
 }
 
 function starttoplay() {
@@ -76,6 +84,23 @@ function starttoplay() {
     ON_GET_SIZE(CONTENT_WIDTH, CONTENT_HEIGHT);
     Game.reset();
     Game.startgame(Config.startLevel);
+
+    document.getElementById('sound_pop1').play();
+    document.getElementById('sound_pop2').play();
+    document.getElementById('sound_pop3').play();
+    document.getElementById('sound_pop4').play();
+    document.getElementById('sound_pop5').play();
+    document.getElementById('sound_wrong').play();
+    setTimeout(resetVolume, 500);
+}
+
+function resetVolume() {
+    document.getElementById('sound_pop1').volume = 1.0;
+    document.getElementById('sound_pop2').volume = 1.0;
+    document.getElementById('sound_pop3').volume = 1.0;
+    document.getElementById('sound_pop4').volume = 1.0;
+    document.getElementById('sound_pop5').volume = 1.0;
+    document.getElementById('sound_wrong').volume = 1.0;
 }
 
 function clearcontent() {
