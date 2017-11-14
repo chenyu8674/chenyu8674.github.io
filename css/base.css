@@ -61,7 +61,7 @@ embed {
 	line-height:100px;
 	font-size:60px;
 	color:black;
-	text-indent:2em;
+	/*text-indent:2em;*/
 }
 .start_button {
 	position:fixed;

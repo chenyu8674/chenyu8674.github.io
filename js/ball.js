@@ -64,8 +64,8 @@ Ball.add = function(colorList, dataList, width, height) {
         ball.attr("id", "ball" + data);
         ball.attr("class", "ball ball" + data);
         ball.text(data);
-        ball.mousedown(Ball.onballclick);
-        // ball.on('touchstart', Ball.onballclick);
+        // ball.mousedown(Ball.onballclick);
+        ball.on('touchstart', Ball.onballclick);
     }
 }
 
