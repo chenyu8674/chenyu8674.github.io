@@ -6,7 +6,7 @@ Config.maxLevel = 1; //最高等级数
 Config.startLevel = 1; //起始等级数
 Config.questionNumber = 1; //每级题目数
 Config.taskTime = 1;
-Config.exerciseTime = [2]; //做题界面每级的等待时间
+Config.exerciseTime = [120]; //做题界面每级的等待时间
 
 var colorList;
 var numberList;
@@ -99,17 +99,17 @@ function showresult() {
     bgView.css("position", "absolute");
     bgView.css("width", "100%");
     bgView.css("height", "100%");
-    bgView.css("background", "rgba(0,0,0,0.85)");
+    bgView.css("background", "rgba(0,0,0,0.9)");
     bgView.attr("id", "carresult");
 
     var textView = $("<div/>").appendTo(bgView);
     textView.css("position", "absolute");
-    textView.css("width", "95%");
+    textView.css("width", "100%");
     textView.css("top", - CONTENT_HEIGHT * 0.15 + "px");
     textView.css("color", "#fff");
     textView.css("text-align", "center");
     textView.css("font-weight", "900");
-    textView.css("font-size", CONTENT_HEIGHT * 0.12 + "px");
+    textView.css("font-size", "100px");
     textView.text("游戏结束");
 
     var targetTop = CONTENT_HEIGHT * 0.12;
@@ -124,13 +124,13 @@ function showresult1() {
     textView.css("top", CONTENT_HEIGHT + "px");
     textView.css("color", "#fff");
     textView.css("font-weight", "900");
-    textView.css("font-size", CONTENT_HEIGHT * 0.08 + "px");
+    textView.css("font-size", "70px");
     if (clickCount > highScore) {
         highScore = clickCount;
     }
     var scoreText = "" + clickCount;
     var textWidth = (scoreText.length + 2) * CONTENT_HEIGHT * 0.1;
-    textView.css("left", (CONTENT_WIDTH - textWidth) * 0.4 + "px");
+    textView.css("left", (CONTENT_WIDTH - textWidth) * 0.5 + "px");
     textView.text("本局得分：" + scoreText);
     textView.attr("id", "carresult1");
 
@@ -145,7 +145,7 @@ function showresult2() {
     textView.css("left", $("#carresult1").css("left"));
     textView.css("color", "#fff");
     textView.css("font-weight", "900");
-    textView.css("font-size", CONTENT_HEIGHT * 0.08 + "px");
+    textView.css("font-size", "70px");
     var score = "";
     if (clickCount >= 55) {
         score = "SSS";
@@ -166,7 +166,7 @@ function showresult2() {
     }
     textView.html("本局评价：" + score);
 
-    var targetTop = CONTENT_HEIGHT * 0.46;
+    var targetTop = CONTENT_HEIGHT * 0.43;
     textView.animate({top:targetTop+"px"}, 300, "swing", function(){setTimeout(showresult3, 300)});
 }
 
@@ -177,24 +177,24 @@ function showresult3() {
     textView.css("left", $("#carresult1").css("left"));
     textView.css("color", "#fff");
     textView.css("font-weight", "900");
-    textView.css("font-size", CONTENT_HEIGHT * 0.08 + "px");
+    textView.css("font-size", "70px");
     textView.text("最高得分：" + highScore);
 
-    var targetTop = CONTENT_HEIGHT * 0.58;
+    var targetTop = CONTENT_HEIGHT * 0.52;
     textView.animate({top:targetTop+"px"}, 300, "swing", function(){setTimeout(showresult4, 800)});
 }
 
 function showresult4() {
     var textView = $("<div/>").appendTo($("#carresult"));
     textView.css("position", "absolute");
-    textView.css("width", "220px");
+    textView.css("width", "360px");
     textView.css("height", CONTENT_HEIGHT * 0.12 + "px");
     textView.css("top", CONTENT_HEIGHT * 0.75 + "px");
-    textView.css("left", "360px");
+    textView.css("left", "320px");
     textView.css("line-height", CONTENT_HEIGHT * 0.12 + "px");
     textView.css("color", "#333");
     textView.css("font-weight", "900");
-    textView.css("font-size", CONTENT_HEIGHT * 0.06 + "px");
+    textView.css("font-size", "70px");
     textView.css("text-align", "center");
     textView.css("background", "#eee");
     textView.text("再来一次");
