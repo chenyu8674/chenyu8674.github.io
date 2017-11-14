@@ -1,5 +1,5 @@
 Config.titleText = ["舒尔特点球", "", ""];
-Config.contentText = ["规则：在两分钟时限内，按数字从小到大的顺序尽量多地点击彩球。<a href='https://baike.baidu.com/item/%E8%88%92%E5%B0%94%E7%89%B9%E8%AE%AD%E7%BB%83%E6%B3%95'>什么是舒尔特？</a>", "", ""];
+Config.contentText = ["规则：在两分钟时限内，按数字从小到大的顺序尽可能多地点击彩球。<a href='https://baike.baidu.com/item/%E8%88%92%E5%B0%94%E7%89%B9%E8%AE%AD%E7%BB%83%E6%B3%95'>&nbsp;啥是舒尔特？</a>", "", ""];
 Config.exerciseText = ["", "", ""];
 Config.hasRememberView = false; //是否有观察记忆界面
 Config.maxLevel = 1; //最高等级数
@@ -40,23 +40,10 @@ var ON_START_PLAY = function(level) {
     }
 }
 
-var ON_START_REMEMBER = function() {}
-
 var ON_START_ANSWER = function() {
-    // Canvas.restart();
     startNewGame();
     TimeBar.start(Config.exerciseTime[Game.level - 1] * 1000, showresult, true);
 }
-
-var ON_ANSWER_RIGHT = function() {}
-
-var ON_ANSWER_WRONG = function() {}
-
-var ON_LEVEL_UP = function() {}
-
-var ON_LEVEL_CONTINUE = function() {}
-
-var ON_LEVEL_DOWN = function() {}
 
 var FADE_TIME = 200;
 var ON_ITEM_CLICK = function() {
@@ -72,6 +59,7 @@ var ON_ITEM_CLICK = function() {
         colorList.push(getrandomcolor());
         setTimeout(startNewGame, FADE_TIME);
     } else {
+        TimeBar.subtract(3000);
         $("#sound_wrong").get(0).play();
         clickCount--;
     }
@@ -91,8 +79,6 @@ function startNewGame() {
     $(".ball").hide();
     $(".ball").fadeIn(FADE_TIME);
 }
-
-var ON_TASK_END = function() {}
 
 var isShowingResult = false;
 function showresult() {

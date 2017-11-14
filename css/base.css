@@ -26,7 +26,7 @@ body {
 #timebar {
 	width:400px;
 	height:100%;
-	background:#ff9933;
+	background-color:#f93;
 }
 #canvas {
 	position:fixed;

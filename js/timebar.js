@@ -56,7 +56,12 @@ TimeBar.stop = function() {
 
 TimeBar.subtract = function(time) {
     TimeBar.pauseTime -= time;
+    $("#timebar").stop();
+    $("#timebar").css("background-color", "#f00");
+    $("#timebar").animate({backgroundColor: "#f93"}, 500);
 }
+
+
 
 TimeBar.pause = function() {
     TimeBar.pauseStartTime = new Date().getTime();
