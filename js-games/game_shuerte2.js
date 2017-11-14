@@ -6,7 +6,7 @@ Config.maxLevel = 1; //最高等级数
 Config.startLevel = 1; //起始等级数
 Config.questionNumber = 1; //每级题目数
 Config.taskTime = 1;
-Config.exerciseTime = [120]; //做题界面每级的等待时间
+Config.exerciseTime = [1]; //做题界面每级的等待时间
 
 var colorList;
 var numberList;
@@ -129,8 +129,7 @@ function showresult1() {
         highScore = clickCount;
     }
     var scoreText = "" + clickCount;
-    var textWidth = (scoreText.length + 2) * CONTENT_HEIGHT * 0.1;
-    textView.css("left", (CONTENT_WIDTH - textWidth) * 0.5 + "px");
+    textView.css("left", "300px");
     textView.text("本局得分：" + scoreText);
     textView.attr("id", "carresult1");
 
@@ -187,14 +186,14 @@ function showresult3() {
 function showresult4() {
     var textView = $("<div/>").appendTo($("#carresult"));
     textView.css("position", "absolute");
-    textView.css("width", "360px");
-    textView.css("height", CONTENT_HEIGHT * 0.12 + "px");
-    textView.css("top", CONTENT_HEIGHT * 0.75 + "px");
-    textView.css("left", "320px");
-    textView.css("line-height", CONTENT_HEIGHT * 0.12 + "px");
+    textView.css("width", "300px");
+    textView.css("height", "120px");
+    textView.css("top", CONTENT_HEIGHT * 0.78 + "px");
+    textView.css("left", "350px");
+    textView.css("line-height", "120px");
     textView.css("color", "#333");
     textView.css("font-weight", "900");
-    textView.css("font-size", "70px");
+    textView.css("font-size", "55px");
     textView.css("text-align", "center");
     textView.css("background", "#eee");
     textView.text("再来一次");
