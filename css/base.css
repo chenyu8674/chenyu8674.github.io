@@ -45,49 +45,34 @@ body {
 	position:fixed;
 	width:100%;
 	top:130px;
-	font-size:40px;
+	font-size:80px;
 	color:black;
 	text-align:center;
 }
 .start_text {
 	position:fixed;
-	top:230px;
+	top:400px;
 	bottom:0px;
 	margin-left:100px;
 	margin-right:100px;
-	line-height:50px;
-	font-size:32px;
+	line-height:100px;
+	font-size:60px;
 	color:black;
 	text-indent:2em;
 }
-.help_button {
-	position:fixed;
-	width:100px;
-	height:100px;
-	bottom:50px;
-	left:50%;
-	margin-left:-130px;
-	line-height:100px;
-	text-align:center;
-	font-size:32px;
-	color:black;
-	background:url(../img/button.png);
-	background-size:100px 100px;
-	display:none;
-}
 .start_button {
 	position:fixed;
-	width:100px;
-	height:100px;
-	bottom:50px;
+	width:200px;
+	height:200px;
+	bottom:100px;
 	left:50%;
-	margin-left:-50px;
-	line-height:100px;
+	margin-left:-100px;
+	line-height:200px;
 	text-align:center;
-	font-size:32px;
+	font-size:60px;
 	color:black;
 	background:url(../img/button.png);
-	background-size:100px 100px;
+	background-size:200px 200px;
 }
 #infobg {
 	position:fixed;
