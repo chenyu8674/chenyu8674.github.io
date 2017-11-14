@@ -40,15 +40,6 @@ $(document).ready(function() {
     CONTENT = $("#content");
     TITLE_TEXT = $("#title_text");
     adapt();
-
-    soundLoadedCount = 0;
-    loadsound("pop1");
-    loadsound("pop2");
-    loadsound("pop3");
-    loadsound("pop4");
-    loadsound("pop5");
-    loadsound("wrong");
-
     init();
 });
 
@@ -56,25 +47,6 @@ function adapt() {
     SCREEN_ZOOM = $(window).width() / 1000;
     document.body.style.zoom = SCREEN_ZOOM * 100 + "%";
     log("SCREEN_ZOOM = " + SCREEN_ZOOM);
-}
-
-function loadsound(name) {
-    var audio = document.createElement("audio");
-    audio.src = "sound/" + name + ".mp3";
-    audio.id = "sound_" + name;
-    audio.addEventListener("canplaythrough", function() {soundloaded();}, false);
-    audio.load();
-    document.body.appendChild(audio);
-}
-
-var soundLoadedCount = 0;
-function soundloaded() {
-    soundLoadedCount ++;
-    if (soundLoadedCount == 6) {
-        START_BUTTON.text("开始");
-        START_BUTTON.unbind("mousedown");
-        START_BUTTON.mousedown(starttoplay);
-    }
 }
 
 function init() {
@@ -92,7 +64,9 @@ function init() {
     startText.html(Config.contentText[0]);
     START_BUTTON = $("<div/>").appendTo(CONTENT);
     START_BUTTON.attr("class", "start_button");
-    START_BUTTON.text("加载中");
+    START_BUTTON.text("开始");
+    START_BUTTON.unbind("mousedown");
+    START_BUTTON.mousedown(starttoplay);
 }
 
 function starttoplay() {
