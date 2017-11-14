@@ -91,7 +91,7 @@ function starttoplay() {
     document.getElementById('sound_pop4').play();
     document.getElementById('sound_pop5').play();
     document.getElementById('sound_wrong').play();
-    setTimeout(resetVolume, 500);
+    setTimeout(resetVolume, 2000);
 }
 
 function resetVolume() {
