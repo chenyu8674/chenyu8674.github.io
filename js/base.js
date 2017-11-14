@@ -66,14 +66,15 @@ function init() {
     START_BUTTON.attr("class", "start_button");
     START_BUTTON.text("开始");
     START_BUTTON.unbind("mousedown");
-    START_BUTTON.mousedown(starttoplay);
+    // START_BUTTON.mousedown(starttoplay);
+    START_BUTTON[0].addEventListener('mousedown', starttoplay, false);
 
-    $("#sound_pop1")[0].volume = 0.0;
-    $("#sound_pop2")[0].volume = 0.0;
-    $("#sound_pop3")[0].volume = 0.0;
-    $("#sound_pop4")[0].volume = 0.0;
-    $("#sound_pop5")[0].volume = 0.0;
-    $("#sound_wrong")[0].volume = 0.0;
+    document.getElementById('sound_pop1').volume = 0.0;
+    document.getElementById('sound_pop2').volume = 0.0;
+    document.getElementById('sound_pop3').volume = 0.0;
+    document.getElementById('sound_pop4').volume = 0.0;
+    document.getElementById('sound_pop5').volume = 0.0;
+    document.getElementById('sound_wrong').volume = 0.0;
 }
 
 function starttoplay() {
@@ -84,23 +85,22 @@ function starttoplay() {
     Game.reset();
     Game.startgame(Config.startLevel);
 
-    $("#sound_pop1")[0].play();
-    $("#sound_pop2")[0].play();
-    $("#sound_pop3")[0].play();
-    $("#sound_pop4")[0].play();
-    $("#sound_pop5")[0].play();
-    $("#sound_wrong")[0].play();
+    document.getElementById('sound_pop1').play();
+    document.getElementById('sound_pop2').play();
+    document.getElementById('sound_pop3').play();
+    document.getElementById('sound_pop4').play();
+    document.getElementById('sound_pop5').play();
+    document.getElementById('sound_wrong').play();
     setTimeout(resetVolume, 500);
 }
 
 function resetVolume() {
-    $("audio").attr("volume", "1.0");
-    $("#sound_pop1")[0].volume = 1.0;
-    $("#sound_pop2")[0].volume = 1.0;
-    $("#sound_pop3")[0].volume = 1.0;
-    $("#sound_pop4")[0].volume = 1.0;
-    $("#sound_pop5")[0].volume = 1.0;
-    $("#sound_wrong")[0].volume = 1.0;
+    document.getElementById('sound_pop1').volume = 1.0;
+    document.getElementById('sound_pop2').volume = 1.0;
+    document.getElementById('sound_pop3').volume = 1.0;
+    document.getElementById('sound_pop4').volume = 1.0;
+    document.getElementById('sound_pop5').volume = 1.0;
+    document.getElementById('sound_wrong').volume = 1.0;
 }
 
 function clearcontent() {
