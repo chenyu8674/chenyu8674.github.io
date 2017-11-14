@@ -76,6 +76,13 @@ function starttoplay() {
     ON_GET_SIZE(CONTENT_WIDTH, CONTENT_HEIGHT);
     Game.reset();
     Game.startgame(Config.startLevel);
+
+    document.getElementById('sound_pop1').play();
+    document.getElementById('sound_pop2').play();
+    document.getElementById('sound_pop3').play();
+    document.getElementById('sound_pop4').play();
+    document.getElementById('sound_pop5').play();
+    document.getElementById('sound_wrong').play();
 }
 
 function clearcontent() {
