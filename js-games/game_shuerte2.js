@@ -6,7 +6,7 @@ Config.maxLevel = 1; //最高等级数
 Config.startLevel = 1; //起始等级数
 Config.questionNumber = 1; //每级题目数
 Config.taskTime = 1;
-Config.exerciseTime = [1]; //做题界面每级的等待时间
+Config.exerciseTime = [120]; //做题界面每级的等待时间
 
 var colorList;
 var numberList;
