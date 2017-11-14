@@ -64,11 +64,11 @@ Ball.add = function(colorList, dataList, width, height) {
         ball.attr("id", "ball" + data);
         ball.attr("class", "ball ball" + data);
         ball.text(data);
-        if (window.location.href.indexOf("Desktop") > 0) {
+        // if (window.location.href.indexOf("Desktop") > 0) {
             ball[0].addEventListener('mousedown', ON_ITEM_CLICK, false);
-        } else {
-            ball[0].addEventListener('touchstart', ON_ITEM_CLICK, false);
-        }
+        // } else {
+        //     ball[0].addEventListener('touchstart', ON_ITEM_CLICK, false);
+        // }
     }
 }
 
