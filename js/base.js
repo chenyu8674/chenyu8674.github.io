@@ -95,12 +95,12 @@ function starttoplay() {
 }
 
 function resetVolume() {
-    document.getElementById('sound_pop1').volume = 1.0;
-    document.getElementById('sound_pop2').volume = 1.0;
-    document.getElementById('sound_pop3').volume = 1.0;
-    document.getElementById('sound_pop4').volume = 1.0;
-    document.getElementById('sound_pop5').volume = 1.0;
-    document.getElementById('sound_wrong').volume = 1.0;
+    // document.getElementById('sound_pop1').volume = 1.0;
+    // document.getElementById('sound_pop2').volume = 1.0;
+    // document.getElementById('sound_pop3').volume = 1.0;
+    // document.getElementById('sound_pop4').volume = 1.0;
+    // document.getElementById('sound_pop5').volume = 1.0;
+    // document.getElementById('sound_wrong').volume = 1.0;
 }
 
 function clearcontent() {
