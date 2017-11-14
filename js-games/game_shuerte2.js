@@ -59,8 +59,8 @@ var ON_LEVEL_CONTINUE = function() {}
 var ON_LEVEL_DOWN = function() {}
 
 var FADE_TIME = 200;
-var ON_ITEM_CLICK = function(item) {
-    item = $(item);
+var ON_ITEM_CLICK = function() {
+    item = $(this);
     var number = item.text();
     clickCount++;
     if (clickCount == number) {

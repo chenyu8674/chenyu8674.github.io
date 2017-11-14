@@ -65,9 +65,9 @@ Ball.add = function(colorList, dataList, width, height) {
         ball.attr("class", "ball ball" + data);
         ball.text(data);
         if (window.location.href.indexOf("Desktop") > 0) {
-            ball[0].addEventListener('mousedown', Ball.onballclick, false);
+            ball[0].addEventListener('mousedown', ON_ITEM_CLICK, false);
         } else {
-            ball[0].addEventListener('touchstart', Ball.onballclick, false);
+            ball[0].addEventListener('touchstart', ON_ITEM_CLICK, false);
         }
     }
 }
@@ -117,6 +117,6 @@ Ball.checkoverlap = function(top1, left1, top2, left2) {
     return true;
 }
 
-Ball.onballclick = function() {
-    Game.clickitem(this);
-}
+// Ball.onballclick = function() {
+//     Game.clickitem(this);
+// }
