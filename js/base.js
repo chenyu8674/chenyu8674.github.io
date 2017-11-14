@@ -67,6 +67,13 @@ function init() {
     START_BUTTON.text("开始");
     START_BUTTON.unbind("mousedown");
     START_BUTTON.mousedown(starttoplay);
+
+    $("#sound_pop1")[0].volume = 0.0;
+    $("#sound_pop2")[0].volume = 0.0;
+    $("#sound_pop3")[0].volume = 0.0;
+    $("#sound_pop4")[0].volume = 0.0;
+    $("#sound_pop5")[0].volume = 0.0;
+    $("#sound_wrong")[0].volume = 0.0;
 }
 
 function starttoplay() {
@@ -76,6 +83,24 @@ function starttoplay() {
     ON_GET_SIZE(CONTENT_WIDTH, CONTENT_HEIGHT);
     Game.reset();
     Game.startgame(Config.startLevel);
+
+    $("#sound_pop1")[0].play();
+    $("#sound_pop2")[0].play();
+    $("#sound_pop3")[0].play();
+    $("#sound_pop4")[0].play();
+    $("#sound_pop5")[0].play();
+    $("#sound_wrong")[0].play();
+    setTimeout(resetVolume, 500);
+}
+
+function resetVolume() {
+    $("audio").attr("volume", "1.0");
+    $("#sound_pop1")[0].volume = 1.0;
+    $("#sound_pop2")[0].volume = 1.0;
+    $("#sound_pop3")[0].volume = 1.0;
+    $("#sound_pop4")[0].volume = 1.0;
+    $("#sound_pop5")[0].volume = 1.0;
+    $("#sound_wrong")[0].volume = 1.0;
 }
 
 function clearcontent() {
