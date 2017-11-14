@@ -64,7 +64,8 @@ Ball.add = function(colorList, dataList, width, height) {
         ball.attr("id", "ball" + data);
         ball.attr("class", "ball ball" + data);
         ball.text(data);
-        ball[0].addEventListener('mousedown', ON_ITEM_CLICK, false);
+        // ball[0].addEventListener('mousedown', ON_ITEM_CLICK, false);
+        ball[0].addEventListener('touchstart', ON_ITEM_CLICK, false);
     }
 }
 
