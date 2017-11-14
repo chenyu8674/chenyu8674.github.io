@@ -8,8 +8,12 @@ body {
 	font-family:"微软雅黑","黑体";
 	user-select:none;
 }
-embed {
-	visibility:hidden;
+#version {
+	position:fixed;
+	bottom:0px;
+	right:2px;
+	color:#444;
+	font-size:10px;
 }
 #timebg {
 	position:fixed;
