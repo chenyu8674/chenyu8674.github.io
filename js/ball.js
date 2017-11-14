@@ -65,9 +65,9 @@ Ball.add = function(colorList, dataList, width, height) {
         ball.attr("class", "ball ball" + data);
         ball.text(data);
         if (window.location.href.indexOf("Desktop") > 0) {
-            ball.mousedown(Ball.onballclick);
+            ball[0].addEventListener('mousedown', Ball.onballclick, false);
         } else {
-            ball.on('touchstart', Ball.onballclick);
+            ball[0].addEventListener('touchstart', Ball.onballclick, false);
         }
     }
 }
