@@ -1,4 +1,4 @@
-Config.titleText = ["舒尔特点球", "", ""];
+Config.titleText = ["舒尔特注意力测试", "", ""];
 Config.contentText = ["规则：在两分钟时限内，按数字从小到大的顺序尽可能多地点击彩球。<a href='https://baike.baidu.com/item/%E8%88%92%E5%B0%94%E7%89%B9%E8%AE%AD%E7%BB%83%E6%B3%95'>&nbsp;啥是舒尔特？</a>", "", ""];
 Config.exerciseText = ["", "", ""];
 Config.hasRememberView = false; //是否有观察记忆界面
@@ -98,7 +98,7 @@ function showresult() {
     textView.css("text-align", "center");
     textView.css("font-weight", "900");
     textView.css("font-size", "100px");
-    textView.text("游戏结束");
+    textView.text("测试结束");
 
     var targetTop = CONTENT_HEIGHT * 0.12;
     setTimeout(function(){
@@ -118,7 +118,7 @@ function showresult1() {
     }
     var scoreText = "" + clickCount;
     textView.css("left", "300px");
-    textView.text("本局得分：" + scoreText);
+    textView.text("本轮得分：" + scoreText);
     textView.attr("id", "carresult1");
 
     var targetTop = CONTENT_HEIGHT * 0.34;
@@ -151,7 +151,7 @@ function showresult2() {
     } else {
         score = "E";
     }
-    textView.html("本局评价：" + score);
+    textView.html("本轮评价：" + score);
 
     var targetTop = CONTENT_HEIGHT * 0.43;
     textView.animate({top:targetTop+"px"}, 300, "swing", function(){setTimeout(showresult3, 300)});
@@ -184,7 +184,7 @@ function showresult4() {
     textView.css("font-size", "55px");
     textView.css("text-align", "center");
     textView.css("background", "#eee");
-    textView.text("再来一次");
+    textView.text("再来一轮");
     textView.mousedown(restartRace);
     textView.hide();
     textView.fadeIn(1000);
