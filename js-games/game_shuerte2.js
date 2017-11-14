@@ -1,5 +1,5 @@
 Config.titleText = ["舒尔特点球训练", "", ""];
-Config.contentText = ["<div>在两分钟的时限内，按数字从小到大的顺序尽量多地点击彩球。</div><br><div><a href='https://baike.baidu.com/item/%E8%88%92%E5%B0%94%E7%89%B9%E8%AE%AD%E7%BB%83%E6%B3%95'>什么是舒尔特？</a></div>", "", ""];
+Config.contentText = ["在两分钟的时限内，按数字从小到大的顺序尽量多地点击彩球。<a href='https://baike.baidu.com/item/%E8%88%92%E5%B0%94%E7%89%B9%E8%AE%AD%E7%BB%83%E6%B3%95'>什么是舒尔特？</a>", "", ""];
 Config.exerciseText = ["", "", ""];
 Config.hasRememberView = false; //是否有观察记忆界面
 Config.maxLevel = 1; //最高等级数
