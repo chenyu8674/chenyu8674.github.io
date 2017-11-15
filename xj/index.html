@@ -1,0 +1,39 @@
+<!Doctype html>
+<html xmlns=http://www.w3.org/1999/xhtml>
+<head>
+	<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css"></link>
+</head>
+<body>
+	<div class="fullscreen" id="content">
+		<div id="title">爱育华管理系统</div>
+		<div id="searchbar">
+			患者姓名：<input class="input" id="search0" />&nbsp;&nbsp;
+			所属医助：<input class="input" id="search1" />&nbsp;&nbsp;
+			专家姓名：<input class="input" id="search2" /><br>
+			科室名称：<input class="input" id="search3" />&nbsp;&nbsp;
+			手术名称：<input class="input" id="search4" />&nbsp;&nbsp;
+			手术时间：<input class="input" id="add5" type="date" /><br>
+			<button >清空</button>
+			<button >查询</button>
+			<button onclick="show_add();">新增</button>
+		</div>
+	</div>
+	<div class="fullscreen" id="cover">
+		<div id="inputbar">
+			<div>患者信息</div>
+			<div class="floatleft">患者姓名：</div><input class="input floatleft" id="add0" /><br>
+			<div class="floatleft">手机号码：</div><input class="input floatleft" id="add1" maxLength=11 /><br>
+			<div class="floatleft">科室名称：</div><input class="input floatleft" id="add2" /><br>
+			<div class="floatleft">专家姓名：</div><input class="input floatleft" id="add3" /><br>
+			<div class="floatleft">手术名称：</div><input class="input floatleft" id="add4" /><br>
+			<div class="floatleft">手术时间：</div><div id="adddate" class="floatleft"><input class="input" id="add5" type="date" /></div><br>
+			<div class="floatleft">手术费用：</div><input class="input" id="add6" /><br>
+			<div class="floatleft">所属医助：</div><input class="input" id="add7" /><br>
+			<button onclick="show_add();">清空</button>&nbsp;
+			<button onclick="add_data();">添加</button>
+		</div>
+	</div>
+</body>
