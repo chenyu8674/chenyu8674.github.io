@@ -37,8 +37,18 @@ body{
 	border: 1px solid #000;
 	background: #eee;
 }
-#adddate {
-	width: 200px;
+#tablebar {
+	position: fixed;
+	width: 940px;
+	height: 400px;
+	top: 220px;
+	left: 20px;
+	padding:10px;
+	border: 1px solid #000;
+	background: #eee;
+}
+table {
+	width:940px;
 }
 #inputbar {
 	position: fixed;
