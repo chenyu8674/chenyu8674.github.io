@@ -135,7 +135,7 @@ function create_raw_table() {
             + "<td>" + data[5] + "</td>"
             + "<td>" + data[6] + "</td>"
             + "<td>" + data[7] + "</td>"
-            + "<td><button onclick='edit_raw_data(" + i + ")'>改</button><button onclick='delete_raw_data(" + i + ")'>删</button></td>"
+            + "<td><button class='button1' onclick='edit_raw_data(" + i + ")'>改</button><button class='button1' onclick='delete_raw_data(" + i + ")'>删</button></td>"
         + "</tr>").appendTo($("#rawtable"));
     }
 }
