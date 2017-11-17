@@ -10,21 +10,24 @@
 <body>
 	<div class="fullscreen" id="content">
 		<div id="title">爱育华管理系统</div>
-		<div id="searchbar">
-			患者姓名：<input class="input" id="searchinput0" oninput="do_search();" />&nbsp;&nbsp;
-			所属医助：<input class="input" id="searchinput1" oninput="do_search();" />&nbsp;&nbsp;
-			专家姓名：<input class="input" id="searchinput2" oninput="do_search();" /><br>
-			科室名称：<input class="input" id="searchinput3" oninput="do_search();" />&nbsp;&nbsp;
-			手术名称：<input class="input" id="searchinput4" oninput="do_search();" />&nbsp;&nbsp;
-			手术时间：<input class="input" id="searchinput5" oninput="do_search();" type="date" /><br>
-			<button >CLEAR</button>
-			<button >SEARCH</button>
-			<button onclick="show_add_window();">ADD</button>
+		<div class="blockbar" id="searchbar">
+			<div class="div_line">
+				<div class="info_text">患者姓名：</div><input class="input" id="searchinput0" oninput="do_search();" />
+				<div class="info_text">所属医助：</div><input class="input" id="searchinput1" oninput="do_search();" />
+				<div class="info_text">专家姓名：</div><input class="input" id="searchinput2" oninput="do_search();" />
+			</div>
+			<div class="div_line">
+				<div class="info_text">科室名称：</div><input class="input" id="searchinput3" oninput="do_search();" />
+				<div class="info_text">手术名称：</div><input class="input" id="searchinput4" oninput="do_search();" />
+				<div class="info_text">手术时间：</div><input class="input" id="searchinput5" oninput="do_search();" type="date" /><br>
+			</div>
 		</div>
-		<div id="tablebar">
-			原始数据：<br>
-			<table id="rawtable" border="1" cellspacing="0" cellpadding="0"></table><br>
-			搜索结果：<br>
+		<button id="btn_clear_data" onclick="do_clear_data();">清空</button>
+		<button id="btn_add_data" onclick="show_add_window();">添加</button>
+		<div class="blockbar" id="rawtablebar">
+			<table id="rawtable" border="1" cellspacing="0" cellpadding="0"></table>
+		</div>
+		<div class="blockbar" id="searchtablebar">
 			<table id="searchtable" border="1" cellspacing="0" cellpadding="0"></table>
 		</div>
 	</div>
@@ -39,8 +42,9 @@
 			手术时间：<input class="input" id="windowinput5" type="date" /><br>
 			手术费用：<input class="input" id="windowinput6" /><br>
 			所属医助：<input class="input" id="windowinput7" /><br>
-			<button id="btnclearinput" onclick="">清空</button>&nbsp;
-			<button id="btndoinput" onclick="do_add();">添加</button>
+			<button id="btncloseinput" onclick="close_edit_window();">关闭</button>&nbsp;
+			<button id="btnclearinput" onclick="do_clear_input();">清空</button>&nbsp;
+			<button id="btndoinput" onclick="do_add_data();">添加</button>
 		</div>
 	</div>
 </body>

@@ -4,6 +4,8 @@ $(document).ready(function(){
     setTimeout(doadapt, 0);
     $(window).resize(doadapt);
     init();
+    create_raw_table();
+    create_search_table();
 });
 
 var SCREEN_ZOOM = 0;// 适配缩放比例
@@ -39,13 +41,13 @@ var searchResultList = [];// 搜索结果数据
 var editMode = 0;// 数据编辑模式，1添加 2修改
 var editIndex = -1;// 当前修改的数据索引
 
-// 打开新增窗口
+// 打开编辑窗口（新增）
 function show_add_window() {
     editMode = 1;
     show_input_window();
 }
 
-// 打开修改窗口
+// 打开编辑窗口（修改）
 function show_edit_window() {
     editMode = 2;
     show_input_window();
@@ -56,14 +58,7 @@ function show_input_window() {
     $("#cover").show();
     if (editMode == 1) {
         $("#btndoinput").text("添加");
-        setvalue("windowinput0", "");
-        setvalue("windowinput1", "");
-        setvalue("windowinput2", "");
-        setvalue("windowinput3", "");
-        setvalue("windowinput4", "");
-        setvalue("windowinput5", new Date().Format("yyyy-MM-dd"));
-        setvalue("windowinput6", "");
-        setvalue("windowinput7", "");
+        do_clear_input();
     } else if (editMode == 2) {
         $("#btndoinput").text("修改");
         setvalue("windowinput0", rawDataList[editIndex][0]);
@@ -78,8 +73,26 @@ function show_input_window() {
     $("#windowinput0").focus();
 }
 
+// 清空编辑框内容
+function do_clear_input() {
+    setvalue("windowinput0", "");
+    setvalue("windowinput1", "");
+    setvalue("windowinput2", "");
+    setvalue("windowinput3", "");
+    setvalue("windowinput4", "");
+    setvalue("windowinput5", new Date().Format("yyyy-MM-dd"));
+    setvalue("windowinput6", "");
+    setvalue("windowinput7", "");
+}
+
+// 清空原始数据
+function do_clear_data() {
+    rawDataList = [];
+    create_raw_table();
+}
+
 // 新增原始数据
-function do_add() {
+function do_add_data() {
     $("#cover").hide();
 	var patient = getvalue("windowinput0");// 患者姓名
 	var phone = getvalue("windowinput1");// 手机号码
@@ -98,6 +111,7 @@ function do_add() {
     create_raw_table();
 }
 
+// 进行搜索行为
 function do_search() {
     var patient = getvalue("searchinput0");// 患者姓名
     var assistant = getvalue("searchinput1");// 所属医助
@@ -169,4 +183,9 @@ function edit_raw_data(index) {
 function delete_raw_data(index) {
     rawDataList.splice(index, 1);
     create_raw_table();
+}
+
+// 关闭编辑窗口
+function close_edit_window() {
+    $("#cover").hide();
 }
