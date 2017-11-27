@@ -4,8 +4,6 @@ $(document).ready(function(){
     setTimeout(doadapt, 0);
     $(window).resize(doadapt);
     init();
-    create_raw_table();
-    create_search_table();
 });
 
 var SCREEN_ZOOM = 0;// 适配缩放比例
@@ -40,6 +38,7 @@ var searchDataList = [];// 搜索结果数据
 var searchResultList = [];// 搜索结果数据
 var editMode = 0;// 数据编辑模式，1添加 2修改
 var editIndex = -1;// 当前修改的数据索引
+var showIndex = -1;// 当前显示内容标记，0原始数据 -1搜索结果 
 
 // 打开编辑窗口（新增）
 function show_add_window() {
@@ -57,10 +56,10 @@ function show_edit_window() {
 function show_input_window() {
     $("#cover").show();
     if (editMode == 1) {
-        $("#btndoinput").text("添加");
+        $("#btn_do_input").text("添加");
         do_clear_input();
     } else if (editMode == 2) {
-        $("#btndoinput").text("修改");
+        $("#btn_do_input").text("修改");
         setvalue("windowinput0", rawDataList[editIndex][0]);
         setvalue("windowinput1", rawDataList[editIndex][1]);
         setvalue("windowinput2", rawDataList[editIndex][2]);
@@ -73,6 +72,11 @@ function show_input_window() {
     $("#windowinput0").focus();
 }
 
+// 关闭编辑窗口
+function close_edit_window() {
+    $("#cover").hide();
+}
+
 // 清空编辑框内容
 function do_clear_input() {
     setvalue("windowinput0", "");
@@ -83,12 +87,6 @@ function do_clear_input() {
     setvalue("windowinput5", new Date().Format("yyyy-MM-dd"));
     setvalue("windowinput6", "");
     setvalue("windowinput7", "");
-}
-
-// 清空原始数据
-function do_clear_data() {
-    rawDataList = [];
-    create_raw_table();
 }
 
 // 新增原始数据
@@ -111,33 +109,20 @@ function do_add_data() {
     create_raw_table();
 }
 
-// 进行搜索行为
-function do_search() {
-    var patient = getvalue("searchinput0");// 患者姓名
-    var assistant = getvalue("searchinput1");// 所属医助
-    var expert = getvalue("searchinput2");// 专家姓名
-    var department = getvalue("searchinput3");// 科室名称
-    var operation = getvalue("searchinput4");// 手术名称
-    var time = getvalue("searchinput5");// 手术时间
-
-    searchDataList = [];
-    for(var i in rawDataList) {
-        var data = rawDataList[i]
-        if (patient && patient != data[0]) continue;
-        if (assistant && assistant != data[7]) continue;
-        if (expert && expert != data[3]) continue;
-        if (department && department != data[2]) continue;
-        if (operation && operation != data[4]) continue;
-        if (time && time != data[5]) continue;
-        searchDataList.push(data);
-    }
-    create_search_table();
+// 清空原始数据
+function do_clear_data() {
+    rawDataList = [];
+    create_raw_table();
 }
 
 // 重绘原始数据表格
 function create_raw_table() {
-    $("#rawtable").html("");
-    $("<tr><td>患者姓名</td><td>手机号码</td><td>科室名称</td><td>专家姓名</td><td>手术名称</td><td>手术时间</td><td>手术费用</td><td>所属医助</td><td>可用操作</td></tr>").appendTo($("#rawtable"));
+    $("#btn_base_data").html("基础信息");
+    $("#data_table").html("");
+    if (rawDataList.length == 0) {
+        return;
+    }
+    $("<tr><td>患者姓名</td><td>手机号码</td><td>科室名称</td><td>专家姓名</td><td>手术名称</td><td>手术时间</td><td>手术费用</td><td>所属医助</td><td>可用操作</td></tr>").appendTo($("#data_table"));
     for(var i in rawDataList) {
         var data = rawDataList[i];
         $("<tr>"
@@ -150,14 +135,60 @@ function create_raw_table() {
             + "<td>" + data[6] + "</td>"
             + "<td>" + data[7] + "</td>"
             + "<td><button class='button1' onclick='edit_raw_data(" + i + ")'>改</button><button class='button1' onclick='delete_raw_data(" + i + ")'>删</button></td>"
-        + "</tr>").appendTo($("#rawtable"));
+        + "</tr>").appendTo($("#data_table"));
     }
+}
+
+// 打开修改指定原始数据的窗口
+function edit_raw_data(index) {
+    editIndex = index;
+    show_edit_window();
+}
+
+// 删除指定原始数据
+function delete_raw_data(index) {
+    rawDataList.splice(index, 1);
+    create_raw_table();
+}
+
+// 进行搜索行为
+function do_search() {
+    log("do_search");
+    var patient = getvalue("searchinput0");// 患者姓名
+    var assistant = getvalue("searchinput1");// 所属医助
+    var expert = getvalue("searchinput2");// 专家姓名
+    var department = getvalue("searchinput3");// 科室名称
+    var operation = getvalue("searchinput4");// 手术名称
+    var time = getvalue("searchinput5");// 手术时间
+    if (patient == "" && assistant == "" && expert == "" && department == "" && operation == "" && time == "") {
+        create_raw_table();
+        return;
+    }
+    searchDataList = [];
+    for(var i in rawDataList) {
+        var data = rawDataList[i];
+        log(time);
+        log(data[5]);
+        log(data[5].toString().split(0, 7));
+        if (patient != "" && patient != data[0]) continue;
+        if (assistant != "" && assistant != data[7]) continue;
+        if (expert != "" && expert != data[3]) continue;
+        if (department != "" && department != data[2]) continue;
+        if (operation != "" && operation != data[4]) continue;
+        if (time != "" && time != data[5].toString().split(0, 7)) continue;
+        searchDataList.push(data);
+    }
+    create_search_table();
 }
 
 // 重绘搜索结果表格
 function create_search_table() {
-    $("#searchtable").html("");
-    $("<tr><td>患者姓名</td><td>手机号码</td><td>科室名称</td><td>专家姓名</td><td>手术名称</td><td>手术时间</td><td>手术费用</td><td>所属医助</td></tr>").appendTo($("#searchtable"));
+    $("#btn_base_data").html("搜索结果");
+    $("#data_table").html("");
+    if (searchDataList.length == 0) {
+        return;
+    }
+    $("<tr><td>患者姓名</td><td>手机号码</td><td>科室名称</td><td>专家姓名</td><td>手术名称</td><td>手术时间</td><td>手术费用</td><td>所属医助</td></tr>").appendTo($("#data_table"));
     for(var i in searchDataList) {
         var data = searchDataList[i];
         $("<tr>"
@@ -169,23 +200,6 @@ function create_search_table() {
             + "<td>" + data[5] + "</td>"
             + "<td>" + data[6] + "</td>"
             + "<td>" + data[7] + "</td>"
-        + "</tr>").appendTo($("#searchtable"));
+        + "</tr>").appendTo($("#data_table"));
     }
-}
-
-// 打开修改窗口
-function edit_raw_data(index) {
-    editIndex = index;
-    show_edit_window();
-}
-
-// 删除原始数据
-function delete_raw_data(index) {
-    rawDataList.splice(index, 1);
-    create_raw_table();
-}
-
-// 关闭编辑窗口
-function close_edit_window() {
-    $("#cover").hide();
 }
