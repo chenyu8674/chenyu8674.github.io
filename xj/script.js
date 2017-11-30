@@ -111,13 +111,25 @@ function do_add_data() {
 
 // 清空原始数据
 function do_clear_data() {
-    rawDataList = [];
-    create_raw_table();
+    if (rawDataList == null || rawDataList.length == 0) {
+        return;
+    }
+    if (confirm("警告：确认清空所有已录入的数据？")) {
+        rawDataList = [];
+        create_raw_table();
+    }
 }
 
 // 重绘原始数据表格
 function create_raw_table() {
-    $("#btn_base_data").html("基础信息");
+    // $("#btn_base_data").html("基础信息");
+    setvalue("searchinput0", "");
+    setvalue("searchinput1", "");
+    setvalue("searchinput2", "");
+    setvalue("searchinput3", "");
+    setvalue("searchinput4", "");
+    setvalue("searchinput5", "");
+    $("#search_type_view").hide();
     $("#data_table").html("");
     if (rawDataList.length == 0) {
         return;
@@ -167,9 +179,6 @@ function do_search() {
     searchDataList = [];
     for(var i in rawDataList) {
         var data = rawDataList[i];
-        log(time);
-        log(data[5]);
-        log(data[5].toString().split(0, 7));
         if (patient != "" && patient != data[0]) continue;
         if (assistant != "" && assistant != data[7]) continue;
         if (expert != "" && expert != data[3]) continue;
@@ -183,7 +192,8 @@ function do_search() {
 
 // 重绘搜索结果表格
 function create_search_table() {
-    $("#btn_base_data").html("搜索结果");
+    // $("#btn_base_data").html("搜索结果");
+    $("#search_type_view").show();
     $("#data_table").html("");
     if (searchDataList.length == 0) {
         return;
@@ -202,4 +212,28 @@ function create_search_table() {
             + "<td>" + data[7] + "</td>"
         + "</tr>").appendTo($("#data_table"));
     }
+}
+
+// 重绘总体统计表格
+function create_statistics_table() {
+    $("#data_table").html("");
+    $("<tr><td>月份</td><td>总体费用合计</td><td>总体绩效合计</td><td>其他人员绩效</td></tr>").appendTo($("#data_table"));
+}
+
+// 重绘医助统计表格
+function create_assistant_table() {
+    $("#data_table").html("");
+    $("<tr><td>医助名称</td><td>费用合计</td><td>绩效合计</td></tr>").appendTo($("#data_table"));
+}
+
+// 重绘专家统计表格
+function create_expert_table() {
+    $("#data_table").html("");
+    $("<tr><td>专家名称</td><td>费用合计</td></tr>").appendTo($("#data_table"));
+}
+
+// 重绘科室统计表格
+function create_department_table() {
+    $("#data_table").html("");
+    $("<tr><td>科室名称</td><td>费用合计</td></tr>").appendTo($("#data_table"));
 }
