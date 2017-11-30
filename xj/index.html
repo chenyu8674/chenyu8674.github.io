@@ -1,14 +1,16 @@
 <!Doctype html>
 <html xmlns=http://www.w3.org/1999/xhtml>
 <head>
+	<title>爱育华管理系统</title>
 	<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+	<script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="tool.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css"></link>
 </head>
 <body>
-	<div class="fullscreen" id="content">
+	<div class="fullscreen">
 		<div id="title">爱育华管理系统</div>
 		<div class="blockbar" id="searchbar">
 			<div class="div_line">
@@ -19,32 +21,35 @@
 			<div class="div_line">
 				<div class="info_text">科室名称：</div><input class="input" id="searchinput3" oninput="do_search();" />
 				<div class="info_text">手术名称：</div><input class="input" id="searchinput4" oninput="do_search();" />
-				<div class="info_text">手术时间：</div><input class="input" id="searchinput5" oninput="do_search();" type="date" /><br>
+				<div class="info_text">手术时间：</div><input class="input" id="searchinput5" onblur="do_search();" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM'});" /><br>
 			</div>
 		</div>
-		<button id="btn_clear_data" onclick="do_clear_data();">清空</button>
-		<button id="btn_add_data" onclick="show_add_window();">添加</button>
-		<div class="blockbar" id="rawtablebar">
-			<table id="rawtable" border="1" cellspacing="0" cellpadding="0"></table>
+		<div style="margin-left:20px;margin-top:20px;">
+			<button id="btn_base_data" onclick="create_raw_table();">基础信息</button>
+			<button onclick="show_search_table();">费用统计</button>
+			<label><input name="searchType" type="radio" value="1" />按总体</label>
+			<label><input name="searchType" type="radio" value="2" checked="true" />按医助</label>
+			<label><input name="searchType" type="radio" value="3" />按专家</label>
+			<label><input name="searchType" type="radio" value="4" />按科室</label>
+			<button style="float:right;margin-right:20px;" onclick="do_clear_data();">清空</button>
+			<button style="float:right;margin-right:10px;" onclick="show_add_window();">添加</button>
 		</div>
-		<div class="blockbar" id="searchtablebar">
-			<table id="searchtable" border="1" cellspacing="0" cellpadding="0"></table>
-		</div>
+		<table id="data_table" border="1" cellspacing="0" cellpadding="0"></table>
 	</div>
 	<div class="fullscreen" id="cover">
 		<div id="inputbar">
 			<div>患者信息</div>
-			患者姓名：<input class="input" id="windowinput0" /><br>
-			手机号码：<input class="input" id="windowinput1" maxLength=11 /><br>
-			科室名称：<input class="input" id="windowinput2" /><br>
-			专家姓名：<input class="input" id="windowinput3" /><br>
-			手术名称：<input class="input" id="windowinput4" /><br>
-			手术时间：<input class="input" id="windowinput5" type="date" /><br>
-			手术费用：<input class="input" id="windowinput6" /><br>
-			所属医助：<input class="input" id="windowinput7" /><br>
-			<button id="btncloseinput" onclick="close_edit_window();">关闭</button>&nbsp;
-			<button id="btnclearinput" onclick="do_clear_input();">清空</button>&nbsp;
-			<button id="btndoinput" onclick="do_add_data();">添加</button>
+			<div class="info_text">患者姓名：</div><input class="input" id="windowinput0" /><br>
+			<div class="info_text">手机号码：</div><input class="input" id="windowinput1" maxLength=11 /><br>
+			<div class="info_text">科室名称：</div><input class="input" id="windowinput2" /><br>
+			<div class="info_text">专家姓名：</div><input class="input" id="windowinput3" /><br>
+			<div class="info_text">手术名称：</div><input class="input" id="windowinput4" /><br>
+			<div class="info_text">手术时间：</div><input class="input" id="windowinput5" type="date" /><br>
+			<div class="info_text">手术费用：</div><input class="input" id="windowinput6" /><br>
+			<div class="info_text">所属医助：</div><input class="input" id="windowinput7" /><br>
+			<button onclick="close_edit_window();">取消</button>&nbsp;
+			<button onclick="do_clear_input();">清空</button>&nbsp;
+			<button id="btn_do_input" onclick="do_add_data();">添加</button>
 		</div>
 	</div>
 </body>
