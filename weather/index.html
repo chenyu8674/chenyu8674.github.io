@@ -3,8 +3,13 @@
 <head>
 <script>
 var baseUrl = "http://wthrcdn.etouch.cn/WeatherApi?city=";
+var count = 0;
+var startTime = 0;
 function loadXMLDoc() {
-    var url = baseUrl + document.getElementById("city").value;
+    if (startTime == 0) {
+        startTime = new Date().getTime();
+    }
+    var url = baseUrl + document.getElementById("city").value + "&random=" + Math.random();
     var xmlhttp;
     var txt, x, xx, i;
     if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -15,7 +20,7 @@ function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var responseText = xmlhttp.responseText;
-            // log(responseText);
+            log(responseText);
 
             var resultStr = "";
             var error = gettag(responseText, "error");
@@ -25,6 +30,7 @@ function loadXMLDoc() {
                 responseText = responseText.replace(/\<\!\[CDATA\[/gi, "");
                 responseText = responseText.replace(/\]\]\>/gi, "");
 
+                resultStr += "\r\n";
                 resultStr += "城市：" + gettag(responseText, "city") + "\r\n";
                 resultStr += "更新：" + gettag(responseText, "updatetime") + "\r\n";
                 resultStr += "气温：" + gettag(responseText, "wendu") + "\r\n";
@@ -33,6 +39,21 @@ function loadXMLDoc() {
                 resultStr += "湿度：" + gettag(responseText, "shidu") + "\r\n";
                 resultStr += "日出：" + gettag(responseText, "sunrise_1") + "\r\n";
                 resultStr += "日落：" + gettag(responseText, "sunset_1") + "\r\n";
+
+                var environment = gettag(responseText, "environment");
+                if (environment != "") {
+                    resultStr += "\r\n";
+                    resultStr += "空气质量：" + gettag(responseText, "aqi") + " " + gettag(responseText, "quality") + "\r\n";
+                    resultStr += "主要污染物：" + gettag(responseText, "MajorPollutants") + "\r\n";
+                    resultStr += "建议：" + gettag(responseText, "suggest") + "\r\n";
+                    resultStr += "PM2.5：" + gettag(responseText, "pm25") + "\r\n";
+                    resultStr += "PM10：" + gettag(responseText, "pm10") + "\r\n";
+                    resultStr += "臭氧：" + gettag(responseText, "o3") + "\r\n";
+                    resultStr += "一氧化碳：" + gettag(responseText, "co") + "\r\n";
+                    resultStr += "二氧化硫：" + gettag(responseText, "so2") + "\r\n";
+                    resultStr += "二氧化氮：" + gettag(responseText, "no2") + "\r\n";
+                    resultStr += "更新时间：" + gettag(responseText, "time") + "\r\n";
+                }
 
                 var zhishu = getstrarray(responseText, "<zhishu>", "</zhishu>");
                 for (var i = 0; i < zhishu.length; i++) {
@@ -49,8 +70,13 @@ function loadXMLDoc() {
                     var day = gettag(str, "day");
                     var night = gettag(str, "night");
                     resultStr += "白天：" + gettag(day, "type") + " " + gettag(day, "fengxiang") + " " + gettag(day, "fengli") + "\r\n";
-                    resultStr += "白天：" + gettag(night, "type") + " " + gettag(night, "fengxiang") + " " + gettag(night, "fengli") + "\r\n";
+                    resultStr += "夜间：" + gettag(night, "type") + " " + gettag(night, "fengxiang") + " " + gettag(night, "fengli") + "\r\n";
                 }
+                count ++;
+                // var useTime = new Date().getTime() - startTime;
+                // document.getElementById("count").innerText = count  + " - " + (count * 1000 / useTime).toFixed(1);
+                // document.getElementById("count").innerText = useTime;
+                // loadXMLDoc();
             }
             document.getElementById("result").innerText = resultStr;
         }
@@ -65,8 +91,8 @@ function getstrarray(v,s,e,a,b){var r=[];var t=getstr(v,s,e,a,b);while(t!=""){r.
 </script>
 </head>
 <body onload="loadXMLDoc()">
-    <input id="city" value="海淀" oninput="loadXMLDoc()" />
-    <br /><br />
+    <input id="city" value="北京" oninput="loadXMLDoc()" />
+    <div id="count"></div>
     <div id="result"></div>
 </body>
 </html>
