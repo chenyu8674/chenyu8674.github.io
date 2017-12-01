@@ -18,8 +18,10 @@
 		<!--<link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css' />-->
 		<script src="js2/modernizr.custom.34978.js"></script>	
 		<script type="text/javascript">
-			history.pushState({data:111},"1222","index2.html");
-			console.log("pushState");
+			history.pushState({}, "", "index2.html");
+			window.onpopstate = function() { //监听浏览器事件 
+				location.href = 'index2.html';
+			}
 		</script>
     </head>
     <body>
