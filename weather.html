@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var baseUrl = "http://wthrcdn.etouch.cn/WeatherApi?city=";
+function loadXMLDoc() {
+    var url = baseUrl + document.getElementById("city").value;
+    var xmlhttp;
+    var txt, x, xx, i;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var responseText = xmlhttp.responseText;
+            // log(responseText);
+
+            var resultStr = "";
+            var error = gettag(responseText, "error");
+            if (error.length) {
+                resultStr = error;
+            } else {
+                responseText = responseText.replace(/\<\!\[CDATA\[/gi, "");
+                responseText = responseText.replace(/\]\]\>/gi, "");
+
+                resultStr += "城市：" + gettag(responseText, "city") + "\r\n";
+                resultStr += "更新：" + gettag(responseText, "updatetime") + "\r\n";
+                resultStr += "气温：" + gettag(responseText, "wendu") + "\r\n";
+                resultStr += "风力：" + gettag(responseText, "fengli") + "\r\n";
+                resultStr += "风向：" + gettag(responseText, "fengxiang") + "\r\n";
+                resultStr += "湿度：" + gettag(responseText, "shidu") + "\r\n";
+                resultStr += "日出：" + gettag(responseText, "sunrise_1") + "\r\n";
+                resultStr += "日落：" + gettag(responseText, "sunset_1") + "\r\n";
+
+                var zhishu = getstrarray(responseText, "<zhishu>", "</zhishu>");
+                for (var i = 0; i < zhishu.length; i++) {
+                    var str = zhishu[i];
+                    resultStr += "\r\n" + gettag(str, "name") + "：" + gettag(str, "value") + "\r\n";
+                    resultStr += gettag(str, "detail") + "\r\n";
+                }
+
+                var forecast = getstrarray(responseText, "<weather>", "</weather>");
+                for (var i = 0; i < forecast.length; i++) {
+                    var str = forecast[i];
+                    resultStr += "\r\n" + gettag(str, "date") + "：\r\n";
+                    resultStr += gettag(str, "high") + " " + gettag(str, "low") + "\r\n";
+                    var day = gettag(str, "day");
+                    var night = gettag(str, "night");
+                    resultStr += "白天：" + gettag(day, "type") + " " + gettag(day, "fengxiang") + " " + gettag(day, "fengli") + "\r\n";
+                    resultStr += "白天：" + gettag(night, "type") + " " + gettag(night, "fengxiang") + " " + gettag(night, "fengli") + "\r\n";
+                }
+            }
+            document.getElementById("result").innerText = resultStr;
+        }
+    }
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+function log(obj){console.log(obj)}
+function gettag(text,tag){return getstr(text,"<"+tag+">","</"+tag+">",false,false)}
+function getstr(v,s,e,a,b){var r="";var t=v.indexOf(s);if(t<0){return""}if(a){r=v.substr(t)}else{r=v.substr(t+s.length)}t=r.indexOf(e);if(b){r=r.substr(0,t+e.length)}else{r=r.substr(0,t)}return r}
+function getstrarray(v,s,e,a,b){var r=[];var t=getstr(v,s,e,a,b);while(t!=""){r.push(t);t=getstr(v,s,e,1,1);v=v.substr(v.indexOf(t)+t.length);t=getstr(v,s,e,a,b)}return r}
+</script>
+</head>
+<body onload="loadXMLDoc()">
+    <input id="city" value="海淀" oninput="loadXMLDoc()" />
+    <br /><br />
+    <div id="result"></div>
+</body>
+</html>
