@@ -1,0 +1,58 @@
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-size: 12px;
+	line-height: 15px;
+	background: #28243B;
+	color: #fff;
+}
+input {
+	width: 1000px;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	font-size: 36px;
+	letter-spacing: 5px;
+	outline: none;
+	background: rgba(255, 255, 255, 0.2);
+	color: #fff;
+}
+.total {
+	float: left;
+	width: 478px;
+	height: 150px;
+	padding: 10px;
+	border: 1px solid #666;
+}
+.air {
+	float: left;
+	width: 478px;
+	height: 150px;
+	padding: 10px;
+	border: 1px solid #666;
+}
+.weather {
+	float: left;
+	width: 178px;
+	height: 62px;
+	padding: 10px;
+	border: 1px solid #666;
+}
+.weather img {
+	width: 15px;
+	height: 15px;
+	margin-left: 2px;
+	margin-top: 2px;
+	margin-bottom: -2px;
+}
+.zhishu {
+	float: left;
+	width: 311px;
+	height: 60px;
+	padding: 10px;
+	border: 1px solid #666;
+}
