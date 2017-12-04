@@ -12,7 +12,8 @@ function doadapt() {
     var height = $(window).height();
     $("body").css("width", width / zoom + "px");
     $("body").css("height", height / zoom + "px");
-    $("body").css("zoom", zoom);
+    $("body").css("margin", "50px");
+    $("body").css("zoom", zoom * 0.9);
 }
 
 
