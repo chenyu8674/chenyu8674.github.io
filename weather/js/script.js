@@ -13,6 +13,7 @@ function doadapt() {
     $("body").css("width", width / zoom + "px");
     $("body").css("height", height / zoom + "px");
     $("body").css("margin", "50px");
+    $("body").css("margin-top", "40px");
     $("body").css("zoom", zoom * 0.9);
 }
 
@@ -35,47 +36,58 @@ function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var responseText = xmlhttp.responseText;
-            // log(responseText);
+            log(responseText);
 
             var resultStr = "";
             var error = gettag(responseText, "error");
             if (error.length) {
-                resultStr = "<div class='error'>" + error.toUpperCase() + "</div>";
+                if (error.toUpperCase() == "INVALID CITY") {
+                    error = "无效的地区名称";
+                }
+                resultStr = "<div class='error'>" + error + "</div>";
             } else {
                 responseText = responseText.replace(/\<\!\[CDATA\[/gi, "");
                 responseText = responseText.replace(/\]\]\>/gi, "");
 
-                resultStr += "<div class='total'>";
+                resultStr += "<div class='total1 block'>";
                 resultStr += "城市：" + gettag(responseText, "city") + "<br>";
-                resultStr += "更新：" + gettag(responseText, "updatetime") + "<br>";
-                resultStr += "气温：" + gettag(responseText, "wendu") + "<br>";
+                resultStr += "日出：" + gettag(responseText, "sunrise_1") + "<br>";
+                resultStr += "日落：" + gettag(responseText, "sunset_1") + "<br><br>";
+                resultStr += "更新时间：" + gettag(responseText, "updatetime") + "<br>";
+                resultStr += "</div><div class='total2 block'>";
+                resultStr += "温度：" + gettag(responseText, "wendu") + "℃<br>";
+                resultStr += "湿度：" + gettag(responseText, "shidu") + "<br>";
                 resultStr += "风力：" + gettag(responseText, "fengli") + "<br>";
                 resultStr += "风向：" + gettag(responseText, "fengxiang") + "<br>";
-                resultStr += "湿度：" + gettag(responseText, "shidu") + "<br>";
-                resultStr += "日出：" + gettag(responseText, "sunrise_1") + "<br>";
-                resultStr += "日落：" + gettag(responseText, "sunset_1") + "<br>";
                 resultStr += "</div>";
 
-                resultStr += "<div class='air'>";
+                resultStr += "<div class='air1 block'>";
                 var environment = gettag(responseText, "environment");
                 if (environment != "") {
-                    resultStr += "空气质量：" + gettag(responseText, "aqi") + " " + gettag(responseText, "quality") + "<br>";
-                    resultStr += "主要污染物：" + gettag(responseText, "MajorPollutants") + "<br>";
-                    resultStr += "建议：" + gettag(responseText, "suggest") + "<br>";
-                    resultStr += "PM2.5：" + gettag(responseText, "pm25") + "<br>";
-                    resultStr += "PM10：" + gettag(responseText, "pm10") + "<br>";
+                    resultStr += "空气质量：" + gettag(responseText, "aqi") + "/" + gettag(responseText, "quality") + "<br>";
+                    var MajorPollutants = gettag(responseText, "MajorPollutants");
+                    if (MajorPollutants == "") {
+                        MajorPollutants = "--";
+                    }
+                    resultStr += "主要污染物：" + MajorPollutants + "<br>";
+                    resultStr += "PM2.5指数：" + gettag(responseText, "pm25") + "<br>";
+                    resultStr += "PM10 指数：" + gettag(responseText, "pm10") + "<br>";
+                    resultStr += "更新时间：" + gettag(responseText, "time") + "<br>";
+                }
+                resultStr += "</div><div class='air2 block'>";
+                if (environment != "") {
                     resultStr += "臭氧：" + gettag(responseText, "o3") + "<br>";
                     resultStr += "一氧化碳：" + gettag(responseText, "co") + "<br>";
                     resultStr += "二氧化硫：" + gettag(responseText, "so2") + "<br>";
                     resultStr += "二氧化氮：" + gettag(responseText, "no2") + "<br>";
-                    resultStr += "更新时间：" + gettag(responseText, "time") + "<br>";
+                    resultStr += "建议：" + gettag(responseText, "suggest") + "<br>";
                 }
                 resultStr += "</div>";
 
                 var forecast = getstrarray(responseText, "<weather>", "</weather>");
                 for (var i = 0; i < forecast.length; i++) {
                     var str = forecast[i];
-                    resultStr += "<div class='weather'>" + gettag(str, "date") + "：<br>";
+                    resultStr += "<div class='weather block'>" + gettag(str, "date") + "：<br>";
                     resultStr += gettag(str, "high") + " " + gettag(str, "low") + "<br>";
                     var day = gettag(str, "day");
                     var night = gettag(str, "night");
@@ -89,7 +101,7 @@ function loadXMLDoc() {
                 var zhishu = getstrarray(responseText, "<zhishu>", "</zhishu>");
                 for (var i = 0; i < zhishu.length; i++) {
                     var str = zhishu[i];
-                    resultStr += "<div class='zhishu'>" + gettag(str, "name") + "：" + gettag(str, "value") + "<br>";
+                    resultStr += "<div class='zhishu block'>" + gettag(str, "name") + "：" + gettag(str, "value") + "<br>";
                     resultStr += gettag(str, "detail") + "<br>";
                     resultStr += "</div>";
                 }
@@ -100,7 +112,12 @@ function loadXMLDoc() {
                 // document.getElementById("count").innerText = useTime;
                 // loadXMLDoc();
             }
-            document.getElementById("result").innerHTML = resultStr;
+            $("#result").html(resultStr);
+
+            $($(".weather").get(0)).css("margin-left", "0px");
+            $($(".zhishu").get(0)).css("margin-left", "0px");
+            $($(".zhishu").get(4)).css("margin-left", "0px");
+            $($(".zhishu").get(8)).css("margin-left", "0px");
         }
     }
     xmlhttp.open("GET", url, true);
