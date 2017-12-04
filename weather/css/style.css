@@ -19,7 +19,8 @@ body {
 	text-align: center;
 	font-size: 40px;
 	font-weight: 900;
-	color: rgba(0, 0, 0, 0.4);
+	letter-spacing: 2px;
+	color: rgba(255, 255, 255, 0.25);
 }
 input {
 	width: 1000px;
@@ -33,11 +34,11 @@ input {
 	font-size: 36px;
 	letter-spacing: 5px;
 	outline: none;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.3);
 	color: #eee;
 }
 .block {
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.25);
 	padding: 10px;
 }
 .total1 {
