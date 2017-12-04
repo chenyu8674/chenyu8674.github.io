@@ -17,32 +17,36 @@ function doadapt() {
     $("body").css("zoom", zoom * 0.9);
 }
 
+var loadXMLFlag = 0;
+function oninputchange() {
+    var cityName = $("#city").val();
+    if (isChinese(cityName)) {
+        clearTimeout(loadXMLFlag);
+        loadXMLFlag = setTimeout(loadXMLDoc, 100);
+    }
+}
 
 var baseUrl = "http://wthrcdn.etouch.cn/WeatherApi?city=";
-var count = 0;
-var startTime = 0;
 function loadXMLDoc() {
-    if (startTime == 0) {
-        startTime = new Date().getTime();
-    }
-    var url = baseUrl + document.getElementById("city").value + "&random=" + Math.random();
+    $("#result").html("<div class='error'>LOADING...</div>");
+
+    var url = baseUrl + $("#city").val() + "&random=" + Math.random();
     var xmlhttp;
     var txt, x, xx, i;
-    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest();
-    } else { // code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
+    xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var responseText = xmlhttp.responseText;
-            log(responseText);
+            // log(responseText);
 
+            $("#result").html("");
             var resultStr = "";
             var error = gettag(responseText, "error");
             if (error.length) {
-                if (error.toUpperCase() == "INVALID CITY") {
-                    error = "无效的地区名称";
+                if ($("#city").val() == "") {
+                    error = "";
+                } else {
+                    error = error.toUpperCase();
                 }
                 resultStr = "<div class='error'>" + error + "</div>";
             } else {
@@ -105,12 +109,6 @@ function loadXMLDoc() {
                     resultStr += gettag(str, "detail") + "<br>";
                     resultStr += "</div>";
                 }
-
-                count ++;
-                // var useTime = new Date().getTime() - startTime;
-                // document.getElementById("count").innerText = count  + " - " + (count * 1000 / useTime).toFixed(1);
-                // document.getElementById("count").innerText = useTime;
-                // loadXMLDoc();
             }
             $("#result").html(resultStr);
 
@@ -118,11 +116,42 @@ function loadXMLDoc() {
             $($(".zhishu").get(0)).css("margin-left", "0px");
             $($(".zhishu").get(4)).css("margin-left", "0px");
             $($(".zhishu").get(8)).css("margin-left", "0px");
+
+            var blockList = $(".block");
+            for (var i = 0; i < blockList.length; i++) {
+                var view = $(blockList[i]);
+                view.css("visibility", "hidden");
+                var top = view.position().top;
+                var left = view.position().left;
+                var fromTop = - top;
+                if (top > 300) {
+                    fromTop = 300 + top;
+                }
+                var fromLeft = - left;
+                if (left > 500) {
+                    fromLeft = 1000 + left;
+                }
+                doanimation(view, fromTop, fromLeft, i);
+            }
         }
     }
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
+
+function doanimation(view, fromTop, fromLeft, count) {
+    view = $(view);
+    var top = view.position().top;
+    var left = view.position().left;
+    setTimeout(function(){
+        view.css("visibility", "visible");
+        view.css("position", "fixed");
+        view.css("top", fromTop + "px");
+        view.css("left", fromLeft + "px");
+        view.animate({top:top+"px", left:left+"px"}, 200, "swing", null);
+    }, count * 30);
+}
+
 function getweathericon(type) {
     if (type == "多云")
         return "img/cloud.png";
@@ -163,3 +192,10 @@ function log(obj){console.log(obj)}
 function gettag(text,tag){return getstr(text,"<"+tag+">","</"+tag+">",false,false)}
 function getstr(v,s,e,a,b){var r="";var t=v.indexOf(s);if(t<0){return""}if(a){r=v.substr(t)}else{r=v.substr(t+s.length)}t=r.indexOf(e);if(b){r=r.substr(0,t+e.length)}else{r=r.substr(0,t)}return r}
 function getstrarray(v,s,e,a,b){var r=[];var t=getstr(v,s,e,a,b);while(t!=""){r.push(t);t=getstr(v,s,e,1,1);v=v.substr(v.indexOf(t)+t.length);t=getstr(v,s,e,a,b)}return r}
+function isChinese(temp) {
+    var re = /[^\u4e00-\u9fa5]/;
+    if(re.test(temp)) {
+        return false;
+    }
+    return true;
+}
