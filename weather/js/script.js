@@ -5,12 +5,14 @@ $(document).ready(function(){
     loadXMLDoc();
 });
 
-var SCREEN_ZOOM = 0;// 适配缩放比例
 // 页面适配
 function doadapt() {
-    SCREEN_ZOOM = $(window).width() / 1000 * 0.9;
-    $("body").css("zoom", SCREEN_ZOOM);
-    $("body").css("margin", "50px");
+    var zoom = $(window).width() / 1000;
+    var width = $(window).width();
+    var height = $(window).height();
+    $("body").css("width", width / zoom + "px");
+    $("body").css("height", height / zoom + "px");
+    $("body").css("zoom", zoom);
 }
 
 
@@ -32,12 +34,12 @@ function loadXMLDoc() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var responseText = xmlhttp.responseText;
-            log(responseText);
+            // log(responseText);
 
             var resultStr = "";
             var error = gettag(responseText, "error");
             if (error.length) {
-                resultStr = error;
+                resultStr = "<div class='error'>" + error.toUpperCase() + "</div>";
             } else {
                 responseText = responseText.replace(/\<\!\[CDATA\[/gi, "");
                 responseText = responseText.replace(/\]\]\>/gi, "");
