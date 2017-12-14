@@ -21,7 +21,7 @@
 			<div class="div_line">
 				<div class="info_text">科室名称：</div><input class="input" id="searchinput3" oninput="do_search();" />
 				<div class="info_text">手术名称：</div><input class="input" id="searchinput4" oninput="do_search();" />
-				<div class="info_text">手术时间：</div><input class="input" id="searchinput5" onblur="do_search();" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM'});" /><br>
+				<div class="info_text display_none">手术时间：</div><input class="input display_none" id="searchinput5" onblur="" type="text" onclick="WdatePicker({dateFmt:'yyyy-MM'});" /><br>
 			</div>
 		</div>
 		<div style="margin-left:20px;margin-top:20px;">
@@ -32,6 +32,11 @@
 				<label><input name="searchType" type="radio" value="2" onchange="create_assistant_table();" />医助统计</label>
 				<label><input name="searchType" type="radio" value="3" onchange="create_expert_table();" />专家统计</label>
 				<label><input name="searchType" type="radio" value="4" onchange="create_department_table();" />科室统计</label>
+			</div>
+			<div id="search_month_view">
+				<button class="float_left" onclick="search_month_last();"><</button>
+				<div id="search_month_text" class="float_left"></div>
+				<button class="float_left" onclick="search_month_next();">></button>
 			</div>
 			<button style="float:right;margin-right:20px;" onclick="do_clear_data();">清空</button>
 			<button style="float:right;margin-right:10px;" onclick="show_add_window();">添加</button>

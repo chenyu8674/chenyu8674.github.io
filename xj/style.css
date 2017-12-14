@@ -3,6 +3,8 @@
 
 body {margin:0px;padding:0px;font-family:"微软雅黑";}
 .fullscreen {position:fixed;width:100%;height:100%;}
+.float_left {float:left;}
+.display_none {display: none;}
 #inputbar {position:fixed;width:320px;height:300px;left:350px;}
 
 .info_text {width:105px;height:20px;line-height:20px;font-size:18px;float:left;text-align:right;}
@@ -24,6 +26,7 @@ td {text-align:center;}
 
 #btn_base_data {float:left;}
 #search_type_view {display:none;float:left;}
+#search_month_view {display:none;float:left;}
 
 /******************** style (base) ********************/
 #cover {background:rgba(0,0,0,0.9);}

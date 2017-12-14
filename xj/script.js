@@ -29,6 +29,7 @@ function init() {
             } catch(e) {}
         }
     });
+    search_month_init();
 }
 
 /********************************************************************************/
@@ -129,14 +130,22 @@ function create_raw_table() {
     setvalue("searchinput3", "");
     setvalue("searchinput4", "");
     setvalue("searchinput5", "");
+    search_month_init();
     $("#search_type_view").hide();
+    $("#search_month_view").hide();
     $("#data_table").html("");
     if (rawDataList.length == 0) {
         return;
     }
-    $("<tr><td>患者姓名</td><td>手机号码</td><td>科室名称</td><td>专家姓名</td><td>手术名称</td><td>手术时间</td><td>手术费用</td><td>所属医助</td><td>可用操作</td></tr>").appendTo($("#data_table"));
+    $("<tr><td>患者姓名</td><td>手机号码</td><td>科室名称</td><td>专家姓名</td><td>手术名称</td><td>手术时间</td><td>手术费用</td><td>所属医助</td><td>备注</td><td>可用操作</td></tr>").appendTo($("#data_table"));
     for(var i in rawDataList) {
         var data = rawDataList[i];
+        var info = data[8];
+        if (info == null || info == "") {
+            info = "<button onclick='edit_raw_info(" + i + ")'>无</button>";
+        } else {
+            info = "<button onclick='edit_raw_info(" + i + ")'>有</button>";
+        }
         $("<tr>"
             + "<td>" + data[0] + "</td>"
             + "<td>" + data[1] + "</td>"
@@ -146,9 +155,20 @@ function create_raw_table() {
             + "<td>" + data[5] + "</td>"
             + "<td>" + data[6] + "</td>"
             + "<td>" + data[7] + "</td>"
+            + "<td>" + info + "</td>"
             + "<td><button class='button1' onclick='edit_raw_data(" + i + ")'>改</button><button class='button1' onclick='delete_raw_data(" + i + ")'>删</button></td>"
         + "</tr>").appendTo($("#data_table"));
     }
+}
+
+function edit_raw_info(index) {
+    var info = rawDataList[index][8];
+    if (info == null) {
+        info = "";
+    }
+    info = prompt('输入备注：', info);
+    rawDataList[index][8] = info;
+    create_raw_table();
 }
 
 // 打开修改指定原始数据的窗口
@@ -165,14 +185,13 @@ function delete_raw_data(index) {
 
 // 进行搜索行为
 function do_search() {
-    log("do_search");
     var patient = getvalue("searchinput0");// 患者姓名
     var assistant = getvalue("searchinput1");// 所属医助
     var expert = getvalue("searchinput2");// 专家姓名
     var department = getvalue("searchinput3");// 科室名称
     var operation = getvalue("searchinput4");// 手术名称
     var time = getvalue("searchinput5");// 手术时间
-    if (patient == "" && assistant == "" && expert == "" && department == "" && operation == "" && time == "") {
+    if (patient == "" && assistant == "" && expert == "" && department == "" && operation == "") {
         create_raw_table();
         return;
     }
@@ -184,16 +203,66 @@ function do_search() {
         if (expert != "" && expert != data[3]) continue;
         if (department != "" && department != data[2]) continue;
         if (operation != "" && operation != data[4]) continue;
-        if (time != "" && time != data[5].toString().split(0, 7)) continue;
+        if (time != "" && time != data[5].toString().substr(0, 7)) continue;
         searchDataList.push(data);
     }
     create_search_table();
+}
+
+var searchYear;
+var searchMonth;
+
+function search_month_init() {
+    searchYear = new Date().getFullYear();
+    searchMonth = new Date().getMonth() + 1;
+    searchMonth --;
+    if (searchMonth == 0) {
+        searchYear --;
+        searchMonth = 12;
+    }
+    var month = searchMonth;
+    if (month < 10) {
+        month = "0" + month
+    }
+    $("#search_month_text").text(searchYear + "-" + month);
+    setvalue("searchinput5", searchYear + "-" + month);
+}
+
+function search_month_last() {
+    searchMonth --;
+    if (searchMonth == 0) {
+        searchYear --;
+        searchMonth = 12;
+    }
+    var month = searchMonth;
+    if (month < 10) {
+        month = "0" + month
+    }
+    $("#search_month_text").text(searchYear + "-" + month);
+    setvalue("searchinput5", searchYear + "-" + month);
+    do_search();
+}
+
+function search_month_next() {
+    searchMonth ++;
+    if (searchMonth == 13) {
+        searchYear ++;
+        searchMonth = 1;
+    }
+    var month = searchMonth;
+    if (month < 10) {
+        month = "0" + month
+    }
+    $("#search_month_text").text(searchYear + "-" + month);
+    setvalue("searchinput5", searchYear + "-" + month);
+    do_search();
 }
 
 // 重绘搜索结果表格
 function create_search_table() {
     // $("#btn_base_data").html("搜索结果");
     $("#search_type_view").show();
+    $("#search_month_view").show();
     $("#data_table").html("");
     if (searchDataList.length == 0) {
         return;
