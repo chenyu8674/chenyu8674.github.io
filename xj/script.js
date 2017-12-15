@@ -286,23 +286,95 @@ function create_search_table() {
 // 重绘总体统计表格
 function create_statistics_table() {
     $("#data_table").html("");
-    $("<tr><td>月份</td><td>总体费用合计</td><td>总体绩效合计</td><td>其他人员绩效</td></tr>").appendTo($("#data_table"));
+    $("<tr><td>总体费用合计</td><td>总体绩效合计</td><td>其他人员绩效</td></tr>").appendTo($("#data_table"));
+    var data0 = 0;
+    for(var i in searchDataList) {
+        var data = searchDataList[i];
+        var price = data[6];
+        if (price == null || price =="") {
+            price = 0;
+        }
+        data0 += parseFloat(price);
+    }
+    $("<tr>"
+        + "<td>" + data0.toFixed(2) + "</td>"
+        + "<td>" + (data0 * 0.09).toFixed(2) + "</td>"
+        + "<td>" + (data0 * 0.09 * 0.01).toFixed(2) + "</td>"
+    + "</tr>").appendTo($("#data_table"));
 }
 
 // 重绘医助统计表格
 function create_assistant_table() {
     $("#data_table").html("");
     $("<tr><td>医助名称</td><td>费用合计</td><td>绩效合计</td></tr>").appendTo($("#data_table"));
+    var assistantList = [];
+    for(var i in searchDataList) {
+        var data = searchDataList[i];
+        var price = data[6];
+        if (price == null || price =="") {
+            price = 0;
+        }
+        var assistant = "" + data[7];
+        if (assistantList[assistant] == null) {
+            assistantList[assistant] = 0;
+        }
+        assistantList[assistant] += parseFloat(price);
+    }
+    for (var assistant in assistantList) {
+        $("<tr>"
+        + "<td>" + assistant + "</td>"
+        + "<td>" + assistantList[assistant].toFixed(2) + "</td>"
+        + "<td>" + (assistantList[assistant] * 0.09 * 0.07).toFixed(2) + "</td>"
+    + "</tr>").appendTo($("#data_table"));
+    }
 }
 
 // 重绘专家统计表格
 function create_expert_table() {
     $("#data_table").html("");
     $("<tr><td>专家名称</td><td>费用合计</td></tr>").appendTo($("#data_table"));
+    var expertList = [];
+    for(var i in searchDataList) {
+        var data = searchDataList[i];
+        var price = data[6];
+        if (price == null || price =="") {
+            price = 0;
+        }
+        var expert = "" + data[3];
+        if (expertList[expert] == null) {
+            expertList[expert] = 0;
+        }
+        expertList[expert] += parseFloat(price);
+    }
+    for (var expert in expertList) {
+        $("<tr>"
+        + "<td>" + expert + "</td>"
+        + "<td>" + expertList[expert].toFixed(2) + "</td>"
+    + "</tr>").appendTo($("#data_table"));
+    }
 }
 
 // 重绘科室统计表格
 function create_department_table() {
     $("#data_table").html("");
     $("<tr><td>科室名称</td><td>费用合计</td></tr>").appendTo($("#data_table"));
+    var departmentList = [];
+    for(var i in searchDataList) {
+        var data = searchDataList[i];
+        var price = data[6];
+        if (price == null || price =="") {
+            price = 0;
+        }
+        var department = "" + data[2];
+        if (departmentList[department] == null) {
+            departmentList[department] = 0;
+        }
+        departmentList[department] += parseFloat(price);
+    }
+    for (var department in departmentList) {
+        $("<tr>"
+        + "<td>" + department + "</td>"
+        + "<td>" + departmentList[department].toFixed(2) + "</td>"
+    + "</tr>").appendTo($("#data_table"));
+    }
 }
