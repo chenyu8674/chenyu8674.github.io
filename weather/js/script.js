@@ -188,14 +188,9 @@ function getweathericon(type) {
     if (type == "无天气类型")
         return "img/unknown.png";
 }
+
 function log(obj){console.log(obj)}
 function gettag(text,tag){return getstr(text,"<"+tag+">","</"+tag+">",false,false)}
 function getstr(v,s,e,a,b){var r="";var t=v.indexOf(s);if(t<0){return""}if(a){r=v.substr(t)}else{r=v.substr(t+s.length)}t=r.indexOf(e);if(b){r=r.substr(0,t+e.length)}else{r=r.substr(0,t)}return r}
 function getstrarray(v,s,e,a,b){var r=[];var t=getstr(v,s,e,a,b);while(t!=""){r.push(t);t=getstr(v,s,e,1,1);v=v.substr(v.indexOf(t)+t.length);t=getstr(v,s,e,a,b)}return r}
-function isChinese(temp) {
-    var re = /[^\u4e00-\u9fa5]/;
-    if(re.test(temp)) {
-        return false;
-    }
-    return true;
-}
+function isChinese(temp){var re=/[^\u4e00-\u9fa5]/;if(re.test(temp))return false;return true}
