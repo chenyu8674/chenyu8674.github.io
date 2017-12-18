@@ -145,9 +145,9 @@ function create_raw_table() {
         var data = rawDataList[i];
         var info = data[8];
         if (info == null || info == "") {
-            info = "<button onclick='edit_raw_info(" + i + ")'>无</button>";
+            info = "<button class='button1' onclick='edit_raw_info(" + i + ")'>无</button>";
         } else {
-            info = "<button onclick='edit_raw_info(" + i + ")'>有</button>";
+            info = "<button class='button1' onclick='edit_raw_info(" + i + ")'>有</button>";
         }
         $("<tr>"
             + "<td>" + data[0] + "</td>"

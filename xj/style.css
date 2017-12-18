@@ -9,8 +9,8 @@ body {margin:0px;padding:0px;font-family:"微软雅黑";}
 
 .info_text {width:105px;height:20px;line-height:20px;font-size:18px;float:left;text-align:right;}
 .input {width:160px;height:20px;line-height:20px;font-size:18px;float:left;padding-left:20px;padding-right:20px;}
-button {width:auto;height:30px;margin:0px;line-height:30px;font-size:16px;}
-.button1 {margin:2px;width:30px;}
+button {width:auto;height:30px;margin:0px;padding-left:10px;padding-right:10px;line-height:30px;font-size:16px;text-shadow:-1px -1px 1px #300;}
+.button1 {margin:2px;width:40px;}
 #search_month_text {line-height:30px;padding-left:10px;padding-right:10px;}
 #search_type_view label{line-height:30px;}
 
@@ -36,13 +36,15 @@ td {text-align:center;}
 .blockbar {border:1px solid #000;}
 
 /******************** style (good) ********************/
-body {color:#999;text-shadow:0px 0px 3px #999;}
-.input {color:#999;}
+body {color:#bbb;text-shadow:0px 0px 3px #bbb;}
+.input {color:#bbb;}
 .fullscreen {background-color:#000;background-image:url(bg.jpg);background-size:100% 100%;background-repeat:repeat-y;}
 #cover {background:rgba(0,0,0,0.9);}
-#inputbar {border:1px solid #000;background:#eee;}
-input {background:rgba(0,0,0,0);border-width:0px;border-bottom:1px solid #999;outline:none;}
+#inputbar {border:1px solid #000;background:#eee;color:#666;}
+#inputbar .input {color:#666;}
+input {background:rgba(0,0,0,0);border-width:0px;border-bottom:1px solid #bbb;outline:none;}
 button {background:#e00;color:#fff;border-width:0px;}
-#title {color:#fff;text-shadow:0px 0px 5px #f00;}
-.blockbar {border:1px solid #999;}
-td {border-width:0px;border-bottom:1px solid #999;}
+#title {color:#ddd;text-shadow:0px 0px 5px #b00;}
+.blockbar {border:1px solid #bbb;}
+td {border-width:0px;border-bottom:1px solid #bbb;}
+#inputbartitle {height:50px;line-height:50px;font-size:24px;text-align:center;color:#444;background:#bbb;margin-bottom:10px;}
