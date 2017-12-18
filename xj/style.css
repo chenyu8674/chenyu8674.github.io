@@ -11,6 +11,8 @@ body {margin:0px;padding:0px;font-family:"微软雅黑";}
 .input {width:160px;height:20px;line-height:20px;font-size:18px;float:left;padding-left:20px;padding-right:20px;}
 button {width:auto;height:30px;margin:0px;line-height:30px;font-size:16px;}
 .button1 {margin:2px;width:30px;}
+#search_month_text {line-height:30px;padding-left:10px;padding-right:10px;}
+#search_type_view label{line-height:30px;}
 
 #title {width:100%;text-align:center;font-size:40px;padding:20px 0px 20px 0px;}
 
@@ -21,11 +23,11 @@ button {width:auto;height:30px;margin:0px;line-height:30px;font-size:16px;}
 #btn_clear_data {margin-left:145px;margin-top:10px;}
 #btn_add_data {margin-left:10px;}
 
-table {width:960px;margin-left:20px;border-width:0px;}
+table {width:960px;margin-top:70px;margin-left:20px;border-width:0px;}
 td {text-align:center;}
 
 #btn_base_data {float:left;}
-#search_type_view {display:none;float:left;}
+#search_type_view {display:none;float:left;margin-left:10px;}
 #search_month_view {display:none;float:left;}
 
 /******************** style (base) ********************/
@@ -33,13 +35,14 @@ td {text-align:center;}
 #inputbar {border:1px solid #000;background:#fff;}
 .blockbar {border:1px solid #000;}
 
-/******************** style (good) *******************
+/******************** style (good) ********************/
 body {color:#999;text-shadow:0px 0px 3px #999;}
+.input {color:#999;}
 .fullscreen {background-color:#000;background-image:url(bg1.jpg);background-size:100% 100%;background-repeat:repeat-y;}
 #cover {background:rgba(0,0,0,0.9);}
 #inputbar {border:1px solid #000;background:#eee;}
 input {background:rgba(0,0,0,0);border-width:0px;border-bottom:1px solid #999;outline:none;}
 button {background:#e00;color:#fff;border-width:0px;}
-#title {color:#fff;text-shadow:0px 0px 10px #fff;}
+#title {color:#fff;text-shadow:0px 0px 5px #f00;}
 .blockbar {border:1px solid #999;}
-td {border-width:0px;border-bottom:1px solid #999;}*/
+td {border-width:0px;border-bottom:1px solid #999;}
