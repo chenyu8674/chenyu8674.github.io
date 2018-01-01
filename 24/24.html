@@ -331,31 +331,31 @@ function doBracket(formula) {
     }
     var formula0 = formula.replace(/\(/g, "").replace(/\)/g, "");
     try {
-	    eval("var value0=" + formula0);
-	    // log(formula0 + "=" + value0);
-	    if (value0 == value) {
-	        return formula0;
-	    }
+        eval("var value0=" + formula0);
+        // log(formula0 + "=" + value0);
+        if (value0 == value) {
+            return formula0;
+        }
     } catch (e) {}
     var leftBracketList = searchSubStr(formula, "(");
     var rightBracketList = searchSubStr(formula, ")");
     var formula1 = formula.substr(0, leftBracketList[0]) + formula.substr(leftBracketList[0] + 1, formula.length);
     formula1 = formula1.substr(0, rightBracketList[0] - 1) + formula1.substr(rightBracketList[0], formula.length);
     try {
-	    eval("var value1=" + formula1);
-	    // log(formula1 + "=" + value1);
-	    if (value1 == value) {
-	        return formula1;
-	    }
+        eval("var value1=" + formula1);
+        // log(formula1 + "=" + value1);
+        if (value1 == value) {
+            return formula1;
+        }
     } catch (e) {}
     var formula2 = formula.substr(0, leftBracketList[1]) + formula.substr(leftBracketList[1] + 1, formula.length);
     formula2 = formula2.substr(0, rightBracketList[1] - 1) + formula2.substr(rightBracketList[1], formula.length);
     try {
-	    eval("var value2=" + formula2);
-	    // log(formula2 + "=" + value2);
-	    if (value2 == value) {
-	        return formula2;
-	    }
+        eval("var value2=" + formula2);
+        // log(formula2 + "=" + value2);
+        if (value2 == value) {
+            return formula2;
+        }
     } catch (e) {}
     var formula3 = formula.substr(0, leftBracketList[0]) + formula.substr(leftBracketList[0] + 1, formula.length);
     formula3 = formula3.substr(0, rightBracketList[1] - 1) + formula3.substr(rightBracketList[1], formula.length);
@@ -369,11 +369,11 @@ function doBracket(formula) {
     var formula4 = formula.substr(0, leftBracketList[1]) + formula.substr(leftBracketList[1] + 1, formula.length);
     formula4 = formula4.substr(0, rightBracketList[0] - 1) + formula4.substr(rightBracketList[0], formula.length);
     try {
-	    eval("var value4=" + formula4);
-	    // log(formula4 + "=" + value4);
-	    if (value4 == value) {
-	        return formula4;
-	    }
+        eval("var value4=" + formula4);
+        // log(formula4 + "=" + value4);
+        if (value4 == value) {
+            return formula4;
+        }
     } catch (e) {}
     return formula;
 }
@@ -388,7 +388,7 @@ function searchSubStr(str, subStr) {
     return positions;
 }
 
-doTest2();
+// doTest2();
 // log(doBracket("((18*19)+18)/15"));
 </script>
 </html>
