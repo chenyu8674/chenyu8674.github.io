@@ -1,6 +1,5 @@
 <html>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<script type="text/javascript" src="24.js"></script>
 <script type="text/javascript">
 function log(obj){console.log(obj);}
 
@@ -13,14 +12,9 @@ function isOperator(value) {
 // 获取运算符优先级，乘除高于加减
 function getPrioraty(value) {
     switch (value) {
-    case '+':
-    case '-':
-        return 1;
-    case '*':
-    case '/':
-        return 2;
-    default:
-        return 0;
+    case '+': case '-': return 1;
+    case '*': case '/': return 2;
+    default: return 0;
     }
 }
 
@@ -146,60 +140,6 @@ function getResult(first, second, operator) {
     return (formatFloat(result, 2));
 }
 
-var difficultScore = 0;// 难度系数
-var difficultScoreList = [];
-var processStack = [];// 算式的计算过程值
-// 解析算式复杂度
-function analysisFormula(formula) {
-    var score = 0;
-
-    var addCount = countChar(formula, "+");// 算式包含加法，难度系数 1
-    if (addCount > 0) {
-        score += addCount * 1;
-    }
-    var subtractCount = countChar(formula, "-");// 算式包含减法，难度系数 2
-    if (subtractCount > 0) {
-        score += subtractCount * 2;
-    }
-    var multiplyCount = countChar(formula, "*");// 算式包含乘法，难度系数 2
-    if (multiplyCount > 0) {
-        score += multiplyCount * 2;
-    }
-    var divideCount = countChar(formula, "/");// 算式包含除法，难度系数 3
-    if (divideCount > 0) {
-        score += divideCount * 3;
-    }
-    var bracketsCount = countChar(formula, "(");// 算式包含括号，难度系数 2
-    if (bracketsCount > 0) {
-        score += bracketsCount * 2;
-    }
-
-    processStack = [];
-    evalRpn(dal2Rpn(formula));// 计算算式的计算过程值
-    // log(processStack)
-    for (var i = 0; i < processStack.length - 1; i++) {
-        var number = processStack[i];
-        var decade = Math.floor(number / 10);
-        if (number >= 100) {// 计算过程值包含三位数，难度系数 3
-            score += 1;
-        }
-        if (number >= 50) {// 计算过程值包含50~99，难度系数 2
-            score += 1;
-        }
-        if (number >= 20) {// 计算过程值包含20~49，难度系数 1
-            score += 1;
-        }
-        if (number < 0) {// 计算过程值包含负数，难度系数 3
-            score += 3;
-        }
-        if (String(number).indexOf(".") > -1) {// 计算过程值包含小数，难度系数 5
-            score += 5;
-        }
-    }
-    // log(score);
-    return score;
-}
-
 // 计算字符串中指定字符出现的次数
 function countChar(str, char) {
     var count = 0;
@@ -271,60 +211,9 @@ function checkIsInResultList(targetList) {
     return false;
 }
 
-var resultList = [];
-var resultString = "";
-function doTest2() {
-    var start = 1, end = 20;
-    var difficultScoreList = [];
-    for (var a = start; a <= end; a++) {
-        log(a);
-        for (var b = start; b <= end; b++) {
-            for (var c = start; c <= end; c++) {
-                for (var d = start; d <= end; d++) {
-                    if (checkIsInResultList([a, b, c, d])) {
-                        continue;
-                    }
-                    var formulaList = valid(a, b, c, d);
-                    var formulaScore = 9999;
-                    var formula = "";
-                    if (formulaList.length == 0) {
-                        // log([a, b, c, d] + "无解");
-                    } else {
-                        for (var i = 0; i < formulaList.length; i++) {
-                            var thisFormula = formulaList[i];
-                            thisFormula = doBracket(thisFormula);
-                            var score = analysisFormula(thisFormula);
-                            if (score < formulaScore) {
-                                formulaScore = score;
-                                formula = thisFormula;
-                            }
-                        }
-                        difficultScoreList.push(formulaScore);
-                        resultList.push(formulaScore + "|" + [a, b, c, d] + "|" + formula);
-                        // log(formulaScore + "|" + [a, b, c, d] + "|" + formula);
-                        resultString += formulaScore + "|" + [a, b, c, d] + "|" + formula + "\n";
-                    }
-                }
-            }
-        }
-    }
-    var scoreList = [];
-    for (var i = 0; i < difficultScoreList.length; i++) {
-        var score = difficultScoreList[i];
-        if (scoreList[score] == null) {
-            scoreList[score] = 0;
-        }
-        scoreList[score] = scoreList[score] + 1;
-    }
-    log(resultString);
-    log(difficultScoreList.length);
-    log(scoreList);
-}
-
 var maxBracketCount = 0;
 function doBracket(formula) {
     eval("var value=" + formula);
-    // log(formula + "=" + value);
     var bracketCount = countChar(formula, "(");
     if (bracketCount > maxBracketCount) {
         maxBracketCount = bracketCount;
@@ -332,7 +221,6 @@ function doBracket(formula) {
     var formula0 = formula.replace(/\(/g, "").replace(/\)/g, "");
     try {
         eval("var value0=" + formula0);
-        // log(formula0 + "=" + value0);
         if (value0 == value) {
             return formula0;
         }
@@ -343,7 +231,6 @@ function doBracket(formula) {
     formula1 = formula1.substr(0, rightBracketList[0] - 1) + formula1.substr(rightBracketList[0], formula.length);
     try {
         eval("var value1=" + formula1);
-        // log(formula1 + "=" + value1);
         if (value1 == value) {
             return formula1;
         }
@@ -352,7 +239,6 @@ function doBracket(formula) {
     formula2 = formula2.substr(0, rightBracketList[1] - 1) + formula2.substr(rightBracketList[1], formula.length);
     try {
         eval("var value2=" + formula2);
-        // log(formula2 + "=" + value2);
         if (value2 == value) {
             return formula2;
         }
@@ -361,7 +247,6 @@ function doBracket(formula) {
     formula3 = formula3.substr(0, rightBracketList[1] - 1) + formula3.substr(rightBracketList[1], formula.length);
     try {
         eval("var value3=" + formula3);
-        // log(formula3 + "=" + value3);
         if (value3 == value) {
             return formula3;
         }
@@ -370,7 +255,6 @@ function doBracket(formula) {
     formula4 = formula4.substr(0, rightBracketList[0] - 1) + formula4.substr(rightBracketList[0], formula.length);
     try {
         eval("var value4=" + formula4);
-        // log(formula4 + "=" + value4);
         if (value4 == value) {
             return formula4;
         }
@@ -388,7 +272,99 @@ function searchSubStr(str, subStr) {
     return positions;
 }
 
-// doTest2();
-// log(doBracket("((18*19)+18)/15"));
+var difficultScore = 0;// 难度系数
+var difficultScoreList = [];
+var processStack = [];// 算式的计算过程值
+// 计算答案算式复杂度
+function analysisFormula(formula) {
+    var score = 0;
+    // 计算算式包含符号的复杂度
+    score += countChar(formula, "+") * 1;// 算式每包含一个加号，难度系数+1
+    score += countChar(formula, "-") * 2;// 算式每包含一个减号，难度系数+2
+    score += countChar(formula, "*") * 2;// 算式每包含一个乘号，难度系数+2
+    score += countChar(formula, "/") * 3;// 算式每包含一个除号，难度系数+3
+    score += countChar(formula, "(") * 2;// 算式每包含一对括号，难度系数+2
+    var rpn = dal2Rpn(formula);// 转化为波兰表达式
+    // 计算算式包含数字的复杂度
+    for (var i = 0; i < rpn.length; i++) {
+        if(typeof(rpn[i]) == "number" && rpn[i] >= 10) {
+            score += 2;// 题目数字每包含一个两位数，难度系数+2
+        }
+    }
+    // 计算算式计算过程值的复杂度
+    processStack = [];
+    evalRpn(rpn);// 运行计算步骤，获取过程值
+    for (var i = 0; i < processStack.length - 1; i++) {
+        var number = processStack[i];
+        if (number >= 100) {
+            score += 4;// 计算过程值每包含一个三位数，难度系数+4
+        } else if (number >= 50) {
+            score += 2;// 计算过程值每包含一个50~99，难度系数+2
+        } else if (number >= 20) {
+            score += 1;// 计算过程值每包含一个20~49，难度系数+1
+        } else if (number < 0) {
+            score += 3;// 计算过程值每包含一个负数，难度系数+3
+        }
+        if (String(number).indexOf(".") > -1) {// 计算过程值每包含一个小数，难度系数+6
+            score += 6;
+        }
+    }
+    return score;
+}
+
+var resultList = [];
+var resultString = "";
+function doTest() {
+    var start = 1, end = 20;
+    var difficultScoreList = [];
+    for (var a = start; a <= end; a++) {
+        log(a);
+        for (var b = start; b <= end; b++) {
+            for (var c = start; c <= end; c++) {
+                for (var d = start; d <= end; d++) {
+                    if (checkIsInResultList([a, b, c, d])) {
+                        continue;
+                    }
+                    var formulaList = valid(a, b, c, d);
+                    if (formulaList.length != 0) {
+                        var formulaScore = 9999;
+                        var formula = "";
+                        for (var i = 0; i < formulaList.length; i++) {
+                            var thisFormula = formulaList[i];
+                            thisFormula = doBracket(thisFormula);
+                            var score = analysisFormula(thisFormula);
+                            if (score < formulaScore) {
+                                formulaScore = score;
+                                formula = thisFormula;
+                            }
+                        }
+                        difficultScoreList.push(formulaScore);
+                        // log(formulaScore + "|" + [a, b, c, d] + "|" + formula);
+                        resultList.push(formulaScore + "|" + [a, b, c, d] + "|" + formula);
+                        resultString += formulaScore + "|" + [a, b, c, d] + "|" + formula + "\n";
+                    }
+                }
+            }
+        }
+    }
+    var scoreList = [];
+    for (var i = 0; i < difficultScoreList.length; i++) {
+        var score = difficultScoreList[i];
+        if (scoreList[score] == null) {
+            scoreList[score] = 0;
+        }
+        scoreList[score] = scoreList[score] + 1;
+    }
+    for (var i = 0; i < scoreList.length; i++) {
+        if (scoreList[i] == null) {
+            scoreList[i] = 0;
+        }
+    }
+    log(resultString);
+    log(difficultScoreList.length);
+    log(scoreList);
+}
+
+doTest();
 </script>
 </html>
