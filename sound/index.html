@@ -74,16 +74,19 @@ function doState() {
     }
 	// console.log(audioCurrentTime);
 	// console.log(audioDuration);
-	context.lineWidth = 20;
 	context.clearRect(0, 0, 280, 280);
 	context.strokeStyle = "#eee";
+	context.lineWidth = 20;
 	context.beginPath();
 	context.arc(200, 200, 160, -0.5 * Math.PI, 1.5 * Math.PI);
 	context.stroke();
-	context.beginPath();
-	context.strokeStyle = "#2E2523";
-	context.arc(200, 200, 160, -0.5 * Math.PI, 2 * Math.PI * audioCurrentTime / audioDuration - 0.5 * Math.PI);
-	context.stroke();
+	if (audioCurrentTime > 0) {
+		context.lineWidth = 18;
+		context.beginPath();
+		context.strokeStyle = "#2E2523";
+		context.arc(200, 200, 160, -0.5 * Math.PI, 2 * Math.PI * audioCurrentTime / audioDuration - 0.5 * Math.PI);
+		context.stroke();
+	}
 }
 </script>
 </body>
