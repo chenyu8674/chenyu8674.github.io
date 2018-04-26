@@ -24,33 +24,66 @@
 }
 </style>
 </head>
-<body style="position:relative;width:100%;padding:0;margin:0;zoom:3;" onload="init();">
-<audio id="audio" src="cz.mp3">Your browser does not support the audio element.</audio>
+<body style="position:relative;width:100%;padding:0;margin:0;" onload="init();">
+<audio id="audio" controls="controls" src="cz.mp3">Your browser does not support the audio element.</audio>
 <div style="position:absolute;top:47%;left:50%;transform:translateY(-50%) translateX(-50%);">
-	<img id="logo" src="logo.png" onclick="play();" />
-	<center style="margin-top:25px;color:#999;">点我...</center>
+	<div style="width:400px;height:400px;" >
+		<img id="logo" src="logo.png" style="width:280px;height:280px;margin:60px;" />
+		<canvas id="canvas" width=400 height=400 style="position:absolute;top:0px;" onclick="play();"></canvas>
+	</div>
+	<center style="margin-top:0px;color:#999;">点我...</center>
 </div>
-<div style="position:absolute;width:100%;bottom:10px;text-align:center;color:#999;">panda@shitieshou.com</div>
+<div style="position:absolute;width:100%;bottom:20px;text-align:center;color:#999;">panda@shitieshou.com</div>
 <script>
-var audioStatus = "paused";
+var audio;
+var logo;
+var canvas;
+var context;
 function init() {
-	var audio = document.getElementById("audio");
+	audio = document.getElementById("audio");
+	logo = document.getElementById("logo");
 	audio.addEventListener("playing", function(){
+		// console.log("playing");
 	    audioStatus = "playing";
+		logo.className = "roll";
 	});
 	audio.addEventListener("pause", function(){
+		// console.log("paused");
 	    audioStatus = "paused";
+		logo.className = "";
 	});
+	canvas = document.getElementById("canvas");
+	context = canvas.getContext("2d");
+	setInterval(doState, 100);
 }
 function play() {
-	var audio = document.getElementById("audio");
 	if (audioStatus != "playing") {
-		document.getElementById("logo").className = "roll";
 		audio.play();
 	} else {
-		document.getElementById("logo").className = "";
-		audio.stop();
+		audio.pause();
 	}
+}
+var audioStatus = "paused";
+var audioCurrentTime = 0;
+var audioDuration = 0;
+function doState() {
+    audioCurrentTime = audio.currentTime;
+    audioDuration = audio.duration;
+    if (audioCurrentTime >= audioDuration) {
+    	audioCurrentTime = 0;
+    }
+	// console.log(audioCurrentTime);
+	// console.log(audioDuration);
+	context.lineWidth = 20;
+	context.clearRect(0, 0, 280, 280);
+	context.strokeStyle = "#eee";
+	context.beginPath();
+	context.arc(200, 200, 160, 0, 2 * Math.PI);
+	context.stroke();
+	context.beginPath();
+	context.strokeStyle = "#2E2523";
+	context.arc(200, 200, 160, -0.5 * Math.PI, 2 * Math.PI * audioCurrentTime / audioDuration - 0.5 * Math.PI);
+	context.stroke();
 }
 </script>
 </body>
