@@ -1,8 +1,56 @@
-<!DOCTYPE HTML>
-<html>
-<body>
-<audio src="cz.mp3" controls="controls" autoplay="autoplay">
-Your browser does not support the audio element.
-</audio>
+<head>
+<style type="text/css">
+.roll{
+	-webkit-transition-property: -webkit-transform;
+	-webkit-transition-duration: 1s;
+	-moz-transition-property: -moz-transform;
+	-moz-transition-duration: 1s;
+	-webkit-animation: rotate 10s linear infinite;
+	-moz-animation: rotate 10s linear infinite;
+	-o-animation: rotate 10s linear infinite;
+	animation: rotate 10s linear infinite;
+}
+@-webkit-keyframes rotate{from{-webkit-transform: rotate(0deg)}
+    to{-webkit-transform: rotate(360deg)}
+}
+@-moz-keyframes rotate{from{-moz-transform: rotate(0deg)}
+    to{-moz-transform: rotate(359deg)}
+}
+@-o-keyframes rotate{from{-o-transform: rotate(0deg)}
+    to{-o-transform: rotate(359deg)}
+}
+@keyframes rotate{from{transform: rotate(0deg)}
+    to{transform: rotate(359deg)}
+}
+</style>
+</head>
+<body style="position:relative;width:100%;padding:0;margin:0;" onload="init();">
+<audio id="audio" src="cz.mp3">Your browser does not support the audio element.</audio>
+<div style="position:absolute;top:47%;left:50%;transform:translateY(-50%) translateX(-50%);">
+	<img id="logo" src="logo.png" onclick="play();" />
+	<center style="margin-top:25px;color:#999;">点我...</center>
+</div>
+<div style="position:absolute;width:100%;bottom:10px;text-align:center;color:#999;">panda@shitieshou.com</div>
+<script>
+var audioStatus = "paused";
+function init() {
+	var audio = document.getElementById("audio");
+	audio.addEventListener("playing", function(){
+	    audioStatus = "playing";
+	});
+	audio.addEventListener("pause", function(){
+	    audioStatus = "paused";
+	});
+}
+function play() {
+	var audio = document.getElementById("audio");
+	if (audioStatus != "playing") {
+		document.getElementById("logo").className = "roll";
+		audio.play();
+	} else {
+		document.getElementById("logo").className = "";
+		audio.stop();
+	}
+}
+</script>
 </body>
-</html>
