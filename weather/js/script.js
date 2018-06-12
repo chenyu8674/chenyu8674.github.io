@@ -22,7 +22,7 @@ function oninputchange() {
     var cityName = $("#city").val();
     if (isChinese(cityName)) {
         clearTimeout(loadXMLFlag);
-        loadXMLFlag = setTimeout(loadXMLDoc, 100);
+        loadXMLFlag = setTimeout(loadXMLDoc, 1000);
     }
 }
 
