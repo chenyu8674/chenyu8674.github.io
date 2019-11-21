@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<title>e代驾接口测试</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.md5.js"></script>
+<script type="text/javascript" src="api.js"></script>
+<script type="text/javascript" src="control.js"></script>
+<script type="text/javascript" src="tool.js"></script>
+<script type="text/javascript" src="test.js"></script>
+<style type="text/css">
+*{font-size:14px;font-family:"YaHei Consolas Hybrid"}
+body{margin:0;padding:20px;width:99999px;overflow-x:hidden;}
+.viewdiv{border:1px solid black;float:left;}
+</style>
+</head>
+<body>
+<div>
+<select id="apiselect">
+	<option value ="listAll">商户列表</option>
+	<option value ="balance">商户余额</option>
+	<option value ="queryCityList">支持城市</option>
+	<option value ="queryCity">城市信息</option>
+	<option value ="price">预估价格</option>
+	<option value ="Create">下单</option>
+	<option value ="cancel">取消</option>
+	<option value ="detail">订单详情</option>
+	<option value ="recordList">订单轨迹</option>
+	<option value ="trace">代驾轨迹</option>
+	<option value ="driverInfo">司机信息</option>
+	<option value ="verifyCode">验证码</option>
+	<option value ="queryList">历史订单</option>
+	<option value ="comment">用户评论</option>
+	<option value ="getComment">评论内容</option>
+	<option value ="getCarPhotos">车辆照片</option>
+	<option value ="binding">绑定优惠券</option>
+	<option value ="userConponList">优惠券列表</option>
+	<option value ="coupondetail">优惠券信息</option>
+	<option value ="getFixList">驻店司机</option>
+</select>
+<button id="doRequest">发送请求</button>
+</div>
+<div id="paramsview" class="viewdiv"></div>
+<div id="resultview" class="viewdiv"></div>
+<iframe id="iframe" class="viewdiv"></iframe>
+</body>
+</html>
