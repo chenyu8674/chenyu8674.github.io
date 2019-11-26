@@ -1,13 +1,13 @@
 $(document).ready(function(){ 
 	$("#apiselect").change(function(){
 		init();
-		var value=$(this).children('option:selected').val();
+		var value=$(this).children("option:selected").val();
 		createParamView(value);
 	})
 
 	$("#doRequest").click(function(){
 		init();
-		sendRequest();
+		setTimeout(sendRequest,10);
 	})
 
 	resultview=$("#resultview");
@@ -37,11 +37,11 @@ function createParamView(value){
 	var params=requestOBJ.params;
 	var paramsview=$("#paramsview");
 	paramsview.empty();
-	var table=$('<table></table>').appendTo(paramsview);
+	var table=$("<table></table>").appendTo(paramsview);
 	for (var i=0;i<params.length;i++) {
 		var param=params[i];
 		/* 含义 */
-		var tr=$('<tr></tr>');
+		var tr=$("<tr></tr>");
 		var td1=$("<td>"+param[1]+"</td>");
 		td1.appendTo(tr);
 		/* 取值 */
@@ -49,6 +49,11 @@ function createParamView(value){
 		var input=$("<input />").appendTo(td2);
 		input.val(param[3]);
 		input.attr("title",param[2]);
+		input.attr("index",i);
+		input.on("input",function(){
+			var index=$(this).attr("index");
+			(requestOBJ.params)[index][3]=$(this).val();
+		});
 		td2.appendTo(tr);
 		tr.appendTo(table);
 	}
@@ -59,8 +64,8 @@ function sendRequest(){
 	log(requestURL);
 	if(requestOBJ.method=="GET"){
 		// window.open(requestURL,"_blank");
-		iframeview.show();
 		iframeview.attr("src",requestURL);
+		iframeview.show();
 		// $.get(
 		// 	requestURL, null,
 		// 	function(data){

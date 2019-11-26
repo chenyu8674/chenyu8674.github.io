@@ -7,6 +7,7 @@ var signStr="a";// 私钥
 
 /* 签名计算，参数排序后做MD5，结果结尾接私钥后再次MD5 */
 var doSign=function(params) {
+	var params = params.slice(0);
 	params.sort();
 	var requestStr="";
 	var paramsStr="";
