@@ -16,7 +16,7 @@ function balance(){
 	this.api="business/balance";
 	this.params=[
 		["channel","渠道号","固定为86","86"],
-		["customerId","商户id","最多20个字符","CH0110000223"]
+		["customerId","商户号","最多20个字符","CH0110000223"]
 	];
 }
 
@@ -52,7 +52,7 @@ function price(){
 		["middleLng","中转地经度","有暂存点需要传的参数",""],
 		["middleLat","中转地纬度","有暂存点需要传的参数",""],
 		["bookingTime","预约时间","yyyyMMddHHmmss","20191122000000"],
-		["customerId","商户id","","CH0110000223"]
+		["customerId","商户号","","CH0110000223"]
 	];
 }
 
@@ -62,7 +62,7 @@ function Create(){
 	this.api="order/create";
 	this.params=[
 		["channel","渠道号","固定为86","86"],
-		["customerId","商户id","最多20个字符","CH0110000223"],
+		["customerId","商户号","最多20个字符","CH0110000223"],
 		["type","订单类型","1-取送车","1"],
 		["mode","订单成单模式","0-客服派单，1-司机抢单，3-实时派单","1"],
 		["createMobile","下单人手机号","手机号","12310201321"],
@@ -97,7 +97,7 @@ function cancel(){
 	this.method="POST";
 	this.api="cancel";
 	this.params=[
-		["orderId","订单id","",""],
+		["orderId","订单号","",""],
 		["channel","渠道号","固定为86","86"]
 	];
 }
@@ -107,7 +107,7 @@ function detail(){
 	this.method="GET";
 	this.api="order/detail";
 	this.params=[
-		["orderId","订单id","",""],
+		["orderId","订单号","",""],
 		["channel","渠道号","固定为86","86"]
 	];
 }
@@ -117,7 +117,7 @@ function recordList(){
 	this.method="GET";
 	this.api="order/recordList";
 	this.params=[
-		["orderId","订单id","",""],
+		["orderId","订单号","",""],
 		["channel","渠道号","固定为86","86"]
 	];
 }
@@ -127,7 +127,7 @@ function trace(){
 	this.method="GET";
 	this.api="order/trace";
 	this.params=[
-		["orderId","订单id","",""],
+		["orderId","订单号","",""],
 		["channel","渠道号","固定为86","86"]
 	];
 }
@@ -137,7 +137,7 @@ function driverInfo(){
 	this.method="GET";
 	this.api="order/driverInfo";
 	this.params=[
-		["orderId","订单id","",""],
+		["orderId","订单号","",""],
 		["channel","渠道号","固定为86","86"],
 		["type","代驾类型","1-取车","1"]
 	];
@@ -148,7 +148,7 @@ function verifyCode(){
 	this.method="GET";
 	this.api="order/verifyCode";
 	this.params=[
-		["orderId","订单id","",""],
+		["orderId","订单号","",""],
 		["channel","渠道号","固定为86","86"],
 		["type","代驾类型","1-取车","1"]
 	];
@@ -166,6 +166,101 @@ function queryList(){
 		["currentPage","当前页码","默认1",""],
 		["mobile","车主手机号","",""],
 		["createMobile","下单人手机号","",""],
-		["customerId","商户id","",""]
+		["customerId","商户号","",""]
+	];
+}
+
+/* 3.14 用户评论 */
+function comment(){
+	this.method="POST";
+	this.api="order/comment";
+	this.params=[
+		["orderId","订单号","",""],
+		["channel","渠道号","固定为86","86"],
+		["attitude","服务态度评分","取值：10,20,30,40,50","50"],
+		["speed","接送车速度评分","取值：10,20,30,40,50","40"],
+		["content","评论内容","不能超过200字","服务态度很棒，就是等了好久"]
+	];
+}
+
+/* 3.15 获取用户评论内容 */
+function getComment(){
+	this.method="GET";
+	this.api="order/getComment";
+	this.params=[
+		["orderId","订单号","",""],
+		["channel","渠道号","固定为86","86"]
+	];
+}
+
+/* 3.16 获取车辆信息照片(司机开车后才有数据) */
+function getCarPhotos(){
+	this.method="GET";
+	this.api="order/getCarPhotos";
+	this.params=[
+		["orderId","订单号","",""],
+		["channel","渠道号","固定为86","86"],
+		["daijiaType","代驾类型","1:取车，2：还车","1"]
+	];
+}
+
+/* 3.17 绑定优惠券 */
+function binding(){
+	this.method="POST";
+	this.api="coupon/binding";
+	this.params=[
+		["mobile","用户手机号","",""],
+		["couponCode","优惠券编码","12或4位数字",""]
+	];
+}
+
+/* 3.18 用户获取优惠券列表 */
+function userConponList(){
+	this.method="GET";
+	this.api="coupon/userConponList";
+	this.params=[
+		["mobile","用户手机号","",""],
+		["orderLimit","订单类型限制","取送车传maintain","maintain"],
+		["merchantId","商家的id","",""]
+	];
+}
+
+/* 3.19 根据券码获取优惠券信息 */
+function detail2(){
+	this.method="POST";
+	this.api="coupon/detail";
+	this.params=[
+		["couponCode","优惠券编码","",""]
+	];
+}
+
+/* 3.20 获取附近代充电司机列表 */
+function getFixList(){
+	this.method="GET";
+	this.api="driver/getFixList";
+	this.params=[
+		["customerId","商户号","",""],
+		["lat","取车地址纬度","",""],
+		["lng","取车地址经度","",""]
+	];
+}
+
+/* 3.21 获取额外费用 */
+function getOhterFee(){
+	this.method="GET";
+	this.api="order/getOhterFee";
+	this.params=[
+		["orderId","订单号","",""],
+		["customerId","商户号","",""]
+	];
+}
+
+/* 3.22 额外费用审核结算 */
+function otherFeeSettle(){
+	this.method="POST";
+	this.api="order/otherFeeSettle";
+	this.params=[
+		["orderId","订单号","",""],
+		["customerId","商户号","",""]
 	];
 }
