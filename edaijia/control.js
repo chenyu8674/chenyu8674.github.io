@@ -10,6 +10,11 @@ $(document).ready(function(){
 		setTimeout(sendRequest,10);
 	})
 
+	$("#doSign").click(function(){
+		init();
+		sendRequest(true);
+	})
+
 	resultview=$("#resultview");
 	iframeview=$("#iframe");
 	init();
@@ -59,18 +64,16 @@ function createParamView(value){
 	}
 }
 
-function sendRequest(){
+function sendRequest(onlySign){
 	var requestURL=baseURL+requestOBJ.api+doSign(requestOBJ.params);
-	log(requestURL);
+	if (onlySign) {
+		resultview.show();
+		resultview.text(requestURL);
+		return;
+	}
 	if(requestOBJ.method=="GET"){
-		// window.open(requestURL,"_blank");
 		iframeview.attr("src",requestURL);
 		iframeview.show();
-		// $.get(
-		// 	requestURL, null,
-		// 	function(data){
-		// 		resultview.text(JSON.stringify(data));
-		// 	});
 	}else{
 		$.post(
 			requestURL, null,

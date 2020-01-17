@@ -6,7 +6,7 @@ function listAll(){
 	this.method="GET";
 	this.api="business/listAll";
 	this.params=[
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -15,7 +15,7 @@ function balance(){
 	this.method="GET";
 	this.api="business/balance";
 	this.params=[
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["customerId","商户号","最多20个字符","CH0110000223"]
 	];
 }
@@ -25,7 +25,7 @@ function queryCityList(){
 	this.method="GET";
 	this.api="queryCityList";
 	this.params=[
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -34,7 +34,7 @@ function queryCity(){
 	this.method="GET";
 	this.api="queryCity";
 	this.params=[
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["code","城市编码","","1"]
 	];
 }
@@ -44,7 +44,7 @@ function price(){
 	this.method="GET";
 	this.api="price";
 	this.params=[
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["startLng","出发地经度","","116.467332"],
 		["startLat","出发地纬度","","39.957112"],
 		["endLng","目的地经度","","116.456236"],
@@ -56,37 +56,73 @@ function price(){
 	];
 }
 
-/* 3.6 下单 */
-function Create(){
+/* 3.6 下代驾单 */
+function create(){
 	this.method="POST";
 	this.api="order/create";
 	this.params=[
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["customerId","商户号","最多20个字符","CH0110000223"],
-		["type","订单类型","1-取送车","1"],
+		["type","订单类型","1-取送车，4-充电订单","1"],
 		["mode","订单成单模式","0-客服派单，1-司机抢单，3-实时派单","1"],
-		["createMobile","下单人手机号","手机号","12310201321"],
-		["mobile","车主手机号","手机号","12310201321"],
+		["createMobile","下单人手机号","手机号","13681316820"],
+		["mobile","车主手机号","手机号","13681316820"],
 		["username","车主姓名","","车主"],
 		["pickupContactName","取车地址联系人姓名","最多20个字符","取车人"],
-		["pickupContactPhone","取车地址联系人手机号","手机号","12310201321"],
+		["pickupContactPhone","取车地址联系人手机号","手机号","13681316820"],
 		["pickupAddress","取车地址","最多100个字符","北京发展大厦"],
 		["pickupAddressLng","取车地址经度","","116.467332"],
 		["pickupAddressLat","取车地址纬度","","39.957112"],
 		["returnContactName","还车地址联系人姓名","最多20个字符","还车人"],
-		["returnContactPhone","还车地址联系人手机号","手机号","12310201321"],
+		["returnContactPhone","还车地址联系人手机号","手机号","13681316820"],
 		["returnAddress","还车地址","最多100个字符","三元桥丰田"],
 		["returnAddressLng","还车地址经度","","116.456236"],
 		["returnAddressLat","还车地址纬度","","39.962488"],
-		["bookingTime","预约时间","yyyyMMddHHmmss，必须比当前时间晚至少半个小时，当mode=3预约时间可以不传","20191122000000"],
+		["bookingTime","预约时间","yyyyMMddHHmmss，必须比当前时间晚至少半个小时，当mode=3预约时间可以不传",getbookingTime()],
 		["carNo","车牌号","","京N12345"],
-		["carBrandName","车辆品牌名称","最多50个字符",""],
-		["carSeriesName","车辆车系名称","最多50个字符",""],
+		["carBrandName","车辆品牌名称","最多50个字符","雷克萨斯"],
+		["carSeriesName","车辆车系名称","最多50个字符","NX300h"],
 		["payMode","订单支付方式","0-vip扣款，1-用户付款，默认为0","0"],
 		["couponCode","优惠券码","payMode=1的情况下，可以使用优惠券",""],
 		["midAddress","中转地址","最多100个字符",""],
 		["midAddressLng","中转地址经度","",""],
 		["midAddressLat","中转地址纬度","",""],
+		["fixedDriverId","驻店司机工号","",""],
+		["pushSms","是否发送短信","0-发送短信，1-不发短信，默认是0","0"]
+	];
+}
+
+/* 3.6 下充电单 */
+function createCharge(){
+	this.method="POST";
+	this.api="order/createCharge";
+	this.params=[
+		["channel","渠道号","固定为92","92"],
+		["customerId","商户号","最多20个字符","CH0110000223"],
+		["type","订单类型","1-取送车，4-充电订单","4"],
+		["mode","订单成单模式","0-客服派单，1-司机抢单，3-实时派单","1"],
+		["createMobile","下单人手机号","手机号","13681316820"],
+		["mobile","车主手机号","手机号","13681316820"],
+		["username","车主姓名","","车主"],
+		["pickupContactName","取车地址联系人姓名","最多20个字符","取车人"],
+		["pickupContactPhone","取车地址联系人手机号","手机号","13681316820"],
+		["pickupAddress","取车地址","最多100个字符","北京发展大厦"],
+		["pickupAddressLng","取车地址经度","","116.467332"],
+		["pickupAddressLat","取车地址纬度","","39.957112"],
+		["returnContactName","还车地址联系人姓名","最多20个字符","还车人"],
+		["returnContactPhone","还车地址联系人手机号","手机号","13681316820"],
+		["returnAddress","还车地址","最多100个字符","三元桥丰田"],
+		["returnAddressLng","还车地址经度","","116.456236"],
+		["returnAddressLat","还车地址纬度","","39.962488"],
+		["bookingTime","预约时间","yyyyMMddHHmmss，必须比当前时间晚至少半个小时，当mode=3预约时间可以不传",getbookingTime()],
+		["carNo","车牌号","","京N12345"],
+		["carBrandName","车辆品牌名称","最多50个字符","雷克萨斯"],
+		["carSeriesName","车辆车系名称","最多50个字符","NX300h"],
+		["payMode","订单支付方式","0-vip扣款，1-用户付款，默认为0","0"],
+		["couponCode","优惠券码","payMode=1的情况下，可以使用优惠券",""],
+		["midAddress","中转地址","最多100个字符","普天充电站(希尔顿酒店)"],
+		["midAddressLng","中转地址经度","","116.469244"],
+		["midAddressLat","中转地址纬度","","39.958686"],
 		["fixedDriverId","驻店司机工号","",""],
 		["pushSms","是否发送短信","0-发送短信，1-不发短信，默认是0","0"]
 	];
@@ -98,7 +134,7 @@ function cancel(){
 	this.api="cancel";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -108,7 +144,7 @@ function detail(){
 	this.api="order/detail";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -118,7 +154,7 @@ function recordList(){
 	this.api="order/recordList";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -128,7 +164,7 @@ function trace(){
 	this.api="order/trace";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -138,7 +174,7 @@ function driverInfo(){
 	this.api="order/driverInfo";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["type","代驾类型","1-取车","1"]
 	];
 }
@@ -149,7 +185,7 @@ function verifyCode(){
 	this.api="order/verifyCode";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["type","代驾类型","1-取车","1"]
 	];
 }
@@ -161,7 +197,7 @@ function queryList(){
 	this.params=[
 		["startDate","开始时间","String(yyyyMMddHHmmss)","20190101000000"],
 		["endDate","结束时间","String(yyyyMMddHHmmss)","20200101000000"],
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["pageSize","每页条目","默认20",""],
 		["currentPage","当前页码","默认1",""],
 		["mobile","车主手机号","",""],
@@ -176,7 +212,7 @@ function comment(){
 	this.api="order/comment";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["attitude","服务态度评分","取值：10,20,30,40,50","50"],
 		["speed","接送车速度评分","取值：10,20,30,40,50","40"],
 		["content","评论内容","不能超过200字","服务态度很棒，就是等了好久"]
@@ -189,7 +225,7 @@ function getComment(){
 	this.api="order/getComment";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"]
+		["channel","渠道号","固定为92","92"]
 	];
 }
 
@@ -199,7 +235,7 @@ function getCarPhotos(){
 	this.api="order/getCarPhotos";
 	this.params=[
 		["orderId","订单号","",""],
-		["channel","渠道号","固定为86","86"],
+		["channel","渠道号","固定为92","92"],
 		["daijiaType","代驾类型","1:取车，2：还车","1"]
 	];
 }
@@ -251,11 +287,21 @@ function getOhterFee(){
 	this.api="order/getOhterFee";
 	this.params=[
 		["orderId","订单号","",""],
-		["customerId","商户号","",""]
+		["customerId","商户号","最多20个字符","CH0110000223"]
 	];
 }
 
-/* 3.22 额外费用审核结算 */
+/* 3.22 获取电量信息 */
+function getPowerInfo(){
+	this.method="GET";
+	this.api="order/getPowerInfo";
+	this.params=[
+		["channel","渠道号","固定为92","92"],
+		["orderId","订单号","",""]
+	];
+}
+
+/* 3.23 额外费用审核结算 */
 function otherFeeSettle(){
 	this.method="POST";
 	this.api="order/otherFeeSettle";
