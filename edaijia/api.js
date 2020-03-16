@@ -131,7 +131,7 @@ function createCharge(){
 /* 3.7 取消 */
 function cancel(){
 	this.method="POST";
-	this.api="cancel";
+	this.api="order/cancel";
 	this.params=[
 		["orderId","订单号","",""],
 		["channel","渠道号","固定为92","92"]
@@ -308,5 +308,18 @@ function otherFeeSettle(){
 	this.params=[
 		["orderId","订单号","",""],
 		["customerId","商户号","",""]
+	];
+}
+
+/* 3.21 发送短信 */
+function sendMsg(){
+	this.method="POST";
+	this.api="order/sendMsg";
+	this.params=[
+		["channel","渠道号","固定为92","92"],
+		["orderId","订单号","",""],
+		["template","短信模板","","lexus_code_sms"],
+		["role","接收短信角色","1用户，2创建人，3取车联系人，4收车联系人，5司机","5"],
+		["properties","短信参数","json格式","{\"code\":\"123456\"}"]
 	];
 }

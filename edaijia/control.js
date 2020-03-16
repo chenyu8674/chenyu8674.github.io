@@ -15,6 +15,10 @@ $(document).ready(function(){
 		sendRequest(true);
 	})
 
+	$("#doTest").click(function(){
+		doTest();
+	})
+
 	resultview=$("#resultview");
 	iframeview=$("#iframe");
 	init();
