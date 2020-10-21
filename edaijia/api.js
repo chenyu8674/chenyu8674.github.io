@@ -3,7 +3,7 @@
 var baseURL="https://baoyang.edaijia.cn/api/third/2/";
 
 var CHANNEL="104";
-var CUSTOMER_ID="CH0210003771";
+var CUSTOMER_ID="CH0110003774";
 
 /* 3.1 获取渠道下所有的商户列表 */
 function listAll(){
