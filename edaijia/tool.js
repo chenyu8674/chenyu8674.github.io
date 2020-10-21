@@ -3,7 +3,8 @@ var log=function(str) {
 	console.log(str);
 }
 
-var signStr="a";// 私钥
+// var signStr="a";// 私钥
+var signStr="9c9b863ddfbf412bbc25fe00767ab45d";// 私钥
 
 /* 签名计算，参数排序后做MD5，结果结尾接私钥后再次MD5 */
 var doSign=function(params) {
