@@ -6,19 +6,20 @@ function init_skill_states() {
     m_skill_states = [];
 }
 
-function skill_state(id, last_turn) {
+function skill_state(flag, id, last_turn) {
     let skill_state = {};
-    skill_state.id = id;// Id
+    skill_state.flag = flag;
+    skill_state.id = id;
     skill_state.last_turn = last_turn;// 上次施放回合
     return skill_state;
 }
 
 function regist_skill_state(state) {
-    m_skill_states[state.id] = state;
+    m_skill_states[state.flag + state.id] = state;
 }
 
-function get_skill_state(id) {
-    return m_skill_states[id];
+function get_skill_state(flag, id) {
+    return m_skill_states[flag + id];
 }
 
 // 计算攻击护甲免伤

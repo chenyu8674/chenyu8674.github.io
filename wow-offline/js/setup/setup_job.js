@@ -3,9 +3,21 @@ function setup_job() {
     let job = {};
 
     job.job_name = [];
+    // 初始属性
+    job.base_property = [];
+    // 属性成长
+    job.upgrade_property = [];
+
+    job.test_monster = 100;
+    job.base_property[job.test_monster] = [0, 0, 0, 0, 0];
+    job.upgrade_property[job.test_monster] = [0, 0, 0, 0, 0];
+    job.job_name[job.test_monster] = "测试怪物";
 
     // 职业：战士
     job.warrior = 10;
+    job.base_property[job.warrior] = [18, 10, 18, 4, 3];
+    job.upgrade_property[job.warrior] = [3.6, 2, 3.6, 0.8, 0.6];
+
     job.warrior_1 = 11;
     job.warrior_2 = 12;
     job.warrior_3 = 13;
@@ -16,6 +28,9 @@ function setup_job() {
 
     // 职业：圣骑士
     job.paladin = 20;
+    job.base_property[job.paladin] = [14, 6, 14, 10, 14];
+    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2, 2.8];
+
     // 神圣震击：造成X%法术强度的神圣伤害，并回复Y%治疗强度的生命
     // 圣疗术：生命值低于X%时回复Y%治疗强度的生命，每场战斗限一次
     job.paladin_1 = 21;
@@ -139,10 +154,6 @@ function setup_job() {
     job.job_name[job.warlock] = "术士";
     job.job_name[job.mage] = "法师";
 
-    // 初始属性
-    job.base_property = [];
-    job.base_property[job.warrior] = [18, 10, 18, 4, 3];
-    job.base_property[job.paladin] = [14, 6, 14, 10, 14];
     job.base_property[job.hunter] = [12, 16, 10, 8, 4];
     job.base_property[job.shaman] = [14, 8, 6, 14, 14];
     job.base_property[job.druid] = [12, 12, 12, 12, 12];
@@ -151,10 +162,6 @@ function setup_job() {
     job.base_property[job.warlock] = [6, 6, 14, 16, 10];
     job.base_property[job.mage] = [6, 6, 8, 18, 12];
 
-    // 属性成长
-    job.upgrade_property = [];
-    job.upgrade_property[job.warrior] = [3.6, 2, 3.6, 0.8, 0.6];
-    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2, 2.8];
     job.upgrade_property[job.hunter] = [2.4, 3.2, 2, 1.6, 0.8];
     job.upgrade_property[job.shaman] = [2.8, 1.6, 1.2, 2.8, 2.8];
     job.upgrade_property[job.druid] = [2.4, 2.4, 2.4, 2.4, 2.4];

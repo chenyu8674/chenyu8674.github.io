@@ -1,7 +1,7 @@
 // 战斗控制
 
 let battle_timer = -1;
-let turn_time = 0;// 回合时间
+let turn_time = 1000;// 回合时间
 
 let battle_character;// 我方原始状态
 let battle_enemy;// 敌方原始状态
@@ -28,7 +28,7 @@ function init_battle(character, enemy) {
     init_skill_states();
 
     clearTimeout(battle_timer);
-    // battle_timer = setTimeout(turn_loop, 0);
+    battle_timer = setTimeout(turn_loop, 0);
     log("");
 }
 
@@ -74,6 +74,10 @@ function refresh_attribute() {
     refresh_attribute_enemy_buffs();// 计算敌方增益属性加成
     refresh_attribute_enemy_debuffs();// 计算敌方减益属性加成
     refresh_final_attribute_enemy();// 计算敌方最终属性加成
+
+    // 设定敌我标识(防止同职业对战混淆)
+    battle_attribute_character.flag = "character";
+    battle_attribute_enemy.flag = "enemy";
 }
 
 /**
@@ -82,10 +86,10 @@ function refresh_attribute() {
  */
 function turn_loop() {
     refresh_attribute();
-    if (battle_turn === 1) {
-        // log(battle_attribute_character);
-        // log(battle_attribute_enemy);
-        // log("");
+    if (battle_turn === 1 && win_count_1 === 0 && win_count_2 === 0) {
+        console.log(battle_attribute_character);
+        console.log(battle_attribute_enemy);
+        console.log("");
     }
 
     log("第 " + battle_turn + " 回合");
@@ -93,14 +97,14 @@ function turn_loop() {
 
     // 判断施放技能
     let skill, enemy_skill;
-    for (let i = 0; i< battle_attribute_character.skills.length; i++) {
+    for (let i = 0; i < battle_attribute_character.skills.length; i++) {
         if (battle_attribute_character.skills[i].attempt == null ||
             battle_attribute_character.skills[i].attempt(battle_attribute_character, battle_attribute_enemy)) {
             skill = battle_attribute_character.skills[i];// 我方技能
             break;
         }
     }
-    for (let i = 0; i< battle_attribute_enemy.skills.length; i++) {
+    for (let i = 0; i < battle_attribute_enemy.skills.length; i++) {
         if (battle_attribute_enemy.skills[i].attempt == null ||
             battle_attribute_enemy.skills[i].attempt(battle_attribute_enemy, battle_attribute_character)) {
             enemy_skill = battle_attribute_enemy.skills[i];// 我方技能
@@ -115,12 +119,18 @@ function turn_loop() {
         battle_attribute_enemy.current_health_point -= damage1;
         if (is_death(battle_attribute_enemy)) {
             win_count_1++;
+            if (in_test_mode) {
+                check_arena_over();
+            }
             return true;
         }
         let damage2 = enemy_skill.cast(battle_attribute_enemy, battle_attribute_character);// 敌方造成伤害
         battle_attribute_character.current_health_point -= damage2;
         if (is_death(battle_attribute_character)) {
             win_count_2++;
+            if (in_test_mode) {
+                check_arena_over();
+            }
             return true;
         }
     } else {
@@ -129,20 +139,26 @@ function turn_loop() {
         battle_attribute_character.current_health_point -= damage2;
         if (is_death(battle_attribute_character)) {
             win_count_2++;
+            if (in_test_mode) {
+                check_arena_over();
+            }
             return true;
         }
         let damage1 = skill.cast(battle_attribute_character, battle_attribute_enemy);// 造成伤害
         battle_attribute_enemy.current_health_point -= damage1;
         if (is_death(battle_attribute_enemy)) {
             win_count_1++;
+            if (in_test_mode) {
+                check_arena_over();
+            }
             return true;
         }
     }
     log(battle_attribute_character.name + "：" + battle_attribute_character.current_health_point + " / " + battle_attribute_character.health_point);
     log(battle_attribute_enemy.name + "：" + battle_attribute_enemy.current_health_point + " / " + battle_attribute_enemy.health_point);
     log("");
-    // battle_timer = setTimeout(turn_loop, turn_time);
-    return false
+    battle_timer = setTimeout(turn_loop, turn_time);
+    return false;
 }
 
 function is_death(member) {

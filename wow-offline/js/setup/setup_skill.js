@@ -158,10 +158,10 @@ function setup_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let extra_hit = 0;
-            if (m_skill_states["last_skill"] === m_skill.warrior_1_2().id) {
+            if (m_skill_states[attacker.flag] === m_skill.warrior_1_2().id) {
                 // 已在压制流程中判定为命中
                 extra_hit = 200;
-                m_skill_states["last_skill"] = null;
+                m_skill_states[attacker.flag] = null;
             }
             let damage = normal_skill_attack(attacker, target, skill.name, 100, 1, m_element.physical, extra_hit);
             return damage;
@@ -178,14 +178,14 @@ function setup_skill() {
         skill.priority = 50;// 优先级，10极低 20低 30普通 40高 50极高 99强制
         // 判断技能可用
         skill.attempt = function (attacker, target) {
-            let skill_state = get_skill_state(skill.id);
+            let skill_state = get_skill_state(attacker.flag, skill.id);
             if (skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown) {
                 // 冷却中
                 return false;
             } else {
                 let is_hit = Math.random() < calculate_hit(attacker, target);
                 if (is_hit) {
-                    m_skill_states["last_skill"] = skill.id;
+                    m_skill_states[attacker.flag] = skill.id;
                     return false;
                 } else {
                     return true;
@@ -194,8 +194,7 @@ function setup_skill() {
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            // 初始化
-            regist_skill_state(skill_state(skill.id, battle_turn));
+            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
             let damage = normal_skill_attack(attacker, target, skill.name, 100, 1, m_element.physical, 200, 50);
             return damage;
@@ -241,7 +240,7 @@ function setup_skill() {
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage = normal_skill_attack(attacker, target, skill.name, 200, 1, m_element.physical, 0, 50);
+            let damage = normal_skill_attack(attacker, target, skill.name, 150, 1, m_element.physical, 0, 50);
             return damage;
         };
         return skill;
@@ -274,7 +273,7 @@ function setup_skill() {
         skill.priority = 50;// 优先级，10极低 20低 30普通 40高 50极高 99强制
         // 判断技能可用
         skill.attempt = function (attacker, target) {
-            let skill_state = get_skill_state(skill.id);
+            let skill_state = get_skill_state(attacker.flag, skill.id);
             if (skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown) {
                 // 冷却中
                 return false;
@@ -284,11 +283,13 @@ function setup_skill() {
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(skill.id, battle_turn));
+            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage = normal_skill_attack(attacker, target, skill.name, 100, 1, m_element.physical);
-            let shield_point = Math.round(damage * 50 / 100);
-            attacker.current_shield_point += shield_point;
-            log(attacker.name + " 获得了 " + shield_point + "点伤害吸收护盾");
+            if (damage > 0) {
+                let shield_point = Math.round(damage * 50 / 100);
+                attacker.current_shield_point += shield_point;
+                log(attacker.name + " 获得了 " + shield_point + "点伤害吸收护盾");
+            }
             return damage;
         };
         return skill;

@@ -1,4 +1,6 @@
 // 常量
+let show_detail_log = true;// 显示详细战斗过程
+let in_test_mode = true;// 测试模式
 
 // 主属性对其他属性的转化值
 let str_to_attack_power = 2;

@@ -20,7 +20,7 @@ function setup_equipment() {
     // 测试用盾牌
     equipment.test_shield = [
         "block_rate += 200",
-        "block_chance_final += 20",
+        "block_chance_final += 30",
         "block_value += 100",
         "armor_attack += 500",
         "sta += 40"
