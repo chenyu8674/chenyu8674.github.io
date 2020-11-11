@@ -2,7 +2,7 @@ let warrior_1 = function() {
     let warrior_1 = load_character(m_job.warrior_1, MAX_EXP);
     warrior_1.buffs = [m_buff.warrior_1];
     warrior_1.debuffs = [];
-    warrior_1.equipments = [m_equipment.test_two_hand_sword, m_equipment.test_armor];
+    warrior_1.equipments = [m_equipment.test_two_hand_sword_str, m_equipment.test_armor];
     warrior_1.skills = [m_skill.warrior_1_1(), m_skill.warrior_1_2()];
     return warrior_1;
 }
@@ -11,7 +11,7 @@ let warrior_2 = function() {
     let warrior_2 = load_character(m_job.warrior_2, MAX_EXP);
     warrior_2.buffs = [m_buff.warrior_2];
     warrior_2.debuffs = [];
-    warrior_2.equipments = [m_equipment.test_one_hand_sword, m_equipment.test_one_hand_sword, m_equipment.test_armor];
+    warrior_2.equipments = [m_equipment.test_one_hand_sword_str, m_equipment.test_one_hand_sword_str, m_equipment.test_armor];
     warrior_2.skills = [m_skill.warrior_2_1(), m_skill.warrior_2_2()];
     return warrior_2;
 }
@@ -20,17 +20,26 @@ let warrior_3 = function() {
     let warrior_3 = load_character(m_job.warrior_3, MAX_EXP);
     warrior_3.buffs = [m_buff.warrior_3];
     warrior_3.debuffs = [];
-    warrior_3.equipments = [m_equipment.test_one_hand_sword, m_equipment.test_shield, m_equipment.test_armor];
+    warrior_3.equipments = [m_equipment.test_one_hand_sword_str, m_equipment.test_shield, m_equipment.test_armor];
     warrior_3.skills = [m_skill.warrior_3_1(), m_skill.warrior_3_2()];
     return warrior_3;
+}
+
+let paladin_1 = function() {
+    let paladin_1 = load_character(m_job.paladin_1, MAX_EXP);
+    paladin_1.buffs = [m_buff.paladin_1];
+    paladin_1.debuffs = [];
+    paladin_1.equipments = [m_equipment.test_one_hand_sword_int, m_equipment.test_shield, m_equipment.test_armor];
+    paladin_1.skills = [m_skill.paladin_1_1(), m_skill.paladin_1_2()];
+    return paladin_1;
 }
 
 let test_monster = function() {
     let test_monster = load_character(m_job.test_monster, MAX_EXP);
     test_monster.buffs = [];
     test_monster.debuffs = [];
-    test_monster.equipments = [];
-    test_monster.skills = [m_skill.physical_attack(), m_skill.holy_cast()];
+    test_monster.equipments = [m_equipment.test_monster];
+    test_monster.skills = [m_skill.physical_attack()];
     return test_monster;
 }
 
@@ -75,7 +84,7 @@ function start_arena() {
     let member2 = $("#member_2").val();
     let time = $("#battle_time").val()
     if (time === "1") {
-        turn_time = 0;
+        turn_time = 1000;
     } else {
         turn_time = 0;
     }

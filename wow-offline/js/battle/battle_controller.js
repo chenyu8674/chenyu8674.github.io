@@ -37,11 +37,14 @@ function refresh_attribute() {
     let battle_shield_character = 0;
     let battle_health_enemy = 0;
     let battle_shield_enemy = 0;
+
     if (battle_turn !== 1) {
         battle_health_character = battle_attribute_character.current_health_point;
         battle_shield_character = battle_attribute_character.current_shield_point;
         battle_health_enemy = battle_attribute_enemy.current_health_point;
         battle_shield_enemy = battle_attribute_enemy.current_shield_point;
+        battle_attribute_character.buffs = battle_character.buffs;
+        battle_attribute_character.debuffs = battle_character.debuffs;
     }
 
     battle_attribute_character = setup_attribute();
@@ -85,6 +88,16 @@ function refresh_attribute() {
  * @returns {boolean} 战斗是否结束
  */
 function turn_loop() {
+    if (battle_turn === 100) {
+        log("双方平手");
+        win_count_1 += 0.5;
+        win_count_2 += 0.5;
+        if (in_test_mode) {
+            check_arena_over();
+        }
+        return true;
+    }
+
     refresh_attribute();
     if (battle_turn === 1 && win_count_1 === 0 && win_count_2 === 0) {
         console.log(battle_attribute_character);

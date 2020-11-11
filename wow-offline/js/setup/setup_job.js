@@ -31,14 +31,8 @@ function setup_job() {
     job.base_property[job.paladin] = [14, 6, 14, 10, 14];
     job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2, 2.8];
 
-    // 神圣震击：造成X%法术强度的神圣伤害，并回复Y%治疗强度的生命
-    // 圣疗术：生命值低于X%时回复Y%治疗强度的生命，每场战斗限一次
     job.paladin_1 = 21;
-    // 清算：造成X%攻击强度+Y%上次收到伤害的物理伤害
-    // 圣盾术：生命值低于X%时免疫伤害Y回合，每场战斗限一次
     job.paladin_2 = 22;
-    // 命令圣印：造成X%攻击强度的物理伤害,其中Y%的几率造成神圣伤害
-    // 愤怒之锤：敌方生命值低于X%时才可使用，造成Y%攻击强度的神圣伤害
     job.paladin_3 = 23;
     job.job_name[job.paladin] = "圣骑士";
     job.job_name[job.paladin_1] = "神圣圣骑士";

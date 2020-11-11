@@ -31,9 +31,7 @@ function get_battle_attribute(attribute) {
     battle_attribute.health_point = Math.round((attribute.health_point + battle_attribute.sta * sta_to_health_max) * attribute.health_percent / 100);// 最大生命值
 
     battle_attribute.attack_power = Math.round((attribute.attack_power + battle_attribute.str * str_to_attack_power) * attribute.attack_power_percent / 100);// 攻击强度
-
     battle_attribute.magic_power = Math.round((attribute.magic_power+battle_attribute.int * int_to_magic_power) * attribute.magic_power_percent / 100);// 法术强度
-
     battle_attribute.heal_power = Math.round((attribute.heal_power + battle_attribute.spr * spr_to_heal_power) * attribute.heal_power_percent / 100);// 治疗强度
 
     battle_attribute.critical_rate = Math.round((attribute.critical_rate + battle_attribute.agi * agi_to_critical_rate) * attribute.critical_rate_percent / 100);// 暴击等级

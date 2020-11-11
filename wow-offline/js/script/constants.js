@@ -14,7 +14,7 @@ let sta_to_health_max = 15;
 let sta_to_armor_attack = 2;
 
 let int_to_magic_power = 2;
-let int_to_critical_damage = 1;
+let int_to_critical_damage = 0.5;
 
 let spr_to_heal_power = 2;
 let spr_to_armor_magic = 2;
