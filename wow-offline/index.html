@@ -1,0 +1,43 @@
+<!Doctype html>
+<html>
+<head>
+    <title>WOW_OFFLINE</title>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <script type="text/javascript" src="js/util/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/util/util.js"></script>
+
+    <script type="text/javascript" src="js/setup/setup_attribute.js"></script>
+    <script type="text/javascript" src="js/setup/setup_battle_attribute.js"></script>
+    <script type="text/javascript" src="js/setup/setup_buff.js"></script>
+    <script type="text/javascript" src="js/setup/setup_debuff.js"></script>
+    <script type="text/javascript" src="js/setup/setup_character.js"></script>
+    <script type="text/javascript" src="js/setup/setup_element.js"></script>
+    <script type="text/javascript" src="js/setup/setup_equipment.js"></script>
+    <script type="text/javascript" src="js/setup/setup_job.js"></script>
+    <script type="text/javascript" src="js/setup/setup_skill.js"></script>
+
+    <script type="text/javascript" src="js/script/constants.js"></script>
+    <script type="text/javascript" src="js/script/init.js"></script>
+    <script type="text/javascript" src="js/script/test.js"></script>
+
+    <script type="text/javascript" src="js/battle/battle_controller.js"></script>
+    <script type="text/javascript" src="js/battle/skill_controller.js"></script>
+</head>
+<body>
+<select id="member_1">
+    <option value="warrior_1">武器战士</option>
+    <option value="warrior_2">狂暴战士</option>
+    <option value="warrior_3">防御战士</option>
+</select>
+<select id="member_2">
+    <option value="warrior_1">武器战士</option>
+    <option value="warrior_2" selected>狂暴战士</option>
+    <option value="warrior_3">防御战士</option>
+</select>
+<input id="battle_time" size="2" value="1" />次
+<button id="arena" onclick="start_arena()">GO</button>
+<div id="log"></div>
+</body>
+</html>
