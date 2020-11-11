@@ -39,7 +39,7 @@ let test_monster = function() {
     test_monster.buffs = [];
     test_monster.debuffs = [];
     test_monster.equipments = [m_equipment.test_monster];
-    test_monster.skills = [m_skill.physical_attack()];
+    test_monster.skills = [m_skill.warrior_1_1()];
     return test_monster;
 }
 

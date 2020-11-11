@@ -46,7 +46,7 @@ function setup_equipment() {
 
     // 测试怪物（套壳）
     equipment.test_monster = [
-        "name = '迪菲亚盗贼'",
+        "name = '范克里夫'",
         "health_point += 29900",
         "attack_power += 1000",
         "magic_power += 1000",

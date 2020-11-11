@@ -326,12 +326,7 @@ function setup_skill() {
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             let skill_state = get_skill_state(attacker.flag, skill.id);
-            if (skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown) {
-                // 冷却中
-                return false;
-            } else {
-                return true;
-            }
+            return !(skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown);
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
