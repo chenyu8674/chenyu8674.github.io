@@ -73,9 +73,9 @@ function setup_equipment() {
         "attack_power+=1000",
         "magic_power+=1000",
         "heal_power+=500",
-        "critical_chance_final+=0",
-        "hit_chance_final+=0",
-        "dodge_chance_final+=0",
+        "critical_chance_final+=5",
+        "hit_chance_final+=20",
+        "dodge_chance_final+=5",
         "armor_attack+=0",
         "armor_magic+=0"
     ];
