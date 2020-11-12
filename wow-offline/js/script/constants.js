@@ -10,7 +10,7 @@ let agi_to_hit_rate = 2;
 let agi_to_critical_rate = 2;
 let agi_to_dodge_rate = 1;
 
-let sta_to_health_max = 15;
+let sta_to_health_max = 20;
 let sta_to_armor_attack = 2;
 
 let int_to_magic_power = 2;

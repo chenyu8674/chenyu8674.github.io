@@ -270,7 +270,7 @@ function setup_skill() {
         skill.cast = function (attacker, target) {
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
             if (damage[1]) {
-                let heal = Math.round(damage * 10 * attacker.taken_heal_percent / 100 / 100);
+                let heal = Math.round(damage[0] * 10 * attacker.taken_heal_percent / 100 / 100);
                 if (heal > 0) {
                     log(attacker.name + " 通过 " + skill.name + " 回复 " + heal + " 点生命");
                     attacker.current_health_point += heal;
@@ -344,7 +344,7 @@ function setup_skill() {
             regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
             if (damage[0] > 0) {
-                let shield_point = Math.round(damage * skill.Y * attacker.taken_heal_percent / 100 / 100);
+                let shield_point = Math.round(damage[0] * skill.Y * attacker.taken_heal_percent / 100 / 100);
                 if (shield_point > 0) {
                     attacker.current_shield_point += shield_point;
                     log(attacker.name + " 获得了 " + shield_point + "点伤害吸收护盾");
@@ -368,8 +368,8 @@ function setup_skill() {
         skill.cast = function (attacker, target) {
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, m_element.holy);
             let heal = normal_skill_heal(attacker, target, skill.name, skill.Y);
-            if (heal > 0) {
-                attacker.current_health_point += heal;
+            if (heal[0] > 0) {
+                attacker.current_health_point += heal[0];
                 if (attacker.current_health_point > attacker.health_point) {
                     attacker.current_health_point = attacker.health_point;
                 }
@@ -385,7 +385,7 @@ function setup_skill() {
         skill.name = "圣疗术";// 名称
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 50;// 优先级，10极低 20低 30普通 40高 50极高 99强制
-        skill.X = 20;
+        skill.X = 25;
         skill.Y = 300;
         skill.detail = "生命值低于" + skill.X + "%时回复" + skill.Y + "%治疗强度的生命，每场战斗限一次";
         // 判断技能可用
@@ -401,8 +401,8 @@ function setup_skill() {
         skill.cast = function (attacker, target) {
             regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let heal = normal_skill_heal(attacker, target, skill.name, skill.Y);
-            if (heal > 0) {
-                attacker.current_health_point += heal;
+            if (heal[0] > 0) {
+                attacker.current_health_point += heal[0];
                 if (attacker.current_health_point > attacker.health_point) {
                     attacker.current_health_point = attacker.health_point;
                 }
