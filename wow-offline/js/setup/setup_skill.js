@@ -15,6 +15,11 @@ function setup_skill() {
      * @param element_type 元素类型，10物理 20火焰 30冰霜 40自然 50奥术 60神圣 70暗影
      * @param extra_hit 额外命中率
      * @param extra_critical 额外暴击率
+     * @return damage 造成伤害
+     * @return is_hit 是否命中
+     * @return is_critical 是否暴击
+     * @return block_value 格挡数值
+     * @return absorb_value 吸收数值
      */
     function normal_skill_attack(attacker, target, skill_name, damage_percent,
                                  attack_type, element_type, extra_hit, extra_critical) {
@@ -23,7 +28,7 @@ function setup_skill() {
         let is_hit = Math.random() < calculate_hit(attacker, target) + extra_hit / 100;
         if (!is_hit) {
             log(attacker.name + " 的 " + skill_name + " 未击中 " + target.name);
-            return 0;
+            return [0, is_hit, false, 0, 0];
         }
         /* 计算增减伤百分比 */
         let dmg;// 攻击者属性伤害百分比
@@ -83,11 +88,11 @@ function setup_skill() {
         damage = damage * (100 - res) / 100;
         // 计算格挡值
         let is_block = Math.random() < calculate_block(attacker, target);
-        let block_point = target.block_value;
+        let block_value = target.block_value;
         if (is_block) {
-            damage = damage - block_point;
+            damage = damage - block_value;
             if (damage < 0) {
-                block_point += damage;
+                block_value += damage;
                 damage = 0;
             }
         }
@@ -110,7 +115,7 @@ function setup_skill() {
         }
         // 数值取整
         damage = Math.round(damage);
-        block_point = Math.round(block_point);
+        block_value = Math.round(block_value);
         absorb_value = Math.round(absorb_value);
         // 伤害日志
         log(attacker.name
@@ -118,10 +123,10 @@ function setup_skill() {
             + " 击中 " + target.name
             + " 造成 " + damage + " 点伤害"
             + (is_critical ? " (暴击)" : "")
-            + (is_block ? " (" + block_point + "点被格挡)" : "")
+            + (is_block ? " (" + block_value + "点被格挡)" : "")
             + (absorb_value > 0 ? " (" + absorb_value + "点被吸收)" : "")
         );
-        return damage;
+        return [damage, is_hit, is_critical, block_value, absorb_value];
     }
 
     /**
@@ -157,7 +162,7 @@ function setup_skill() {
             + " 回复 " + heal + " 点生命"
             + (is_critical ? " (暴击)" : "")
         );
-        return heal;
+        return [heal, is_critical];
     }
 
     skill.physical_attack = function () {
@@ -170,7 +175,8 @@ function setup_skill() {
         skill.detail = "攻击目标造成" + skill.X + "攻击强度的物理伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            return normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
+            let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
+            return damage[0];
         };
         return skill;
     };
@@ -185,7 +191,8 @@ function setup_skill() {
         skill.detail = "对目标施法造成" + skill.X + "法术强度的神圣伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            return normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, m_element.holy);
+            let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, m_element.holy);
+            return damage[0];
         };
         return skill;
     };
@@ -203,12 +210,14 @@ function setup_skill() {
             let extra_hit = 0;
             if (m_skill_states[attacker.flag] === m_skill.warrior_1_2().id) {
                 // 已在压制流程中判定为命中
-                extra_hit = 200;
+                extra_hit = 999;
                 m_skill_states[attacker.flag] = null;
             }
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical, extra_hit);
-            target.debuffs.push(setup_debuff().warrior_1);
-            return damage;
+            if (damage[1]) {
+                target.debuffs.push(setup_debuff().warrior_1);
+            }
+            return damage[0];
         };
         return skill;
     }
@@ -226,11 +235,11 @@ function setup_skill() {
         skill.attempt = function (attacker, target) {
             let skill_state = get_skill_state(attacker.flag, skill.id);
             if (skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown) {
-                // 冷却中
-                return false;
+                return false;// 冷却中
             } else {
                 let is_hit = Math.random() < calculate_hit(attacker, target);
                 if (is_hit) {
+                    // 判定为命中
                     m_skill_states[attacker.flag] = skill.id;
                     return false;
                 } else {
@@ -243,7 +252,7 @@ function setup_skill() {
             regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical, 999, skill.Y);
-            return damage;
+            return damage[0];
         };
         return skill;
     }
@@ -260,7 +269,7 @@ function setup_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
-            if (damage > 0) {
+            if (damage[1]) {
                 let heal = Math.round(damage * 10 * attacker.taken_heal_percent / 100 / 100);
                 if (heal > 0) {
                     log(attacker.name + " 通过 " + skill.name + " 回复 " + heal + " 点生命");
@@ -270,7 +279,7 @@ function setup_skill() {
                     }
                 }
             }
-            return damage;
+            return damage[0];
         };
         return skill;
     }
@@ -292,7 +301,7 @@ function setup_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, m_element.physical, 0, skill.Z);
-            return damage;
+            return damage[0];
         };
         return skill;
     }
@@ -308,8 +317,10 @@ function setup_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
-            target.debuffs.push(setup_debuff().warrior_3);
-            return damage;
+            if (damage[1]) {
+                target.debuffs.push(setup_debuff().warrior_3);
+            }
+            return damage[0];
         };
         return skill;
     }
@@ -332,26 +343,25 @@ function setup_skill() {
         skill.cast = function (attacker, target) {
             regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, m_element.physical);
-            if (damage > 0) {
+            if (damage[0] > 0) {
                 let shield_point = Math.round(damage * skill.Y * attacker.taken_heal_percent / 100 / 100);
                 if (shield_point > 0) {
                     attacker.current_shield_point += shield_point;
                     log(attacker.name + " 获得了 " + shield_point + "点伤害吸收护盾");
                 }
             }
-            return damage;
+            return damage[0];
         };
         return skill;
     }
 
-    // 神圣震击：造成X%法术强度的神圣伤害，并回复Y%治疗强度的生命
     skill.paladin_1_1 = function () {
         let skill = {};
         skill.id = 211;// Id
         skill.name = "神圣震击";// 名称
         skill.cooldown = 1;// 冷却
         skill.priority = 30;// 优先级，10极低 20低 30普通 40高 50极高 99强制
-        skill.X = 50;
+        skill.X = 100;
         skill.Y = 50;
         skill.detail = "召唤圣光震击目标造成" + skill.X + "法术强度的神圣伤害，并回复" + skill.Y + "%治疗强度的的生命";
         // 技能施放调用
@@ -364,12 +374,11 @@ function setup_skill() {
                     attacker.current_health_point = attacker.health_point;
                 }
             }
-            return damage;
+            return damage[0];
         };
         return skill;
     }
 
-    // 圣疗术：生命值低于X%时回复Y%治疗强度的生命，每场战斗限一次
     skill.paladin_1_2 = function () {
         let skill = {};
         skill.id = 212;// Id
@@ -383,8 +392,7 @@ function setup_skill() {
         skill.attempt = function (attacker, target) {
             let skill_state = get_skill_state(attacker.flag, skill.id);
             if (skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown) {
-                // 冷却中
-                return false;
+                return false;// 冷却中
             } else {
                 return attacker.current_health_point * 100 / attacker.health_point <= skill.X;
             }
@@ -418,6 +426,67 @@ function setup_skill() {
 
     // 愤怒之锤：敌方生命值低于X%时才可使用，造成Y%攻击强度的神圣伤害，每场战斗限一次
     skill.paladin_3_2 = function () {
+    }
+
+    skill.mage_2_1 = function () {
+        let skill = {};
+        skill.id = 921;// Id
+        skill.name = "火球术";// 名称
+        skill.cooldown = 1;// 冷却
+        skill.priority = 30;// 优先级，10极低 20低 30普通 40高 50极高 99强制
+        skill.X = 100;
+        skill.Y = 20;
+        skill.detail = "召唤火球燃烧目标造成" + skill.X + "法术强度的火焰伤害，该次攻击的暴击率提高" + skill.Y + "%，暴击时在目标身上留下一层余烬";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            let damage = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, m_element.fire, 0, skill.Y);
+            if (damage[2]) {
+                if (m_skill_states[attacker.flag] == null) {
+                    m_skill_states[attacker.flag] = 1;
+                } else {
+                    m_skill_states[attacker.flag]++;
+                }
+                log("余烬层数：" + m_skill_states[attacker.flag]);
+            }
+            return damage[0];
+        };
+        return skill;
+    }
+
+    skill.mage_2_2 = function () {
+        let skill = {};
+        skill.id = 922;// Id
+        skill.name = "燃火";// 名称
+        skill.cooldown = 4;// 冷却
+        skill.first_turn = 4;// 首次释放回合
+        skill.priority = 50;// 优先级，10极低 20低 30普通 40高 50极高 99强制
+        skill.X = 100;
+        skill.Y = 50;
+        skill.detail = "引爆所有余烬造成" + skill.X + "法术强度的火焰伤害，每层余烬会使总伤害提高" + skill.Y + "%";
+        // 判断技能可用
+        skill.attempt = function (attacker, target) {
+            log(battle_turn)
+            if (battle_turn < skill.first_turn) {
+                return false;
+            }
+            let skill_state = get_skill_state(attacker.flag, skill.id);
+            return !(skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown);
+        }
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
+            let damage_count = 0;
+            // 计算余烬加成
+            if (m_skill_states[attacker.flag] != null) {
+                damage_count = m_skill_states[attacker.flag];
+            }
+            let damage = normal_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X + skill.Y * damage_count, type_cast, m_element.fire);
+            if (damage[1]) {
+                m_skill_states[attacker.flag] = null;
+            }
+            return damage[0];
+        };
+        return skill;
     }
 
     return skill;

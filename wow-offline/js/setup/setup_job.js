@@ -41,6 +41,9 @@ function setup_job() {
 
     // 职业：猎人
     job.hunter = 30;
+    job.base_property[job.hunter] = [12, 16, 10, 8, 4];
+    job.upgrade_property[job.hunter] = [2.4, 3.2, 2, 1.6, 0.8];
+
     // 兽王
     // 蝰蛇守护：每次命中目标时，回复X%的最大生命值
     // 人宠攻击：造成X%攻击强度的物理伤害2次
@@ -56,9 +59,12 @@ function setup_job() {
     // 猛禽一击：造成X%攻击强度的物理伤害
     // 爆炸射击：每隔X回合使用，每回合造成Y%攻击强度的火焰伤害，持续Z回合
     job.hunter_3 = 33
+    job.job_name[job.hunter] = "猎人";
 
     // 职业：萨满
     job.shaman = 40;
+    job.base_property[job.shaman] = [14, 8, 6, 14, 14];
+    job.upgrade_property[job.shaman] = [2.8, 1.6, 1.2, 2.8, 2.8];
     // 元素
     // 灼热图腾：每回合造成X%法术强度的火焰伤害
     // 闪电箭：造成X%法术强度的自然伤害
@@ -74,9 +80,12 @@ function setup_job() {
     // 闪电箭：造成X%法术强度的自然伤害
     // 治疗波：每隔X回合使用，回复X%治疗强度的生命
     job.shaman_3 = 43;
+    job.job_name[job.shaman] = "萨满";
 
     // 职业：德鲁伊
     job.druid = 50;
+    job.base_property[job.druid] = [12, 12, 12, 12, 12];
+    job.upgrade_property[job.druid] = [2.4, 2.4, 2.4, 2.4, 2.4];
     // 平衡
     // 枭兽形态：护甲+X%，暴击率+Y%
     // 星火术：造成X%攻击强度的奥术伤害
@@ -97,9 +106,12 @@ function setup_job() {
     // 愤怒：造成X%攻击强度的自然伤害
     // 回春术：每隔X回合使用，每回合回复Y%治疗强度的生命，持续Z回合
     job.druid_4 = 54;
+    job.job_name[job.druid] = "德鲁伊";
 
     // 职业：盗贼
     job.rogue = 60;
+    job.base_property[job.rogue] = [16, 18, 8, 4, 4];
+    job.upgrade_property[job.rogue] = [3.2, 3.6, 1.6, 0.8, 0.8];
     // 刺杀
     // 背刺
     // 伏击
@@ -112,57 +124,46 @@ function setup_job() {
     // 出血
     // 消失
     job.rogue_3 = 63;
+    job.job_name[job.rogue] = "盗贼";
 
     // 职业：牧师
     job.priest = 70;
+    job.base_property[job.priest] = [5, 6, 8, 16, 18];
+    job.upgrade_property[job.priest] = [1, 1.2, 1.6, 3.2, 3.6];
     // 戒律/神圣/法术/
     job.priest_1 = 71;
     // 神圣/神圣/法术/
     job.priest_2 = 72;
     // 暗影/暗影/法术/
     job.priest_3 = 73;
+    job.job_name[job.priest] = "牧师";
 
     // 职业：术士
     job.warlock = 80;
+    job.base_property[job.warlock] = [6, 6, 14, 16, 10];
+    job.upgrade_property[job.warlock] = [1.2, 1.2, 2.8, 3.2, 2];
     // 痛苦/暗影/法术/
     job.warlock_1 = 81;
     // 恶魔/物理/法术/
     job.warlock_2 = 82;
     // 毁灭/火焰/法术/
     job.warlock_3 = 83;
+    job.job_name[job.warlock] = "术士";
 
     // 职业：法师
     job.mage = 90;
+    job.base_property[job.mage] = [6, 6, 8, 18, 12];
+    job.upgrade_property[job.mage] = [1.2, 1.2, 1.6, 3.6, 2.4];
     // 奥术/奥术/法术/
     job.mage_1 = 91;
     // 火焰/火焰/法术/
     job.mage_2 = 92;
     // 冰霜/冰霜/法术/
     job.mage_3 = 93;
-
-    job.job_name[job.hunter] = "猎人";
-    job.job_name[job.shaman] = "萨满";
-    job.job_name[job.druid] = "德鲁伊";
-    job.job_name[job.rogue] = "盗贼";
-    job.job_name[job.priest] = "牧师";
-    job.job_name[job.warlock] = "术士";
     job.job_name[job.mage] = "法师";
-
-    job.base_property[job.hunter] = [12, 16, 10, 8, 4];
-    job.base_property[job.shaman] = [14, 8, 6, 14, 14];
-    job.base_property[job.druid] = [12, 12, 12, 12, 12];
-    job.base_property[job.rogue] = [16, 18, 8, 4, 4];
-    job.base_property[job.priest] = [5, 6, 8, 16, 18];
-    job.base_property[job.warlock] = [6, 6, 14, 16, 10];
-    job.base_property[job.mage] = [6, 6, 8, 18, 12];
-
-    job.upgrade_property[job.hunter] = [2.4, 3.2, 2, 1.6, 0.8];
-    job.upgrade_property[job.shaman] = [2.8, 1.6, 1.2, 2.8, 2.8];
-    job.upgrade_property[job.druid] = [2.4, 2.4, 2.4, 2.4, 2.4];
-    job.upgrade_property[job.rogue] = [3.2, 3.6, 1.6, 0.8, 0.8];
-    job.upgrade_property[job.priest] = [1, 1.2, 1.6, 3.2, 3.6];
-    job.upgrade_property[job.warlock] = [1.2, 1.2, 2.8, 3.2, 2];
-    job.upgrade_property[job.mage] = [1.2, 1.2, 1.6, 3.6, 2.4];
+    job.job_name[job.mage_1] = "奥术法师";
+    job.job_name[job.mage_2] = "火焰法师";
+    job.job_name[job.mage_3] = "冰霜法师";
 
     return job;
 }

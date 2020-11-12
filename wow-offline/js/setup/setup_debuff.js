@@ -7,7 +7,7 @@ function setup_debuff() {
     debuff.warrior_1_X = 15;
     debuff.warrior_1 = [
         debuff.warrior_1_T,
-        "taken_heal_percent -= " + debuff.warrior_1_X
+        "taken_heal_percent-=" + debuff.warrior_1_X
     ];
 
     // 破甲：使敌方物理抗性-X，持续T回合
@@ -15,7 +15,7 @@ function setup_debuff() {
     debuff.warrior_3_X = 2;
     debuff.warrior_3 = [
         debuff.warrior_3_T,
-        "res_physical -= " + debuff.warrior_3_X
+        "res_physical-=" + debuff.warrior_3_X
     ];
 
     return debuff;

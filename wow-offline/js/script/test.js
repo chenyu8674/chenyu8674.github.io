@@ -34,12 +34,21 @@ let paladin_1 = function() {
     return paladin_1;
 }
 
+let mage_2 = function() {
+    let mage_2 = load_character(m_job.mage_2, MAX_EXP);
+    mage_2.buffs = [m_buff.warrior_2];
+    mage_2.debuffs = [];
+    mage_2.equipments = [m_equipment.test_one_hand_sword_int, m_equipment.test_book, m_equipment.test_cloth];
+    mage_2.skills = [m_skill.mage_2_1(), m_skill.mage_2_2()];
+    return mage_2;
+}
+
 let test_monster = function() {
     let test_monster = load_character(m_job.test_monster, MAX_EXP);
     test_monster.buffs = [];
     test_monster.debuffs = [];
     test_monster.equipments = [m_equipment.test_monster];
-    test_monster.skills = [m_skill.warrior_1_1()];
+    test_monster.skills = [m_skill.warrior_1_1(), m_skill.paladin_1_2()];
     return test_monster;
 }
 

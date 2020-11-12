@@ -106,7 +106,6 @@ function turn_loop() {
     }
 
     log("第 " + battle_turn + " 回合");
-    battle_turn++;
 
     // 判断施放技能
     let skill, enemy_skill;
@@ -170,6 +169,7 @@ function turn_loop() {
     log(battle_attribute_character.name + "：" + battle_attribute_character.current_health_point + " / " + battle_attribute_character.health_point);
     log(battle_attribute_enemy.name + "：" + battle_attribute_enemy.current_health_point + " / " + battle_attribute_enemy.health_point);
     log("");
+    battle_turn++;
     battle_timer = setTimeout(turn_loop, turn_time);
     return false;
 }

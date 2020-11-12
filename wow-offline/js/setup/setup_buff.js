@@ -9,8 +9,8 @@ function setup_buff() {
     buff.warrior_1_Y = 5;
     buff.warrior_1 = [
         buff.warrior_1_T,
-        "pierce_physical += " + buff.warrior_1_X,
-        "hit_chance_final += " + buff.warrior_1_Y
+        "pierce_physical+=" + buff.warrior_1_X,
+        "hit_chance_final+=" + buff.warrior_1_Y
     ];
 
     // 狂暴
@@ -21,9 +21,9 @@ function setup_buff() {
     buff.warrior_2_Z = 5;
     buff.warrior_2 = [
         buff.warrior_2_T,
-        "critical_chance_final += " + buff.warrior_2_X,
-        "critical_damage += " + buff.warrior_2_Y,
-        "taken_damage_percent += " + buff.warrior_2_Z
+        "critical_chance_final+=" + buff.warrior_2_X,
+        "critical_damage+=" + buff.warrior_2_Y,
+        "taken_damage_percent+=" + buff.warrior_2_Z
     ];
 
     // 防御
@@ -33,8 +33,8 @@ function setup_buff() {
     buff.warrior_3_Y = 10;
     buff.warrior_3 = [
         buff.warrior_3_T,
-        "block_chance_final += " + buff.warrior_3_X,
-        "block_value_percent += " + buff.warrior_3_Y
+        "block_chance_final+=" + buff.warrior_3_X,
+        "block_value_percent+=" + buff.warrior_3_Y
     ];
 
     // 神圣
@@ -43,7 +43,7 @@ function setup_buff() {
     buff.paladin_1_X = 15;
     buff.paladin_1 = [
         buff.paladin_1_T,
-        "int_percent += " + buff.paladin_1_X
+        "int_percent+=" + buff.paladin_1_X
     ];
 
     // 防护
@@ -52,11 +52,11 @@ function setup_buff() {
     buff.paladin_2_X = 5;
     buff.paladin_2 = [
         buff.paladin_2_T,
-        "str_percent += " + buff.paladin_2_X,
-        "agi_percent += " + buff.paladin_2_X,
-        "sta_percent += " + buff.paladin_2_X,
-        "int_percent += " + buff.paladin_2_X,
-        "spr_percent += " + buff.paladin_2_X
+        "str_percent+=" + buff.paladin_2_X,
+        "agi_percent+=" + buff.paladin_2_X,
+        "sta_percent+=" + buff.paladin_2_X,
+        "int_percent+=" + buff.paladin_2_X,
+        "spr_percent+=" + buff.paladin_2_X
     ];
 
     // 惩戒
@@ -65,7 +65,7 @@ function setup_buff() {
     buff.paladin_3_X = 15;
     buff.paladin_3 = [
         buff.paladin_3_T,
-        "str_percent += " + buff.paladin_3_X
+        "str_percent+=" + buff.paladin_3_X
     ];
 
     return buff;
