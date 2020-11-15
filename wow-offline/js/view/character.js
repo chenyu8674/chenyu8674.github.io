@@ -21,6 +21,7 @@ function init_skill_1_click() {
         selected_job_1_index = parseInt($(this).attr("index"));
         let job_1 = $(this).attr("id");
         selected_job_1_name = job_1.replace("icon_", "");
+        $("#view_character").css("background-image", "url(\"./img/job/" + selected_job_1_name + ".jpg\"");
         init_skill_2();
     });
 }

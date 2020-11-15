@@ -60,7 +60,7 @@ function new_job() {
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
     job.job_name[job.paladin_2] = "防护圣骑士";
-    job.job_info[job.paladin_2] = "使用神圣的魔法为自己和盟友提供防护。偏好武器：";
+    job.job_info[job.paladin_2] = "使用神圣的魔法为自己和盟友提供信仰防护。";
     job.job_name[job.paladin_3] = "惩戒圣骑士";
     job.job_info[job.paladin_3] = "正义的十字军，用神圣魔法和武器审判并制裁敌人。";
 

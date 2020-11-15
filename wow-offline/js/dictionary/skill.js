@@ -257,7 +257,7 @@ function new_skill() {
         skill.priority = 20;// 优先级
         skill.X = 80;
         skill.Y = 100;
-        skill.detail = "攻击目标造成" + skill.X + "%攻击强度的物理伤害，该伤害根据损失生命值最多提高" + skill.Y + "%";
+        skill.detail = "攻击目标造成" + skill.X + "%攻击强度的物理伤害，伤害根据损失的生命值最多提高" + skill.Y + "%";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_percent = 1 - attacker.current_health_point / attacker.health_point;
@@ -274,7 +274,7 @@ function new_skill() {
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 50;// 优先级，10极低 20低 30普通 40高 50极高 99强制
         skill.X = 35;
-        skill.detail = "生命值低于" + skill.X + "%时召唤圣盾免疫所有伤害" + dictionary_buff.paladin_2_2_T + "回合，每场战斗限一次";
+        skill.detail = "生命值低于" + skill.X + "%时可用，召唤圣盾免疫所有伤害" + dictionary_buff.paladin_2_2_T + "回合，每场战斗限一次";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             let skill_state = get_skill_state(attacker.flag, skill.id);
