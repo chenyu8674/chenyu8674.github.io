@@ -1,5 +1,6 @@
 #view_character {
     z-index: 9;
+    background-color: rgba(0, 0, 0, 0.9);
     background-image: url("../img/job/warrior.jpg");
     background-size: 1600px 900px;
 }
