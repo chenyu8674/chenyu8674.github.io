@@ -1,0 +1,257 @@
+#view_character {
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.9);
+    background-size: 1600px 900px;
+}
+
+#view_character_title {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    top: 30px;
+    text-align: center;
+    font-size: 60px;
+    letter-spacing: 5px;
+    color: goldenrod;
+    text-shadow: 0 0 5px orangered;
+}
+
+#view_job_1_choose {
+    position: absolute;
+    width: 608px;
+    height: 604px;
+    top: 180px;
+    left: 140px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px ridge slategray;
+}
+
+.job_1_icon {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.icon_1_select {
+    margin: -8px;
+    border-radius: 8px;
+    border: 8px ridge goldenrod;
+    box-shadow: 0 0 10px goldenrod;
+}
+
+.job_name {
+    position: relative;
+    width: 120px;
+    height: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: goldenrod;
+    text-shadow: 0 0 5px orangered;
+}
+
+#view_job_2_choose {
+    position: absolute;
+    width: 208px;
+    height: 604px;
+    top: 180px;
+    left: 803px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px ridge slategray;
+}
+
+.job_2_icon {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 32px;
+    border-radius: 8px;
+    border: 8px ridge dimgray;
+    box-shadow: 0 0 10px dimgray;
+}
+
+.icon_2_select {
+    margin: 32px;
+    border-radius: 8px;
+    border: 8px ridge goldenrod;
+    box-shadow: 0 0 20px goldenrod;
+}
+
+#view_job_info {
+    position: absolute;
+    width: 384px;
+    height: 400px;
+    top: 180px;
+    left: 1066px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px ridge slategray;
+}
+
+#view_job_name {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    top: 10px;
+    left: 20px;
+    text-align: left;
+    font-size: 30px;
+    letter-spacing: 5px;
+    font-weight: bolder;
+    color: goldenrod;
+    text-shadow: 0 0 5px goldenrod;
+}
+
+#view_job_info_1 {
+    position: relative;
+    width: 344px;
+    height: 60px;
+    padding: 20px;
+    line-height: 30px;
+    font-size: 20px;
+    color: silver;
+    text-shadow: 0 0 5px cornsilk;
+}
+
+#icon_job_skill_1 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 180px;
+    left: 30px;
+    margin: -4px;
+    border-radius: 4px;
+    border: 4px ridge dimgray;
+}
+
+#info_job_skill_1 {
+    position: absolute;
+    width: 275px;
+    height: 50px;
+    top: 180px;
+    left: 100px;
+    line-height: 25px;
+    font-size: 13px;
+    color: silver;
+    text-shadow: 0 0 1px cornsilk;
+}
+
+#icon_job_skill_2 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 260px;
+    left: 30px;
+    margin: -4px;
+    border-radius: 4px;
+    border: 4px ridge dimgray;
+}
+
+#info_job_skill_2 {
+    position: absolute;
+    width: 275px;
+    height: 50px;
+    top: 260px;
+    left: 100px;
+    line-height: 25px;
+    font-size: 13px;
+    color: silver;
+    text-shadow: 0 0 1px cornsilk;
+}
+
+#icon_job_skill_3 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 340px;
+    left: 30px;
+    margin: -4px;
+    border-radius: 4px;
+    border: 4px ridge dimgray;
+}
+
+#info_job_skill_3 {
+    position: absolute;
+    width: 275px;
+    height: 50px;
+    top: 340px;
+    left: 100px;
+    line-height: 25px;
+    font-size: 13px;
+    color: silver;
+    text-shadow: 0 0 1px cornsilk;
+}
+
+#view_name_info {
+    position: absolute;
+    width: 384px;
+    height: 154px;
+    top: 630px;
+    left: 1066px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px ridge slategray;
+}
+
+#view_name_input_title {
+    position: absolute;
+    height: 50px;
+    top: 30px;
+    left: 30px;
+    float: left;
+    line-height: 49px;
+    font-size: 30px;
+    color: goldenrod;
+    text-shadow: 0 0 1px orangered;
+}
+
+#view_name_input {
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 28px;
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 30px;
+    left: 130px;
+    border-radius: 5px;
+    border: 3px solid dimgray;
+    background-color: rgba(0, 0, 0, 0);
+    color: silver;
+}
+
+#create_character {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+    height: 50px;
+    top: 108px;
+    left: 100px;
+    font-size: 24px;
+    font-weight: bolder;
+    border-radius: 10px;
+    letter-spacing: 5px;
+    background-color: darkred;
+    color: goldenrod;
+    text-shadow: -1px -1px black;
+    border: 5px outset saddlebrown;
+}
+
+#create_character:hover {
+    border-color: goldenrod;
+}
+
+#create_character:focus {
+    outline: none;
+}
+
+#create_character:active {
+    border-style: inset;
+}
