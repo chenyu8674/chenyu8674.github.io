@@ -80,6 +80,6 @@ function init_skill_2_click() {
         let skill_name_2 = eval("dictionary_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().name");
         let skill_detail_2 = eval("dictionary_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().detail");
         $("#info_job_skill_3").text(skill_name_2 + "：" + skill_detail_2);
-        $("#view_name_input").focus();
+        // $("#view_name_input").focus();
     });
 }
