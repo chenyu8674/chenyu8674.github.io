@@ -57,7 +57,7 @@ function turn_loop() {
     battle_log("第 " + battle_turn + " 回合");
     // 更新战斗状态
     refresh_attribute(battle_member_1, battle_attribute_1, "battle_attribute_1");
-    refresh_attribute(battle_member_2, battle_attribute_2, "battle_attribute_2")
+    refresh_attribute(battle_member_2, battle_attribute_2, "battle_attribute_2");
     // 首回合输出双方战斗状态
     if (battle_turn === 1 && win_count_1 === 0 && win_count_2 === 0) {
         console.log(battle_attribute_1);

@@ -1,0 +1,24 @@
+#view_test {
+    z-index: 99;
+    width: 500px;
+}
+
+#control {
+    position: relative;
+    padding: 20px;
+    height: 20px;
+    width: 480px;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#log {
+    position: relative;
+    height: 820px;
+    width: 500px;
+    overflow-y: auto;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+}

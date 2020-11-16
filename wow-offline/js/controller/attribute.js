@@ -47,6 +47,7 @@ function refresh_attribute_equipments(member, flag) {
     if (battle_equipments != null && battle_equipments.length > 0) {
         for (let i = 0; i < battle_equipments.length; i++) {
             let equipments = battle_equipments[i];
+            equipments = equipments.effect;
             for (let j = 0; j < equipments.length; j++) {
                 let equipment = equipments[j];
                 eval(flag + "." + equipment);

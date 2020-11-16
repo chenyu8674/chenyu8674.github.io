@@ -1,11 +1,12 @@
 /** 常量定义 **/
 
+let MAX_LVL = 60;// 等级上限
+let MAX_EXP = 0;// 经验上限
 let max_res = 75;// 最大抗性(无加成)
-let max_res_over = 90;// 最大抗性(有加成)
 
 /** 系统设置 **/
 
-let show_detail_log = true;// 显示详细战斗过程
+let show_detail_log = false;// 显示详细战斗过程
 let in_test_mode = true;// 测试模式
 
 /** 攻击类型 **/
@@ -31,7 +32,7 @@ let str_to_attack_power = 2;
 let str_to_block_value = 0.5;
 
 let agi_to_hit_rate = 2;
-let agi_to_critical_rate = 2;
+let agi_to_critical_rate = 1;
 let agi_to_dodge_rate = 2;
 
 let sta_to_health_max = 15;
@@ -49,6 +50,6 @@ let hit_coefficient = 2;// 命中等级转化系数
 let dodge_coefficient = 2;// 躲闪等级转化系数
 let base_hit_chance = 85;// 基础命中率
 
-let critical_coefficient = 2;// 暴击等级转化系数
+let critical_coefficient = 1;// 暴击等级转化系数
 
 let block_coefficient = 2;// 格挡等级转化系数

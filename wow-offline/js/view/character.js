@@ -1,7 +1,6 @@
 /** 人物选择画面 **/
 let selected_job_1_name;
 let selected_job_1_index;
-let selected_job_2_name;
 let selected_job_2_index;
 let view_character;
 
@@ -9,7 +8,26 @@ $(document).ready(function () {
     view_character = $("#view_character");
     init_skill_1_click();
     $("#icon_warrior").click();
+    $("#create_character").click(function () {
+        let name = $("#view_name_input").val();
+        if (name.length >= 0) {
+            let job = selected_job_1_index + selected_job_2_index;
+            let flag = dictionary_job.job_flag[selected_job_1_index] + "_" + selected_job_2_index;
+            current_character = new_character(job, flag, name);
+            hide_view_character();
+            show_view_test();
+        }
+    });
+    show_view_character();
 });
+
+function show_view_character() {
+    view_character.show();
+}
+
+function hide_view_character() {
+    view_character.hide();
+}
 
 function init_skill_1_click() {
     $(".job_1_icon").click(function () {
@@ -27,11 +45,12 @@ function init_skill_1_click() {
 }
 
 function init_skill_2() {
-    $("#icon_job_2_1").attr("src", "img/skill/" + selected_job_1_name + "_1.jpg");
+    let icon_job_2_1 = $("#icon_job_2_1")
+    icon_job_2_1.attr("src", "img/skill/" + selected_job_1_name + "_1.jpg");
     $("#icon_job_2_2").attr("src", "img/skill/" + selected_job_1_name + "_2.jpg");
     $("#icon_job_2_3").attr("src", "img/skill/" + selected_job_1_name + "_3.jpg");
     init_skill_2_click();
-    $("#icon_job_2_1").click();
+    icon_job_2_1.click();
 }
 
 function init_skill_2_click() {
@@ -39,13 +58,12 @@ function init_skill_2_click() {
         $(".icon_2_select").removeClass("icon_2_select");
         $(this).addClass("icon_2_select");
         selected_job_2_index = parseInt($(this).attr("index"));
-        console.log(selected_job_1_index + selected_job_2_index)
-        console.log(dictionary_job.job_name[selected_job_1_index + selected_job_2_index])
         let name = dictionary_job.job_name[selected_job_1_index + selected_job_2_index];
         let color = dictionary_job.job_color[selected_job_1_index];
         // 职业名称
-        $("#view_job_name").text(name.substr(2) + "：" + name.substring(0, 2));
-        $("#view_job_name").css("color", color);
+        let view_job_name = $("#view_job_name");
+        view_job_name.text(name.substr(2) + "：" + name.substring(0, 2));
+        view_job_name.css("color", color);
         // 专精介绍
         $("#view_job_info_1").text(dictionary_job.job_info[selected_job_1_index + selected_job_2_index]);
         // 技能图标

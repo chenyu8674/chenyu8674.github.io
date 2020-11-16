@@ -60,11 +60,23 @@ function check_arena_over() {
     }
 }
 
+let test_two_hand_sword_str = create_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL);
+let test_two_hand_bow = create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL);
+let test_one_hand_sword_str = create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL);
+let test_one_hand_sword_int = create_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL);
+let test_shield_str = create_equipment("test_shield_str", MAX_LVL, MAX_LVL);
+let test_shield_int = create_equipment("test_shield_int", MAX_LVL, MAX_LVL);
+let test_book = create_equipment("test_book", MAX_LVL, MAX_LVL);
+let test_armor = create_equipment("test_armor", MAX_LVL, MAX_LVL);
+let test_chain = create_equipment("test_chain", MAX_LVL, MAX_LVL);
+let test_leather = create_equipment("test_leather", MAX_LVL, MAX_LVL);
+let test_cloth = create_equipment("test_cloth", MAX_LVL, MAX_LVL);
+
 let warrior_1 = function () {
     let warrior_1 = load_character(dictionary_job.warrior_1, MAX_EXP);
     warrior_1.buffs = [dictionary_buff.warrior_1];
     warrior_1.debuffs = [];
-    warrior_1.equipments = [dictionary_equipment.test_two_hand_sword_str, dictionary_equipment.test_armor];
+    warrior_1.equipments = [test_two_hand_sword_str, test_armor];
     warrior_1.skills = [dictionary_skill.warrior_1_1(), dictionary_skill.warrior_1_2()];
     return warrior_1;
 }
@@ -73,7 +85,7 @@ let warrior_2 = function () {
     let warrior_2 = load_character(dictionary_job.warrior_2, MAX_EXP);
     warrior_2.buffs = [dictionary_buff.warrior_2];
     warrior_2.debuffs = [];
-    warrior_2.equipments = [dictionary_equipment.test_one_hand_sword_str, dictionary_equipment.test_one_hand_sword_str, dictionary_equipment.test_armor];
+    warrior_2.equipments = [test_one_hand_sword_str, test_one_hand_sword_str, test_armor];
     warrior_2.skills = [dictionary_skill.warrior_2_1(), dictionary_skill.warrior_2_2()];
     return warrior_2;
 }
@@ -82,7 +94,7 @@ let warrior_3 = function () {
     let warrior_3 = load_character(dictionary_job.warrior_3, MAX_EXP);
     warrior_3.buffs = [dictionary_buff.warrior_3];
     warrior_3.debuffs = [];
-    warrior_3.equipments = [dictionary_equipment.test_one_hand_sword_str, dictionary_equipment.test_shield, dictionary_equipment.test_armor];
+    warrior_3.equipments = [test_one_hand_sword_str, test_shield_str, test_armor];
     warrior_3.skills = [dictionary_skill.warrior_3_1(), dictionary_skill.warrior_3_2()];
     return warrior_3;
 }
@@ -91,7 +103,7 @@ let paladin_1 = function () {
     let paladin_1 = load_character(dictionary_job.paladin_1, MAX_EXP);
     paladin_1.buffs = [dictionary_buff.paladin_1];
     paladin_1.debuffs = [];
-    paladin_1.equipments = [dictionary_equipment.test_one_hand_sword_int, dictionary_equipment.test_shield, dictionary_equipment.test_armor];
+    paladin_1.equipments = [test_one_hand_sword_int, test_shield_int, test_armor];
     paladin_1.skills = [dictionary_skill.paladin_1_1(), dictionary_skill.paladin_1_2()];
     return paladin_1;
 }
@@ -100,7 +112,7 @@ let paladin_2 = function () {
     let paladin_2 = load_character(dictionary_job.paladin_2, MAX_EXP);
     paladin_2.buffs = [dictionary_buff.paladin_2];
     paladin_2.debuffs = [];
-    paladin_2.equipments = [dictionary_equipment.test_one_hand_sword_str, dictionary_equipment.test_shield, dictionary_equipment.test_armor];
+    paladin_2.equipments = [test_one_hand_sword_str, test_shield_str, test_armor];
     paladin_2.skills = [dictionary_skill.paladin_2_1(), dictionary_skill.paladin_2_2()];
     return paladin_2;
 }
@@ -109,16 +121,25 @@ let paladin_3 = function () {
     let paladin_3 = load_character(dictionary_job.paladin_3, MAX_EXP);
     paladin_3.buffs = [dictionary_buff.paladin_3];
     paladin_3.debuffs = [];
-    paladin_3.equipments = [dictionary_equipment.test_two_hand_sword_str, dictionary_equipment.test_armor];
+    paladin_3.equipments = [test_two_hand_sword_str, test_armor];
     paladin_3.skills = [dictionary_skill.paladin_3_1(), dictionary_skill.paladin_3_2()];
     return paladin_3;
+}
+
+let hunter_1 = function () {
+    let hunter_1 = load_character(dictionary_job.hunter_1, MAX_EXP);
+    hunter_1.buffs = [dictionary_buff.hunter_1];
+    hunter_1.debuffs = [];
+    hunter_1.equipments = [test_two_hand_bow, test_leather];
+    hunter_1.skills = [dictionary_skill.hunter_1_1(), dictionary_skill.hunter_1_2()];
+    return hunter_1;
 }
 
 let mage_2 = function () {
     let mage_2 = load_character(dictionary_job.mage_2, MAX_EXP);
     mage_2.buffs = [dictionary_buff.warrior_2];
     mage_2.debuffs = [];
-    mage_2.equipments = [dictionary_equipment.test_one_hand_sword_int, dictionary_equipment.test_book, dictionary_equipment.test_cloth];
+    mage_2.equipments = [test_one_hand_sword_int, test_book, test_cloth];
     mage_2.skills = [dictionary_skill.mage_2_1(), dictionary_skill.mage_2_2()];
     return mage_2;
 }

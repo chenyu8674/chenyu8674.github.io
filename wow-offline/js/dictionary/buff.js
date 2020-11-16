@@ -69,7 +69,7 @@ function new_buff() {
     ];
 
     // 圣盾术：免疫伤害，持续Y回合X
-    buff.paladin_2_2_T = 3;// 持续回合，-1为永久
+    buff.paladin_2_2_T = 2;// 持续回合，-1为永久
     buff.paladin_2_2_X = 999;
     buff.paladin_2_2 = [
         buff.paladin_2_2_T,
@@ -88,9 +88,11 @@ function new_buff() {
     ];
 
     // 兽王
-    // 蝰蛇守护：每次命中目标时，回复X%的最大生命值
+    // 自然守护：每次命中目标时，回复X%的最大生命值
     buff.hunter_1_T = -1;// 持续回合，-1为永久
     buff.hunter_1_X = 2;
+    buff.hunter_1_name = "自然守护";
+    buff.hunter_1_detail = "每次命中目标时，回复" + buff.hunter_1_X + "%最大生命值";
     buff.hunter_1 = [
         buff.hunter_1_T,
         "health_percent+=0"
@@ -100,6 +102,8 @@ function new_buff() {
     // 雄鹰守护：攻击强度百分比+X%
     buff.hunter_2_T = -1;// 持续回合，-1为永久
     buff.hunter_2_X = 15;
+    buff.hunter_2_name = "雄鹰守护";
+    buff.hunter_2_detail = "攻击强度百分比+" + buff.hunter_2_X + "%";
     buff.hunter_2 = [
         buff.hunter_2_T,
         "attack_power_percent+=" + buff.hunter_2_X
@@ -109,6 +113,8 @@ function new_buff() {
     // 灵猴守护：闪避等级百分比+X%
     buff.hunter_3_T = -1;// 持续回合，-1为永久
     buff.hunter_3_X = 15;
+    buff.hunter_3_name = "灵猴守护";
+    buff.hunter_3_detail = "闪避等级百分比+" + buff.hunter_3_X + "%";
     buff.hunter_3 = [
         buff.hunter_3_T,
         "dodge_rate_percent+=" + buff.hunter_3_X

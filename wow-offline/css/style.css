@@ -15,109 +15,10 @@ body {
     height: 900px;
 }
 
-.gray {
-    /*grayscale(val):val值越大灰度就越深*/
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-    filter: gray;
-}
-
-#view_map {
-    z-index: 1;
-    background-image: url(../img/map.jpg);
-    background-size: 1600px 900px;
-}
-
-#view_test {
-    z-index: 99;
-}
-
-#control {
-    position: relative;
-    padding: 20px;
-    height: 20px;
-    width: 380px;
-    top: 0;
-    left: 0;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-#log {
-    position: relative;
-    height: 820px;
-    width: 400px;
-    overflow-y: auto;
-    padding-left: 20px;
-    padding-bottom: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
 .map_dot {
     position: fixed;
     width: 20px;
     height: 20px;
     border-radius: 15px;
     border-width: 5px;
-}
-
-.normal {
-    background-image: linear-gradient(to bottom right, greenyellow, forestgreen);
-    border-style: outset;
-    border-color: saddlebrown;
-}
-
-.normal:hover {
-    background-image: linear-gradient(to bottom right, forestgreen, greenyellow);
-    border-style: inset;
-    border-color: darkred;
-}
-
-.instance {
-    background-image: linear-gradient(to bottom right, lightskyblue, dodgerblue);
-    border-style: outset;
-    border-color: saddlebrown;
-}
-
-.instance:hover {
-    background-image: linear-gradient(to bottom right, dodgerblue, lightskyblue);
-    border-style: inset;
-    border-color: darkred;
-}
-
-.raid_10 {
-    background-image: linear-gradient(to bottom right, deeppink, rebeccapurple);
-    border-style: outset;
-    border-color: saddlebrown;
-}
-
-.raid_10:hover {
-    background-image: linear-gradient(to bottom right, rebeccapurple, deeppink);
-    border-style: inset;
-    border-color: darkred;
-}
-
-.raid_40 {
-    background-image: linear-gradient(to bottom right, yellow, darkorange);
-    border-style: outset;
-    border-color: saddlebrown;
-}
-
-.raid_40:hover {
-    background-image: linear-gradient(to bottom right, darkorange, yellow);
-    border-style: inset;
-    border-color: darkred;
-}
-
-.info_window {
-    position: fixed;
-    width: auto;
-    height: auto;
-    padding: 5px 20px 5px 10px;
-    color: whitesmoke;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.9);
-    border: 3px ridge slategray;
 }

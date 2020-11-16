@@ -1,0 +1,64 @@
+#view_map {
+    z-index: 1;
+    background-image: url(../img/map.jpg);
+    background-size: 1600px 900px;
+}
+
+.normal {
+    background-image: linear-gradient(to bottom right, greenyellow, forestgreen);
+    border-style: outset;
+    border-color: saddlebrown;
+}
+
+.normal:hover {
+    background-image: linear-gradient(to bottom right, forestgreen, greenyellow);
+    border-style: inset;
+    border-color: darkred;
+}
+
+.instance {
+    background-image: linear-gradient(to bottom right, lightskyblue, dodgerblue);
+    border-style: outset;
+    border-color: saddlebrown;
+}
+
+.instance:hover {
+    background-image: linear-gradient(to bottom right, dodgerblue, lightskyblue);
+    border-style: inset;
+    border-color: darkred;
+}
+
+.raid_10 {
+    background-image: linear-gradient(to bottom right, deeppink, rebeccapurple);
+    border-style: outset;
+    border-color: saddlebrown;
+}
+
+.raid_10:hover {
+    background-image: linear-gradient(to bottom right, rebeccapurple, deeppink);
+    border-style: inset;
+    border-color: darkred;
+}
+
+.raid_40 {
+    background-image: linear-gradient(to bottom right, yellow, darkorange);
+    border-style: outset;
+    border-color: saddlebrown;
+}
+
+.raid_40:hover {
+    background-image: linear-gradient(to bottom right, darkorange, yellow);
+    border-style: inset;
+    border-color: darkred;
+}
+
+.info_window {
+    position: fixed;
+    width: auto;
+    height: auto;
+    padding: 5px 20px 5px 10px;
+    color: whitesmoke;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px ridge slategray;
+}

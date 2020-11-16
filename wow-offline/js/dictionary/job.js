@@ -19,6 +19,7 @@ function new_job() {
      */
     job.job_color = [];
     job.job_name = [];
+    job.job_flag = [];
     job.job_info = [];
     // 初始属性
     job.base_property = [];
@@ -32,14 +33,15 @@ function new_job() {
 
     // 职业：战士
     job.warrior = 10;
-    job.base_property[job.warrior] = [18, 10, 18, 4, 3];
-    job.upgrade_property[job.warrior] = [3.6, 2, 3.6, 0.8, 0.6];
+    job.base_property[job.warrior] = [18, 9, 18, 4, 4];
+    job.upgrade_property[job.warrior] = [3.6, 1.8, 3.6, 0.8, 0.8];
 
     job.warrior_1 = 11;
     job.warrior_2 = 12;
     job.warrior_3 = 13;
     job.job_color[job.warrior] = "#C69B6D";
     job.job_name[job.warrior] = "战士";
+    job.job_flag[job.warrior] = "warrior";
     job.job_name[job.warrior_1] = "武器战士";
     job.job_info[job.warrior_1] = "久经沙场的武器大师，移动灵活，攻击充满压制性。";
     job.job_name[job.warrior_2] = "狂暴战士";
@@ -57,6 +59,7 @@ function new_job() {
     job.paladin_3 = 23;
     job.job_color[job.paladin] = "#F48CBA";
     job.job_name[job.paladin] = "圣骑士";
+    job.job_flag[job.paladin] = "paladin";
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
     job.job_name[job.paladin_2] = "防护圣骑士";
@@ -66,8 +69,8 @@ function new_job() {
 
     // 职业：猎人
     job.hunter = 30;
-    job.base_property[job.hunter] = [12, 16, 10, 8, 4];
-    job.upgrade_property[job.hunter] = [2.4, 3.2, 2, 1.6, 0.8];
+    job.base_property[job.hunter] = [12, 17, 10, 7, 4];
+    job.upgrade_property[job.hunter] = [2.4, 3.4, 2, 1.4, 0.8];
     job.hunter_1 = 31
     job.hunter_2 = 32
     job.hunter_3 = 33
@@ -82,13 +85,13 @@ function new_job() {
     job.upgrade_property[job.shaman] = [2.8, 1.6, 1.2, 2.8, 2.8];
     // 元素
     // 灼热图腾：每回合造成X%法术强度的火焰伤害
-    // 闪电箭：造成X%法术强度的自然伤害
-    // 冰霜震击：每隔X回合使用，造成X%法术强度的冰霜伤害，并使敌人下一次攻击的伤害降低Y%
+    // 地震术：造成X%法术强度的自然伤害，并使敌人下一次攻击的伤害降低Y%
+    // 冰霜震击：造成X%法术强度的冰霜伤害，并使敌人的敏捷降低Y%，持续Z回合
     job.shaman_1 = 41;
     // 增强
-    // 大地之力图腾：力量和敏捷+X%
-    // 风怒打击：造成X%攻击强度的物理伤害，有Y%的几率再次攻击
-    // 幽灵狼：每隔X回合使用，每回合造成2次Y%攻击强度的物理伤害，持续Z回合
+    // 风怒图腾：有Y%的几率再次攻击
+    // 风怒打击：造成X%攻击强度的物理伤害
+    // 风暴打击：造成2次Y%攻击强度的物理伤害
     job.shaman_2 = 42;
     // 恢复
     // 治疗之泉图腾：每回合回复X%治疗强度的生命

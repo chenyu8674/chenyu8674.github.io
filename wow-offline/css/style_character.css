@@ -26,14 +26,69 @@
     left: 140px;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.5);
     border: 3px ridge slategray;
 }
 
+.gray {
+    /*grayscale(val):val值越大灰度就越深*/
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
+
 .job_1_icon {
-    position: relative;
+    position: absolute;
     width: 200px;
     height: 200px;
+}
+
+#icon_warrior {
+    top: 10px;
+    left: 10px;
+}
+
+#icon_paladin {
+    top: 10px;
+    left: 210px;
+}
+
+#icon_hunter {
+    top: 10px;
+    left: 410px;
+}
+
+#icon_shaman {
+    top: 210px;
+    left: 10px;
+}
+
+#icon_druid {
+    top: 210px;
+    left: 210px;
+}
+
+#icon_rogue {
+    top: 210px;
+    left: 410px;
+}
+
+#icon_priest {
+    top: 410px;
+    left: 10px;
+}
+
+#icon_warlock {
+    top: 410px;
+    left: 210px;
+}
+
+#icon_mage {
+    top: 410px;
+    left: 410px;
 }
 
 .icon_1_select {
@@ -61,7 +116,7 @@
     left: 803px;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.5);
     border: 3px ridge slategray;
 }
 
@@ -90,7 +145,7 @@
     left: 1066px;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.5);
     border: 3px ridge slategray;
 }
 
@@ -196,7 +251,7 @@
     left: 1066px;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.5);
     border: 3px ridge slategray;
 }
 

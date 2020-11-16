@@ -5,13 +5,17 @@
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_character.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style_map.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style_test.css"/>
 
     <script type="text/javascript" src="js/util/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="js/util/util.js"></script>
 
+    <script type="text/javascript" src="js/dictionary/affix.js"></script>
+    <script type="text/javascript" src="js/dictionary/affix_random.js"></script>
     <script type="text/javascript" src="js/dictionary/base_attribute.js"></script>
-    <script type="text/javascript" src="js/dictionary/buff.js"></script>
     <script type="text/javascript" src="js/dictionary/base_character.js"></script>
+    <script type="text/javascript" src="js/dictionary/buff.js"></script>
     <script type="text/javascript" src="js/dictionary/constant.js"></script>
     <script type="text/javascript" src="js/dictionary/debuff.js"></script>
     <script type="text/javascript" src="js/dictionary/equipment.js"></script>
@@ -20,12 +24,14 @@
     <script type="text/javascript" src="js/dictionary/skill.js"></script>
 
     <script type="text/javascript" src="js/controller/attribute.js"></script>
-    <script type="text/javascript" src="js/script/battle.js"></script>
+    <script type="text/javascript" src="js/controller/equipment.js"></script>
     <script type="text/javascript" src="js/controller/level.js"></script>
-    <script type="text/javascript" src="js/script/battle_log.js"></script>
     <script type="text/javascript" src="js/controller/skill.js"></script>
 
+    <script type="text/javascript" src="js/script/battle.js"></script>
+    <script type="text/javascript" src="js/script/battle_log.js"></script>
     <script type="text/javascript" src="js/script/init.js"></script>
+
     <script type="text/javascript" src="js/view/map.js"></script>
     <script type="text/javascript" src="js/view/test.js"></script>
 
@@ -74,7 +80,7 @@
     <div id="view_name_info">
         <div id="view_name_input_title">名称：</div>
         <label for="view_name_input"></label>
-        <input id="view_name_input" maxlength="6" />
+        <input id="view_name_input" maxlength="6"/>
         <button id="create_character">开始游戏</button>
     </div>
 </div>
@@ -108,8 +114,9 @@
             <option value="paladin_1">神圣圣骑士</option>
             <option value="paladin_2">防护圣骑士</option>
             <option value="paladin_3">惩戒圣骑士</option>
+            <option value="hunter_1">兽王猎人</option>
             <option value="mage_2">火焰法师</option>
-            <option value="test_monster">测试怪物</option>
+            <!--            <option value="test_monster">测试怪物</option>-->
         </select>
         <label for="member_2"></label>
         <select id="member_2">
@@ -119,8 +126,9 @@
             <option value="paladin_1">神圣圣骑士</option>
             <option value="paladin_2">防护圣骑士</option>
             <option value="paladin_3">惩戒圣骑士</option>
+            <option value="hunter_1">兽王猎人</option>
             <option value="mage_2">火焰法师</option>
-            <option value="test_monster">测试怪物</option>
+            <!--            <option value="test_monster">测试怪物</option>-->
         </select>
         &nbsp;
         <label for="battle_time"></label>
