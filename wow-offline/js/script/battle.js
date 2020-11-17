@@ -109,8 +109,53 @@ function turn_loop() {
  * 执行攻击动作
  */
 function do_attack(battle_1, skill, battle_2, win_count) {
-    let damage1 = skill.cast(battle_1, battle_2);// 造成伤害
-    battle_2.current_health_point -= damage1;
+    // 技能施放
+    let skill_cast_result = skill.cast(battle_1, battle_2);
+    // 结算伤害
+    let damage_list = skill_cast_result.damage_list;
+    for (let i = 0; i < damage_list.length; i++) {
+        let damage_obj = damage_list[i];
+        if (damage_obj == null) {
+            continue;
+        }
+        if (damage_obj.is_hit) {
+            damage_log(damage_obj);
+        } else {
+            miss_log(damage_obj);
+        }
+        let damage_value = damage_obj.damage_value;
+        battle_2.current_health_point -= damage_value;
+    }
+    // 结算治疗
+    let heal_list = skill_cast_result.heal_list;
+    for (let i = 0; i < heal_list.length; i++) {
+        let heal_obj = heal_list[i];
+        if (heal_obj == null) {
+            continue;
+        }
+        heal_log(heal_obj);
+        let heal_value = heal_obj.heal_value;
+        if (heal_value > 0) {
+            battle_1.current_health_point += heal_value;
+            if (battle_1.current_health_point > battle_1.health_point) {
+                battle_1.current_health_point = battle_1.health_point;
+            }
+        }
+    }
+    // 结算护盾
+    let shield_list = skill_cast_result.shield_list;
+    for (let i = 0; i < shield_list.length; i++) {
+        let shield_obj = shield_list[i];
+        if (shield_obj == null) {
+            continue;
+        }
+        shield_log(shield_obj);
+        let shield_value = shield_obj.shield_value;
+        if (shield_value > 0) {
+            battle_1.current_shield_point += shield_value;
+        }
+    }
+    // 战败判定
     if (is_death(battle_2)) {
         eval(win_count + "++");
         if (!in_test_mode || win_count_1 + win_count_2 === battle_time) {

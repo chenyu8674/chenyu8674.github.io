@@ -17,24 +17,27 @@ function draw_map() {
             continue;
         }
         let dot = $("<div></div>");
-        if (map_info[3] === 1) {
+        if (map_info.type === 1) {
             dot.addClass("map_dot normal");
         }
-        if (map_info[3] === 5) {
+        if (map_info.type === 5) {
             dot.addClass("map_dot instance");
         }
-        if (map_info[3] === 10) {
+        if (map_info.type === 10) {
             dot.addClass("map_dot raid_10");
         }
-        if (map_info[3] === 40) {
+        if (map_info.type === 40) {
             dot.addClass("map_dot raid_40");
         }
-        dot.css("left", 1600 * map_info[4] / 100 + "px");
-        dot.css("top", 900 * map_info[5] / 100 + "px");
+        dot.css("left", 1600 * map_info.x / 100 + "px");
+        dot.css("top", 900 * map_info.y / 100 + "px");
         dot.hover(function () {
             show_map_info(i);
         }, function () {
             hide_map_info(i);
+        });
+        dot.click(function () {
+            show_battle_view(map_info);
         });
         view_map.append(dot);
     }
@@ -49,27 +52,29 @@ function show_map_info(index) {
     info.attr('id', 'map_info');
     info.addClass("info_window");
     let map_info = dictionary_map[index];
-    info.css("left", 1600 * map_info[4] / 100 + 25 + "px");
-    info.css("top", 900 * map_info[5] / 100 + 25 + "px");
-    if (map_info[3] === 1) {
+    info.css("left", 1600 * map_info.x / 100 + 25 + "px");
+    info.css("top", 900 * map_info.y / 100 + 25 + "px");
+    if (map_info.type === 1) {
         info.append("<p style='color:forestgreen'>练级地图</p>");
-        info.append("<p>" + map_info[1] + "</p>");// 地图名称
-        info.append("<p>怪物等级：" + map_info[6] + "~" + map_info[7] + "</p>");// 怪物等级
+        info.append("<p>" + map_info.name + "</p>");// 地图名称
+        info.append("<p>怪物等级：" + map_info.min + "~" + map_info.max + "</p>");// 怪物等级
     }
-    if (map_info[3] === 5) {
+    if (map_info.type === 5) {
         info.append("<p style='color:dodgerblue'>小队副本</p>");
-        info.append("<p>" + map_info[1] + "</p>");// 地图名称
-        info.append("<p>怪物等级：" + map_info[6] + "~" + map_info[7] + "</p>");// 怪物等级
+        info.append("<p>" + map_info.name + "</p>");// 地图名称
+        info.append("<p>怪物等级：" + map_info.min + "~" + map_info.max + "</p>");// 怪物等级
     }
-    if (map_info[3] === 10) {
+    if (map_info.type === 10) {
         info.append("<p style='color:rebeccapurple'>小型团队副本</p>");
-        info.append("<p>" + map_info[1] + "</p>");// 地图名称
+        info.append("<p>" + map_info.name + "</p>");//
+        info.append("<p>掉落等级：" + map_info.min + "~" + map_info.max + "</p>");// 掉落等级
     }
-    if (map_info[3] === 40) {
+    if (map_info.type === 40) {
         info.append("<p style='color:darkorange'>大型团队副本</p>");
-        info.append("<p>" + map_info[1] + "</p>");// 地图名称
+        info.append("<p>" + map_info.name + "</p>");// 地图名称
+        info.append("<p>掉落等级：" + map_info.min + "~" + map_info.max + "</p>");// 掉落等级
     }
-    info.append("<p style='color:goldenrod'>" + map_info[2] + "</p>");// 地图介绍
+    info.append("<p style='color:goldenrod'>" + map_info.detail + "</p>");// 地图介绍
     view_map.append(info);
 }
 

@@ -1,0 +1,17 @@
+#view_battle {
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.9);
+    background-size: 1600px 900px;
+    display: none;
+}
+
+#battle_map {
+    position: absolute;
+    width: 926px;
+    height: 618px;
+    top: 100px;
+    left: 100px;
+    border-radius: 10px;
+    border: 5px ridge gray;
+    background-size: 772px 515px;
+}

@@ -3,7 +3,7 @@
     width: 500px;
 }
 
-#control {
+#test_control {
     position: relative;
     padding: 20px;
     height: 20px;
@@ -13,7 +13,7 @@
     background-color: rgba(255, 255, 255, 0.8);
 }
 
-#log {
+#test_log {
     position: relative;
     height: 820px;
     width: 500px;

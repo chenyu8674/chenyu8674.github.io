@@ -1,4 +1,4 @@
-/** 词缀一览 **/
+/** 装备基础属性 **/
 let dictionary_affix = new_affix();
 
 /**

@@ -52,7 +52,7 @@ function check_arena_over() {
         console.log(win_count_1 + win_count_2);
     }
     if (win_count_1 + win_count_2 === battle_time) {
-        let log_view = $("#log");
+        let log_view = $("#test_log");
         log_view.html(battle_log_text);
         log_view.scrollTop(log_view[0].scrollHeight);
     } else {
