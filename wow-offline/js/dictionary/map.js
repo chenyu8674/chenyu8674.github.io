@@ -56,7 +56,7 @@ function new_map() {
     map[1001] = {
         id:1001,
         name:"死亡矿井",
-        map:"thedeadmines",
+        map:"deadmines1",
         detail:"\"蠢货，我们的事业是正义的！\"",
         type:5,
         x:73,
