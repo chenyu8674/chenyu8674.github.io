@@ -21,6 +21,5 @@ function show_battle_view(map_info) {
     view_battle.click(function () {
         hide_view_battle();
     });
-    console.log(map_info)
     battle_map.attr("src", "img/map/" + map_info.map + ".jpg");
 }
