@@ -1,19 +1,33 @@
-/** 地图绘制 **/
+/** 地图界面 **/
 
 let view_map;
 
 $(document).ready(function () {
     view_map = $("#view_map");
-    draw_map();
 });
+
+
+function show_view_map() {
+    view_map.show();
+    draw_map();
+}
+
+function hide_view_map() {
+    view_map.hide();
+}
+
 
 /**
  * 绘制地图点
  */
 function draw_map() {
+    let current_lvl = current_character == null ? 1 : current_character.lvl;
     for (let i = 0; i < dictionary_map.length; i++) {
         let map_info = dictionary_map[i];
         if (map_info == null) {
+            continue;
+        }
+        if (map_info.min > current_lvl) {
             continue;
         }
         let dot = $("<div></div>");
@@ -55,25 +69,26 @@ function show_map_info(index) {
     info.css("left", 1600 * map_info.x / 100 + 25 + "px");
     info.css("top", 900 * map_info.y / 100 + 25 + "px");
     if (map_info.type === 1) {
-        info.append("<p style='color:forestgreen'>练级地图</p>");
+        info.append("<p style='color:" + color_rare_3 + "'>练级地图</p>");
         info.append("<p>" + map_info.name + "</p>");// 地图名称
         info.append("<p>怪物等级：" + map_info.min + "~" + map_info.max + "</p>");// 怪物等级
     }
     if (map_info.type === 5) {
-        info.append("<p style='color:dodgerblue'>小队副本</p>");
+        info.append("<p style='color:" + color_rare_4 + "'>小队副本</p>");
         info.append("<p>" + map_info.name + "</p>");// 地图名称
         info.append("<p>怪物等级：" + map_info.min + "~" + map_info.max + "</p>");// 怪物等级
     }
     if (map_info.type === 10) {
-        info.append("<p style='color:rebeccapurple'>小型团队副本</p>");
+        info.append("<p style='color:" + color_rare_5 + "'>小型团队副本</p>");
         info.append("<p>" + map_info.name + "</p>");//
         info.append("<p>掉落等级：" + map_info.min + "~" + map_info.max + "</p>");// 掉落等级
     }
     if (map_info.type === 40) {
-        info.append("<p style='color:darkorange'>大型团队副本</p>");
+        info.append("<p style='color:" + color_rare_6 + "'>大型团队副本</p>");
         info.append("<p>" + map_info.name + "</p>");// 地图名称
         info.append("<p>掉落等级：" + map_info.min + "~" + map_info.max + "</p>");// 掉落等级
     }
+    info.css("min-width", "120px");
     info.append("<p style='color:goldenrod'>" + map_info.detail + "</p>");// 地图介绍
     view_map.append(info);
 }

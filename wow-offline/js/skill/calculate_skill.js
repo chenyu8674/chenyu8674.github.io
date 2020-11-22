@@ -85,7 +85,6 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
     /* 计算增减伤百分比 */
     let dmg;// 攻击者属性伤害百分比
     let res;// 目标属性减伤百分比
-    let element_name = get_element_name(element_type);// 属性名称
     switch (element_type) {
         case element_none:
             dmg = 100;
@@ -119,7 +118,7 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
             dmg = attacker.damage_holy;
             res = target.res_holy - attacker.pierce_holy;
             break;
-        case element_dark:
+        case element_shadow:
             dmg = attacker.damage_dark;
             res = target.res_dark - attacker.pierce_dark;
             break;
@@ -161,23 +160,23 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
             damage_value = 0;
         }
     }
+    damage_value = Math.round(damage_value);
     // 计算伤害吸收
     let absorb_value = 0;
-    let shield_point = target.current_shield_point;
+    let shield_point = target.current_shield_value;
     if (damage_value > 0 && shield_point > 0) {
         if (damage_value > shield_point) {
             // 伤害吸收护盾被击穿
             damage_value -= shield_point;
             absorb_value = shield_point;
-            target.current_shield_point = 0;
+            target.current_shield_value = 0;
         } else {
-            target.current_shield_point -= damage_value;
+            target.current_shield_value -= damage_value;
             absorb_value = damage_value;
             damage_value = 0;
         }
     }
     // 数值取整
-    damage_value = Math.round(damage_value);
     block_value = Math.round(block_value);
     absorb_value = Math.round(absorb_value);
     // 生成结果
@@ -308,10 +307,8 @@ function calculate_armor_magic(attacker, target) {
  * @return {number}
  */
 function calculate_hit(attacker, target) {
-    let hit_rate = attacker.hit_rate;// 最终命中等级
-    let dodge_rate = target.dodge_rate;// 最终闪避等级
-    let hit_chance = (hit_rate * hit_coefficient / attacker.lvl + attacker.hit_chance_final);
-    let dodge_chance = dodge_rate * dodge_coefficient / target.lvl + target.dodge_chance_final;
+    let hit_chance = (attacker.hit_rate * hit_coefficient / attacker.lvl + attacker.hit_chance_final);
+    let dodge_chance = target.dodge_rate * dodge_coefficient / target.lvl + target.dodge_chance_final;
     hit_chance = (base_hit_chance + hit_chance - dodge_chance) / 100;
     if (show_detail_log) {
         battle_log("命中率：" + hit_chance * 100);
@@ -326,8 +323,7 @@ function calculate_hit(attacker, target) {
  * @return {number}
  */
 function calculate_critical(attacker, target) {
-    let critical_rate = attacker.critical_rate;// 最终暴击等级
-    let critical_chance = (critical_rate * critical_coefficient / attacker.lvl + attacker.critical_chance_final) / 100;
+    let critical_chance = (attacker.critical_rate * critical_coefficient / attacker.lvl + attacker.critical_chance_final) / 100;
     if (show_detail_log) {
         battle_log("暴击率：" + critical_chance * 100);
     }
@@ -341,8 +337,7 @@ function calculate_critical(attacker, target) {
  * @return {number}
  */
 function calculate_block(attacker, target) {
-    let block_rate = target.block_rate;
-    let block_chance = (block_rate * block_coefficient / target.lvl + target.block_chance_final) / 100;
+    let block_chance = (target.block_rate * block_coefficient / target.lvl + target.block_chance_final) / 100;
     if (show_detail_log) {
         battle_log("格挡率：" + block_chance * 100);
     }
@@ -403,7 +398,7 @@ function get_element_name(element_type) {
             return "奥术";
         case element_holy:
             return "神圣";
-        case element_dark:
+        case element_shadow:
             return "暗影";
     }
 }

@@ -3,40 +3,45 @@
 let battle_timer = -1;// 回合标识
 let turn_time = 1000;// 回合时间
 
-let battle_member_1;// 我方原始状态
-let battle_member_2;// 敌方原始状态
+let role_base_1;// 我方原始状态
+let role_base_2;// 敌方原始状态
 
-let battle_attribute_1;// 我方战斗状态
-let battle_attribute_2;// 敌方战斗状态
+let role_battle_1;// 我方战斗状态
+let role_health_1;// 我方当前血量
+let role_shield_1;// 我方当前护盾
+let role_battle_2;// 敌方战斗状态
+let role_health_2;// 敌方当前血量
+let role_shield_2;// 敌方当前护盾
 
+let battle_time = 1;// 战斗进行次数
 let battle_turn = 1;// 当前回合数
+
+let turn_callback;// 回合完成回调
+let battle_callback;// 战斗完成回调
 
 /**
  * 战斗初始化
- * @param member1
- * @param member2
+ * @param role_1
+ * @param role_2
+ * @param t_callback
+ * @param b_callback
  */
-function init_battle(member1, member2) {
+function start_battle(role_1, role_2, t_callback, b_callback) {
     // 战斗初始化
     battle_turn = 1;
     init_skill_states();
     // 状态初始化
-    battle_member_1 = member1;
-    battle_attribute_1 = {};
-    battle_member_2 = member2;
-    battle_attribute_2 = {};
-    // 技能按优先级排序
-    battle_member_1.skills.sort(
-        function (a, b) {
-            return b.priority - a.priority;
-        });
-    battle_member_2.skills.sort(
-        function (a, b) {
-            return b.priority - a.priority;
-        });
+    role_base_1 = role_1;
+    role_base_2 = role_2;
+    role_health_1 = current_health_value;
+    role_shield_1 = current_shield_value;
+    role_health_2 = 0;
+    role_shield_2 = 0;
+    turn_callback = t_callback;
+    battle_callback = b_callback;
     // 开始回合循环
     clearTimeout(battle_timer);
-    turn_loop();
+    battle_timer = setTimeout(turn_loop, 0);
 }
 
 /**
@@ -44,73 +49,117 @@ function init_battle(member1, member2) {
  * @returns {boolean} 战斗是否结束
  */
 function turn_loop() {
-    // 100回合不分胜负则判定为平局
-    if (battle_turn === 100) {
-        battle_log("双方平手");
-        win_count_1 += 0.5;
-        win_count_2 += 0.5;
-        if (in_test_mode) {
-            check_arena_over();
-        }
-        return true;
-    }
+    // 随机打乱技能
+    role_base_1.skills.sort(function () {
+        return (0.5 - Math.random());
+    });
+    role_base_2.skills.sort(function () {
+        return (0.5 - Math.random());
+    });
+    // 技能按优先级排序
+    role_base_1.skills.sort(function (a, b) {
+        return b.priority - a.priority;
+    });
+    role_base_2.skills.sort(function (a, b) {
+        return b.priority - a.priority;
+    });
+    battle_log("");
     battle_log("第 " + battle_turn + " 回合");
     // 更新战斗状态
-    refresh_attribute(battle_member_1, battle_attribute_1, "battle_attribute_1");
-    refresh_attribute(battle_member_2, battle_attribute_2, "battle_attribute_2");
+    role_battle_1 = get_battle_attribute(role_base_1, "battle_1");
+    role_battle_2 = get_battle_attribute(role_base_2, "battle_2");
+    // 设置生命值
+    role_battle_1.current_health_value = current_health_value;
+    role_battle_1.current_shield_value = current_shield_value;
+    if (battle_turn === 1) {
+        role_battle_2.current_health_value = role_battle_2.max_health_value;
+    } else {
+        role_battle_2.current_health_value = role_health_2;
+        role_battle_2.current_shield_value = role_shield_2;
+    }
     // 首回合输出双方战斗状态
-    if (battle_turn === 1 && win_count_1 === 0 && win_count_2 === 0) {
-        console.log(battle_attribute_1);
-        console.log(battle_attribute_2);
+    if (battle_turn === 1) {
+        if (in_test_mode) {
+            if (win_count_1 + win_count_2 === 0) {
+                console.log(role_battle_1);
+                console.log(role_battle_2);
+            }
+        } else {
+            console.log(role_battle_1);
+            console.log(role_battle_2);
+        }
     }
     // 判断敌我施放技能
     let skill_1, skill_2;
-    for (let i = 0; i < battle_attribute_1.skills.length; i++) {
-        if (battle_attribute_1.skills[i].attempt == null ||
-            battle_attribute_1.skills[i].attempt(battle_attribute_1, battle_attribute_2)) {
-            skill_1 = battle_attribute_1.skills[i];
+    for (let i = 0; i < role_battle_1.skills.length; i++) {
+        if (role_battle_1.skills[i].attempt == null ||
+            role_battle_1.skills[i].attempt(role_battle_1, role_battle_2)) {
+            skill_1 = role_battle_1.skills[i];
             break;
         }
     }
-    for (let i = 0; i < battle_attribute_2.skills.length; i++) {
-        if (battle_attribute_2.skills[i].attempt == null ||
-            battle_attribute_2.skills[i].attempt(battle_attribute_2, battle_attribute_1)) {
-            skill_2 = battle_attribute_2.skills[i];
+    for (let i = 0; i < role_battle_2.skills.length; i++) {
+        if (role_battle_2.skills[i].attempt == null ||
+            role_battle_2.skills[i].attempt(role_battle_2, role_battle_1)) {
+            skill_2 = role_battle_2.skills[i];
             break;
         }
     }
     // 判断出手顺序
-    if (Math.random() < battle_attribute_1.agi / (battle_attribute_1.agi + battle_attribute_2.agi)) {
-        if (do_attack(battle_attribute_1, skill_1, battle_attribute_2, "win_count_1")) {
-            return true;
+    let winner = 0;
+    if (Math.random() < role_battle_1.agi / (role_battle_1.agi + role_battle_2.agi)) {
+        if (do_attack(role_battle_1, skill_1, role_battle_2)) {
+            winner = 1;
         }
-        if (do_attack(battle_attribute_2, skill_2, battle_attribute_1, "win_count_2")) {
-            return true;
+        if (winner === 0 && do_attack(role_battle_2, skill_2, role_battle_1)) {
+            winner = 2;
         }
     } else {
-        if (do_attack(battle_attribute_2, skill_2, battle_attribute_1, "win_count_2")) {
-            return true;
+        if (do_attack(role_battle_2, skill_2, role_battle_1)) {
+            winner = 2;
         }
-        if (do_attack(battle_attribute_1, skill_1, battle_attribute_2, "win_count_1")) {
-            return true;
+        if (winner === 0 && do_attack(role_battle_1, skill_1, role_battle_2)) {
+            winner = 1;
         }
     }
-    battle_log(battle_attribute_1.name + "：" + battle_attribute_1.current_health_point + " / " + battle_attribute_1.health_point);
-    battle_log(battle_attribute_2.name + "：" + battle_attribute_2.current_health_point + " / " + battle_attribute_2.health_point);
-    battle_log("");
+    current_health_value = role_battle_1.current_health_value;
+    current_shield_value = role_battle_1.current_shield_value;
+    role_health_2 = role_battle_2.current_health_value;
+    role_shield_2 = role_battle_2.current_shield_value;
+    if (winner !== 0) {
+        battle_callback(winner);
+        return true;
+    }
+    // battle_log(battle_attribute_1.name + "：" + battle_attribute_1.current_health_value + " / " + battle_attribute_1.max_health_value);
+    // battle_log(battle_attribute_2.name + "：" + battle_attribute_2.current_health_value + " / " + battle_attribute_2.max_health_value);
+    // 100回合不分胜负则判定为平局
     battle_turn++;
-    // 开始下一回合循环
-    clearTimeout(battle_timer);
-    battle_timer = setTimeout(turn_loop, turn_time);
-    return false;
+    if (battle_turn > 100) {
+        battle_log("双方平手");
+        if (in_test_mode) {
+            win_count_1 += 0.5;
+            win_count_2 += 0.5;
+        }
+        if (in_test_mode) {
+            check_arena_over();
+        }
+        battle_callback(0);
+        return true;
+    } else {
+        // 开始下一回合循环
+        clearTimeout(battle_timer);
+        battle_timer = setTimeout(turn_loop, turn_time);
+        turn_callback();
+        return false;
+    }
 }
 
 /**
  * 执行攻击动作
  */
-function do_attack(battle_1, skill, battle_2, win_count) {
+function do_attack(attacker, skill, target) {
     // 技能施放
-    let skill_cast_result = skill.cast(battle_1, battle_2);
+    let skill_cast_result = skill.cast(attacker, target);
     // 结算伤害
     let damage_list = skill_cast_result.damage_list;
     for (let i = 0; i < damage_list.length; i++) {
@@ -124,7 +173,10 @@ function do_attack(battle_1, skill, battle_2, win_count) {
             miss_log(damage_obj);
         }
         let damage_value = damage_obj.damage_value;
-        battle_2.current_health_point -= damage_value;
+        target.current_health_value -= damage_value;
+        if (target.current_health_value < 0) {
+            target.current_health_value = 0;
+        }
     }
     // 结算治疗
     let heal_list = skill_cast_result.heal_list;
@@ -136,9 +188,9 @@ function do_attack(battle_1, skill, battle_2, win_count) {
         heal_log(heal_obj);
         let heal_value = heal_obj.heal_value;
         if (heal_value > 0) {
-            battle_1.current_health_point += heal_value;
-            if (battle_1.current_health_point > battle_1.health_point) {
-                battle_1.current_health_point = battle_1.health_point;
+            attacker.current_health_value += heal_value;
+            if (attacker.current_health_value > attacker.max_health_value) {
+                attacker.current_health_value = attacker.max_health_value;
             }
         }
     }
@@ -152,33 +204,31 @@ function do_attack(battle_1, skill, battle_2, win_count) {
         shield_log(shield_obj);
         let shield_value = shield_obj.shield_value;
         if (shield_value > 0) {
-            battle_1.current_shield_point += shield_value;
+            attacker.current_shield_value += shield_value;
         }
     }
     // 战败判定
-    if (is_death(battle_2)) {
-        eval(win_count + "++");
-        if (!in_test_mode || win_count_1 + win_count_2 === battle_time) {
-            result_log();
-        }
+    if (is_death(target)) {
         if (in_test_mode) {
+            if (role_battle_2.current_health_value <= 0) {
+                win_count_1++;
+            } else {
+                win_count_2++;
+            }
             check_arena_over();
         }
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 /**
  * 判断目标是否战败
- * @param member
- * @return {boolean} 是否战败
  */
-function is_death(member) {
-    if (member.current_health_point <= 0) {
-        member.current_health_point = 0;
-        battle_log(member.name + " 战败");
-        battle_log("");
+function is_death(role) {
+    if (role.current_health_value <= 0) {
+        battle_log(role.name + " 战败");
         return true;
     } else {
         return false;

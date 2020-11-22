@@ -4,16 +4,17 @@ let battle_log_text = "";
 
 function battle_log_clear() {
     battle_log_text = "";
-    $("#test_log").html("");
+    $("#battle_log").html("");
 }
 
 function battle_log(str) {
     battle_log_text += str + "<br />";
-    if (battle_time === 1) {
-        let log_view = $("#test_log");
-        log_view.html(battle_log_text);
-        log_view.scrollTop(log_view[0].scrollHeight);
+    if (battle_time !== 1) {
+        return;
     }
+    let log_view = $("#battle_log");
+    log_view.html(battle_log_text);
+    log_view.scrollTop(log_view[0].scrollHeight);
 }
 
 /**
@@ -21,8 +22,9 @@ function battle_log(str) {
  */
 function result_log() {
     battle_log("");
-    battle_log(battle_attribute_1.name + "(" + win_count_1 + ")：" + Math.round(win_count_1 / battle_time * 1000) / 10 + "%");
-    battle_log(battle_attribute_2.name + "(" + win_count_2 + ")：" + Math.round(win_count_2 / battle_time * 1000) / 10 + "%");
+    battle_log(role_battle_1.name + "(" + win_count_1 + ")：" + Math.round(win_count_1 / battle_time * 1000) / 10 + "%");
+    battle_log(role_battle_2.name + "(" + win_count_2 + ")：" + Math.round(win_count_2 / battle_time * 1000) / 10 + "%");
+    battle_log("");
 }
 
 /**

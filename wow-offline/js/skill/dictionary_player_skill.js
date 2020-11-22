@@ -1,40 +1,11 @@
 /** 技能一览 **/
-let dictionary_skill = new_skill();
+let dictionary_player_skill;
+$(document).ready(function () {
+    dictionary_player_skill = new_player_skill();
+});
 
-function new_skill() {
+function new_player_skill() {
     let skill = {};
-
-    skill.physical_attack = function () {
-        let skill = {};
-        skill.id = 1;// Id
-        skill.name = "攻击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 10;// 优先级，10极低 20低 30普通 40高 50极高 99强制
-        skill.X = 100;
-        skill.detail = "攻击目标造成" + skill.X + "攻击强度的物理伤害";
-        // 技能施放调用
-        skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
-            return skill_cast_result(damage_obj, [], []);
-        };
-        return skill;
-    };
-
-    skill.holy_cast = function () {
-        let skill = {};
-        skill.id = 2;// Id
-        skill.name = "圣击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 10;// 优先级
-        skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "法术强度的神圣伤害";
-        // 技能施放调用
-        skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_holy);
-            return skill_cast_result(damage_obj, [], []);
-        };
-        return skill;
-    };
 
     skill.warrior_1_1 = function () {
         let skill = {};
@@ -47,7 +18,7 @@ function new_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let extra_hit = 0;
-            if (m_skill_states[attacker.flag] === dictionary_skill.warrior_1_2().id) {
+            if (m_skill_states[attacker.flag] === dictionary_player_skill.warrior_1_2().id) {
                 // 已在压制流程中判定为命中
                 extra_hit = 999;
                 m_skill_states[attacker.flag] = null;
@@ -65,10 +36,10 @@ function new_skill() {
         let skill = {};
         skill.id = 112;// Id
         skill.name = "压制";// 名称
-        skill.cooldown = 5;// 冷却
+        skill.cooldown = 3;// 冷却
         skill.priority = 50;// 优先级
-        skill.X = 100;
-        skill.Y = 50;
+        skill.X = 120;
+        skill.Y = 25;
         skill.detail = "攻击被躲闪时，压制目标造成" + skill.X + "%攻击强度的物理伤害，无法闪避且暴击率提高" + skill.Y + "%";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
@@ -129,7 +100,7 @@ function new_skill() {
         skill.detail = "目标生命值低于" + skill.X + "%时可用，造成" + skill.Y + "%攻击强度的物理伤害，暴击率提高" + skill.Z + "%";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
-            return target.current_health_point * 100 / target.health_point <= skill.X;
+            return target.current_health_value * 100 / target.max_health_value <= skill.X;
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -189,7 +160,7 @@ function new_skill() {
         skill.name = "神圣震击";// 名称
         skill.cooldown = 1;// 冷却
         skill.priority = 30;// 优先级
-        skill.X = 100;
+        skill.X = 80;
         skill.Y = 50;
         skill.detail = "召唤圣光震击目标造成" + skill.X + "%法术强度的神圣伤害，并回复" + skill.Y + "%治疗强度的的生命";
         // 技能施放调用
@@ -215,7 +186,7 @@ function new_skill() {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
-            return attacker.current_health_point * 100 / attacker.health_point <= skill.X;
+            return attacker.current_health_value * 100 / attacker.max_health_value <= skill.X;
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -237,7 +208,7 @@ function new_skill() {
         skill.detail = "攻击目标造成" + skill.X + "%攻击强度的物理伤害，伤害根据损失的生命值最多提高" + skill.Y + "%";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_percent = 1 - attacker.current_health_point / attacker.health_point;
+            let damage_percent = 1 - attacker.current_health_value / attacker.max_health_value;
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + damage_percent), type_attack, element_physical);
             return skill_cast_result(damage_obj, [], []);
         };
@@ -257,7 +228,7 @@ function new_skill() {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
-            if (attacker.current_health_point * 100 / attacker.health_point <= skill.X) {
+            if (attacker.current_health_value * 100 / attacker.max_health_value <= skill.X) {
                 attacker.agi = Number.MAX_VALUE;// 必然先手施放
                 return true;
             } else {
@@ -313,7 +284,7 @@ function new_skill() {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
-            return target.current_health_point * 100 / target.health_point <= skill.X;
+            return target.current_health_value * 100 / target.max_health_value <= skill.X;
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -344,7 +315,7 @@ function new_skill() {
                 damage_list.push(damage_obj);
                 hit_count += damage_obj.is_hit ? 1 : 0;
             }
-            let heal_value = Math.round(hit_count * attacker.health_point * dictionary_buff.hunter_1_X * attacker.taken_heal_percent / 100 / 100);
+            let heal_value = Math.round(hit_count * attacker.max_health_value * dictionary_buff.hunter_1_X * attacker.taken_heal_percent / 100 / 100);
             let heal_obj = flat_skill_heal(attacker, target, skill.name, heal_value);
             return skill_cast_result(damage_list, [heal_obj], []);
         };
@@ -364,9 +335,7 @@ function new_skill() {
         skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，根据损失生命值重复" + skill.Y + "~" + skill.Z + "次";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
-            if (skill_in_cd(attacker, skill)) {
-                return false;// 冷却中
-            }
+            return !skill_in_cd(attacker, skill);
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -374,7 +343,7 @@ function new_skill() {
             let damage_list = [];
             let damage_count;
             let hit_count = 0;
-            let damage_percent = attacker.current_health_point / attacker.health_point;
+            let damage_percent = attacker.current_health_value / attacker.max_health_value;
             if (damage_percent <= 0.2) {
                 damage_count = 5;
             } else if (damage_percent <= 0.45) {
@@ -389,31 +358,95 @@ function new_skill() {
                 damage_list.push(damage_obj);
                 hit_count += damage_obj.is_hit ? 1 : 0;
             }
-            let heal_value = Math.round(hit_count * attacker.health_point * dictionary_buff.hunter_1_X * attacker.taken_heal_percent / 100 / 100);
+            let heal_value = Math.round(hit_count * attacker.max_health_value * dictionary_buff.hunter_1_X * attacker.taken_heal_percent / 100 / 100);
             let heal_obj = flat_skill_heal(attacker, target, skill.name, heal_value);
             return skill_cast_result(damage_list, [heal_obj], []);
         };
         return skill;
     }
 
-    // 奥术射击：造成X%攻击强度的奥术伤害
     skill.hunter_2_1 = function () {
-
+        let skill = {};
+        skill.id = 321;// Id
+        skill.name = "奥术射击";// 名称
+        skill.cooldown = 1;// 冷却
+        skill.priority = 30;// 优先级
+        skill.X = 120;
+        skill.detail = "造成" + skill.X + "%攻击强度的奥术伤害";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_arcane);
+            return skill_cast_result(damage_obj, [], []);
+        };
+        return skill;
     }
 
-    // 瞄准射击：造成X%攻击强度的物理伤害，战斗回合数越久伤害越高
     skill.hunter_2_2 = function () {
-
+        let skill = {};
+        skill.id = 322;// Id
+        skill.name = "瞄准射击";// 名称
+        skill.cooldown = 3;// 冷却
+        skill.priority = 50;// 优先级
+        skill.X = 150;
+        skill.Y = 200;
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，伤害根据战斗回合数最多提高" + skill.Y + "%";
+        // 判断技能可用
+        skill.attempt = function (attacker, target) {
+            return !skill_in_cd(attacker, skill);
+        }
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
+            let damage_percent = battle_turn / 10;
+            if (damage_percent > skill.Y / 100) {
+                damage_percent = skill.Y / 100;
+            }
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + damage_percent), type_attack, element_physical);
+            return skill_cast_result(damage_obj, [], []);
+        };
+        return skill;
     }
 
-    // 猛禽一击：造成X%攻击强度的物理伤害，并使躲闪率提高Y%，持续Z回合
     skill.hunter_3_1 = function () {
-
+        let skill = {};
+        skill.id = 331;// Id
+        skill.name = "猛禽一击";// 名称
+        skill.cooldown = 1;// 冷却
+        skill.priority = 30;// 优先级
+        skill.X = 100;
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，并使躲闪率提高" + dictionary_buff.hunter_3_3_X + "%，持续" + dictionary_buff.hunter_3_3_T + "回合";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            attacker.buffs.push(new_buff().hunter_3_3);
+            return skill_cast_result(damage_obj, [], []);
+        };
+        return skill;
     }
 
     // 猫鼬撕咬：造成X%攻击强度的物理伤害，该次攻击的伤害受到Y%闪避率的加成";
     skill.hunter_3_2 = function () {
-
+        let skill = {};
+        skill.id = 332;// Id
+        skill.name = "猫鼬撕咬";// 名称
+        skill.cooldown = 5;// 冷却
+        skill.first_turn = 5;// 首次施放回合
+        skill.priority = 50;// 优先级
+        skill.X = 150;
+        skill.Y = 100;
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，伤害、命中率和暴击率提高闪避率的" + skill.Y + "%";
+        // 判断技能可用
+        skill.attempt = function (attacker, target) {
+            return !skill_in_cd(attacker, skill);
+        }
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
+            let dodge = attacker.dodge_rate * dodge_coefficient / attacker.lvl + attacker.dodge_chance_final;
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + dodge / 100), type_attack, element_physical, dodge * 100, dodge * 100);
+            return skill_cast_result(damage_obj, [], []);
+        };
+        return skill;
     }
 
     skill.mage_2_1 = function () {
@@ -434,7 +467,7 @@ function new_skill() {
                 } else {
                     m_skill_states[attacker.flag]++;
                 }
-                battle_log("余烬层数：" + m_skill_states[attacker.flag]);
+                battle_log("当前余烬：" + m_skill_states[attacker.flag]);
             }
             return skill_cast_result(damage_obj, [], []);
         };
@@ -454,9 +487,7 @@ function new_skill() {
         skill.detail = "引爆所有余烬造成" + skill.X + "法术强度的火焰伤害，每层余烬会使总伤害提高" + skill.Y + "%，暴击率提高" + skill.Z + "%";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
-            if (skill_in_cd(attacker, skill)) {
-                return false;// 冷却中
-            }
+            return !skill_in_cd(attacker, skill);
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {

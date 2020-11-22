@@ -1,56 +1,62 @@
 /** 战斗属性结算 **/
 
 /**
- * 更新战斗状态
+ * 计算人物基础属性
  */
-function refresh_attribute(member, battle, flag) {
-    new_base_attribute(battle);
-    refresh_base_attribute(member, battle);
-    refresh_attribute_equipments(member, flag);
-    refresh_attribute_buffs(member, flag);
-    refresh_attribute_debuffs(member, flag);
-    refresh_battle_attribute(battle);
-    if (battle_turn === 1) {
-        battle.current_health_point = battle.health_point;// 初始化当前生命值
-    }
-    battle.flag = flag;// 设定敌我标识(防止同职业对战混淆)
-    return battle;
+function calculate_base_property(role_base) {
+    let job = 10 * Math.floor(role_base.job / 10);
+    role_base.str = Math.floor(dictionary_job.base_property[job][0] + role_base.lvl * dictionary_job.upgrade_property[job][0]);// 力量
+    role_base.agi = Math.floor(dictionary_job.base_property[job][1] + role_base.lvl * dictionary_job.upgrade_property[job][1]);// 敏捷
+    role_base.sta = Math.floor(dictionary_job.base_property[job][2] + role_base.lvl * dictionary_job.upgrade_property[job][2]);// 耐力
+    role_base.int = Math.floor(dictionary_job.base_property[job][3] + role_base.lvl * dictionary_job.upgrade_property[job][3]);// 智力
+    role_base.spr = Math.floor(dictionary_job.base_property[job][4] + role_base.lvl * dictionary_job.upgrade_property[job][4]);// 精神
+    return role_base;
+}
+
+/**
+ * 由角色状态生成战斗状态
+ */
+function get_battle_attribute(role_base, flag) {
+    let role_whole = new_role_whole();
+    refresh_base_attribute(role_base, role_whole);
+    refresh_attribute_equipments(role_whole);
+    refresh_attribute_buffs(role_whole);
+    refresh_attribute_debuffs(role_whole);
+    refresh_battle_attribute(role_whole);
+    role_whole.flag = flag;// 设定敌我标识(防止同名对战混淆)
+    return role_whole;
 }
 
 /**
  * 计算角色属性
- * @param member
- * @param battle
  */
-function refresh_base_attribute(member, battle) {
-    battle.name = member.name;
-    battle.lvl = member.lvl;
-    battle.job = member.job;
-    battle.str = member.str;
-    battle.agi = member.agi;
-    battle.sta = member.sta;
-    battle.int = member.int;
-    battle.spr = member.spr;
-    battle.equipments = member.equipments;
-    battle.skills = member.skills;
-    battle.buffs = member.buffs;
-    battle.debuffs = member.debuffs;
+function refresh_base_attribute(role_base, role_whole) {
+    role_whole.name = role_base.name;
+    role_whole.lvl = role_base.lvl;
+    role_whole.job = role_base.job;
+    role_whole.str = role_base.str;
+    role_whole.agi = role_base.agi;
+    role_whole.sta = role_base.sta;
+    role_whole.int = role_base.int;
+    role_whole.spr = role_base.spr;
+    role_whole.buffs = role_base.buffs;
+    role_whole.debuffs = role_base.debuffs;
+    role_whole.equipments = role_base.equipments;
+    role_whole.skills = role_base.skills;
 }
 
 /**
  * 计算装备属性
- * @param member
- * @param flag
  */
-function refresh_attribute_equipments(member, flag) {
-    let battle_equipments = member.equipments;
+function refresh_attribute_equipments(role_whole) {
+    let battle_equipments = role_whole.equipments;
     if (battle_equipments != null && battle_equipments.length > 0) {
         for (let i = 0; i < battle_equipments.length; i++) {
             let equipments = battle_equipments[i];
             equipments = equipments.effect;
             for (let j = 0; j < equipments.length; j++) {
                 let equipment = equipments[j];
-                eval(flag + "." + equipment);
+                eval("role_whole." + equipment);
             }
         }
     }
@@ -58,17 +64,15 @@ function refresh_attribute_equipments(member, flag) {
 
 /**
  * 计算增益属性
- * @param member
- * @param flag
  */
-function refresh_attribute_buffs(member, flag) {
-    let battle_buffs = member.buffs;
+function refresh_attribute_buffs(role_whole) {
+    let battle_buffs = role_whole.buffs;
     if (battle_buffs != null && battle_buffs.length > 0) {
         for (let i = 0; i < battle_buffs.length; i++) {
             let buffs = battle_buffs[i];
             for (let j = 1; j < buffs.length; j++) {
                 let buff = buffs[j];
-                eval(flag + "." + buff);
+                eval("role_whole." + buff);
             }
             // 剩余回合-1
             let turn_left = buffs[0];
@@ -87,17 +91,15 @@ function refresh_attribute_buffs(member, flag) {
 
 /**
  * 计算减益属性
- * @param member
- * @param flag
  */
-function refresh_attribute_debuffs(member, flag) {
-    let battle_debuffs = member.debuffs;
+function refresh_attribute_debuffs(role_whole) {
+    let battle_debuffs = role_whole.debuffs;
     if (battle_debuffs != null && battle_debuffs.length > 0) {
         for (let i = 0; i < battle_debuffs.length; i++) {
             let debuffs = battle_debuffs[i];
             for (let j = 1; j < debuffs.length; j++) {
                 let debuff = debuffs[j];
-                eval(flag + "." + debuff);
+                eval("role_whole." + debuff);
             }
             let turn_left = debuffs[0];
             if (turn_left > 0) {
@@ -115,8 +117,6 @@ function refresh_attribute_debuffs(member, flag) {
 
 /**
  * 计算最终属性加成
- * @param attribute
- * @return {{}}
  */
 function refresh_battle_attribute(attribute) {
     attribute.str = Math.round(attribute.str * attribute.str_percent / 100);// 力量
@@ -130,7 +130,7 @@ function refresh_battle_attribute(attribute) {
     attribute.spr = Math.round(attribute.spr * attribute.spr_percent / 100);// 精神
     attribute.spr_percent = 100;
 
-    attribute.health_point = Math.round((attribute.health_point + attribute.sta * sta_to_health_max) * attribute.health_percent / 100);// 最大生命值
+    attribute.max_health_value = Math.round((attribute.max_health_value + attribute.sta * sta_to_health_max) * attribute.health_percent / 100);// 最大生命值
     attribute.health_percent = 100;
 
     attribute.attack_power = Math.round((attribute.attack_power + attribute.str * str_to_attack_power) * attribute.attack_power_percent / 100);// 攻击强度

@@ -1,5 +1,8 @@
 /** BUFF一览 **/
-let dictionary_buff = new_buff();
+let dictionary_buff;
+$(document).ready(function () {
+    dictionary_buff = new_buff();
+});
 
 function new_buff() {
     let buff = {};
@@ -45,7 +48,7 @@ function new_buff() {
     // 神圣
     // 智慧祝福：智力+X%
     buff.paladin_1_T = -1;// 持续回合，-1为永久
-    buff.paladin_1_X = 15;
+    buff.paladin_1_X = 20;
     buff.paladin_1_name = "智慧祝福";
     buff.paladin_1_detail = "智力+" + buff.paladin_1_X + "%";
     buff.paladin_1 = [
@@ -56,7 +59,7 @@ function new_buff() {
     // 防护
     // 王者祝福：所有属性+X%
     buff.paladin_2_T = -1;// 持续回合，-1为永久
-    buff.paladin_2_X = 5;
+    buff.paladin_2_X = 10;
     buff.paladin_2_name = "王者祝福";
     buff.paladin_2_detail = "所有属性+" + buff.paladin_2_X + "%";
     buff.paladin_2 = [
@@ -79,7 +82,7 @@ function new_buff() {
     // 惩戒
     // 力量祝福：力量+X%
     buff.paladin_3_T = -1;// 持续回合，-1为永久
-    buff.paladin_3_X = 15;
+    buff.paladin_3_X = 20;
     buff.paladin_3_name = "力量祝福";
     buff.paladin_3_detail = "力量+" + buff.paladin_3_X + "%";
     buff.paladin_3 = [
@@ -118,6 +121,14 @@ function new_buff() {
     buff.hunter_3 = [
         buff.hunter_3_T,
         "dodge_rate_percent+=" + buff.hunter_3_X
+    ];
+
+    // 猛禽一击：躲闪率提高X%，持续Y回合
+    buff.hunter_3_3_T = 5;// 持续回合，-1为永久
+    buff.hunter_3_3_X = 3;
+    buff.hunter_3_3 = [
+        buff.hunter_3_3_T,
+        "dodge_chance_final+=" + buff.hunter_3_3_X
     ];
 
     return buff;

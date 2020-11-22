@@ -1,5 +1,8 @@
 /** DEBUFF一览 **/
-let dictionary_debuff = new_debuff();
+let dictionary_debuff;
+$(document).ready(function () {
+    dictionary_debuff = new_debuff();
+});
 
 function new_debuff() {
     let debuff = {};

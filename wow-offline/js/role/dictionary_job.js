@@ -1,5 +1,8 @@
 /** 职业一览 **/
-let dictionary_job = new_job();
+let dictionary_job;
+$(document).ready(function () {
+    dictionary_job = new_job();
+});
 
 function new_job() {
     let job = {};
@@ -17,31 +20,25 @@ function new_job() {
      死亡骑士 #C41E3B 196, 30, 59
      https://bbs.nga.cn/read.php?&tid=4947369
      */
-    job.job_color = [];
-    job.job_name = [];
-    job.job_flag = [];
-    job.job_info = [];
-    // 初始属性
-    job.base_property = [];
-    // 属性成长
-    job.upgrade_property = [];
-
-    job.test_monster = 100;
-    job.base_property[job.test_monster] = [0, 0, 0, 0, 0];
-    job.upgrade_property[job.test_monster] = [0, 0, 0, 0, 0];
-    job.job_name[job.test_monster] = "测试怪物";
+    job.job_color = [];// 职业颜色
+    job.job_name = [];// 职业名称
+    job.job_flag = [];// 职业标识
+    job.job_info = [];// 职业简介
+    job.base_property = [];// 初始属性
+    job.upgrade_property = [];// 属性成长
 
     // 职业：战士
     job.warrior = 10;
-    job.base_property[job.warrior] = [18, 9, 18, 4, 4];
-    job.upgrade_property[job.warrior] = [3.6, 1.8, 3.6, 0.8, 0.8];
-
     job.warrior_1 = 11;
     job.warrior_2 = 12;
     job.warrior_3 = 13;
+
     job.job_color[job.warrior] = "#C69B6D";
     job.job_name[job.warrior] = "战士";
     job.job_flag[job.warrior] = "warrior";
+    job.base_property[job.warrior] = [18, 9, 18, 4, 4];
+    job.upgrade_property[job.warrior] = [3.6, 1.8, 3.6, 0.8, 0.8];
+
     job.job_name[job.warrior_1] = "武器战士";
     job.job_info[job.warrior_1] = "久经沙场的武器大师，移动灵活，攻击充满压制性。";
     job.job_name[job.warrior_2] = "狂暴战士";
@@ -51,15 +48,16 @@ function new_job() {
 
     // 职业：圣骑士
     job.paladin = 20;
-    job.base_property[job.paladin] = [14, 6, 14, 10, 14];
-    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2, 2.8];
-
     job.paladin_1 = 21;
     job.paladin_2 = 22;
     job.paladin_3 = 23;
+
     job.job_color[job.paladin] = "#F48CBA";
     job.job_name[job.paladin] = "圣骑士";
     job.job_flag[job.paladin] = "paladin";
+    job.base_property[job.paladin] = [14, 6, 14, 10, 14];
+    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2, 2.8];
+
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
     job.job_name[job.paladin_2] = "防护圣骑士";
@@ -69,12 +67,16 @@ function new_job() {
 
     // 职业：猎人
     job.hunter = 30;
-    job.base_property[job.hunter] = [12, 17, 10, 7, 4];
-    job.upgrade_property[job.hunter] = [2.4, 3.4, 2, 1.4, 0.8];
     job.hunter_1 = 31
     job.hunter_2 = 32
     job.hunter_3 = 33
+
+    job.job_color[job.hunter] = "#AAD372";
     job.job_name[job.hunter] = "猎人";
+    job.job_flag[job.hunter] = "hunter";
+    job.base_property[job.hunter] = [12, 17, 10, 7, 4];
+    job.upgrade_property[job.hunter] = [2.4, 3.4, 2, 1.4, 0.8];
+
     job.job_name[job.hunter_1] = "兽王猎人";
     job.job_name[job.hunter_2] = "射击猎人";
     job.job_name[job.hunter_3] = "生存猎人";

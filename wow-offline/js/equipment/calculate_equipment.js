@@ -1,6 +1,18 @@
 /** 装备属性结算 **/
 
 /**
+ * 生成属性词条
+ * @param X 基础系数
+ * @param lvl 装备等级
+ * @param rare 装备稀有度
+ * @param multiple 属性倍率
+ */
+function get_effect_value(X, lvl, rare, multiple) {
+    multiple *= get_multiple_by_rare(rare);
+    return Math.ceil(lvl * multiple * X);
+}
+
+/**
  * 生成装备
  * @param name 装备识别名称
  * @param c_lvl 角色等级
@@ -28,7 +40,7 @@ function create_equipment(name, c_lvl, e_lvl) {
             let index = model.affix[i];
             let func;
             if (typeof index == "number") {
-                func = dictionary_affix[index];// 装备固有属性
+                func = dictionary_affix_base[index];// 装备固有属性
             } else {
                 if (equipment_name.length === 0) {
                     equipment_name.push(index + "之");

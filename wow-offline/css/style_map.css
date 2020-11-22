@@ -4,6 +4,14 @@
     background-size: 1600px 900px;
 }
 
+.map_dot {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 15px;
+    border-width: 5px;
+}
+
 .normal {
     background-image: linear-gradient(to bottom right, greenyellow, forestgreen);
     border-style: outset;
@@ -50,16 +58,4 @@
     background-image: linear-gradient(to bottom right, darkorange, yellow);
     border-style: inset;
     border-color: darkred;
-}
-
-.info_window {
-    position: fixed;
-    width: auto;
-    height: auto;
-    min-width: 150px;
-    padding: 5px 20px 5px 10px;
-    color: whitesmoke;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.9);
-    border: 3px ridge slategray;
 }

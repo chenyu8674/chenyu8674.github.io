@@ -1,4 +1,4 @@
-/** 人物选择画面 **/
+/** 人物选择界面 **/
 let selected_job_1_name;
 let selected_job_1_index;
 let selected_job_2_index;
@@ -10,13 +10,15 @@ $(document).ready(function () {
     $("#icon_warrior").click();
     $("#create_character").click(function () {
         let name = $("#view_name_input").val();
-        if (name.length >= 0) {
-            let job = selected_job_1_index + selected_job_2_index;
-            let flag = dictionary_job.job_flag[selected_job_1_index] + "_" + selected_job_2_index;
-            current_character = new_character(job, flag, name);
-            hide_view_character();
-            // show_view_test();
+        if (name.length === 0) {
+            name = dictionary_job.job_name[selected_job_1_index + selected_job_2_index];
         }
+        let job = selected_job_1_index + selected_job_2_index;
+        let flag = dictionary_job.job_flag[selected_job_1_index] + "_" + selected_job_2_index;
+        current_character = new_character(job, flag, name);
+        hide_view_character();
+        show_view_map();
+        // show_view_test();
     });
     show_view_character();
 });
@@ -74,11 +76,11 @@ function init_skill_2_click() {
         let buff_name = eval("dictionary_buff." + selected_job_1_name + "_" + selected_job_2_index + "_name");
         let buff_detail = eval("dictionary_buff." + selected_job_1_name + "_" + selected_job_2_index + "_detail");
         $("#info_job_skill_1").html(buff_name + "（被动加成）<br />" + buff_detail);
-        let skill_name_1 = eval("dictionary_skill." + selected_job_1_name + "_" + selected_job_2_index + "_1().name");
-        let skill_detail_1 = eval("dictionary_skill." + selected_job_1_name + "_" + selected_job_2_index + "_1().detail");
+        let skill_name_1 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_1().name");
+        let skill_detail_1 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_1().detail");
         $("#info_job_skill_2").text(skill_name_1 + "：" + skill_detail_1);
-        let skill_name_2 = eval("dictionary_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().name");
-        let skill_detail_2 = eval("dictionary_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().detail");
+        let skill_name_2 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().name");
+        let skill_detail_2 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().detail");
         $("#info_job_skill_3").text(skill_name_2 + "：" + skill_detail_2);
         // $("#view_name_input").focus();
     });

@@ -1,5 +1,8 @@
 /** 装备一览 **/
-let dictionary_equipment = new_equipment();
+let dictionary_equipment;
+$(document).ready(function () {
+    dictionary_equipment = new_equipment();
+});
 
 function new_equipment() {
     let equipment = {}
@@ -36,6 +39,48 @@ function new_equipment() {
         type: 999,// 类型
         lvl_max: 1,// 允许生成的最大等级
         affix: [1, 6]
+    };
+
+    equipment["newbee_two_hand_sword_str"] = {
+        name: "训练双手剑",
+        rare: 2,// 稀有度
+        pos: 15,// 位置
+        type: 125,// 类型
+        lvl_max: 1,// 允许生成的最大等级
+        effect: [],
+        affix: [2, 125]
+    };
+
+    equipment["newbee_one_hand_sword_str"] = {
+        name: "训练单手剑",
+        rare: 2,// 稀有度
+        pos: 15,// 位置
+        type: 115,// 类型
+        lvl_max: 1,// 允许生成的最大等级
+        effect: [],
+        affix: [1, 115]
+    };
+
+    equipment["newbee_one_hand_sword_int"] = {
+        name: "训练单手剑",
+        rare: 2,// 稀有度
+        pos: 15,// 位置
+        type: 215,// 类型
+        lvl_max: 1,// 允许生成的最大等级
+        effect: [],
+        affix: [1, 215]
+    };
+
+    equipment["newbee_shield_str"] = {
+        name: "训练盾牌",
+        rare: 2,// 稀有度
+        pos: 16,// 位置
+        type: 141,// 类型
+        lvl_max: 1,// 允许生成的最大等级
+        effect: [
+            "block_chance_final+=10"
+        ],
+        affix: [1, 141]
     };
 
     equipment["test_two_hand_sword_str"] = {

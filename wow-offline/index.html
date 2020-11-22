@@ -9,37 +9,39 @@
     <link rel="stylesheet" type="text/css" href="css/style_map.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_test.css"/>
 
-    <script type="text/javascript" src="js/util/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="js/util/util.js"></script>
-
-    <script type="text/javascript" src="js/controller/constant.js"></script>
-
-    <script type="text/javascript" src="js/dictionary/affix_base.js"></script>
-    <script type="text/javascript" src="js/dictionary/affix_random.js"></script>
-    <script type="text/javascript" src="js/dictionary/attribute_battle.js"></script>
-    <script type="text/javascript" src="js/dictionary/attribute_character.js"></script>
-    <script type="text/javascript" src="js/dictionary/buff.js"></script>
-    <script type="text/javascript" src="js/dictionary/debuff.js"></script>
-    <script type="text/javascript" src="js/dictionary/equipment_test.js"></script>
-    <script type="text/javascript" src="js/dictionary/job.js"></script>
-    <script type="text/javascript" src="js/dictionary/map.js"></script>
-    <script type="text/javascript" src="js/dictionary/skill.js"></script>
-
-    <script type="text/javascript" src="js/controller/attribute.js"></script>
-    <script type="text/javascript" src="js/controller/equipment.js"></script>
-    <script type="text/javascript" src="js/controller/level.js"></script>
-    <script type="text/javascript" src="js/controller/skill.js"></script>
-
+    <script type="text/javascript" src="js/script/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="js/script/util.js"></script>
+    <script type="text/javascript" src="js/script/constant.js"></script>
+    <script type="text/javascript" src="js/script/init.js"></script>
+    <script type="text/javascript" src="js/script/save_data.js"></script>
     <script type="text/javascript" src="js/script/battle.js"></script>
     <script type="text/javascript" src="js/script/battle_log.js"></script>
-    <script type="text/javascript" src="js/script/init.js"></script>
+
+    <script type="text/javascript" src="js/role/dictionary_job.js"></script>
+    <script type="text/javascript" src="js/role/role_base.js"></script>
+    <script type="text/javascript" src="js/role/role_whole.js"></script>
+    <script type="text/javascript" src="js/role/calculate_level.js"></script>
+    <script type="text/javascript" src="js/role/calculate_role.js"></script>
+
+    <script type="text/javascript" src="js/equipment/dictionary_affix_base.js"></script>
+    <script type="text/javascript" src="js/equipment/dictionary_affix_random.js"></script>
+    <script type="text/javascript" src="js/equipment/dictionary_equipment.js"></script>
+    <script type="text/javascript" src="js/equipment/calculate_equipment.js"></script>
+
+    <script type="text/javascript" src="js/skill/dictionary_buff.js"></script>
+    <script type="text/javascript" src="js/skill/dictionary_debuff.js"></script>
+    <script type="text/javascript" src="js/skill/dictionary_monster_skill.js"></script>
+    <script type="text/javascript" src="js/skill/dictionary_player_skill.js"></script>
+    <script type="text/javascript" src="js/skill/calculate_skill.js"></script>
+
+    <script type="text/javascript" src="js/world/dictionary_map.js"></script>
+    <script type="text/javascript" src="js/world/dictionary_monster_base.js"></script>
+    <script type="text/javascript" src="js/world/calculate_monster.js"></script>
 
     <script type="text/javascript" src="js/view/battle.js"></script>
     <script type="text/javascript" src="js/view/character.js"></script>
     <script type="text/javascript" src="js/view/map.js"></script>
     <script type="text/javascript" src="js/view/test.js"></script>
-
-    <script type="text/javascript" src="js/user/save_data.js"></script>
 </head>
 <body>
 <!-- 存档选择 -->
@@ -92,7 +94,27 @@
 <div id="view_map" class="full_screen"></div>
 <!-- 战斗画面 -->
 <div id="view_battle" class="full_screen">
-    <img id="battle_map" />
+    <div id="battle_map">
+        <div id="self_heal">
+            <div id="self_heal_cover"></div>
+        </div>
+    </div>
+    <div id="exp_bar"></div>
+    <div id="battle_status">
+        <div id="player_portrait" class="portrait"></div>
+        <div id="player_name"></div>
+        <div id="player_health_bar"></div>
+        <div id="player_health_number"></div>
+        <div id="player_shield_bar"></div>
+        <div id="player_shield_number"></div>
+        <div id="monster_portrait" class="portrait"></div>
+        <div id="monster_name"></div>
+        <div id="monster_health_bar"></div>
+        <div id="monster_health_number"></div>
+        <div id="monster_shield_bar"></div>
+        <div id="monster_shield_number"></div>
+    </div>
+    <div id="battle_log"></div>
 </div>
 <!-- 天赋技能 -->
 <div id="view_skill"></div>
@@ -119,6 +141,8 @@
             <option value="paladin_2">防护圣骑士</option>
             <option value="paladin_3">惩戒圣骑士</option>
             <option value="hunter_1">兽王猎人</option>
+            <option value="hunter_2">射击猎人</option>
+            <option value="hunter_3">生存猎人</option>
             <option value="mage_2">火焰法师</option>
             <!--            <option value="test_monster">测试怪物</option>-->
         </select>
@@ -131,6 +155,8 @@
             <option value="paladin_2">防护圣骑士</option>
             <option value="paladin_3">惩戒圣骑士</option>
             <option value="hunter_1">兽王猎人</option>
+            <option value="hunter_2">射击猎人</option>
+            <option value="hunter_3">生存猎人</option>
             <option value="mage_2">火焰法师</option>
             <!--            <option value="test_monster">测试怪物</option>-->
         </select>
