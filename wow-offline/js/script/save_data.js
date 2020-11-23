@@ -16,6 +16,13 @@ $(document).ready(function () {
     }
 });
 
+function release_data() {
+    if (confirm('警告！即将删除存档数据')) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
 /**
  * 保存角色（存档）
  */
