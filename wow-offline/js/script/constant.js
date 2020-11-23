@@ -49,7 +49,7 @@ let sta_to_armor_attack = 2;
 let int_to_magic_power = 2;
 let int_to_critical_damage = 0.3;
 
-let spr_to_heal_power = 2;
+let spr_to_heal_power = 3;
 let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/

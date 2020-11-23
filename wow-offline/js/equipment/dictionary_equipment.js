@@ -38,6 +38,7 @@ function new_equipment() {
         pos: 6,// 位置
         type: 999,// 类型
         lvl_max: 1,// 允许生成的最大等级
+        effect: [],
         affix: [1, 6]
     };
 

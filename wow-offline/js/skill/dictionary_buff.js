@@ -18,6 +18,7 @@ function new_buff() {
         "pierce_physical+=" + buff.warrior_1_X,
         "hit_chance_final+=" + buff.warrior_1_Y
     ];
+    buff[11] = [buff.warrior_1];
 
     // 狂暴
     buff.warrior_2_T = -1;// 持续回合，-1为永久
@@ -32,6 +33,7 @@ function new_buff() {
         "critical_damage+=" + buff.warrior_2_Y,
         "taken_damage_percent+=" + buff.warrior_2_Z
     ];
+    buff[12] = [buff.warrior_2];
 
     // 防御
     buff.warrior_3_T = -1;// 持续回合，-1为永久
@@ -44,6 +46,7 @@ function new_buff() {
         "block_chance_final+=" + buff.warrior_3_X,
         "block_value_percent+=" + buff.warrior_3_Y
     ];
+    buff[13] = [buff.warrior_3];
 
     // 神圣
     // 智慧祝福：智力+X%
@@ -55,6 +58,7 @@ function new_buff() {
         buff.paladin_1_T,
         "int_percent+=" + buff.paladin_1_X
     ];
+    buff[21] = [buff.paladin_1];
 
     // 防护
     // 王者祝福：所有属性+X%
@@ -70,6 +74,7 @@ function new_buff() {
         "int_percent+=" + buff.paladin_2_X,
         "spr_percent+=" + buff.paladin_2_X
     ];
+    buff[22] = [buff.paladin_2];
 
     // 圣盾术：免疫伤害，持续Y回合X
     buff.paladin_2_2_T = 2;// 持续回合，-1为永久
@@ -89,6 +94,7 @@ function new_buff() {
         buff.paladin_3_T,
         "str_percent+=" + buff.paladin_3_X
     ];
+    buff[23] = [buff.paladin_3];
 
     // 兽王
     // 自然守护：每次命中目标时，回复X%的最大生命值
@@ -100,6 +106,7 @@ function new_buff() {
         buff.hunter_1_T,
         "health_percent+=0"
     ];
+    buff[31] = [buff.hunter_1];
 
     // 射击
     // 雄鹰守护：攻击强度百分比+X%
@@ -111,6 +118,7 @@ function new_buff() {
         buff.hunter_2_T,
         "attack_power_percent+=" + buff.hunter_2_X
     ];
+    buff[32] = [buff.hunter_2];
 
     // 生存
     // 灵猴守护：闪避等级百分比+X%
@@ -122,6 +130,7 @@ function new_buff() {
         buff.hunter_3_T,
         "dodge_rate_percent+=" + buff.hunter_3_X
     ];
+    buff[33] = [buff.hunter_3];
 
     // 猛禽一击：躲闪率提高X%，持续Y回合
     buff.hunter_3_3_T = 5;// 持续回合，-1为永久

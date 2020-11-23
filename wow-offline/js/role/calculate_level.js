@@ -46,21 +46,6 @@ function get_exp_percent(lvl, exp) {
 }
 
 /**
- * 获得经验
- * @param character
- * @param exp
- * @return {*}
- */
-function add_experience(character, exp) {
-    character.exp += exp;
-    if (character.exp > MAX_EXP) {
-        character.exp = MAX_EXP;
-    }
-    character.lvl = get_level(character.exp);
-    return character;
-}
-
-/**
  * 计算经验对应的等级
  * @param exp
  * @return {number}

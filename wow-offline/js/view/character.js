@@ -14,8 +14,7 @@ $(document).ready(function () {
             name = dictionary_job.job_name[selected_job_1_index + selected_job_2_index];
         }
         let job = selected_job_1_index + selected_job_2_index;
-        let flag = dictionary_job.job_flag[selected_job_1_index] + "_" + selected_job_2_index;
-        current_character = new_character(job, flag, name);
+        create_character(job, 0, name);
         hide_view_character();
         show_view_map();
         // show_view_test();

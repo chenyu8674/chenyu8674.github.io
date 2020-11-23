@@ -66,7 +66,7 @@ function show_self_heal() {
     self_heal.click(function (e) {
         if (!on_battle) {
             clearTimeout(move_timer);
-            battle_log(current_character.name + " 施放了 食用补给");
+            battle_log(current_character.name + " 开始食用补给");
             clearTimeout(self_heal_timer);
             self_heal_timer = setTimeout(self_heal_loop, 100);
         }
@@ -108,7 +108,7 @@ function self_heal_loop() {
     current_health_value += Math.round(role_battle_1.max_health_value / 100);
     if (current_health_value >= role_battle_1.max_health_value) {
         current_health_value = role_battle_1.max_health_value;
-        battle_log(current_character.name + " 生命全部恢复");
+        battle_log(current_character.name + " 恢复了全部生命");
     } else {
         clearTimeout(self_heal_timer);
         self_heal_timer = setTimeout(self_heal_loop, 100);
@@ -243,12 +243,18 @@ function has_nearly_monster(x, y) {
  */
 function add_monster() {
     let lvl = current_character.lvl;
+    if (lvl < map_info.min) {
+        lvl = map_info.min;
+    }
+    if (lvl > map_info.max) {
+        lvl = map_info.max;
+    }
     let monster_base_list = map_info.monster;
     if (lvl >= map_info.max && !has_rare_monster(4)) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
-    } else if (Math.random() < 1 / 100 && !has_rare_monster(3)) {
-        // 1%几率刷新稀有怪（唯一）
+    } else if (Math.random() < 5 / 100 && !has_rare_monster(3)) {
+        // 5%几率刷新稀有怪（唯一）
         monster_base_list = map_info.rare;
     }
     let random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
@@ -372,7 +378,7 @@ function on_battle_end(index) {
         // exp *= 100;
         let old_lvl = current_character.lvl;
         battle_log(current_character.name + " 获得 " + exp + " 点经验");
-        add_experience(current_character, exp);
+        add_experience(exp);
         calculate_base_property(current_character);
         if (current_character.lvl > old_lvl) {
             // 升级

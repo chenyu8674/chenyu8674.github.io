@@ -65,6 +65,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[11]=[skill.warrior_1_1(), skill.warrior_1_2()];
 
     skill.warrior_2_1 = function () {
         let skill = {};
@@ -109,6 +110,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[12]=[skill.warrior_2_1(), skill.warrior_2_2()];
 
     skill.warrior_3_1 = function () {
         let skill = {};
@@ -153,6 +155,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[13]=[skill.warrior_3_1(), skill.warrior_3_2()];
 
     skill.paladin_1_1 = function () {
         let skill = {};
@@ -196,6 +199,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[21]=[skill.paladin_1_1(), skill.paladin_1_2()];
 
     skill.paladin_2_1 = function () {
         let skill = {};
@@ -245,6 +249,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[22]=[skill.paladin_2_1(), skill.paladin_2_2()];
 
     skill.paladin_3_1 = function () {
         let skill = {};
@@ -294,6 +299,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[23]=[skill.paladin_3_1(), skill.paladin_3_2()];
 
     skill.hunter_1_1 = function () {
         let skill = {};
@@ -364,6 +370,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[31]=[skill.hunter_1_1(), skill.hunter_1_2()];
 
     skill.hunter_2_1 = function () {
         let skill = {};
@@ -406,6 +413,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[32]=[skill.hunter_2_1(), skill.hunter_2_2()];
 
     skill.hunter_3_1 = function () {
         let skill = {};
@@ -448,6 +456,7 @@ function new_player_skill() {
         };
         return skill;
     }
+    skill[33]=[skill.hunter_3_1(), skill.hunter_3_2()];
 
     skill.mage_2_1 = function () {
         let skill = {};

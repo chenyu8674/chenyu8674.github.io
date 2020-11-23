@@ -63,7 +63,7 @@ function check_arena_over() {
 }
 
 let warrior_1 = function () {
-    let warrior_1 = load_character(dictionary_job.warrior_1, MAX_EXP);
+    let warrior_1 = create_character(dictionary_job.warrior_1, MAX_EXP);
     warrior_1.buffs = [dictionary_buff.warrior_1];
     warrior_1.debuffs = [];
     warrior_1.equipments = [create_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL), create_equipment("test_armor", MAX_LVL, MAX_LVL)];
@@ -72,7 +72,7 @@ let warrior_1 = function () {
 }
 
 let warrior_2 = function () {
-    let warrior_2 = load_character(dictionary_job.warrior_2, MAX_EXP);
+    let warrior_2 = create_character(dictionary_job.warrior_2, MAX_EXP);
     warrior_2.buffs = [dictionary_buff.warrior_2];
     warrior_2.debuffs = [];
     warrior_2.equipments = [create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL), create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL), create_equipment("test_armor", MAX_LVL, MAX_LVL)];
@@ -81,7 +81,7 @@ let warrior_2 = function () {
 }
 
 let warrior_3 = function () {
-    let warrior_3 = load_character(dictionary_job.warrior_3, MAX_EXP);
+    let warrior_3 = create_character(dictionary_job.warrior_3, MAX_EXP);
     warrior_3.buffs = [dictionary_buff.warrior_3];
     warrior_3.debuffs = [];
     warrior_3.equipments = [create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL), create_equipment("test_shield_str", MAX_LVL, MAX_LVL), create_equipment("test_armor", MAX_LVL, MAX_LVL)];
@@ -90,7 +90,7 @@ let warrior_3 = function () {
 }
 
 let paladin_1 = function () {
-    let paladin_1 = load_character(dictionary_job.paladin_1, MAX_EXP);
+    let paladin_1 = create_character(dictionary_job.paladin_1, MAX_EXP);
     paladin_1.buffs = [dictionary_buff.paladin_1];
     paladin_1.debuffs = [];
     paladin_1.equipments = [create_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL), create_equipment("test_shield_int", MAX_LVL, MAX_LVL), create_equipment("test_armor", MAX_LVL, MAX_LVL)];
@@ -99,7 +99,7 @@ let paladin_1 = function () {
 }
 
 let paladin_2 = function () {
-    let paladin_2 = load_character(dictionary_job.paladin_2, MAX_EXP);
+    let paladin_2 = create_character(dictionary_job.paladin_2, MAX_EXP);
     paladin_2.buffs = [dictionary_buff.paladin_2];
     paladin_2.debuffs = [];
     paladin_2.equipments = [create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL), create_equipment("test_shield_str", MAX_LVL, MAX_LVL), create_equipment("test_armor", MAX_LVL, MAX_LVL)];
@@ -108,7 +108,7 @@ let paladin_2 = function () {
 }
 
 let paladin_3 = function () {
-    let paladin_3 = load_character(dictionary_job.paladin_3, MAX_EXP);
+    let paladin_3 = create_character(dictionary_job.paladin_3, MAX_EXP);
     paladin_3.buffs = [dictionary_buff.paladin_3];
     paladin_3.debuffs = [];
     paladin_3.equipments = [create_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL), create_equipment("test_armor", MAX_LVL, MAX_LVL)];
@@ -117,7 +117,7 @@ let paladin_3 = function () {
 }
 
 let hunter_1 = function () {
-    let hunter_1 = load_character(dictionary_job.hunter_1, MAX_EXP);
+    let hunter_1 = create_character(dictionary_job.hunter_1, MAX_EXP);
     hunter_1.buffs = [dictionary_buff.hunter_1];
     hunter_1.debuffs = [];
     hunter_1.equipments = [create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL), create_equipment("test_chain", MAX_LVL, MAX_LVL)];
@@ -126,7 +126,7 @@ let hunter_1 = function () {
 }
 
 let hunter_2 = function () {
-    let hunter_2 = load_character(dictionary_job.hunter_2, MAX_EXP);
+    let hunter_2 = create_character(dictionary_job.hunter_2, MAX_EXP);
     hunter_2.buffs = [dictionary_buff.hunter_2];
     hunter_2.debuffs = [];
     hunter_2.equipments = [create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL), create_equipment("test_chain", MAX_LVL, MAX_LVL)];
@@ -135,7 +135,7 @@ let hunter_2 = function () {
 }
 
 let hunter_3 = function () {
-    let hunter_3 = load_character(dictionary_job.hunter_3, MAX_EXP);
+    let hunter_3 = create_character(dictionary_job.hunter_3, MAX_EXP);
     hunter_3.buffs = [dictionary_buff.hunter_3];
     hunter_3.debuffs = [];
     hunter_3.equipments = [create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL), create_equipment("test_chain", MAX_LVL, MAX_LVL)];
@@ -144,7 +144,7 @@ let hunter_3 = function () {
 }
 
 let mage_2 = function () {
-    let mage_2 = load_character(dictionary_job.mage_2, MAX_EXP);
+    let mage_2 = create_character(dictionary_job.mage_2, MAX_EXP);
     mage_2.buffs = [dictionary_buff.warrior_2];
     mage_2.debuffs = [];
     mage_2.equipments = [create_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL), create_equipment("test_book", MAX_LVL, MAX_LVL), create_equipment("test_cloth", MAX_LVL, MAX_LVL)];
@@ -153,7 +153,7 @@ let mage_2 = function () {
 }
 
 let test_monster = function () {
-    let test_monster = load_character(dictionary_job.test_monster, MAX_EXP);
+    let test_monster = create_character(dictionary_job.test_monster, MAX_EXP);
     test_monster.buffs = [];
     test_monster.debuffs = [];
     test_monster.equipments = [dictionary_equipment.test_monster];

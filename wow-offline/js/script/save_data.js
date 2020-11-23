@@ -3,66 +3,109 @@
 let character_list = [];
 
 let current_character;
+let current_index = 0;
+
 let current_health_value = 0;
 let current_shield_value = 0;
 
-/**
- * 角色初始化（新建）
- * @param job
- * @param flag
- * @param name
- * @return {*}
- */
-function new_character(job, flag, name) {
-    let character = load_character(job, 0, name);
-    character.buffs = eval("[dictionary_buff." + flag + "]");
-    character.debuffs = [];
-    character.equipments = [];
-    character.equipments.push(create_equipment("newbee_shirt", 1, 1));
-    // 新手装备
-    switch (job) {
-        case 11:
-            character.equipments.push(create_equipment("newbee_two_hand_sword_str", 1, 1));
-            break;
-        case 12:
-            character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-            character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-            break;
-        case 13:
-            character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-            character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
-            break;
-        case 21:
-            character.equipments.push(create_equipment("newbee_one_hand_sword_int", 1, 1));
-            character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
-            break;
-        case 22:
-            character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-            character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
-            break;
-        case 23:
-            character.equipments.push(create_equipment("newbee_two_hand_sword_str", 1, 1));
-            break;
+$(document).ready(function () {
+    load_data();
+    if (current_character != null) {
+        hide_view_character();
+        show_view_map();
     }
-    character.skills = eval("[dictionary_player_skill." + flag + "_1(), dictionary_player_skill." + flag + "_2()]");
-    return character;
+});
+
+/**
+ * 保存角色（存档）
+ */
+function save_data() {
+    let save_character = {};
+    save_character.name = current_character.name;
+    save_character.job = current_character.job;
+    save_character.exp = current_character.exp;
+    save_character.equipments = current_character.equipments;
+    character_list[current_index] = save_character;
+    let json = JSON.stringify(character_list);
+    localStorage.setItem("character_list", json);
 }
 
 /**
  * 角色初始化（读档）
+ * @return {*}
+ */
+function load_data() {
+    let character_list = JSON.parse(localStorage.getItem("character_list"));
+    if (character_list == null || character_list.length === 0) {
+        // 无存档
+        return;
+    }
+    let character_obj = character_list[current_index];
+    create_character(character_obj.job, character_obj.exp, character_obj.name);
+    current_character.equipments = character_obj.equipments;
+}
+
+/**
+ * 角色初始化（新建）
  * @param job
  * @param exp
  * @param name
+ */
+function create_character(job, exp, name) {
+    current_character = new_role_base();
+    current_character.job = job;
+    if (name != null) {
+        current_character.name = name;
+    } else {
+        current_character.name = dictionary_job.job_name[job];
+    }
+    add_experience(exp);
+    current_character = calculate_base_property(current_character);
+    current_character.skills = dictionary_player_skill[job];
+    current_character.buffs = dictionary_buff[job];
+    current_character.debuffs = [];
+    current_character.equipments = [];
+    if (exp === 0) {
+        // 新手装备
+        current_character.equipments.push(create_equipment("newbee_shirt", 1, 1));
+        switch (job) {
+            case 11:
+                current_character.equipments.push(create_equipment("newbee_two_hand_sword_str", 1, 1));
+                break;
+            case 12:
+                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
+                break;
+            case 13:
+                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
+                break;
+            case 21:
+                current_character.equipments.push(create_equipment("newbee_one_hand_sword_int", 1, 1));
+                current_character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
+                break;
+            case 22:
+                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
+                break;
+            case 23:
+                current_character.equipments.push(create_equipment("newbee_two_hand_sword_str", 1, 1));
+                break;
+        }
+    }
+    save_data();
+}
+
+/**
+ * 获得经验
+ * @param exp
  * @return {*}
  */
-function load_character(job, exp, name) {
-    let character = new_role_base();
-    character.job = job;
-    character.name = dictionary_job.job_name[job];
-    character = add_experience(character, exp);
-    character = calculate_base_property(character);
-    if (name != null) {
-        character.name = name;
+function add_experience(exp) {
+    current_character.exp += exp;
+    if (current_character.exp > MAX_EXP) {
+        current_character.exp = MAX_EXP;
     }
-    return character;
+    current_character.lvl = get_level(current_character.exp);
+    save_data();
 }
