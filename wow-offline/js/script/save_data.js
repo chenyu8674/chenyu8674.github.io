@@ -43,6 +43,7 @@ function load_data() {
     let character_obj = character_list[current_index];
     create_character(character_obj.job, character_obj.exp, character_obj.name);
     current_character.equipments = character_obj.equipments;
+    save_data();
 }
 
 /**
