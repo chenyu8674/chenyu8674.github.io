@@ -9,15 +9,20 @@ let current_health_value = 0;
 let current_shield_value = 0;
 
 $(document).ready(function () {
+    if (!window.localStorage) {
+        alert("不支持存档，请更换浏览器访问");
+        return false;
+    }
     load_data();
     if (current_character != null) {
+        // 有存档数据时，直接进入地图页
         hide_view_character();
         show_view_map();
     }
 });
 
 function release_data() {
-    if (confirm('警告！即将删除存档数据')) {
+    if (confirm('警告！确认删除存档数据？')) {
         localStorage.clear();
         location.reload();
     }

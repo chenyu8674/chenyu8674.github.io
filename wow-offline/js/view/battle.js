@@ -66,6 +66,7 @@ function show_self_heal() {
     self_heal.click(function (e) {
         if (!on_battle) {
             clearTimeout(move_timer);
+            battle_log("");
             battle_log(current_character.name + " 开始食用补给");
             clearTimeout(self_heal_timer);
             self_heal_timer = setTimeout(self_heal_loop, 100);
@@ -392,7 +393,6 @@ function on_battle_end(index) {
     } else {
         refresh_battle_status(false);
     }
-    battle_log("");
 }
 
 /**

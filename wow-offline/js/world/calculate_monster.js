@@ -5,7 +5,7 @@
  * @param name 名称
  * @param lvl 等级
  * @param type 类型 0-均衡型 1-力量型 2-敏捷型 3-耐力型 4-智力型 5-精神型 9-特殊型
- * @param rare 怪物阶级 1-爪牙 2-弱怪 3-普通怪 4-强怪 5-稀有怪 6-精英怪
+ * @param rare 怪物阶级 1-爪牙 2-怪物 3-稀有 4-精英 5-首领 6-团队首领
  * @param multiple
  * @return {string[]}
  */

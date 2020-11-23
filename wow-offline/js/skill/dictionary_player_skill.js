@@ -181,7 +181,7 @@ function new_player_skill() {
         skill.name = "圣疗术";// 名称
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 50;// 优先级
-        skill.X = 25;
+        skill.X = 35;
         skill.Y = 300;
         skill.detail = "生命值低于" + skill.X + "%时可用，回复" + skill.Y + "%治疗强度的生命，每场战斗限一次";
         // 判断技能可用
