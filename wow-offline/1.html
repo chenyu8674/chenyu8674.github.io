@@ -48,22 +48,22 @@
         });
 
         function load_img(name) {
+            // for (let i = 1; i <= 200; i++) {
+            //     let n = "" + i;
+            //     if (n.length < 2) {
+            //         n = "0" + n;
+            //     }
+            //     let url = "https://wow.zamimg.com/images/wow/icons/large/" + name + "_" + n + ".jpg";
+            //     let img = $("<img/>");
+            //     img.attr("src", url);
+            //     $("body").append(img);
+            // }
             for (let i = 1; i <= 200; i++) {
                 let n = "" + i;
                 if (n.length < 2) {
                     n = "0" + n;
                 }
-                let url = "https://wow.zamimg.com/images/wow/icons/large/" + name + "_" + n + ".jpg";
-                let img = $("<img/>");
-                img.attr("src", url);
-                $("body").append(img);
-            }
-            for (let i = 1; i <= 200; i++) {
-                let n = "" + i;
-                if (n.length < 2) {
-                    n = "0" + n;
-                }
-                let url = "http://60wdb-statics.wow-classic.com/images/icons/large/" + name + "_" + n + ".jpg";
+                let url = "http://60wdb-statics.wow-classic.com/images/icons/large/" + name + n + ".png";
                 let img = $("<img/>");
                 img.attr("src", url);
                 $("body").append(img);
