@@ -12,6 +12,7 @@
 
         $(document).ready(function () {
             let type = getUrlParam("type");
+            type = parseInt(type);
             switch (type) {
                 case 1:
                     load_img("inv_weapon_shortblade");
