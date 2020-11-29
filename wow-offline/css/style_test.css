@@ -1,6 +1,6 @@
 #view_test {
-    z-index: 99;
     width: 500px;
+    display: none;
 }
 
 #test_control {

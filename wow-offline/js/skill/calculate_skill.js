@@ -67,7 +67,11 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
                              attack_type, element_type, extra_hit, extra_critical, extra_block) {
     // 计算命中
     extra_hit = extra_hit == null ? 0 : extra_hit;
-    let is_hit = Math.random() < calculate_hit(attacker, target) + extra_hit / 100;
+    let hit_chance = calculate_hit(attacker, target) + extra_hit / 100;
+    if (show_hit_percent_in_log) {
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 命中率：" + hit_chance * 100);
+    }
+    let is_hit = Math.random() < hit_chance;
     if (!is_hit) {
         let damage_obj = {};
         damage_obj.attacker_name = attacker.name;
@@ -127,16 +131,29 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
     let damage_value;
     if (attack_type === type_attack) {
         damage_value = attacker.attack_power * dmg * damage_percent / 100 / 100;// 基础攻击伤害
-        damage_value *= (1 - calculate_armor_attack(attacker, target));// 计算攻击护甲减伤
+        damage_value *= (1 - calculate_armor_attack(target));// 计算攻击护甲减伤
     } else {
         damage_value = attacker.magic_power * dmg * damage_percent / 100 / 100;// 基础法术伤害
-        damage_value *= (1 - calculate_armor_magic(attacker, target));// 计算法术护甲减伤
+        damage_value *= (1 - calculate_armor_magic(target));// 计算法术护甲减伤
     }
     // 伤害随机浮动(0.9~1.1)
     damage_value *= (0.9 + Math.random() * 0.2);
+    // 每差1级，伤害浮动5%
+    let lvl_percent = (attacker.lvl - target.lvl) * 5;
+    if (lvl_percent > 100) {
+        lvl_percent = 100;
+    }
+    if (lvl_percent < -50) {
+        lvl_percent = -50;
+    }
+    damage_value *= (100 + lvl_percent) / 100;
     // 计算暴击
     extra_critical = extra_critical == null ? 0 : extra_critical;
-    let is_critical = Math.random() < calculate_critical(attacker, target) + extra_critical / 100;
+    let critical_chance = calculate_critical(attacker, target) + extra_critical / 100;
+    if (show_critical_percent_in_log) {
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance * 100);
+    }
+    let is_critical = Math.random() < critical_chance;
     if (is_critical) {
         // 计算暴击加成
         damage_value *= attacker.critical_damage / 100;
@@ -149,9 +166,12 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
         damage_value = 0;
     }
     // 计算格挡值
-    // 计算暴击
     extra_block = extra_block == null ? 0 : extra_block;
-    let is_block = Math.random() < calculate_block(attacker, target) + extra_block / 100;
+    let block_chance = calculate_block(attacker, target) + extra_block / 100;
+    if (show_block_percent_in_log) {
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance * 100);
+    }
+    let is_block = Math.random() < block_chance;
     let block_value = target.block_value;
     if (is_block) {
         damage_value = damage_value - block_value;
@@ -279,11 +299,10 @@ function flat_skill_shield(attacker, target, skill_name, shield_value) {
 
 /**
  * 计算攻击护甲免伤
- * @param attacker
  * @param target
  * @return {number}
  */
-function calculate_armor_attack(attacker, target) {
+function calculate_armor_attack(target) {
     let armor_point = target.armor_attack;
     // 护甲免伤公式：目标护甲值 / (目标护甲值 + 85 * 攻击者等级 + 400)
     return armor_point / (armor_point + 85 * target.lvl + 400);
@@ -291,29 +310,52 @@ function calculate_armor_attack(attacker, target) {
 
 /**
  * 计算法术护甲免伤
- * @param attacker
  * @param target
  * @return {number}
  */
-function calculate_armor_magic(attacker, target) {
+function calculate_armor_magic(target) {
     let armor_point = target.armor_magic;
     return armor_point / (armor_point + 85 * target.lvl + 400);
 }
 
 /**
- * 计算命中率
+ * 计算原始命中率
+ * @param attacker
+ * @return {number}
+ */
+function calculate_original_hit(attacker) {
+    return base_hit_chance + attacker.hit_rate * hit_coefficient / (attacker.lvl + 10) + attacker.hit_chance_final;
+}
+
+/**
+ * 计算原始躲闪率
+ * @param target
+ * @return {number}
+ */
+function calculate_original_dodge(target) {
+    return target.dodge_rate * dodge_coefficient / (target.lvl + 10) + target.dodge_chance_final;
+}
+
+/**
+ * 计算最终命中率
  * @param attacker
  * @param target
  * @return {number}
  */
 function calculate_hit(attacker, target) {
-    let hit_chance = (attacker.hit_rate * hit_coefficient / attacker.lvl + attacker.hit_chance_final);
-    let dodge_chance = target.dodge_rate * dodge_coefficient / target.lvl + target.dodge_chance_final;
-    hit_chance = (base_hit_chance + hit_chance - dodge_chance) / 100;
-    if (show_detail_log) {
-        battle_log("命中率：" + hit_chance * 100);
-    }
-    return hit_chance;
+    let hit_chance = calculate_original_hit(attacker);
+    let dodge_chance = calculate_original_dodge(target);
+    let lvl_chance = (attacker.lvl - target.lvl) * 3;// 每差1级，命中率浮动3%
+    return (hit_chance - dodge_chance + lvl_chance) / 100;
+}
+
+/**
+ * 计算原始暴击率
+ * @param attacker
+ * @return {number}
+ */
+function calculate_original_critical(attacker) {
+    return attacker.critical_rate * critical_coefficient / (attacker.lvl + 10) + attacker.critical_chance_final;
 }
 
 /**
@@ -323,11 +365,17 @@ function calculate_hit(attacker, target) {
  * @return {number}
  */
 function calculate_critical(attacker, target) {
-    let critical_chance = (attacker.critical_rate * critical_coefficient / attacker.lvl + attacker.critical_chance_final) / 100;
-    if (show_detail_log) {
-        battle_log("暴击率：" + critical_chance * 100);
-    }
-    return critical_chance;
+    let lvl_chance = (attacker.lvl - target.lvl) * 3;// 每差1级，暴击率浮动3%
+    return (calculate_original_critical(attacker) + lvl_chance) / 100;
+}
+
+/**
+ * 计算原始格挡率
+ * @param target
+ * @return {number}
+ */
+function calculate_original_block(target) {
+    return target.block_rate * block_coefficient / (target.lvl + 10) + target.block_chance_final;
 }
 
 /**
@@ -337,11 +385,8 @@ function calculate_critical(attacker, target) {
  * @return {number}
  */
 function calculate_block(attacker, target) {
-    let block_chance = (target.block_rate * block_coefficient / target.lvl + target.block_chance_final) / 100;
-    if (show_detail_log) {
-        battle_log("格挡率：" + block_chance * 100);
-    }
-    return block_chance;
+    let lvl_chance = (target.lvl - attacker.lvl) * 3;// 每差1级，格挡率浮动3%
+    return (calculate_original_block(target) + lvl_chance) / 100;
 }
 
 /**

@@ -24,6 +24,7 @@ $(document).ready(function () {
 
 function show_view_character() {
     view_character.show();
+    hide_view_bar();
 }
 
 function hide_view_character() {
@@ -40,16 +41,16 @@ function init_skill_1_click() {
         selected_job_1_index = parseInt($(this).attr("index"));
         let job_1 = $(this).attr("id");
         selected_job_1_name = job_1.replace("icon_", "");
-        $("#view_character").css("background-image", "url(\"./img/job/" + selected_job_1_name + ".jpg\"");
+        $("#view_character").css("background-image", "url('./img/job/" + selected_job_1_name + ".jpg')");
         init_skill_2();
     });
 }
 
 function init_skill_2() {
-    let icon_job_2_1 = $("#icon_job_2_1")
-    icon_job_2_1.attr("src", "img/skill/" + selected_job_1_name + "_1.jpg");
-    $("#icon_job_2_2").attr("src", "img/skill/" + selected_job_1_name + "_2.jpg");
-    $("#icon_job_2_3").attr("src", "img/skill/" + selected_job_1_name + "_3.jpg");
+    let icon_job_2_1 = $("#icon_job_2_1");
+    icon_job_2_1.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 1].icon + ".jpg')");
+    $("#icon_job_2_2").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 2].icon + ".jpg')");
+    $("#icon_job_2_3").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 3].icon + ".jpg')");
     init_skill_2_click();
     icon_job_2_1.click();
 }
@@ -68,19 +69,19 @@ function init_skill_2_click() {
         // 专精介绍
         $("#view_job_info_1").text(dictionary_job.job_info[selected_job_1_index + selected_job_2_index]);
         // 技能图标
-        $("#icon_job_skill_1").attr("src", "img/skill/" + selected_job_1_name + "_" + selected_job_2_index + ".jpg");
-        $("#icon_job_skill_2").attr("src", "img/skill/" + selected_job_1_name + "_" + selected_job_2_index + "_1.jpg");
-        $("#icon_job_skill_3").attr("src", "img/skill/" + selected_job_1_name + "_" + selected_job_2_index + "_2.jpg");
+        $("#icon_job_skill_1").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + selected_job_2_index].icon + ".jpg')");
+        $("#icon_job_skill_2").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].icon + ".jpg')");
+        $("#icon_job_skill_3").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].icon + ".jpg')");
         // 技能介绍
-        let buff_name = eval("dictionary_buff." + selected_job_1_name + "_" + selected_job_2_index + "_name");
-        let buff_detail = eval("dictionary_buff." + selected_job_1_name + "_" + selected_job_2_index + "_detail");
-        $("#info_job_skill_1").html(buff_name + "（被动加成）<br />" + buff_detail);
-        let skill_name_1 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_1().name");
-        let skill_detail_1 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_1().detail");
-        $("#info_job_skill_2").text(skill_name_1 + "：" + skill_detail_1);
-        let skill_name_2 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().name");
-        let skill_detail_2 = eval("dictionary_player_skill." + selected_job_1_name + "_" + selected_job_2_index + "_2().detail");
-        $("#info_job_skill_3").text(skill_name_2 + "：" + skill_detail_2);
+        let buff_name = dictionary_buff[selected_job_1_index + selected_job_2_index].name;
+        let buff_detail = dictionary_buff[selected_job_1_index + selected_job_2_index].detail;
+        $("#info_job_skill_1").html("<span style='color:goldenrod'>" + buff_name + "（天赋加成）</span><br />" + buff_detail);
+        let skill_name_1 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].name;
+        let skill_detail_1 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].detail;
+        $("#info_job_skill_2").html("<span style='color:goldenrod'>" + skill_name_1 + "：</span>" + skill_detail_1);
+        let skill_name_2 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].name;
+        let skill_detail_2 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].detail;
+        $("#info_job_skill_3").html("<span style='color:goldenrod'>" + skill_name_2 + "：</span>" + skill_detail_2);
         // $("#view_name_input").focus();
     });
 }

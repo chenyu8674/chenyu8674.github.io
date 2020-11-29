@@ -72,6 +72,11 @@ function turn_loop() {
     role_battle_1.current_health_value = current_health_value;
     role_battle_1.current_shield_value = current_shield_value;
     if (battle_turn === 1) {
+        if (in_test_mode) {
+            current_health_value = role_battle_1.max_health_value;
+            current_shield_value = 0;
+            role_battle_1.current_health_value = role_battle_1.max_health_value;
+        }
         role_battle_2.current_health_value = role_battle_2.max_health_value;
     } else {
         role_battle_2.current_health_value = role_health_2;
@@ -89,6 +94,9 @@ function turn_loop() {
             console.log(role_battle_2);
         }
     }
+    // 计算dot伤害
+    refresh_dots(role_battle_1);
+    refresh_dots(role_battle_2);
     // 判断敌我施放技能
     let skill_1, skill_2;
     for (let i = 0; i < role_battle_1.skills.length; i++) {
@@ -127,7 +135,11 @@ function turn_loop() {
     role_health_2 = role_battle_2.current_health_value;
     role_shield_2 = role_battle_2.current_shield_value;
     if (winner !== 0) {
-        battle_callback(winner);
+        clear_buffs_and_debuffs_and_dots(role_battle_1);
+        clear_buffs_and_debuffs_and_dots(role_battle_2);
+        if (battle_callback != null) {
+            battle_callback(winner);
+        }
         return true;
     }
     // battle_log(battle_attribute_1.name + "：" + battle_attribute_1.current_health_value + " / " + battle_attribute_1.max_health_value);
@@ -135,6 +147,8 @@ function turn_loop() {
     // 100回合不分胜负则判定为平局
     battle_turn++;
     if (battle_turn > 100) {
+        clear_buffs_and_debuffs_and_dots(role_battle_1);
+        clear_buffs_and_debuffs_and_dots(role_battle_2);
         battle_log("双方平手");
         if (in_test_mode) {
             win_count_1 += 0.5;
@@ -143,14 +157,34 @@ function turn_loop() {
         if (in_test_mode) {
             check_arena_over();
         }
-        battle_callback(0);
+        if (battle_callback != null) {
+            battle_callback(0);
+        }
         return true;
     } else {
         // 开始下一回合循环
         clearTimeout(battle_timer);
         battle_timer = setTimeout(turn_loop, turn_time);
-        turn_callback();
+        if (turn_callback != null) {
+            turn_callback();
+        }
         return false;
+    }
+}
+
+/**
+ * 执行dot伤害
+ */
+function do_dot(role, dot) {
+    let dot_obj = {};
+    dot_obj.target_name = role.name;
+    dot_obj.skill_name = dot.name;
+    dot_obj.damage_value = dot.damage;
+    dot_obj.element_type = get_element_name(dot.type);
+    dot_log(dot_obj);
+    role.current_health_value -= dot_obj.damage_value;
+    if (role.current_health_value < 0) {
+        role.current_health_value = 0;
     }
 }
 

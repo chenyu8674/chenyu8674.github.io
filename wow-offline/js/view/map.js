@@ -10,6 +10,7 @@ $(document).ready(function () {
 function show_view_map() {
     view_map.show();
     draw_map();
+    show_view_bar();
 }
 
 function hide_view_map() {

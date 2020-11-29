@@ -78,8 +78,11 @@ function new_job() {
     job.upgrade_property[job.hunter] = [2.4, 3.4, 2, 1.4, 0.8];
 
     job.job_name[job.hunter_1] = "兽王猎人";
+    job.job_info[job.hunter_1] = "对荒野了如指掌，驯服多种多样的野兽来协助作战。";
     job.job_name[job.hunter_2] = "射击猎人";
+    job.job_info[job.hunter_2] = "百步穿杨的神射手，擅长远距离夺走敌人的性命。";
     job.job_name[job.hunter_3] = "生存猎人";
+    job.job_info[job.hunter_3] = "机敏的游侠，擅长剧毒、炸药和动物协同攻击。";
 
     // 职业：萨满
     job.shaman = 40;

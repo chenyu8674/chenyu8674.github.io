@@ -6,7 +6,10 @@ let MAX_RES = 75;// 最大抗性(无加成)
 
 /** 系统设置 **/
 
-let show_detail_log = false;// 显示详细战斗过程
+let show_detail_log = true;// 显示详细战斗过程
+let show_hit_percent_in_log = false;// 输出命中几率
+let show_critical_percent_in_log = false;// 输出暴击几率
+let show_block_percent_in_log = false;// 输出格挡几率
 let in_test_mode = false;// 测试模式
 
 /** 攻击类型 **/
@@ -39,6 +42,7 @@ color_rare_1 = "darkgray";
 let str_to_attack_power = 2;
 let str_to_block_value = 0.5;
 
+let agi_to_attack_power = 1;
 let agi_to_hit_rate = 2;
 let agi_to_critical_rate = 1;
 let agi_to_dodge_rate = 2;
@@ -49,7 +53,7 @@ let sta_to_armor_attack = 2;
 let int_to_magic_power = 2;
 let int_to_critical_damage = 0.3;
 
-let spr_to_heal_power = 3;
+let spr_to_heal_power = 2;
 let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/

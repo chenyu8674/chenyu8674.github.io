@@ -12,6 +12,7 @@ function new_role_base() {
     role_base.spr = 0;// 精神
     role_base.buffs = [];
     role_base.debuffs = [];
+    role_base.dots = [];
     role_base.equipments = [];
     role_base.skills = [];
     return role_base;

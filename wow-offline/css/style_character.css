@@ -1,10 +1,3 @@
-#view_character {
-    z-index: 9;
-    background-color: rgba(0, 0, 0, 0.9);
-    background-image: url("../img/job/warrior.jpg");
-    background-size: 1600px 900px;
-}
-
 #view_character_title {
     position: absolute;
     width: 100%;
@@ -53,42 +46,42 @@
 
 #icon_paladin {
     top: 10px;
-    left: 210px;
+    left: 215px;
 }
 
 #icon_hunter {
     top: 10px;
-    left: 410px;
+    left: 420px;
 }
 
 #icon_shaman {
-    top: 210px;
+    top: 215px;
     left: 10px;
 }
 
 #icon_druid {
-    top: 210px;
-    left: 210px;
+    top: 215px;
+    left: 215px;
 }
 
 #icon_rogue {
-    top: 210px;
-    left: 410px;
+    top: 215px;
+    left: 420px;
 }
 
 #icon_priest {
-    top: 410px;
+    top: 420px;
     left: 10px;
 }
 
 #icon_warlock {
-    top: 410px;
-    left: 210px;
+    top: 420px;
+    left: 215px;
 }
 
 #icon_mage {
-    top: 410px;
-    left: 410px;
+    top: 420px;
+    left: 420px;
 }
 
 .icon_1_select {
@@ -124,15 +117,15 @@
     position: relative;
     width: 120px;
     height: 120px;
-    margin: 32px;
-    border-radius: 8px;
+    margin: 40px 40px 60px 40px;
+    background-size: 115%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 12px;
     border: 8px ridge dimgray;
-    box-shadow: 0 0 10px dimgray;
 }
 
 .icon_2_select {
-    margin: 32px;
-    border-radius: 8px;
     border: 8px ridge goldenrod;
     box-shadow: 0 0 20px goldenrod;
 }
@@ -140,7 +133,7 @@
 #view_job_info {
     position: absolute;
     width: 384px;
-    height: 400px;
+    height: 410px;
     top: 180px;
     left: 1066px;
     padding: 10px;
@@ -176,12 +169,15 @@
 
 #icon_job_skill_1 {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 180px;
+    width: 60px;
+    height: 60px;
+    top: 170px;
     left: 30px;
     margin: -4px;
-    border-radius: 4px;
+    background-size: 115%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 6px;
     border: 4px ridge dimgray;
 }
 
@@ -189,9 +185,9 @@
     position: absolute;
     width: 275px;
     height: 50px;
-    top: 180px;
-    left: 100px;
-    line-height: 25px;
+    top: 171px;
+    left: 110px;
+    line-height: 22px;
     font-size: 13px;
     color: silver;
     text-shadow: 0 0 1px cornsilk;
@@ -199,22 +195,25 @@
 
 #icon_job_skill_2 {
     position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 260px;
+    width: 60px;
+    height: 60px;
+    top: 255px;
     left: 30px;
     margin: -4px;
-    border-radius: 4px;
+    background-size: 115%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 6px;
     border: 4px ridge dimgray;
 }
 
 #info_job_skill_2 {
     position: absolute;
     width: 275px;
-    height: 50px;
-    top: 260px;
-    left: 100px;
-    line-height: 25px;
+    height: 75px;
+    top: 251px;
+    left: 110px;
+    line-height: 22px;
     font-size: 13px;
     color: silver;
     text-shadow: 0 0 1px cornsilk;
@@ -222,22 +221,25 @@
 
 #icon_job_skill_3 {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     top: 340px;
     left: 30px;
     margin: -4px;
-    border-radius: 4px;
+    background-size: 115%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 6px;
     border: 4px ridge dimgray;
 }
 
 #info_job_skill_3 {
     position: absolute;
     width: 275px;
-    height: 50px;
-    top: 340px;
-    left: 100px;
-    line-height: 25px;
+    height: 75px;
+    top: 336px;
+    left: 110px;
+    line-height: 22px;
     font-size: 13px;
     color: silver;
     text-shadow: 0 0 1px cornsilk;
@@ -246,8 +248,8 @@
 #view_name_info {
     position: absolute;
     width: 384px;
-    height: 154px;
-    top: 630px;
+    height: 139px;
+    top: 645px;
     left: 1066px;
     padding: 10px;
     border-radius: 10px;
@@ -257,26 +259,26 @@
 
 #view_name_input_title {
     position: absolute;
-    height: 50px;
-    top: 30px;
-    left: 30px;
+    height: 30px;
+    top: 25px;
+    left: 25px;
     float: left;
-    line-height: 49px;
-    font-size: 30px;
+    line-height: 30px;
+    font-size: 26px;
     color: goldenrod;
     text-shadow: 0 0 1px orangered;
 }
 
 #view_name_input {
     position: absolute;
-    width: 200px;
-    height: 40px;
-    line-height: 40px;
+    width: 185px;
+    height: 30px;
+    line-height: 30px;
     font-size: 28px;
     padding-left: 10px;
     padding-right: 10px;
-    top: 30px;
-    left: 130px;
+    top: 23px;
+    left: 155px;
     border-radius: 5px;
     border: 3px solid dimgray;
     background-color: rgba(0, 0, 0, 0);
@@ -287,10 +289,10 @@
     position: absolute;
     padding: 0;
     margin: 0;
-    width: 200px;
+    width: 160px;
     height: 50px;
-    top: 108px;
-    left: 100px;
+    top: 90px;
+    left: 120px;
     font-size: 24px;
     font-weight: bolder;
     border-radius: 10px;

@@ -4,6 +4,7 @@ let battle_log_text = "";
 
 function battle_log_clear() {
     battle_log_text = "";
+    $("#test_log").html("");
     $("#battle_log").html("");
 }
 
@@ -12,9 +13,15 @@ function battle_log(str) {
     if (battle_time !== 1) {
         return;
     }
-    let log_view = $("#battle_log");
-    log_view.html(battle_log_text);
-    log_view.scrollTop(log_view[0].scrollHeight);
+    if (in_test_mode) {
+        let log_view = $("#test_log");
+        log_view.html(battle_log_text);
+        log_view.scrollTop(log_view[0].scrollHeight);
+    } else {
+        let log_view = $("#battle_log");
+        log_view.html(battle_log_text);
+        log_view.scrollTop(log_view[0].scrollHeight);
+    }
 }
 
 /**
@@ -50,6 +57,17 @@ function damage_log(damage_obj) {
         + (damage_obj.is_critical ? " (暴击)" : "")
         + (damage_obj.block_value > 0 ? " (" + damage_obj.block_value + "点被格挡)" : "")
         + (damage_obj.absorb_value > 0 ? " (" + damage_obj.absorb_value + "点被吸收)" : "")
+    );
+}
+
+/**
+ * 输出dot日志
+ * @param dot_obj
+ */
+function dot_log(dot_obj) {
+    battle_log(dot_obj.target_name
+        + " 因 " + dot_obj.skill_name
+        + " 受到 " + dot_obj.damage_value + " 点 " + dot_obj.element_type + " 伤害"
     );
 }
 

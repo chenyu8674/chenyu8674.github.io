@@ -13,10 +13,33 @@ body {
     padding: 0;
     width: 1600px;
     height: 900px;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: none;
+}
+
+#view_map {
+    background-image: url(../img/map.jpg);
+    z-index: 50;
+}
+
+#view_battle {
+    z-index: 60;
+}
+
+#view_equipment {
+    position: absolute;
+    top: 40px;
+    left: 5px;
+    z-index: 70;
+}
+
+#view_character {
+    background-image: url("../img/job/warrior.jpg");
+    z-index: 80;
 }
 
 .info_window {
-    position: fixed;
+    position: absolute;
     width: auto;
     height: auto;
     padding: 5px 20px 5px 10px;
@@ -25,4 +48,50 @@ body {
     background-color: rgba(0, 0, 0, 0.9);
     border: 3px ridge slategray;
     z-index: 99;
+}
+
+#view_bar {
+    position: absolute;
+    top: 800px;
+    left: 600px;
+    height: 60px;
+    width: 400px;
+    z-index: 90;
+}
+
+.bar_icon {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 6px;
+    float: left;
+    background-size: 120%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    border: 4px outset dimgray;
+}
+
+.bar_icon:hover {
+    border-color: silver;
+}
+
+#bar_map {
+    background-image: url(../img/icon/Ability_Spy.jpg);
+}
+
+#bar_equipment {
+    background-image: url(../img/icon/INV_Misc_Bag_19.jpg);
+}
+
+#bar_character {
+    background-image: url(../img/icon/INV_Helmet_06.jpg);
+}
+
+#bar_test {
+    background-image: url(../img/icon/INV_Misc_Bomb_04.jpg);
+}
+
+#bar_setting {
+    background-image: url(../img/icon/INV_Gizmo_02.jpg);
 }

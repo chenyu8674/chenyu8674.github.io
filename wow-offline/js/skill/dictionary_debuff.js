@@ -7,21 +7,33 @@ $(document).ready(function () {
 function new_debuff() {
     let debuff = {};
 
-    // 致死打击：使敌方受到的治疗-Y，持续T回合
-    debuff.warrior_1_T = 3;// 持续回合，-1为永久
-    debuff.warrior_1_X = 30;
-    debuff.warrior_1 = [
-        debuff.warrior_1_T,
-        "taken_heal_percent-=" + debuff.warrior_1_X
-    ];
+    debuff.warrior_1 = function () {
+        let debuff = {};
+        debuff.id = 11;// Id
+        debuff.name = "致死打击";// 名称
+        debuff.T = 3;
+        debuff.X = 30;
+        debuff.icon = "Ability_Warrior_SavageBlow";
+        debuff.detail = "受到的治疗-" + debuff.X + "%";
+        debuff.effect = [
+            "taken_heal_percent-=" + debuff.X
+        ];
+        return debuff;
+    }
 
-    // 破甲：使敌方物理抗性-X，持续T回合
-    debuff.warrior_3_T = 6;// 持续回合，-1为永久
-    debuff.warrior_3_X = 3;
-    debuff.warrior_3 = [
-        debuff.warrior_3_T,
-        "res_physical-=" + debuff.warrior_3_X
-    ];
+    debuff.warrior_3 = function () {
+        let debuff = {};
+        debuff.id = 13;// Id
+        debuff.name = "破甲";// 名称
+        debuff.T = 6;
+        debuff.X = 3;
+        debuff.icon = "Ability_Warrior_Sunder";
+        debuff.detail = "物理抗性-" + debuff.X;
+        debuff.effect = [
+            "res_physical-=" + debuff.X
+        ];
+        return debuff;
+    }
 
     return debuff;
 }

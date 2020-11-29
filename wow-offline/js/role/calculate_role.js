@@ -41,6 +41,7 @@ function refresh_base_attribute(role_base, role_whole) {
     role_whole.spr = role_base.spr;
     role_whole.buffs = role_base.buffs;
     role_whole.debuffs = role_base.debuffs;
+    role_whole.dots = role_base.dots;
     role_whole.equipments = role_base.equipments;
     role_whole.skills = role_base.skills;
 }
@@ -70,19 +71,19 @@ function refresh_attribute_buffs(role_whole) {
     if (battle_buffs != null && battle_buffs.length > 0) {
         for (let i = 0; i < battle_buffs.length; i++) {
             let buffs = battle_buffs[i];
-            for (let j = 1; j < buffs.length; j++) {
-                let buff = buffs[j];
-                eval("role_whole." + buff);
+            let effects = buffs.effect;
+            for (let j = 0; j < effects.length; j++) {
+                let effect = effects[j];
+                eval("role_whole." + effect);
             }
-            // 剩余回合-1
-            let turn_left = buffs[0];
+            let turn_left = buffs.T;
             if (turn_left > 0) {
                 turn_left--;
                 if (turn_left === 0) {
                     battle_buffs.splice(i, 1);
                     i--;
                 } else {
-                    buffs[0] = turn_left;
+                    buffs.T = turn_left;
                 }
             }
         }
@@ -97,22 +98,77 @@ function refresh_attribute_debuffs(role_whole) {
     if (battle_debuffs != null && battle_debuffs.length > 0) {
         for (let i = 0; i < battle_debuffs.length; i++) {
             let debuffs = battle_debuffs[i];
-            for (let j = 1; j < debuffs.length; j++) {
-                let debuff = debuffs[j];
-                eval("role_whole." + debuff);
+            let effects = debuffs.effect;
+            for (let j = 0; j < effects.length; j++) {
+                let effect = effects[j];
+                eval("role_whole." + effect);
             }
-            let turn_left = debuffs[0];
+            // 剩余回合-1
+            let turn_left = debuffs.T;
             if (turn_left > 0) {
                 turn_left--;
                 if (turn_left === 0) {
                     battle_debuffs.splice(i, 1);
                     i--;
                 } else {
-                    debuffs[0] = turn_left;
+                    debuffs.T = turn_left;
                 }
             }
         }
     }
+}
+
+/**
+ * 计算dot伤害
+ */
+function refresh_dots(role_whole) {
+    let dots = role_whole.dots;
+    if (dots != null && dots.length > 0) {
+        for (let i = 0; i < dots.length; i++) {
+            let dot = dots[i];
+            do_dot(role_whole, dot);
+            // 剩余回合-1
+            let turn_left = dot.T;
+            if (turn_left > 0) {
+                turn_left--;
+                if (turn_left === 0) {
+                    dots.splice(i, 1);
+                    i--;
+                } else {
+                    dot.T = turn_left;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 清空非常驻增减益属性
+ */
+function clear_buffs_and_debuffs_and_dots(role) {
+    let battle_buffs = role.buffs;
+    if (battle_buffs != null && battle_buffs.length > 0) {
+        for (let i = 0; i < battle_buffs.length; i++) {
+            let buffs = battle_buffs[i];
+            let turn_left = buffs.T;
+            if (turn_left > 0) {
+                battle_buffs.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    let battle_debuffs = role.debuffs;
+    if (battle_debuffs != null && battle_debuffs.length > 0) {
+        for (let i = 0; i < battle_debuffs.length; i++) {
+            let debuffs = battle_debuffs[i];
+            let turn_left = debuffs.T;
+            if (turn_left > 0) {
+                battle_debuffs.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    role.dots = [];
 }
 
 /**
@@ -133,9 +189,9 @@ function refresh_battle_attribute(attribute) {
     attribute.max_health_value = Math.round((attribute.max_health_value + attribute.sta * sta_to_health_max) * attribute.health_percent / 100);// 最大生命值
     attribute.health_percent = 100;
 
-    attribute.attack_power = Math.round((attribute.attack_power + attribute.str * str_to_attack_power) * attribute.attack_power_percent / 100);// 攻击强度
+    attribute.attack_power = Math.round((attribute.attack_power + attribute.str * str_to_attack_power + attribute.agi * agi_to_attack_power) * attribute.attack_power_percent / 100);// 攻击强度
     attribute.attack_power_percent = 100;
-    attribute.magic_power = Math.round((attribute.magic_power+attribute.int * int_to_magic_power) * attribute.magic_power_percent / 100);// 法术强度
+    attribute.magic_power = Math.round((attribute.magic_power + attribute.int * int_to_magic_power) * attribute.magic_power_percent / 100);// 法术强度
     attribute.magic_power_percent = 100;
     attribute.heal_power = Math.round((attribute.heal_power + attribute.spr * spr_to_heal_power) * attribute.heal_power_percent / 100);// 治疗强度
     attribute.heal_power_percent = 100;
@@ -163,6 +219,6 @@ function refresh_battle_attribute(attribute) {
 
     attribute.armor_attack = Math.round((attribute.armor_attack + attribute.sta * sta_to_armor_attack) * attribute.armor_attack_percent / 100);// 攻击护甲
     attribute.armor_attack_percent = 100;
-    attribute.armor_magic = Math.round((attribute.armor_magic+ attribute.spr * spr_to_armor_magic) * attribute.armor_magic_percent / 100);// 法术护甲
+    attribute.armor_magic = Math.round((attribute.armor_magic + attribute.spr * spr_to_armor_magic) * attribute.armor_magic_percent / 100);// 法术护甲
     attribute.armor_magic_percent = 100;
 }

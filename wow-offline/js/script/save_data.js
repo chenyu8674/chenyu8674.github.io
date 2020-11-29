@@ -13,7 +13,7 @@ $(document).ready(function () {
         alert("不支持存档，请更换浏览器访问");
         return false;
     }
-    load_data();
+    // load_data();
     if (current_character != null) {
         // 有存档数据时，直接进入地图页
         hide_view_character();
@@ -75,8 +75,9 @@ function create_character(job, exp, name) {
     add_experience(exp);
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
-    current_character.buffs = dictionary_buff[job];
+    current_character.buffs = [dictionary_buff[job]];
     current_character.debuffs = [];
+    current_character.dots = [];
     current_character.equipments = [];
     if (exp === 0) {
         // 新手装备
@@ -107,6 +108,12 @@ function create_character(job, exp, name) {
         }
     }
     save_data();
+    // 刷新状态栏
+    role_battle_1 = get_battle_attribute(current_character, "battle_1");
+    role_battle_1.current_health_value = role_battle_1.max_health_value;
+    current_health_value = role_battle_1.max_health_value;
+    refresh_current_status();
+    return current_character;
 }
 
 /**

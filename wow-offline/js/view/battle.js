@@ -46,14 +46,12 @@ function show_battle_view(info) {
     $("#monster_portrait").hide();
 
     show_view_battle();
-    // view_battle.click(function () {
-    //     hide_view_battle();
-    // });
     battle_map.css("background-image", "url(\"./img/map/" + map_info.map + ".jpg\")");
-    // show_monster_area(map_info);
+    show_monster_area(map_info);
     show_player_point();
     refresh_monster();
     show_self_heal();
+    show_view_bar();
 }
 
 let self_heal_timer = 0;
@@ -63,6 +61,7 @@ let self_heal_timer = 0;
  */
 function show_self_heal() {
     let self_heal = $("#self_heal");
+    self_heal.unbind("click");
     self_heal.click(function (e) {
         if (!on_battle) {
             clearTimeout(move_timer);
@@ -95,6 +94,7 @@ function show_self_heal_info() {
     info.append("<p style='color:goldenrod'>食用补给</p>");
     info.append("<p>每秒回复10%最大生命值</p>");
     info.append("<p>进食时必须保持坐姿</p>");
+    info.append("<p style='color:goldenrod'>大吉大利，今晚吃鸡</p>");
     battle_map.append(info);
 }
 
@@ -228,11 +228,12 @@ function has_rare_monster(rare) {
  * 判断刷新点是否过近
  */
 function has_nearly_monster(x, y) {
-    if (Math.abs(player_x - x) <= 10 && Math.abs(player_y - y) <= 10) {
+    let min_distance = 10;
+    if (Math.abs(player_x - x) <= min_distance && Math.abs(player_y - y) <= min_distance) {
         return true;
     }
     for (let i = 0; i < map_monster_list.length; i++) {
-        if (Math.abs(map_monster_list[i].x - x) <= 5 && Math.abs(map_monster_list[i].y - y) <= 5) {
+        if (Math.abs(map_monster_list[i].x - x) <= min_distance && Math.abs(map_monster_list[i].y - y) <= min_distance) {
             return true;
         }
     }
@@ -301,8 +302,10 @@ function refresh_monster() {
         monster_point.css("top", monster.y + "%");
         monster_point.css("border-color", eval("color_rare_" + monster.rare));
         monster_point.hover(function () {
+            monster_point.css("border-color", "goldenrod");
             show_monster_info(i);
         }, function () {
+            monster_point.css("border-color", eval("color_rare_" + monster.rare));
             hide_monster_info(i);
         });
         monster_point.click(function (e) {
@@ -365,11 +368,17 @@ function move_loop() {
 }
 
 function on_turn_end() {
+    refresh_current_status();
     refresh_battle_status(false);
 }
 
+/**
+ * 战斗结束回调
+ * @param index 0-平手，1-胜利，2-失败
+ */
 function on_battle_end(index) {
     on_battle = false;
+    refresh_current_status();
     $(".player_point").removeClass("on_battle");
     if (index === 1) {
         // 计算经验
@@ -385,12 +394,18 @@ function on_battle_end(index) {
             // 升级
             battle_log(current_character.name + " 升到了 " + current_character.lvl + " 级");
             role_battle_1 = get_battle_attribute(current_character, "battle_1");
+            role_battle_1.current_health_value = role_battle_1.max_health_value;
             current_health_value = role_battle_1.max_health_value;
+            refresh_current_status();
         }
         refresh_battle_status(false);
         map_monster_list.splice(target_monster, 1);
         refresh_monster();
     } else {
+        player_x += 3;
+        player_y += 3;
+        refresh_player_point();
+        $("#self_heal").click();
         refresh_battle_status(false);
     }
 }

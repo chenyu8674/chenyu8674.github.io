@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_battle.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_character.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style_equipment.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_map.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_test.css"/>
 
@@ -26,6 +27,7 @@
 
     <script type="text/javascript" src="js/skill/dictionary_buff.js"></script>
     <script type="text/javascript" src="js/skill/dictionary_debuff.js"></script>
+    <script type="text/javascript" src="js/skill/dictionary_dot.js"></script>
     <script type="text/javascript" src="js/skill/dictionary_monster_skill.js"></script>
     <script type="text/javascript" src="js/skill/dictionary_player_skill.js"></script>
     <script type="text/javascript" src="js/skill/calculate_skill.js"></script>
@@ -34,8 +36,10 @@
     <script type="text/javascript" src="js/world/dictionary_monster_base.js"></script>
     <script type="text/javascript" src="js/world/calculate_monster.js"></script>
 
+    <script type="text/javascript" src="js/view/bar.js"></script>
     <script type="text/javascript" src="js/view/battle.js"></script>
     <script type="text/javascript" src="js/view/character.js"></script>
+    <script type="text/javascript" src="js/view/equipment.js"></script>
     <script type="text/javascript" src="js/view/map.js"></script>
     <script type="text/javascript" src="js/view/test.js"></script>
 
@@ -54,7 +58,7 @@
         <div id="view_job_1_icon">
             <img index=10 id="icon_warrior" src="img/job/warrior.png" class="job_1_icon icon_1_select" alt=""/>
             <img index=20 id="icon_paladin" src="img/job/paladin.png" class="job_1_icon" alt=""/>
-            <img index=30 id="icon_hunter" src="img/job/hunter.png" class="job_1_icon gray" alt=""/>
+            <img index=30 id="icon_hunter" src="img/job/hunter.png" class="job_1_icon" alt=""/>
             <img index=40 id="icon_shaman" src="img/job/shaman.png" class="job_1_icon gray" alt=""/>
             <img index=50 id="icon_druid" src="img/job/druid.png" class="job_1_icon gray" alt=""/>
             <img index=60 id="icon_rogue" src="img/job/rogue.png" class="job_1_icon gray" alt=""/>
@@ -64,28 +68,28 @@
         </div>
     </div>
     <div id="view_job_2_choose">
-        <img index=1 id="icon_job_2_1" src="img/skill/warrior_1.jpg" class="job_2_icon icon_2_select" alt=""/>
-        <img index=2 id="icon_job_2_2" src="img/skill/warrior_2.jpg" class="job_2_icon" alt=""/>
-        <img index=3 id="icon_job_2_3" src="img/skill/warrior_3.jpg" class="job_2_icon" alt=""/>
+        <div index=1 id="icon_job_2_1" class="job_2_icon icon_2_select"></div>
+        <div index=2 id="icon_job_2_2" class="job_2_icon"></div>
+        <div index=3 id="icon_job_2_3" class="job_2_icon"></div>
     </div>
     <div id="view_job_info">
         <div id="view_job_name"></div>
         <div id="view_job_info_1"></div>
         <div id="view_job_skill_1">
-            <img index=2 id="icon_job_skill_1" src="img/skill/warrior_1.jpg" class="job_2_skill_icon" alt=""/>
+            <div index=2 id="icon_job_skill_1" class="job_2_skill_icon"></div>
             <div id="info_job_skill_1"></div>
         </div>
         <div id="view_job_skill_2">
-            <img index=2 id="icon_job_skill_2" src="img/skill/warrior_1_1.jpg" class="job_2_skill_icon" alt=""/>
+            <div index=2 id="icon_job_skill_2" class="job_2_skill_icon"></div>
             <div id="info_job_skill_2"></div>
         </div>
         <div id="view_job_skill_3">
-            <img index=2 id="icon_job_skill_3" src="img/skill/warrior_1_2.jpg" class="job_2_skill_icon" alt=""/>
+            <div index=2 id="icon_job_skill_3" class="job_2_skill_icon"></div>
             <div id="info_job_skill_3"></div>
         </div>
     </div>
     <div id="view_name_info">
-        <div id="view_name_input_title">名称：</div>
+        <div id="view_name_input_title">角色名称：</div>
         <label for="view_name_input"></label>
         <input id="view_name_input" maxlength="6"/>
         <button id="create_character">开始游戏</button>
@@ -96,9 +100,7 @@
 <!-- 战斗画面 -->
 <div id="view_battle" class="full_screen">
     <div id="battle_map">
-        <div id="self_heal">
-            <div id="self_heal_cover"></div>
-        </div>
+        <div id="self_heal"></div>
     </div>
     <div id="exp_bar"></div>
     <div id="battle_status">
@@ -117,18 +119,10 @@
     </div>
     <div id="battle_log"></div>
 </div>
-<!-- 天赋技能 -->
-<div id="view_skill"></div>
 <!-- 装备属性 -->
-<div id="view_equipment"></div>
-<!-- 拍卖行 -->
-<div id="view_auction"></div>
-<!-- 坐骑 -->
-<div id="view_mount"></div>
-<!-- 宠物 -->
-<div id="view_pet"></div>
-<!-- 背包 -->
-<div id="view_bag"></div>
+<div id="view_equipment">
+    <div id="current_status"></div>
+</div>
 <!-- 测试 -->
 <div id="view_test" class="full_screen">
     <div id="test_control">
@@ -168,6 +162,14 @@
         <button id="arena" onclick="start_arena()">GO</button>
     </div>
     <div id="test_log"></div>
+</div>
+<!-- 菜单栏 -->
+<div id="view_bar">
+    <div id="bar_map" class="bar_icon"></div>
+    <div id="bar_equipment" class="bar_icon"></div>
+    <div id="bar_character" class="bar_icon"></div>
+    <div id="bar_test" class="bar_icon"></div>
+    <div id="bar_setting" class="bar_icon"></div>
 </div>
 </body>
 </html>
