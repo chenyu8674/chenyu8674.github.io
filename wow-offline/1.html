@@ -6,54 +6,64 @@
         function getUrlParam(name) {
             let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
             let r = window.location.search.substr(1).match(reg);  //匹配目标参数
-            if (r != null) return unescape(r[2]); return null; //返回参数值
+            if (r != null) return unescape(r[2]);
+            return null; //返回参数值
         }
 
         $(document).ready(function () {
             let type = getUrlParam("type");
-            load_img(type = getUrlParam("type"));
-
-            // load_img("inv_weapon_shortblade");
-            // load_img("inv_weapon_hand");
-            // load_img("inv_axe");
-            // load_img("inv_hammer");
-            // load_img("inv_sword");
-            // load_img("inv_weapon_halberd");
-            // load_img("inv_staff");
-            // load_img("inv_mace");
-            // load_img("inv_weapon_bow");
-            // load_img("inv_weapon_crossbow");
-            // load_img("inv_weapon_rifle");
-            //
-            // load_img("inv_boots");
-            // load_img("inv_gauntlets");
-            // load_img("inv_helmet");
-            // load_img("inv_pants");
-            // load_img("inv_shoulder");
-            // load_img("inv_belt");
-            // load_img("inv_bracer");
-            //
-            // load_img("inv_chest_cloth");
-            // load_img("inv_chest_leather");
-            // load_img("inv_chest_chain");
-            // load_img("inv_chest_plate");
-            //
-            // load_img("inv_pants_cloth");
-            // load_img("inv_pants_leather");
-            // load_img("inv_pants_chain");
-            // load_img("inv_pants_plate");
-            //
-            // load_img("inv_shield");
-            // load_img("inv_misc_cape");
-            // load_img("inv_jewelry_necklace");
-            // load_img("inv_jewelry_ring");
-            // load_img("inv_jewelry_talisman");
-            // load_img("inv_shirt_guildtabard");
-            //
-            // load_img("inv_wand");
-            // load_img("inv_misc_book");
-            // load_img("inv_misc_orb");
-            // load_img("inv_misc_lantern");
+            switch (type) {
+                case 1:
+                    load_img("inv_weapon_shortblade");
+                    load_img("inv_weapon_hand");
+                    load_img("inv_axe");
+                    load_img("inv_hammer");
+                    load_img("inv_sword");
+                    break;
+                case 2:
+                    load_img("inv_weapon_halberd");
+                    load_img("inv_staff");
+                    load_img("inv_mace");
+                    load_img("inv_weapon_bow");
+                    load_img("inv_weapon_crossbow");
+                    load_img("inv_weapon_rifle");
+                    break;
+                case 3:
+                    load_img("inv_boots");
+                    load_img("inv_gauntlets");
+                    load_img("inv_helmet");
+                    load_img("inv_pants");
+                    load_img("inv_shoulder");
+                    load_img("inv_belt");
+                    load_img("inv_bracer");
+                    break;
+                case 4:
+                    load_img("inv_chest_cloth");
+                    load_img("inv_chest_leather");
+                    load_img("inv_chest_chain");
+                    load_img("inv_chest_plate");
+                    break;
+                case 5:
+                    load_img("inv_pants_cloth");
+                    load_img("inv_pants_leather");
+                    load_img("inv_pants_chain");
+                    load_img("inv_pants_plate");
+                    break;
+                case 6:
+                    load_img("inv_shield");
+                    load_img("inv_misc_cape");
+                    load_img("inv_jewelry_necklace");
+                    load_img("inv_jewelry_ring");
+                    load_img("inv_jewelry_talisman");
+                    load_img("inv_shirt_guildtabard");
+                    break;
+                case 7:
+                    load_img("inv_wand");
+                    load_img("inv_misc_book");
+                    load_img("inv_misc_orb");
+                    load_img("inv_misc_lantern");
+                    break;
+            }
         });
 
         function load_img(name) {
@@ -62,7 +72,7 @@
                 if (n.length < 2) {
                     n = "0" + n;
                 }
-                let url = "http://img.db.178.com/wow/icons/l/" + name + "_" + n + ".jpg";
+                let url = "https://wow.zamimg.com/images/wow/icons/large/" + name + "_" + n + ".jpg";
                 let img = $("<img/>");
                 img.attr("src", url);
                 $("body").append(img);
@@ -72,7 +82,7 @@
                 if (n.length < 2) {
                     n = "0" + n;
                 }
-                let url = "http://img.db.178.com/wow/icons/l/" + name + n + ".jpg";
+                let url = "http://60wdb-statics.wow-classic.com/images/icons/large/" + name + n + ".png";
                 let img = $("<img/>");
                 img.attr("src", url);
                 $("body").append(img);
