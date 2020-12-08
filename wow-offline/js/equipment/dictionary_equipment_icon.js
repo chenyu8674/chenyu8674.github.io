@@ -62,7 +62,7 @@ function new_equipment_icon() {
     // 匕首
     equipment_icon[1511] = ["INV_Weapon_ShortBlade_01", "INV_Weapon_ShortBlade_02", "INV_Weapon_ShortBlade_03", "INV_Weapon_ShortBlade_04", "INV_Weapon_ShortBlade_05", "INV_Weapon_ShortBlade_06", "INV_Weapon_ShortBlade_07", "INV_Weapon_ShortBlade_08", "INV_Weapon_ShortBlade_09", "INV_Weapon_ShortBlade_10", "INV_Weapon_ShortBlade_11", "INV_Weapon_ShortBlade_12", "INV_Weapon_ShortBlade_13", "INV_Weapon_ShortBlade_14", "INV_Weapon_ShortBlade_15", "INV_Weapon_ShortBlade_16", "INV_Weapon_ShortBlade_17", "INV_Weapon_ShortBlade_18", "INV_Weapon_ShortBlade_19", "INV_Weapon_ShortBlade_20"]
     // 拳套
-    equipment_icon[1512] = ["Ability_Whirlwind", "INV_Gauntlets_01", "INV_Gauntlets_02", "INV_Gauntlets_07", "INV_Gauntlets_08", "INV_Gauntlets_03", "INV_Gauntlets_09", "Spell_Holy_FistOfJustice"]
+    equipment_icon[1512] = ["INV_Gauntlets_01", "INV_Gauntlets_02", "INV_Gauntlets_07", "INV_Gauntlets_08", "INV_Gauntlets_03", "INV_Gauntlets_09"]
     // 单手斧
     equipment_icon[1513] = ["INV_Axe_01", "INV_Axe_02", "INV_Axe_03", "INV_Axe_04", "INV_Axe_05", "INV_Axe_06", "INV_Axe_07", "INV_Axe_08", "INV_Axe_11", "INV_Axe_12"]
     // 单手锤

@@ -108,7 +108,7 @@ function create_character(job, exp, name) {
                 break;
         }
     }
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
         let item = create_random_equipment(1);
         current_character.items.push(item);
     }
