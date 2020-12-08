@@ -48,9 +48,9 @@ function init_skill_1_click() {
 
 function init_skill_2() {
     let icon_job_2_1 = $("#icon_job_2_1");
-    icon_job_2_1.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 1].icon + ".jpg')");
-    $("#icon_job_2_2").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 2].icon + ".jpg')");
-    $("#icon_job_2_3").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 3].icon + ".jpg')");
+    icon_job_2_1.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 1].icon + ".png')");
+    $("#icon_job_2_2").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 2].icon + ".png')");
+    $("#icon_job_2_3").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 3].icon + ".png')");
     init_skill_2_click();
     icon_job_2_1.click();
 }
@@ -69,9 +69,9 @@ function init_skill_2_click() {
         // 专精介绍
         $("#view_job_info_1").text(dictionary_job.job_info[selected_job_1_index + selected_job_2_index]);
         // 技能图标
-        $("#icon_job_skill_1").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + selected_job_2_index].icon + ".jpg')");
-        $("#icon_job_skill_2").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].icon + ".jpg')");
-        $("#icon_job_skill_3").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].icon + ".jpg')");
+        $("#icon_job_skill_1").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + selected_job_2_index].icon + ".png')");
+        $("#icon_job_skill_2").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].icon + ".png')");
+        $("#icon_job_skill_3").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].icon + ".png')");
         // 技能介绍
         let buff_name = dictionary_buff[selected_job_1_index + selected_job_2_index].name;
         let buff_detail = dictionary_buff[selected_job_1_index + selected_job_2_index].detail;

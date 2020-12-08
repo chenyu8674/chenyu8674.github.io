@@ -1,0 +1,23 @@
+
+monster drop
+6 - 100% 2 from list
+5 - 100% 1 from list
+4 - 50% 1 random
+3 - 100% 1 random
+2 - 10% 1 random
+1 - 5% 1 random
+
+random drop
+5 - 1%
+4 - 4%
+3 - 60%
+2 - 20%
+1 - 15%
+
+extra drop
+total - 1% 
+  - 10% pet
+  - 10% ride
+  - 30% bag
+  - 25% shirt
+  - 25% mask

@@ -103,7 +103,7 @@ function get_monster_species_name(species) {
 function get_monster_rare_name(rare) {
     switch (rare) {
         case 1:
-            return "爪牙";
+            return "弱小敌人";
         case 2:
             return "普通敌人";
         case 3:

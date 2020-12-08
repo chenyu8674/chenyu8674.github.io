@@ -81,29 +81,29 @@ function create_character(job, exp, name) {
     current_character.equipments = [];
     if (exp === 0) {
         // 新手装备
-        current_character.equipments.push(create_equipment("newbee_shirt", 1, 1));
+        current_character.equipments.push(create_base_equipment("newbee_shirt", 1, 1));
         switch (job) {
             case 11:
-                current_character.equipments.push(create_equipment("newbee_two_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_two_hand_sword_str", 1, 1));
                 break;
             case 12:
-                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
                 break;
             case 13:
-                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-                current_character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_shield_str", 1, 1));
                 break;
             case 21:
-                current_character.equipments.push(create_equipment("newbee_one_hand_sword_int", 1, 1));
-                current_character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_int", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_shield_str", 1, 1));
                 break;
             case 22:
-                current_character.equipments.push(create_equipment("newbee_one_hand_sword_str", 1, 1));
-                current_character.equipments.push(create_equipment("newbee_shield_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_shield_str", 1, 1));
                 break;
             case 23:
-                current_character.equipments.push(create_equipment("newbee_two_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_base_equipment("newbee_two_hand_sword_str", 1, 1));
                 break;
         }
     }

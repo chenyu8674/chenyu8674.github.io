@@ -2,7 +2,7 @@ let view_equipment;
 
 $(document).ready(function () {
     view_equipment = $("#view_equipment");
-    hide_view_bar();
+    hide_view_equipment();
 });
 
 function show_view_equipment() {
@@ -18,6 +18,7 @@ function refresh_current_status(role) {
     if (role == null) {
         role_whole = role_battle_1;
     }
+    refresh_current_equipment(role_whole);
     let role_html = "";
     role_html += role_whole.name + "<br/>";
     role_html += "等级 " + role_whole.lvl + " " + dictionary_job.job_name[role_whole.job] + "<br/>";
@@ -74,4 +75,75 @@ function refresh_current_status(role) {
     role_html += "<br/>";
     $("#current_status").html(role_html);
     return role_html;
+}
+
+function refresh_current_equipment(role) {
+    let cell_old = $(".cell");
+    cell_old.css("border-color", "slategray");
+    cell_old.css("background-image", "");
+    let equipments = role.equipments;
+    let ring_count = 0;
+    let trinket_count = 0;
+    let weapon_count = 0;
+    for (let i = 0; i < equipments.length; i++) {
+        let equipment = equipments[i];
+        let pos = equipment.pos;
+        let rare = equipment.rare;
+        let icon = equipment.icon;
+        if (pos === 13) {
+            pos += ring_count;
+            ring_count++;
+        }
+        if (pos === 14) {
+            pos += 1 + trinket_count;
+            trinket_count++;
+        }
+        if (pos === 15) {
+            pos += 2 + weapon_count;
+            weapon_count++;
+        }
+        if (pos === 16) {
+            pos = 18;
+        }
+        let cell = $("#current_equipments_" + pos);
+        let rare_color = eval("color_rare_" + rare);
+        cell.css("border-color", rare_color);
+        cell.css("box-shadow", "0 0 10px inset " + rare_color);
+        cell.css("background-image", "url(./img/icon/" + icon + ".png)");
+        cell.hover(function () {
+            show_equipment_info(equipment, cell[0].offsetWidth + getLeft(cell[0]), cell[0].offsetHeight + getTop(cell[0]));
+        }, function () {
+            hide_equipment_info();
+        });
+    }
+}
+
+/**
+ * 显示装备介绍
+ */
+function show_equipment_info(equipment, x, y) {
+    $(".info_window").remove();
+    let info = $("<div></div>");
+    info.attr('id', 'equipment_info');
+    info.addClass("info_window");
+    info.css("position", "fixed");
+    info.css("left", x + "px");
+    info.css("top", y + "px");
+    let rare_color = eval("color_rare_" + equipment.rare);
+    info.append("<p style='font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</p>");
+    info.append("<p style='color:goldenrod'>需要等级" + equipment.c_lvl + " 物品等级" + equipment.e_lvl + "</p>");
+    info.append("<p>" + equipment.type_name + "</p>");
+    for (let i = 0; i < equipment.effect.length; i++) {
+        let effect = equipment.effect[i];
+        effect = effect.split("+=");
+        info.append("<p>+" + effect[1] + " " + dictionary_attribute_name[effect[0]] + "</p>");
+    }
+    view_equipment.append(info);
+}
+
+/**
+ * 隐藏装备介绍
+ */
+function hide_equipment_info() {
+    $("#equipment_info").remove();
 }

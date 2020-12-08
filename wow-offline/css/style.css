@@ -27,9 +27,6 @@ body {
 }
 
 #view_equipment {
-    position: absolute;
-    top: 40px;
-    left: 5px;
     z-index: 70;
 }
 
@@ -65,33 +62,42 @@ body {
     height: 60px;
     margin: 6px;
     float: left;
-    background-size: 120%;
+    background-size: 103%;
     background-position: center;
-    background-repeat: no-repeat;
     border-radius: 12px;
-    border: 4px outset dimgray;
 }
 
 .bar_icon:hover {
-    border-color: silver;
+    box-shadow: 0 0 20px goldenrod;
 }
 
 #bar_map {
-    background-image: url(../img/icon/Ability_Spy.jpg);
+    background-image: url(../img/icon/Ability_Spy.png);
 }
 
 #bar_equipment {
-    background-image: url(../img/icon/INV_Misc_Bag_19.jpg);
+    background-image: url(../img/icon/INV_Misc_Bag_19.png);
 }
 
 #bar_character {
-    background-image: url(../img/icon/INV_Helmet_06.jpg);
+    background-image: url(../img/icon/INV_Helmet_06.png);
 }
 
 #bar_test {
-    background-image: url(../img/icon/INV_Misc_Bomb_04.jpg);
+    background-image: url(../img/icon/INV_Misc_Bomb_04.png);
 }
 
 #bar_setting {
-    background-image: url(../img/icon/INV_Gizmo_02.jpg);
+    background-image: url(../img/icon/INV_Gizmo_02.png);
+}
+
+.cell {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: rgba(30, 30, 30, 0.9);
+    background-size: 110%;
+    background-position: center;
+    border: 2px ridge slategray;
 }

@@ -177,5 +177,25 @@ function new_buff() {
     }
     buff[33] = buff.hunter_3();
 
+    // 狂暴
+    buff.mage_2 = function () {
+        let buff = {};
+        buff.id = 12;// Id
+        buff.name = "狂暴姿态";// 名称
+        buff.T = -1;
+        buff.X = 5;
+        buff.Y = 50;
+        buff.Z = 5;
+        buff.icon = "ability_racial_avatar";
+        buff.detail = "暴击率+" + buff.X + "%，暴击伤害+" + buff.Y + "%，受到伤害+" + buff.Z + "%";
+        buff.effect = [
+            "critical_chance_final+=" + buff.X,
+            "critical_damage+=" + buff.Y,
+            "taken_damage_percent+=" + buff.Z
+        ];
+        return buff;
+    }
+    buff[92] = buff.mage_2();
+
     return buff;
 }

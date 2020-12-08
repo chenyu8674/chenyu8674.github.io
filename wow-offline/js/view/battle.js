@@ -11,10 +11,12 @@ $(document).ready(function () {
 
 function show_view_battle() {
     view_battle.show();
+    show_view_equipment();
 }
 
 function hide_view_battle() {
     view_battle.hide();
+    hide_view_equipment();
 }
 
 let player_x;

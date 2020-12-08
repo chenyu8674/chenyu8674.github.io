@@ -68,8 +68,8 @@ let warrior_1 = function () {
     warrior_1.buffs = [dictionary_buff[11]];
     warrior_1.debuffs = [];
     warrior_1.equipments = [
-        create_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_armor", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_armor", MAX_LVL, MAX_LVL)
     ];
     warrior_1.skills = dictionary_player_skill[11];
     return warrior_1;
@@ -80,9 +80,9 @@ let warrior_2 = function () {
     warrior_2.buffs = [dictionary_buff[12]];
     warrior_2.debuffs = [];
     warrior_2.equipments = [
-        create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_armor", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_armor", MAX_LVL, MAX_LVL)
     ];
     warrior_2.skills = dictionary_player_skill[12];
     return warrior_2;
@@ -93,9 +93,9 @@ let warrior_3 = function () {
     warrior_3.buffs = [dictionary_buff[13]];
     warrior_3.debuffs = [];
     warrior_3.equipments = [
-        create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_shield_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_armor", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_shield_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_armor", MAX_LVL, MAX_LVL)
     ];
     warrior_3.skills = dictionary_player_skill[13];
     return warrior_3;
@@ -106,9 +106,9 @@ let paladin_1 = function () {
     paladin_1.buffs = [dictionary_buff[21]];
     paladin_1.debuffs = [];
     paladin_1.equipments = [
-        create_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL),
-        create_equipment("test_shield_int", MAX_LVL, MAX_LVL),
-        create_equipment("test_armor", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_shield_int", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_armor", MAX_LVL, MAX_LVL)
     ];
     paladin_1.skills = dictionary_player_skill[21];
     return paladin_1;
@@ -119,9 +119,9 @@ let paladin_2 = function () {
     paladin_2.buffs = [dictionary_buff[22]];
     paladin_2.debuffs = [];
     paladin_2.equipments = [
-        create_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_shield_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_armor", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_one_hand_sword_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_shield_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_armor", MAX_LVL, MAX_LVL)
     ];
     paladin_2.skills = dictionary_player_skill[22];
     return paladin_2;
@@ -132,8 +132,8 @@ let paladin_3 = function () {
     paladin_3.buffs = [dictionary_buff[23]];
     paladin_3.debuffs = [];
     paladin_3.equipments = [
-        create_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL),
-        create_equipment("test_armor", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_two_hand_sword_str", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_armor", MAX_LVL, MAX_LVL)
     ];
     paladin_3.skills = dictionary_player_skill[23];
     return paladin_3;
@@ -144,8 +144,8 @@ let hunter_1 = function () {
     hunter_1.buffs = [dictionary_buff[31]];
     hunter_1.debuffs = [];
     hunter_1.equipments = [
-        create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL),
-        create_equipment("test_chain", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_chain", MAX_LVL, MAX_LVL)
     ];
     hunter_1.skills = dictionary_player_skill[31];
     return hunter_1;
@@ -156,8 +156,8 @@ let hunter_2 = function () {
     hunter_2.buffs = [dictionary_buff[32]];
     hunter_2.debuffs = [];
     hunter_2.equipments = [
-        create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL),
-        create_equipment("test_chain", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_chain", MAX_LVL, MAX_LVL)
     ];
     hunter_2.skills = dictionary_player_skill[32];
     return hunter_2;
@@ -168,8 +168,8 @@ let hunter_3 = function () {
     hunter_3.buffs = [dictionary_buff[33]];
     hunter_3.debuffs = [];
     hunter_3.equipments = [
-        create_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL),
-        create_equipment("test_chain", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_two_hand_bow", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_chain", MAX_LVL, MAX_LVL)
     ];
     hunter_3.skills = dictionary_player_skill[33];
     return hunter_3;
@@ -177,12 +177,12 @@ let hunter_3 = function () {
 
 let mage_2 = function () {
     let mage_2 = create_character(92, MAX_EXP);
-    mage_2.buffs = [dictionary_buff[12]];
+    mage_2.buffs = [];
     mage_2.debuffs = [];
     mage_2.equipments = [
-        create_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL),
-        create_equipment("test_book", MAX_LVL, MAX_LVL),
-        create_equipment("test_cloth", MAX_LVL, MAX_LVL)
+        create_base_equipment("test_one_hand_sword_int", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_book", MAX_LVL, MAX_LVL),
+        create_base_equipment("test_cloth", MAX_LVL, MAX_LVL)
     ];
     mage_2.skills = dictionary_player_skill[92];
     return mage_2;
