@@ -79,6 +79,7 @@ function create_character(job, exp, name) {
     current_character.debuffs = [];
     current_character.dots = [];
     current_character.equipments = [];
+    current_character.items = [];
     if (exp === 0) {
         // 新手装备
         current_character.equipments.push(create_base_equipment("newbee_shirt", 1, 1));
@@ -106,6 +107,10 @@ function create_character(job, exp, name) {
                 current_character.equipments.push(create_base_equipment("newbee_two_hand_sword_str", 1, 1));
                 break;
         }
+    }
+    for (let i = 0; i < 10; i++) {
+        let item = create_random_equipment(1);
+        current_character.items.push(item);
     }
     save_data();
     // 刷新状态栏

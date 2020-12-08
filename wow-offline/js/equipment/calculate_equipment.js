@@ -54,9 +54,35 @@ function create_random_equipment(lvl) {
         rare_random = 5;
     }
     // 装备位置
-    let pos_random = Math.floor(16 * Math.random() + 1);
-    while (pos_random === 6 || pos_random === 7) {
-        pos_random = Math.floor(16 * Math.random() + 1);
+    let pos_random = 100 * Math.random();
+    if (pos_random <= 5) {
+        pos_random = 1;
+    } else if (pos_random <= 10) {
+        pos_random = 2;
+    } else if (pos_random <= 15) {
+        pos_random = 3;
+    } else if (pos_random <= 20) {
+        pos_random = 4;
+    } else if (pos_random <= 25) {
+        pos_random = 5;
+    } else if (pos_random <= 30) {
+        pos_random = 8;
+    } else if (pos_random <= 35) {
+        pos_random = 9;
+    } else if (pos_random <= 40) {
+        pos_random = 10;
+    } else if (pos_random <= 45) {
+        pos_random = 11;
+    } else if (pos_random <= 50) {
+        pos_random = 12;
+    } else if (pos_random <= 60) {
+        pos_random = 13;
+    } else if (pos_random <= 70) {
+        pos_random = 14;
+    } else if (pos_random <= 75) {
+        pos_random = 16;
+    } else if (pos_random <= 100) {
+        pos_random = 15;
     }
     // 装备倾向
     let inclination_random = Math.round(Math.random()) + 1;
@@ -88,35 +114,18 @@ function create_random_equipment(lvl) {
         case 1:
             multiple = 0.8;
             type_name = name = "头盔";
-            icon = "INV_Helmet_" + icon_index;
             break;
         case 2:
             multiple = 0.6;
             type_name = name = "项链";
-            icon = "INV_Jewelry_Necklace_" + icon_index;
             break;
         case 3:
             multiple = 0.8;
             type_name = name = "护肩";
-            icon = "INV_Shoulder_" + icon_index;
             break;
         case 4:
             multiple = 1;
             type_name = name = "胸甲";
-            switch (type_random) {
-                case 1:
-                    icon = "INV_Chest_Cloth_" + icon_index;
-                    break;
-                case 2:
-                    icon = "INV_Chest_Leather_" + icon_index;
-                    break;
-                case 3:
-                    icon = "INV_Chest_Chain_" + icon_index;
-                    break;
-                case 4:
-                    icon = "INV_Chest_Plate" + icon_index;
-                    break;
-            }
             break;
         case 5:
             multiple = 0.6;
@@ -274,6 +283,7 @@ function create_random_equipment(lvl) {
     model.type = type_random;
     model.lvl_max = lvl;
     model.effect = [];
+    model.icon = create_equipment_icon(model);
     model.affix = [multiple, pos_random * 1000 + inclination_random * 100 + type_random, "random", "random"];
     console.log(model);
     return create_equipment_by_model(model, lvl, lvl);
@@ -364,4 +374,14 @@ function create_equipment_by_model(model, c_lvl, e_lvl) {
     equipment.name = equipment_name.join(" ");
     console.log(equipment);
     return equipment;
+}
+
+/**
+ * 生成装备图标
+ */
+function create_equipment_icon(model) {
+    let type = model.pos * 100 + model.type;
+    let equipment_icon = dictionary_equipment_icon[type];
+    let index = Math.floor(Math.random() * equipment_icon.length);
+    return equipment_icon[index];
 }

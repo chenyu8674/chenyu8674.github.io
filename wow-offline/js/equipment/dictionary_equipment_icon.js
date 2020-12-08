@@ -5,7 +5,7 @@ $(document).ready(function () {
 })
 
 function new_equipment_icon() {
-    let equipment_icon = {}
+    let equipment_icon = []
     // 位置 * 1000 + 倾向 * 100 + 类型
     // 头盔
     equipment_icon[101] = ["INV_Helmet_26", "INV_Helmet_27", "INV_Helmet_28", "INV_Helmet_29", "INV_Helmet_30", "INV_Helmet_31", "INV_Helmet_32", "INV_Helmet_33", "INV_Helmet_34", "INV_Helmet_50"]
@@ -27,9 +27,9 @@ function new_equipment_icon() {
     // 披风
     equipment_icon[501] = ["inv_misc_cape_01", "inv_misc_cape_03", "inv_misc_cape_05", "inv_misc_cape_07", "inv_misc_cape_10", "inv_misc_cape_12", "inv_misc_cape_13", "inv_misc_cape_16", "inv_misc_cape_19", "inv_misc_cape_20"]
     // 衬衫
-    equipment_icon[699] = ["", "", "", "", "", "", "", "", "", ""]
+    equipment_icon[699] = ["inv_shirt_01", "inv_shirt_02", "inv_shirt_08", "inv_shirt_11", "inv_shirt_12", "inv_shirt_13", "inv_shirt_14", "inv_shirt_15"]
     // 战袍
-    equipment_icon[799] = ["", "", "", "", "", "", "", "", "", ""]
+    equipment_icon[799] = ["inv_shirt_guildtabard_01"]
     // 手腕
     equipment_icon[801] = ["INV_Bracer_07", "INV_Bracer_10", "INV_Bracer_11", "INV_Bracer_12", "INV_Bracer_13"]
     equipment_icon[802] = ["INV_Bracer_01", "INV_Bracer_02", "INV_Bracer_04", "INV_Bracer_05", "INV_Bracer_08"]
@@ -88,7 +88,7 @@ function new_equipment_icon() {
     // 盾牌
     equipment_icon[1641] = ["INV_Shield_03", "INV_Shield_04", "INV_Shield_05", "INV_Shield_06", "INV_Shield_07", "INV_Shield_09", "INV_Shield_10", "INV_Shield_11", "INV_Shield_12", "INV_Shield_13"]
     // 副手
-    equipment_icon[1642] = ["INV_Wand_01", "INV_Wand_02", "INV_Wand_03", "INV_Wand_04", "INV_Wand_05", "INV_Wand_06", "INV_Wand_07", "INV_Wand_08", "INV_Wand_09", "INV_Wand_10"]
+    equipment_icon[1642] = ["inv_misc_book_01", "inv_misc_book_05", "inv_misc_book_06", "inv_misc_orb_01", "inv_misc_orb_03", "inv_misc_orb_05", "inv_wand_02", "inv_wand_03", "inv_wand_10", "inv_misc_lantern_01"]
 
     return equipment_icon
 }

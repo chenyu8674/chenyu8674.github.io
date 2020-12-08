@@ -1,7 +1,9 @@
 let view_equipment;
+let view_current_items;
 
 $(document).ready(function () {
     view_equipment = $("#view_equipment");
+    view_current_items = $("#current_items");
     hide_view_equipment();
 });
 
@@ -18,7 +20,9 @@ function refresh_current_status(role) {
     if (role == null) {
         role_whole = role_battle_1;
     }
+    console.log(role_whole)
     refresh_current_equipment(role_whole);
+    refresh_current_items(role_whole);
     let role_html = "";
     role_html += role_whole.name + "<br/>";
     role_html += "等级 " + role_whole.lvl + " " + dictionary_job.job_name[role_whole.job] + "<br/>";
@@ -38,8 +42,11 @@ function refresh_current_status(role) {
     role_html += "命中率：" + calculate_original_hit(role_whole).toFixed(2) + "%<br/>";
     role_html += "暴击率：" + calculate_original_critical(role_whole).toFixed(2) + "%<br/>";
     role_html += "躲闪率：" + calculate_original_dodge(role_whole).toFixed(2) + "%<br/>";
-    role_html += "格挡率：" + calculate_original_block(role_whole).toFixed(2) + "%<br/>";
-    role_html += "格挡值：" + role_whole.block_value + "<br/>";
+    let block_chance = calculate_original_block(role_whole).toFixed(2);
+    role_html += "格挡率：" + block_chance + "%<br/>";
+    if (block_chance > 0) {
+        role_html += "格挡值：" + role_whole.block_value + "<br/>";
+    }
     role_html += "<br/>";
     role_html += "攻击护甲：" + role_whole.armor_attack + "<br/>";
     role_html += "攻击减伤：" + (calculate_armor_attack(role_whole) * 100).toFixed(2) + "<br/>";
@@ -77,6 +84,10 @@ function refresh_current_status(role) {
     return role_html;
 }
 
+/**
+ * 生成装备栏
+ * @param role
+ */
 function refresh_current_equipment(role) {
     let cell_old = $(".cell");
     cell_old.css("border-color", "slategray");
@@ -109,7 +120,7 @@ function refresh_current_equipment(role) {
         let rare_color = eval("color_rare_" + rare);
         cell.css("border-color", rare_color);
         cell.css("box-shadow", "0 0 10px inset " + rare_color);
-        cell.css("background-image", "url(./img/icon/" + icon + ".png)");
+        cell.css("background-image", "url(./img/equipment/" + icon + ".jpg)");
         cell.hover(function () {
             show_equipment_info(equipment, cell[0].offsetWidth + getLeft(cell[0]), cell[0].offsetHeight + getTop(cell[0]));
         }, function () {
@@ -146,4 +157,30 @@ function show_equipment_info(equipment, x, y) {
  */
 function hide_equipment_info() {
     $("#equipment_info").remove();
+}
+
+/**
+ * 生成物品栏
+ * @param role
+ */
+function refresh_current_items(role) {
+    view_current_items.empty();
+    let items = role.items;
+    for (let i = 0; i < 100; i++) {
+        let item = items[i];
+        let cell = $("<div></div>");
+        cell.addClass("item");
+        view_current_items.append(cell);
+        if (item != null) {
+            let rare_color = eval("color_rare_" + item.rare);
+            cell.css("border-color", rare_color);
+            cell.css("box-shadow", "0 0 10px inset " + rare_color);
+            cell.css("background-image", "url(./img/equipment/" + item.icon + ".jpg)");
+            cell.hover(function () {
+                show_equipment_info(item, cell[0].offsetWidth + getLeft(cell[0]), cell[0].offsetHeight + getTop(cell[0]));
+            }, function () {
+                hide_equipment_info();
+            });
+        }
+    }
 }

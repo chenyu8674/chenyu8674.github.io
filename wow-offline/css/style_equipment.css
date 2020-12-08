@@ -110,3 +110,28 @@
     left: 176px;
     top: 370px;
 }
+
+#current_items {
+    position: absolute;
+    width: 480px;
+    height: 604px;
+    top: 80px;
+    left: 800px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 3px ridge slategray;
+}
+
+.item {
+    position: relative;
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin: 2px;
+    border-radius: 5px;
+    background-color: rgba(30, 30, 30, 0.9);
+    background-size: 100%;
+    background-position: center;
+    border: 2px ridge slategray;
+}

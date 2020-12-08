@@ -14,6 +14,7 @@ function new_role_base() {
     role_base.debuffs = [];
     role_base.dots = [];
     role_base.equipments = [];
+    role_base.items = [];
     role_base.skills = [];
     return role_base;
 }
