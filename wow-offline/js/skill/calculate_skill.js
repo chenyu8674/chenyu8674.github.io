@@ -123,8 +123,8 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
             res = target.res_holy - attacker.pierce_holy;
             break;
         case element_shadow:
-            dmg = attacker.damage_dark;
-            res = target.res_dark - attacker.pierce_dark;
+            dmg = attacker.damage_shadow;
+            res = target.res_shadow - attacker.pierce_shadow;
             break;
     }
     /* 基础伤害 */
@@ -138,7 +138,7 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
     }
     // 伤害随机浮动(0.9~1.1)
     damage_value *= (0.9 + Math.random() * 0.2);
-    // 每差1级，伤害浮动5%
+    // 每差1级，伤害浮动5%，范围50~200%
     let lvl_percent = (attacker.lvl - target.lvl) * 5;
     if (lvl_percent > 100) {
         lvl_percent = 100;

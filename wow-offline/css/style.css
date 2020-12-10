@@ -42,9 +42,9 @@ body {
     padding: 5px 20px 5px 10px;
     color: whitesmoke;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0.95);
     border: 3px ridge slategray;
-    z-index: 99;
+    z-index: 100;
 }
 
 #view_bar {

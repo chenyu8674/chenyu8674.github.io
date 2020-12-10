@@ -50,21 +50,21 @@ function new_attribute_name() {
     name.damage_natural = "%自然伤害";
     name.damage_arcane = "%奥术伤害";
     name.damage_holy = "%神圣伤害";
-    name.damage_dark = "%暗影伤害";
+    name.damage_shadow = "%暗影伤害";
     name.res_physical = "物理抗性";
     name.res_fire = "火焰抗性";
     name.res_frost = "冰霜抗性";
     name.res_natural = "自然抗性";
     name.res_arcane = "奥术抗性";
     name.res_holy = "神圣抗性";
-    name.res_dark = "暗影抗性";
+    name.res_shadow = "暗影抗性";
     name.pierce_physical = "物理穿透";
     name.pierce_fire = "火焰穿透";
     name.pierce_frost = "冰霜穿透";
     name.pierce_natural = "自然穿透";
     name.pierce_arcane = "奥术穿透";
     name.pierce_holy = "神圣穿透";
-    name.pierce_dark = "暗影穿透";
+    name.pierce_shadow = "暗影穿透";
     name.taken_damage_percent = "%受到伤害";
     name.taken_heal_percent = "%受到治疗";
 

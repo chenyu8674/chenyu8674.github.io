@@ -1,5 +1,12 @@
 /** 画面适配 **/
-$(document).ready(function(){
+$(document).ready(function () {
+    $(document).bind("contextmenu", function () {
+        return false;
+    });
+    $(document).bind("selectstart", function () {
+        return false;
+    });
+
     do_adapt();
     $(window).resize(do_adapt);
     setTimeout(do_adapt, 100);

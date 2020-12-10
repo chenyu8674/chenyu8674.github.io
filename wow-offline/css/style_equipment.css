@@ -113,11 +113,11 @@
 
 #current_items {
     position: absolute;
-    width: 480px;
-    height: 604px;
+    width: 580px;
+    height: 580px;
     top: 80px;
     left: 800px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.8);
     border: 3px ridge slategray;
@@ -126,8 +126,8 @@
 .item {
     position: relative;
     float: left;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     margin: 2px;
     border-radius: 5px;
     background-color: rgba(30, 30, 30, 0.9);

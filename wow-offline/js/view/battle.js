@@ -11,12 +11,12 @@ $(document).ready(function () {
 
 function show_view_battle() {
     view_battle.show();
-    show_view_equipment();
+    // show_view_equipment();
 }
 
 function hide_view_battle() {
     view_battle.hide();
-    hide_view_equipment();
+    // hide_view_equipment();
 }
 
 let player_x;
@@ -257,8 +257,8 @@ function add_monster() {
     if (lvl >= map_info.max && !has_rare_monster(4)) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
-    } else if (Math.random() < 5 / 100 && !has_rare_monster(3)) {
-        // 5%几率刷新稀有怪（唯一）
+    } else if (Math.random() < RARE_PERCENT / 100 && !has_rare_monster(3)) {
+        // 刷新稀有怪（唯一）
         monster_base_list = map_info.rare;
     }
     let random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
@@ -383,17 +383,19 @@ function on_battle_end(index) {
     refresh_current_status();
     $(".player_point").removeClass("on_battle");
     if (index === 1) {
-        // 计算经验
         let monster = map_monster_list[target_monster];
+        // 掉落判定
+        drop_random_equipment(monster);
+        // 计算经验
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
         exp = Math.round(exp);
         // exp *= 100;
-        let old_lvl = current_character.lvl;
         battle_log(current_character.name + " 获得 " + exp + " 点经验");
+        // 升级判定
+        let old_lvl = current_character.lvl;
         add_experience(exp);
         calculate_base_property(current_character);
         if (current_character.lvl > old_lvl) {
-            // 升级
             battle_log(current_character.name + " 升到了 " + current_character.lvl + " 级");
             role_battle_1 = get_battle_attribute(current_character, "battle_1");
             role_battle_1.current_health_value = role_battle_1.max_health_value;
@@ -409,6 +411,52 @@ function on_battle_end(index) {
         refresh_player_point();
         $("#self_heal").click();
         refresh_battle_status(false);
+    }
+}
+
+/**
+ * 装备掉落计算
+ */
+function drop_random_equipment(monster) {
+    let rare = monster.rare;
+    let is_drop = false;
+    switch (rare) {
+        case 1:
+            is_drop = 100 * Math.random() < 5;
+            break;
+        case 2:
+            is_drop = 100 * Math.random() < 10;
+            break;
+        case 3:
+            is_drop = true;
+            break;
+        case 4:
+            is_drop = 100 * Math.random() < 50;
+            break;
+    }
+    if (is_drop) {
+        let lvl = monster.lvl;
+        let equipment = create_random_equipment(lvl);
+        let items = current_character.items;
+        for (let i = 0; i < MAX_ITEMS; i++) {
+            if (items[i] == null) {
+                items[i] = equipment;
+                let rare_color = eval("color_rare_" + equipment.rare);
+                let id = "item" + new Date().getTime();
+                battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + equipment.name + "]</span>");
+                refresh_current_status();
+                setTimeout(function () {
+                    let view_label = $("#" + id);
+                    view_label.hover(function () {
+                        let view = $(this);
+                        show_equipment_info(equipment, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                    }, function () {
+                        hide_equipment_info();
+                    });
+                }, 0);
+                break;
+            }
+        }
     }
 }
 

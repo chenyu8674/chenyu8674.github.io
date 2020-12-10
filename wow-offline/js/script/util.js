@@ -31,20 +31,15 @@ function loadHandler(e) {
     }
 }
 
-/**
- * 获取元素的纵坐标（相对于窗口）
- */
-function getTop(e) {
-    let offset = e.offsetTop;
-    if (e.offsetParent != null) offset += getTop(e.offsetParent);
-    return offset;
+function random_in_array(array) {
+    return array[Math.floor(Math.random() * array.length)];
 }
 
-/**
- * 获取元素的横坐标（相对于窗口）
- */
-function getLeft(e) {
-    let offset = e.offsetLeft;
-    if (e.offsetParent != null) offset += getLeft(e.offsetParent);
-    return offset;
+function is_in_array(obj, array) {
+    for (let i in array) {
+        if (array[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }

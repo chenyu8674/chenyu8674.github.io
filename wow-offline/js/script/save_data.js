@@ -73,6 +73,7 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
+    // add_experience(MAX_EXP);
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
     current_character.buffs = [dictionary_buff[job]];
@@ -82,36 +83,39 @@ function create_character(job, exp, name) {
     current_character.items = [];
     if (exp === 0) {
         // 新手装备
-        current_character.equipments.push(create_base_equipment("newbee_shirt", 1, 1));
+        current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shirt"]));
         switch (job) {
             case 11:
-                current_character.equipments.push(create_base_equipment("newbee_two_hand_sword_str", 1, 1));
+            case 23:
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_two_hand_sword_str"]));
                 break;
             case 12:
-                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
-                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_str"]));
                 break;
             case 13:
-                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
-                current_character.equipments.push(create_base_equipment("newbee_shield_str", 1, 1));
+            case 22:
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shield_str"]));
                 break;
             case 21:
-                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_int", 1, 1));
-                current_character.equipments.push(create_base_equipment("newbee_shield_str", 1, 1));
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_int"]));
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shield_str"]));
                 break;
-            case 22:
-                current_character.equipments.push(create_base_equipment("newbee_one_hand_sword_str", 1, 1));
-                current_character.equipments.push(create_base_equipment("newbee_shield_str", 1, 1));
-                break;
-            case 23:
-                current_character.equipments.push(create_base_equipment("newbee_two_hand_sword_str", 1, 1));
+            case 31:
+            case 32:
+            case 33:
+                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_bow"]));
                 break;
         }
     }
-    for (let i = 0; i < 100; i++) {
-        let item = create_random_equipment(1);
-        current_character.items.push(item);
-    }
+    // for (let i = 0; i < MAX_ITEMS; i++) {
+    //     current_character.items.push(create_random_equipment(1));
+    // }
+    // current_character.items.sort(function (a, b) {
+    //     return a.pos * 100 + a.type - b.pos * 100 - b.type;
+    // });
+
     save_data();
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");

@@ -19,7 +19,7 @@ function battle_log(str) {
         log_view.scrollTop(log_view[0].scrollHeight);
     } else {
         let log_view = $("#battle_log");
-        log_view.html(battle_log_text);
+        log_view.append(str + "<br />");
         log_view.scrollTop(log_view[0].scrollHeight);
     }
 }

@@ -1,8 +1,15 @@
 /** 常量定义 **/
 
-let MAX_LVL = 60;// 等级上限
-let MAX_EXP = 0;// 经验上限
-let MAX_RES = 75;// 最大抗性(无加成)
+// 等级上限
+let MAX_LVL = 60;
+// 经验上限
+let MAX_EXP = 0;
+// 最大抗性
+let MAX_RES = 75;
+// 最大包裹数量
+let MAX_ITEMS = 100;
+// 稀有怪刷新率
+let RARE_PERCENT = 100;
 
 /** 系统设置 **/
 
@@ -47,7 +54,7 @@ let agi_to_hit_rate = 2;
 let agi_to_critical_rate = 1;
 let agi_to_dodge_rate = 2;
 
-let sta_to_health_max = 15;
+let sta_to_health_max = 10;
 let sta_to_armor_attack = 2;
 
 let int_to_magic_power = 2;

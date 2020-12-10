@@ -51,10 +51,10 @@ function new_equipment_icon() {
     equipment_icon[1103] = ["INV_Pants_03", "INV_Pants_05", "inv_pants_leather_03", "inv_pants_leather_04", "inv_pants_leather_05", "inv_pants_leather_11", "inv_pants_leather_12"]
     equipment_icon[1104] = ["INV_Pants_04", "inv_pants_plate_03", "inv_pants_plate_04", "inv_pants_plate_05", "inv_pants_plate_06", "inv_pants_plate_15", "inv_pants_plate_16", "inv_pants_plate_17", "inv_pants_plate_18", "inv_pants_plate_19"]
     // 鞋子
-    equipment_icon[1201] = ["inv_boots_01", "inv_boots_02", "inv_boots_03", "inv_boots_04", "inv_boots_05", "inv_boots_06", "inv_boots_07", "inv_boots_08", "inv_boots_09"]
-    equipment_icon[1202] = equipment_icon[1201]
-    equipment_icon[1203] = equipment_icon[1201]
-    equipment_icon[1204] = equipment_icon[1201]
+    equipment_icon[1201] = ["inv_boots_cloth_01", "inv_boots_cloth_03", "inv_boots_cloth_05", "inv_boots_cloth_06", "inv_boots_cloth_08", "inv_boots_cloth_09", "inv_boots_cloth_10", "inv_boots_cloth_11", "inv_boots_cloth_13", "inv_boots_cloth_20"]
+    equipment_icon[1202] = ["inv_boots_03", "inv_boots_04", "inv_boots_05", "inv_boots_06", "inv_boots_07", "inv_boots_08", "inv_boots_leather_05", "inv_boots_leather_11", "inv_boots_leather_12", "inv_boots_leather_14"]
+    equipment_icon[1203] = ["inv_boots_02", "inv_boots_chain_01", "inv_boots_chain_02", "inv_boots_chain_03", "inv_boots_chain_04", "inv_boots_chain_05", "inv_boots_chain_06", "inv_boots_chain_07", "inv_boots_chain_08", "inv_boots_chain_09"]
+    equipment_icon[1204] = ["inv_boots_01", "inv_boots_02", "inv_boots_plate_01", "inv_boots_plate_02", "inv_boots_plate_03", "inv_boots_plate_04", "inv_boots_plate_05", "inv_boots_plate_06", "inv_boots_plate_07", "inv_boots_plate_09"]
     // 戒指
     equipment_icon[1399] = ["INV_Jewelry_Ring_01", "INV_Jewelry_Ring_02", "INV_Jewelry_Ring_03", "INV_Jewelry_Ring_04", "INV_Jewelry_Ring_05", "INV_Jewelry_Ring_08", "INV_Jewelry_Ring_09", "INV_Jewelry_Ring_10", "INV_Jewelry_Ring_11", "INV_Jewelry_Ring_15"]
     // 饰品
@@ -74,7 +74,7 @@ function new_equipment_icon() {
     // 法杖
     equipment_icon[1522] = ["INV_Staff_01", "INV_Staff_02", "INV_Staff_04", "INV_Staff_05", "INV_Staff_06", "INV_Staff_07", "INV_Staff_08", "INV_Staff_09", "INV_Staff_10", "INV_Staff_11"]
     // 双手斧
-    equipment_icon[1523] = ["INV_Axe_09", "INV_Axe_10", "INV_Axe_17", "INV_Axe_18", "INV_Axe_21", "INV_Axe_22", "INV_Axe_23", "INV_Axe_24", "INV_Axe_25", "INV_Axe_26"]
+    equipment_icon[1523] = ["INV_Axe_09", "INV_Axe_10", "INV_Axe_17", "INV_Axe_18", "INV_Axe_21", "INV_Axe_22", "INV_Axe_23", "INV_Axe_24"]
     // 双手锤
     equipment_icon[1524] = ["INV_Hammer_09", "INV_Hammer_10", "INV_Hammer_13", "INV_Hammer_15", "INV_Hammer_16", "INV_Hammer_17", "INV_Hammer_22", "INV_Hammer_23"]
     // 双手剑

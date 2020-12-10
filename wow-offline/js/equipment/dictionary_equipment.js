@@ -34,24 +34,24 @@ function new_equipment() {
 
     equipment["newbee_shirt"] = {
         name: "新手衬衫",
-        type_name: "衬衫",
         icon: "INV_Shirt_01",
         rare: 2,
         pos: 6,
         type: 99,
-        lvl_max: 1,
+        c_lvl: 1,
+        e_lvl: 1,
         effect: [],
         affix: [1, 6199]
     };
 
     equipment["newbee_two_hand_sword_str"] = {
         name: "训练双手剑",
-        type_name: "双手剑",
         icon: "INV_Sword_06",
         rare: 2,
         pos: 15,
         type: 25,
-        lvl_max: 1,
+        c_lvl: 1,
+        e_lvl: 1,
         effect: [],
         affix: [2, 15125]
     };
@@ -63,7 +63,8 @@ function new_equipment() {
         rare: 2,
         pos: 15,
         type: 15,
-        lvl_max: 1,
+        c_lvl: 1,
+        e_lvl: 1,
         effect: [],
         affix: [1, 15115]
     };
@@ -75,7 +76,8 @@ function new_equipment() {
         rare: 2,
         pos: 15,
         type: 15,
-        lvl_max: 1,
+        c_lvl: 1,
+        e_lvl: 1,
         effect: [],
         affix: [1, 15215]
     };
@@ -87,17 +89,32 @@ function new_equipment() {
         rare: 2,
         pos: 16,
         type: 41,
-        lvl_max: 1,
+        c_lvl: 1,
+        e_lvl: 1,
         effect: [],
         affix: [1, 16141]
     };
 
+    equipment["newbee_bow"] = {
+        name: "训练之弓",
+        type_name: "弓",
+        icon: "INV_Weapon_Bow_02",
+        rare: 2,
+        pos: 15,
+        type: 31,
+        c_lvl: 1,
+        e_lvl: 1,
+        effect: [],
+        affix: [2, 15131]
+    };
+
     equipment["test_two_hand_sword_str"] = {
         name: "测试用双手剑",
+        type_name: "双手剑",
+        icon: "INV_Sword_06",
         rare: 3,
         pos: 15,
         type: 25,
-        lvl_max: MAX_LVL,
         effect: [],
         affix: [2, 15125, "random", "random"]
     };
@@ -107,7 +124,6 @@ function new_equipment() {
         rare: 4,
         pos: 15,
         type: 31,
-        lvl_max: MAX_LVL,
         effect: [],
         affix: [2, 15131, "random", "random"]
     };
@@ -117,7 +133,6 @@ function new_equipment() {
         rare: 3,
         pos: 15,
         type: 15,
-        lvl_max: MAX_LVL,
         effect: [],
         affix: [1, 15115, "random", "random"]
     };
@@ -127,7 +142,6 @@ function new_equipment() {
         rare: 3,
         pos: 15,
         type: 15,
-        lvl_max: MAX_LVL,
         effect: [],
         affix: [1, 15215, "random", "random"]
     };
@@ -137,7 +151,6 @@ function new_equipment() {
         rare: 3,
         pos: 16,
         type: 41,
-        lvl_max: MAX_LVL,
         effect: [
             "block_chance_final+=30"
         ],
@@ -149,7 +162,6 @@ function new_equipment() {
         rare: 3,
         pos: 16,
         type: 41,
-        lvl_max: MAX_LVL,
         effect: [
             "block_chance_final+=30"
         ],
@@ -161,7 +173,6 @@ function new_equipment() {
         rare: 3,
         pos: 16,
         type: 42,
-        lvl_max: MAX_LVL,
         effect: [
             "magic_power_percent+=5"
         ],
@@ -173,7 +184,6 @@ function new_equipment() {
         rare: 3,
         pos: 4,
         type: 104,
-        lvl_max: MAX_LVL,
         effect: [
             "str+=120",
             "agi+=120",
@@ -189,7 +199,6 @@ function new_equipment() {
         rare: 3,
         pos: 4,
         type: 103,
-        lvl_max: MAX_LVL,
         effect: [
             "str+=120",
             "agi+=120",
@@ -205,7 +214,6 @@ function new_equipment() {
         rare: 3,
         pos: 4,
         type: 102,
-        lvl_max: MAX_LVL,
         effect: [
             "str+=120",
             "agi+=120",
@@ -221,7 +229,6 @@ function new_equipment() {
         rare: 3,
         pos: 4,
         type: 101,
-        lvl_max: MAX_LVL,
         effect: [
             "str+=120",
             "agi+=120",

@@ -72,7 +72,7 @@ function new_role_whole() {
     role_whole.damage_natural = 100;// 自然伤害百分比
     role_whole.damage_arcane = 100;// 奥术伤害百分比
     role_whole.damage_holy = 100;// 神圣伤害百分比
-    role_whole.damage_dark = 100;// 暗影伤害百分比
+    role_whole.damage_shadow = 100;// 暗影伤害百分比
 
     role_whole.res_physical = 0;// 物理减伤百分比
     role_whole.res_fire = 0;// 火焰减伤百分比
@@ -80,7 +80,7 @@ function new_role_whole() {
     role_whole.res_natural = 0;// 自然减伤百分比
     role_whole.res_arcane = 0;// 奥术减伤百分比
     role_whole.res_holy = 0;// 神圣减伤百分比
-    role_whole.res_dark = 0;// 暗影减伤百分比
+    role_whole.res_shadow = 0;// 暗影减伤百分比
 
     role_whole.pierce_physical = 0;// 物理穿透百分比
     role_whole.pierce_fire = 0;// 火焰穿透百分比
@@ -88,7 +88,7 @@ function new_role_whole() {
     role_whole.pierce_natural = 0;// 自然穿透百分比
     role_whole.pierce_arcane = 0;// 奥术穿透百分比
     role_whole.pierce_holy = 0;// 神圣穿透百分比
-    role_whole.pierce_dark = 0;// 暗影穿透百分比
+    role_whole.pierce_shadow = 0;// 暗影穿透百分比
 
     role_whole.taken_damage_percent = 100;// 全局受伤百分比
     role_whole.taken_heal_percent = 100;// 全局受治疗百分比
