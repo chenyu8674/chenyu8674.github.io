@@ -14,7 +14,7 @@ function new_player_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 100;
-        skill.icon = "Ability_Warrior_SavageBlow";
+        skill.icon = "ability_warrior_savageblow";
         skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -77,7 +77,7 @@ function new_player_skill() {
         skill.priority = 30;// 优先级
         skill.X = 100;
         skill.Y = 15;
-        skill.icon = "Spell_Nature_BloodLust";
+        skill.icon = "spell_nature_bloodlust";
         skill.detail = "在嗜血的狂乱中攻击目标，对其造成" + skill.X + "%攻击强度的物理伤害，并使自己回复造成伤害" + skill.Y + "%的生命。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -101,7 +101,7 @@ function new_player_skill() {
         skill.X = 35;
         skill.Y = 150;
         skill.Z = 50;
-        skill.icon = "INV_Sword_48";
+        skill.icon = "inv_sword_48";
         skill.detail = "尝试终结受伤的目标，对其造成" + skill.Y + "%攻击强度的物理伤害，且暴击率提高" + skill.Z + "%。在目标生命值低于" + skill.X + "%时使用。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
@@ -123,7 +123,7 @@ function new_player_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 20;// 优先级
         skill.X = 100;
-        skill.icon = "Ability_Warrior_Sunder";
+        skill.icon = "ability_warrior_sunder";
         skill.detail = "击碎目标的护甲，对其造成" + skill.X + "%攻击强度的物理伤害，并使目标的物理抗性-" + dictionary_debuff.warrior_3().X + "，持续" + dictionary_debuff.warrior_3().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -171,7 +171,7 @@ function new_player_skill() {
         skill.priority = 30;// 优先级
         skill.X = 80;
         skill.Y = 50;
-        skill.icon = "Spell_Holy_Heal02";
+        skill.icon = "spell_holy_heal02";
         skill.detail = "在目标身上引发圣光爆发，对其造成" + skill.X + "%法术强度的神圣伤害，并使自己回复" + skill.Y + "%治疗强度的的生命。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -190,7 +190,7 @@ function new_player_skill() {
         skill.priority = 50;// 优先级
         skill.X = 35;
         skill.Y = 300;
-        skill.icon = "Spell_Holy_LayOnHands";
+        skill.icon = "spell_holy_layonhands";
         skill.detail = "使用神圣力量使自己脱离濒死状态，回复" + skill.Y + "%治疗强度的生命。生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
@@ -235,7 +235,7 @@ function new_player_skill() {
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 50;// 优先级
         skill.X = 35;
-        skill.icon = "Spell_Holy_DivineIntervention";
+        skill.icon = "spell_holy_divineintervention";
         skill.detail = "使用神圣力量使自己免疫所有伤害，持续" + dictionary_buff.paladin_2_2().T + "回合。生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
@@ -271,7 +271,7 @@ function new_player_skill() {
         skill.X = 100;
         skill.Y = 40;
         skill.Z = 80;
-        skill.icon = "Ability_Warrior_InnerRage";
+        skill.icon = "ability_warrior_innerrage";
         skill.detail = "将武器灌注神圣之力，对目标造成" + skill.X + "%攻击强度的物理伤害，并有" + skill.Y + "%几率额外造成" + skill.Z + "%攻击强度的神圣伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -294,7 +294,7 @@ function new_player_skill() {
         skill.priority = 50;// 优先级
         skill.X = 35;
         skill.Y = 300;
-        skill.icon = "Spell_Holy_SealOfMight";
+        skill.icon = "spell_holy_sealofmight";
         skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被躲闪。目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
@@ -322,7 +322,7 @@ function new_player_skill() {
         skill.X = 30;
         skill.Y = 2;
         skill.Z = 5;
-        skill.icon = "Ability_UpgradeMoonGlaive";
+        skill.icon = "ability_upgrademoonglaive";
         skill.detail = "发射多枚箭矢，对目标造成随机" + skill.Y + "~" + skill.Z + "次" + skill.X + "%攻击强度的物理伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -393,7 +393,7 @@ function new_player_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 100;
-        skill.icon = "Ability_ImpalingBolt";
+        skill.icon = "ability_impalingbolt";
         skill.detail = "一次快速的射击，对目标造成" + skill.X + "%攻击强度的奥术伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -459,7 +459,7 @@ function new_player_skill() {
         skill.priority = 50;// 优先级
         skill.X = 80;
         skill.Y = 30;
-        skill.icon = "Spell_Fire_SelfDestruct";
+        skill.icon = "spell_fire_selfdestruct";
         skill.detail = "使目标落入火焰陷阱，造成" + skill.X + "%攻击强度的火焰伤害，并在之后的" + dictionary_dot.hunter_3().T + "回合里持续造成" + skill.Y * dictionary_dot.hunter_3().T + "%攻击强度的火焰伤害。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
