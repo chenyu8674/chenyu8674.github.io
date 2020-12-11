@@ -259,7 +259,7 @@ function add_monster() {
     if (lvl >= map_info.max && !has_rare_monster(4)) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
-    } else if (current_character.exp === 0) {
+    } else if (current_character.exp === 0 && !has_rare_monster(3)) {
         // 新角色，必然刷新稀有怪
         monster_base_list = map_info.rare;
     } else if (Math.random() < RARE_PERCENT / 100 && !has_rare_monster(3)) {

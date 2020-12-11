@@ -72,24 +72,24 @@ body {
 }
 
 #bar_map {
-    background-image: url(../img/icon/Ability_Spy.png);
+    background-image: url(../img/icon/ability_spy.png);
 }
 
 #bar_equipment {
-    background-image: url(../img/icon/INV_Misc_Bag_19.png);
+    background-image: url(../img/icon/inv_misc_bag_19.png);
 }
 
 #bar_character {
-    background-image: url(../img/icon/Spell_Shadow_ShadowWordPain.png);
+    background-image: url(../img/icon/spell_shadow_shadowwordpain.png);
 }
 
 #bar_test {
-    background-image: url(../img/icon/INV_Misc_Bomb_04.png);
+    background-image: url(../img/icon/inv_misc_bomb_04.png);
     display: none;
 }
 
 #bar_setting {
-    background-image: url(../img/icon/INV_Gizmo_02.png);
+    background-image: url(../img/icon/inv_gizmo_02.png);
     display: none;
 }
 
