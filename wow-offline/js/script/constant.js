@@ -9,11 +9,21 @@ let MAX_RES = 75;
 // 最大包裹数量
 let MAX_ITEMS = 100;
 // 稀有怪刷新率
-let RARE_PERCENT = 100;
+let RARE_PERCENT = 5;
+
+/** 装备参数 **/
+
+let ARMOR_ATTACK_1 = 2;
+let ARMOR_ATTACK_2 = 4;
+let ARMOR_ATTACK_3 = 6;
+let ARMOR_ATTACK_4 = 8;
+let ARMOR_MAGIC_1 = 8;
+let ARMOR_MAGIC_2 = 6;
+let ARMOR_MAGIC_3 = 4;
+let ARMOR_MAGIC_4 = 2;
 
 /** 系统设置 **/
 
-let show_detail_log = true;// 显示详细战斗过程
 let show_hit_percent_in_log = false;// 输出命中几率
 let show_critical_percent_in_log = false;// 输出暴击几率
 let show_block_percent_in_log = false;// 输出格挡几率

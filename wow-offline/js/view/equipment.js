@@ -20,7 +20,6 @@ function refresh_current_status(role) {
     if (role == null) {
         role_whole = role_battle_1;
     }
-    // console.log(role_whole);
     refresh_current_equipment(role_whole);
     refresh_current_items(role_whole);
     let role_html = "";
@@ -109,9 +108,15 @@ function show_equipment_info(equipment, x, y) {
     for (let i = 0; i < equipment.effect.length; i++) {
         let effect = equipment.effect[i];
         effect = effect.split("+=");
+        if (effect[1] === 0) {
+            continue;
+        }
         let text = effect[1] + " " + dictionary_attribute_name[effect[0]];
+        if (effect[1] > 0) {
+            text = "+" + text;
+        }
         text = text.replace(" %", "% ");
-        info.append("<p>+" + text + "</p>");
+        info.append("<p>" + text + "</p>");
     }
     can_not = current_character.lvl >= equipment.e_lvl ? "" : " style='color:red'";
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
@@ -175,6 +180,7 @@ function refresh_current_equipment(role) {
         cell.contextmenu(function (e) {
             e.preventDefault();
             equipment_take_off(equipment);
+            save_data();
         });
     }
 }
@@ -256,6 +262,7 @@ function refresh_current_items(role) {
                 role_battle_1.current_health_value = current_health_value;
                 refresh_current_status();
                 refresh_battle_status(true);
+                save_data();
             });
         }
     }

@@ -8,35 +8,35 @@ function new_affix() {
     let affix = {}
     // 位置 * 1000 + 倾向 * 100 + 类型
     // 头盔
-    affix[1101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[1201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[1102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[1202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[1103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[1203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[1104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[1204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[1101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[1201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[1102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[1202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[1103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[1203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[1104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[1204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 项链
     affix[2199] = function (lvl, rare, multiple) {return []}
     affix[2299] = function (lvl, rare, multiple) {return []}
     // 肩膀
-    affix[3101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[3201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[3102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[3202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[3103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[3203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[3104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[3204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[3101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[3201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[3102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[3202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[3103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[3203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[3104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[3204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 胸甲
-    affix[4101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[4201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[4102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[4202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[4103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[4203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[4104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[4204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[4101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[4201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[4102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[4202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[4103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[4203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[4104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[4204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 披风
     affix[5101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(1, lvl, rare, multiple)]}
     affix[5201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(1, lvl, rare, multiple)]}
@@ -47,50 +47,50 @@ function new_affix() {
     affix[7199] = function (lvl, rare, multiple) {return []}
     affix[7299] = function (lvl, rare, multiple) {return []}
     // 手腕
-    affix[8101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[8201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[8102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[8202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[8103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[8203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[8104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[8204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[8101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[8201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[8102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[8202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[8103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[8203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[8104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[8204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 手套
-    affix[9101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[9201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[9102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[9202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[9103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[9203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[9104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[9204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[9101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[9201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[9102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[9202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[9103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[9203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[9104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[9204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 腰带
-    affix[10101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[10201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[10102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[10202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[10103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[10203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[10104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[10204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[10101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[10201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[10102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[10202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[10103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[10203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[10104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[10204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 腿甲
-    affix[11101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[11201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[11102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[11202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[11103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[11203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[11104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[11204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[11101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[11201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[11102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[11202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[11103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[11203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[11104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[11204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 鞋子
-    affix[12101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[12201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(8, lvl, rare, multiple)]}
-    affix[12102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[12202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(6, lvl, rare, multiple)]}
-    affix[12103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[12203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(6, lvl, rare, multiple), "armor_magic+=" + get_effect_value(4, lvl, rare, multiple)]}
-    affix[12104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
-    affix[12204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(8, lvl, rare, multiple), "armor_magic+=" + get_effect_value(2, lvl, rare, multiple)]}
+    affix[12101] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[12201] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_1, lvl, rare, multiple)]}
+    affix[12102] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[12202] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_2, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_2, lvl, rare, multiple)]}
+    affix[12103] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[12203] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_3, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_3, lvl, rare, multiple)]}
+    affix[12104] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
+    affix[12204] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare, multiple), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare, multiple)]}
     // 戒指
     affix[13199] = function (lvl, rare, multiple) {return []}
     affix[13299] = function (lvl, rare, multiple) {return []}

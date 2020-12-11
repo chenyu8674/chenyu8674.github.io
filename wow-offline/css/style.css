@@ -50,9 +50,9 @@ body {
 #view_bar {
     position: absolute;
     top: 800px;
-    left: 600px;
+    left: 692px;
     height: 60px;
-    width: 400px;
+    width: auto;
     z-index: 90;
 }
 
@@ -80,15 +80,17 @@ body {
 }
 
 #bar_character {
-    background-image: url(../img/icon/INV_Helmet_06.png);
+    background-image: url(../img/icon/Spell_Shadow_ShadowWordPain.png);
 }
 
 #bar_test {
     background-image: url(../img/icon/INV_Misc_Bomb_04.png);
+    display: none;
 }
 
 #bar_setting {
     background-image: url(../img/icon/INV_Gizmo_02.png);
+    display: none;
 }
 
 .cell {

@@ -35,8 +35,9 @@ function init_view_icon_click() {
         }
     });
     $("#bar_character").click(function () {
-        hide_all_view();
-        show_view_character();
+        // hide_all_view();
+        // show_view_character();
+        release_data();
     });
     $("#bar_test").click(function () {
         hide_all_view();

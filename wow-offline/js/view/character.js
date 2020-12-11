@@ -15,6 +15,7 @@ $(document).ready(function () {
         }
         let job = selected_job_1_index + selected_job_2_index;
         create_character(job, 0, name);
+        save_data();
         hide_view_character();
         show_view_map();
         // show_view_test();

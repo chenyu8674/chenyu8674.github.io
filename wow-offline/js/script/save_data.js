@@ -13,7 +13,7 @@ $(document).ready(function () {
         alert("不支持存档，请更换浏览器访问");
         return false;
     }
-    // load_data();
+    load_data();
     if (current_character != null) {
         // 有存档数据时，直接进入地图页
         hide_view_character();
@@ -37,6 +37,7 @@ function save_data() {
     save_character.job = current_character.job;
     save_character.exp = current_character.exp;
     save_character.equipments = current_character.equipments;
+    save_character.items = current_character.items;
     character_list[current_index] = save_character;
     let json = JSON.stringify(character_list);
     localStorage.setItem("character_list", json);
@@ -55,7 +56,12 @@ function load_data() {
     let character_obj = character_list[current_index];
     create_character(character_obj.job, character_obj.exp, character_obj.name);
     current_character.equipments = character_obj.equipments;
-    save_data();
+    current_character.items = character_obj.items;
+    // 刷新状态栏
+    role_battle_1 = get_battle_attribute(current_character, "battle_1");
+    role_battle_1.current_health_value = role_battle_1.max_health_value;
+    current_health_value = role_battle_1.max_health_value;
+    refresh_current_status();
 }
 
 /**
@@ -116,7 +122,6 @@ function create_character(job, exp, name) {
     //     return a.pos * 100 + a.type - b.pos * 100 - b.type;
     // });
 
-    save_data();
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");
     role_battle_1.current_health_value = role_battle_1.max_health_value;
@@ -136,5 +141,4 @@ function add_experience(exp) {
         current_character.exp = MAX_EXP;
     }
     current_character.lvl = get_level(current_character.exp);
-    save_data();
 }

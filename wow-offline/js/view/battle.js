@@ -49,7 +49,7 @@ function show_battle_view(info) {
 
     show_view_battle();
     battle_map.css("background-image", "url(\"./img/map/" + map_info.map + ".jpg\")");
-    show_monster_area(map_info);
+    // show_monster_area(map_info);
     show_player_point();
     refresh_monster();
     show_self_heal();
@@ -116,7 +116,9 @@ function self_heal_loop() {
         clearTimeout(self_heal_timer);
         self_heal_timer = setTimeout(self_heal_loop, 100);
     }
+    role_battle_1.current_health_value = current_health_value;
     refresh_battle_status(true);
+    refresh_current_status();
 }
 
 /**
@@ -257,8 +259,11 @@ function add_monster() {
     if (lvl >= map_info.max && !has_rare_monster(4)) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
+    } else if (current_character.exp === 0) {
+        // 新角色，必然刷新稀有怪
+        monster_base_list = map_info.rare;
     } else if (Math.random() < RARE_PERCENT / 100 && !has_rare_monster(3)) {
-        // 刷新稀有怪（唯一）
+        // 几率刷新稀有怪（唯一）
         monster_base_list = map_info.rare;
     }
     let random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
@@ -394,6 +399,7 @@ function on_battle_end(index) {
         // 升级判定
         let old_lvl = current_character.lvl;
         add_experience(exp);
+        save_data();
         calculate_base_property(current_character);
         if (current_character.lvl > old_lvl) {
             battle_log(current_character.name + " 升到了 " + current_character.lvl + " 级");
