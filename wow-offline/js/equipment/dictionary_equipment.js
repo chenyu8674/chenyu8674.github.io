@@ -34,7 +34,7 @@ function new_equipment() {
 
     equipment["newbee_shirt"] = {
         name: "新手衬衫",
-        icon: "INV_Shirt_01",
+        icon: "inv_shirt_01",
         rare: 2,
         pos: 6,
         type: 99,
@@ -46,7 +46,7 @@ function new_equipment() {
 
     equipment["newbee_two_hand_sword_str"] = {
         name: "训练双手剑",
-        icon: "INV_Sword_06",
+        icon: "inv_sword_06",
         rare: 2,
         pos: 15,
         type: 25,
@@ -59,7 +59,7 @@ function new_equipment() {
     equipment["newbee_one_hand_sword_str"] = {
         name: "训练单手剑",
         type_name: "单手剑",
-        icon: "INV_Sword_04",
+        icon: "inv_sword_04",
         rare: 2,
         pos: 15,
         type: 15,
@@ -72,7 +72,7 @@ function new_equipment() {
     equipment["newbee_one_hand_sword_int"] = {
         name: "训练单手剑",
         type_name: "单手剑",
-        icon: "INV_Sword_05",
+        icon: "inv_sword_05",
         rare: 2,
         pos: 15,
         type: 15,
@@ -85,7 +85,7 @@ function new_equipment() {
     equipment["newbee_shield_str"] = {
         name: "训练盾牌",
         type_name: "盾牌",
-        icon: "INV_Shield_03",
+        icon: "inv_shield_03",
         rare: 2,
         pos: 16,
         type: 41,
@@ -98,7 +98,7 @@ function new_equipment() {
     equipment["newbee_bow"] = {
         name: "训练之弓",
         type_name: "弓",
-        icon: "INV_Weapon_Bow_02",
+        icon: "inv_weapon_bow_02",
         rare: 2,
         pos: 15,
         type: 31,
@@ -111,7 +111,7 @@ function new_equipment() {
     equipment["test_two_hand_sword_str"] = {
         name: "测试用双手剑",
         type_name: "双手剑",
-        icon: "INV_Sword_06",
+        icon: "inv_sword_06",
         rare: 3,
         pos: 15,
         type: 25,
