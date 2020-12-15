@@ -50,7 +50,7 @@ body {
 #view_bar {
     position: absolute;
     top: 800px;
-    left: 692px;
+    left: 666px;
     height: 60px;
     width: auto;
     z-index: 90;
@@ -62,9 +62,10 @@ body {
     height: 60px;
     margin: 6px;
     float: left;
-    background-size: 103%;
+    background-size: 115%;
     background-position: center;
     border-radius: 12px;
+    border: 3px solid gray;
 }
 
 .bar_icon:hover {
@@ -77,6 +78,10 @@ body {
 
 #bar_equipment {
     background-image: url(../img/icon/inv_misc_bag_19.png);
+}
+
+#bar_shop {
+    background-image: url(../img/icon/coin.png);
 }
 
 #bar_character {

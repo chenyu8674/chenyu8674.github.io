@@ -15,11 +15,8 @@ function hide_view_equipment() {
     view_equipment.hide();
 }
 
-function refresh_current_status(role) {
-    let role_whole;
-    if (role == null) {
-        role_whole = role_battle_1;
-    }
+function refresh_current_status() {
+    let role_whole = role_battle_1;
     refresh_current_equipment(role_whole);
     refresh_current_items(role_whole);
     let role_html = "";
@@ -131,7 +128,7 @@ function hide_equipment_info() {
 }
 
 /**
- * 生成装备栏
+ * 绘制装备栏
  * @param role
  */
 function refresh_current_equipment(role) {
@@ -179,19 +176,17 @@ function refresh_current_equipment(role) {
         // 右键点击事件，卸下装备
         cell.contextmenu(function (e) {
             e.preventDefault();
-            equipment_take_off(equipment);
-            save_data();
+            take_off_equipment(equipment);
         });
     }
 }
 
 /**
- * 生成物品栏
- * @param role
+ * 绘制物品栏
  */
-function refresh_current_items(role) {
+function refresh_current_items() {
     view_current_items.empty();
-    let items = role.items;
+    let items = current_character.items;
     for (let i = 0; i < MAX_ITEMS; i++) {
         let item = items[i];
         let cell = $("<div></div>");
@@ -211,58 +206,7 @@ function refresh_current_items(role) {
             // 右键点击事件，穿上装备
             cell.contextmenu(function (e) {
                 e.preventDefault();
-                if (current_character.lvl < item.e_lvl) {
-                    return;
-                }
-                if (!check_can_equip(item)) {
-                    return;
-                }
-                hide_equipment_info();
-                let equipments = current_character.equipments;
-                let equipment_exchange = null;// 将被替换的装备
-
-                // 戒指，饰品
-                if (item.pos === 13 || item.pos === 14) {
-                    let count = get_equipment_count_by_pos(item.pos);
-                    if (count === 2) {
-                        for (let j = 0; j < equipments.length; j++) {
-                            let equipment = equipments[j];
-                            if (equipment.pos === item.pos) {
-                                equipment_exchange = equipment;
-                                equipments[j] = item;
-                                break;
-                            }
-                        }
-                    } else {
-                        equipments.push(item);
-                    }
-                } else {
-                    for (let j = 0; j < equipments.length; j++) {
-                        let equipment = equipments[j];
-                        if (equipment.pos === item.pos) {
-                            equipment_exchange = equipment;
-                            equipments.splice(j, 1);
-                            break;
-                        }
-                    }
-                    equipments.push(item);
-                }
-
-                items[i] = null;
-                for (let k = 0; k < MAX_ITEMS; k++) {
-                    if (items[k] == null) {
-                        items[k] = equipment_exchange;
-                        break;
-                    }
-                }
-                role_battle_1 = get_battle_attribute(current_character, "battle_1");
-                if (current_health_value > role_battle_1.max_health_value) {
-                    current_health_value = role_battle_1.max_health_value;
-                }
-                role_battle_1.current_health_value = current_health_value;
-                refresh_current_status();
-                refresh_battle_status(true);
-                save_data();
+                equip_equipment(i);
             });
         }
     }
@@ -270,7 +214,7 @@ function refresh_current_items(role) {
 
 /**
  * 获取指定位置已装备的数量
- * @param pos
+ * @param pos 13戒指 14饰品 15主手 16副手
  * @return {number}
  */
 function get_equipment_count_by_pos(pos) {
@@ -286,10 +230,164 @@ function get_equipment_count_by_pos(pos) {
 }
 
 /**
- * 卸下装备
- * @param equipment
+ * 是否装备了双手武器
+ * @return {boolean}
  */
-function equipment_take_off(equipment) {
+function has_equip_two_hand_weapon() {
+    let equipments = current_character.equipments;
+    for (let j = 0; j < equipments.length; j++) {
+        let equipment = equipments[j];
+        if (equipment.pos === 15 && is_in_array(equipment.type, [21, 22, 23, 24, 25, 31, 32, 33])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * 获取背包中空格数量
+ * @return {number}
+ */
+function get_item_empty_count() {
+    let count = 0;
+    let items = current_character.items;
+    for (let k = 0; k < MAX_ITEMS; k++) {
+        if (items[k] == null) {
+            count++;
+            break;
+        }
+    }
+    return count;
+}
+
+/**
+ * 判断是否为双持职业
+ */
+function can_equip_two_weapons() {
+    let job = 10 * Math.floor(current_character.job / 10);
+    return is_in_array(job, [10, 40, 60]);
+}
+
+/**
+ * 尝试从背包穿上装备
+ * @param index 背包位置
+ */
+function equip_equipment(index) {
+    let items = current_character.items;
+    let item = items[index];
+    if (current_character.lvl < item.e_lvl) {
+        return;// 等级不够
+    }
+    if (!check_can_equip(item)) {
+        return;// 装备类型与职业不符
+    }
+    if (item.pos === 15 && is_in_array(item.type, [21, 22, 23, 24, 25, 31, 32, 33])
+        && get_equipment_count_by_pos(15) >= 1 && get_equipment_count_by_pos(16) >= 1
+        && get_item_empty_count() === 0) {
+        return;// 双手武器替换主副手，背包无空格
+    }
+    // TODO 双武器职业判定
+    hide_equipment_info();
+
+    let equipments = current_character.equipments;
+    let equipment_exchange_1 = null;// 将被替换的装备1
+    let equipment_exchange_2 = null;// 将被替换的装备2（换上双手武器时）
+
+    if (item.pos === 13 || item.pos === 14) {
+        // 戒指，饰品
+        let count = get_equipment_count_by_pos(item.pos);
+        if (count === 2) {
+            for (let j = 0; j < equipments.length; j++) {
+                let equipment = equipments[j];
+                if (equipment.pos === item.pos) {
+                    equipment_exchange_1 = equipment;
+                    equipments[j] = item;
+                    break;
+                }
+            }
+        } else {
+            equipments.push(item);
+        }
+    } else if (item.pos === 15 && !has_equip_two_hand_weapon() && is_in_array(item.type, [11, 12, 13, 14, 15]) && can_equip_two_weapons() && get_equipment_count_by_pos(15) === 1 && get_equipment_count_by_pos(16) === 0) {
+        // 双持职业副手为空时装备单手武器
+        equipments.push(item);
+    } else if (item.pos === 16 && get_equipment_count_by_pos(15) === 2) {
+        // 双持时装备副手
+        for (let j = equipments.length - 1; j >= 0; j--) {
+            let equipment = equipments[j];
+            if (equipment.pos === 15) {
+                equipment_exchange_1 = equipment;
+                equipments.splice(j, 1);
+                break;
+            }
+        }
+        equipments.push(item);
+    } else if (item.pos === 15 && is_in_array(item.type, [21, 22, 23, 24, 25, 31, 32, 33]) && get_equipment_count_by_pos(16) >= 1) {
+        // 双手替换双持或单手+副手
+        for (let j = 0; j < equipments.length; j++) {
+            let equipment = equipments[j];
+            if (equipment.pos === 15) {
+                equipment_exchange_1 = equipment;
+                equipments.splice(j, 1);
+                j--;
+            } else if (equipment.pos === 16) {
+                equipment_exchange_2 = equipment;
+                equipments.splice(j, 1);
+                j--;
+            }
+        }
+        equipments.push(item);
+    } else if (item.pos === 16 && get_equipment_count_by_pos(15) === 1 && has_equip_two_hand_weapon()) {
+        // 装备双手武器时装备副手
+        for (let j = 0; j < equipments.length; j++) {
+            let equipment = equipments[j];
+            if (equipment.pos === 15) {
+                equipment_exchange_1 = equipment;
+                equipments.splice(j, 1);
+                break;
+            }
+        }
+        equipments.push(item);
+    } else {
+        for (let j = 0; j < equipments.length; j++) {
+            let equipment = equipments[j];
+            if (equipment.pos === item.pos) {
+                equipment_exchange_1 = equipment;
+                equipments.splice(j, 1);
+                break;
+            }
+        }
+        equipments.push(item);
+    }
+
+    items[index] = null;
+    for (let k = 0; k < MAX_ITEMS; k++) {
+        if (items[k] == null && equipment_exchange_1 != null) {
+            items[k] = equipment_exchange_1;
+            equipment_exchange_1 = null;
+        } else if (items[k] == null && equipment_exchange_2 != null) {
+            items[k] = equipment_exchange_2;
+            equipment_exchange_2 = null;
+        }
+    }
+    role_battle_1 = get_battle_attribute(current_character, "battle_1");
+    if (current_health_value > role_battle_1.max_health_value) {
+        current_health_value = role_battle_1.max_health_value;
+    }
+    role_battle_1.current_health_value = current_health_value;
+    refresh_current_status();
+    refresh_battle_status(true);
+    save_data();
+}
+
+/**
+ * 尝试卸下指定装备
+ * @param equipment 尝试卸下的装备
+ */
+function take_off_equipment(equipment) {
+    if (get_item_empty_count() === 0) {
+        return;// 背包已满
+    }
     hide_equipment_info();
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
@@ -312,4 +410,5 @@ function equipment_take_off(equipment) {
     role_battle_1.current_health_value = current_health_value;
     refresh_current_status();
     refresh_battle_status(true);
+    save_data();
 }

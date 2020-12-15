@@ -38,15 +38,15 @@ function get_effect_value(X, lvl, rare, multiple) {
  * 右：09-手套 10-腰带 11-腿甲 12-靴子 13-戒指 14-饰物
  * 下：15-主手 16-副手
  *
- * type1 装备倾向
+ * inclination 装备倾向
  * 9-其他
  * 1-物理 2-法系
  *
- * type2 装备类型（非武器）
+ * type 装备类型（非武器）
  * 99-其他
  * 01-布甲 02-皮甲 03-锁甲 04-板甲
  *
- * type2 装备类型（武器）
+ * type 装备类型（武器）
  * 99-其他
  * 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
  * 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
@@ -173,6 +173,7 @@ function create_target_equipment(target_equipment) {
 /**
  * 获取装备的属性系数和名称
  * @param pos
+ * @param type
  * @return {(number|string)[]}
  */
 function get_attribute_by_pos(pos, type) {

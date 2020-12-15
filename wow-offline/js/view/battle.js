@@ -217,15 +217,16 @@ function hide_monster_info() {
 }
 
 /**
- * 判断是否有稀有怪或精英怪
+ * 判断地图内某稀有度怪物数量
  */
-function has_rare_monster(rare) {
+function get_monster_count_by_rare(rare) {
+    let count = 0;
     for (let i = 0; i < map_monster_list.length; i++) {
         if (map_monster_list[i].rare === rare) {
-            return true;
+            count++;
         }
     }
-    return false;
+    return count;
 }
 
 /**
@@ -251,23 +252,27 @@ function add_monster() {
     let lvl = current_character.lvl;
     if (lvl < map_info.min) {
         lvl = map_info.min;
-    }
-    if (lvl > map_info.max) {
+    } else if (lvl > map_info.max) {
         lvl = map_info.max;
     }
-    let monster_base_list = map_info.monster;
-    if (lvl >= map_info.max && !has_rare_monster(4)) {
+    let monster_base_list;
+    if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
-    } else if (current_character.exp === 0 && !has_rare_monster(3)) {
-        // 新角色，必然刷新稀有怪
+    } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || Math.random() < RARE_PERCENT / 100)) {
+        // 几率性刷新稀有怪（新角色100%）
         monster_base_list = map_info.rare;
-    } else if (Math.random() < RARE_PERCENT / 100 && !has_rare_monster(3)) {
-        // 几率刷新稀有怪（唯一）
-        monster_base_list = map_info.rare;
+    } else {
+        // 刷新普通怪
+        monster_base_list = map_info.monster;
     }
     let random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
     let monster_obj = dictionary_monster_base[random_monster_name];
+    while (get_monster_count_by_rare(1) >= 3 && monster_obj.rare === 1) {
+        // 弱小怪物最多同时存在3个
+        random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
+        monster_obj = dictionary_monster_base[random_monster_name];
+    }
     // 生成怪物对象
     let monster = get_new_monster(monster_obj.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple);
     monster.species = monster_obj.species;
@@ -285,6 +290,7 @@ function add_monster() {
         monster.x = map_info.start_x + (map_info.end_x - map_info.start_x) * Math.random();
         monster.y = map_info.start_y + (map_info.end_y - map_info.start_y) * Math.random();
         while (has_nearly_monster(monster.x, monster.y)) {
+            // 距离已有怪物过近
             monster.x = map_info.start_x + (map_info.end_x - map_info.start_x) * Math.random();
             monster.y = map_info.start_y + (map_info.end_y - map_info.start_y) * Math.random();
         }
@@ -389,6 +395,12 @@ function on_battle_end(index) {
     $(".player_point").removeClass("on_battle");
     if (index === 1) {
         let monster = map_monster_list[target_monster];
+        if (monster.rare === 4) {
+            // 击败精英怪时移位
+            player_x += 3;
+            player_y += 3;
+            refresh_player_point();
+        }
         // 掉落判定
         drop_random_equipment(monster);
         // 计算经验
