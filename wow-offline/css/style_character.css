@@ -115,18 +115,18 @@
 
 .job_2_icon {
     position: relative;
-    width: 128px;
-    height: 128px;
+    width: 118px;
+    height: 118px;
     margin: 40px 40px 65px 40px;
-    background-size: 103%;
+    background-size: 115%;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 12px;
-    border: 8px ridge transparent;
+    border: 6px ridge slategray;
 }
 
 .icon_2_select {
-    border: 8px ridge goldenrod;
+    border: 6px ridge goldenrod;
     box-shadow: 0 0 20px goldenrod;
 }
 

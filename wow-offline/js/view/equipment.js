@@ -19,12 +19,19 @@ function refresh_current_status() {
     let role_whole = role_battle_1;
     refresh_current_equipment(role_whole);
     refresh_current_items(role_whole);
+
+    let job_flag = dictionary_job.job_flag[10 * Math.floor(role_whole.job / 10)];
+    $("#current_equipments_icon").attr("src", "img/job/" + job_flag + ".png");
+    $("#current_status_name").text(role_whole.name);
+    $("#current_status_job").text("等级 " + role_whole.lvl + " " + dictionary_job.job_name[role_whole.job]);
+    $("#current_status_area").html(
+        "生命值：" + role_whole.current_health_value + "/" + role_whole.max_health_value + "<br/>" +
+        "护盾值：" + role_whole.current_shield_value + "<br/>" +
+        "承受伤害：" + role_whole.taken_damage_percent + "%<br/>" +
+        "承受治疗：" + role_whole.taken_heal_percent + "%<br/>"
+    );
+
     let role_html = "";
-    role_html += role_whole.name + "<br/>";
-    role_html += "等级 " + role_whole.lvl + " " + dictionary_job.job_name[role_whole.job] + "<br/>";
-    role_html += "生命值：" + role_whole.current_health_value + "/" + role_whole.max_health_value + "<br/>";
-    role_html += "护盾值：" + role_whole.current_shield_value + "<br/>";
-    role_html += "<br/>";
     role_html += "力量：" + role_whole.str + "<br/>";
     role_html += "敏捷：" + role_whole.agi + "<br/>";
     role_html += "耐力：" + role_whole.sta + "<br/>";
@@ -42,10 +49,10 @@ function refresh_current_status() {
     role_html += "暴击伤害：" + role_whole.critical_damage + "%<br/>";
     role_html += "闪避等级：" + role_whole.dodge_rate + "<br/>";
     role_html += "闪避率：" + calculate_original_dodge(role_whole).toFixed(2) + "%<br/>";
-    let block_chance = calculate_original_block(role_whole).toFixed(2);
-    role_html += "格挡等级：" + role_whole.block_rate + "<br/>";
-    role_html += "格挡率：" + block_chance + "%<br/>";
-    if (block_chance > 0) {
+    if (has_equip_shield(role_whole)) {
+        let block_chance = calculate_original_block(role_whole).toFixed(2);
+        role_html += "格挡等级：" + role_whole.block_rate + "<br/>";
+        role_html += "格挡率：" + block_chance + "%<br/>";
         role_html += "格挡值：" + role_whole.block_value + "<br/>";
     }
     role_html += "<br/>";
@@ -53,9 +60,6 @@ function refresh_current_status() {
     role_html += "攻击减伤：" + (calculate_armor_attack(role_whole) * 100).toFixed(2) + "%<br/>";
     role_html += "法术护甲：" + role_whole.armor_magic + "<br/>";
     role_html += "法术减伤：" + (calculate_armor_magic(role_whole) * 100).toFixed(2) + "%<br/>";
-    role_html += "<br/>";
-    role_html += "伤害比例：" + role_whole.taken_damage_percent + "%<br/>";
-    role_html += "治疗比例：" + role_whole.taken_heal_percent + "%<br/>";
     role_html += "<br/>";
     role_html += "物理伤害：" + role_whole.damage_physical + "%<br/>";
     role_html += "火焰伤害：" + role_whole.damage_fire + "%<br/>";
@@ -230,6 +234,22 @@ function get_equipment_count_by_pos(pos) {
 }
 
 /**
+ * 是否装备了盾牌
+ * @return {boolean}
+ */
+function has_equip_shield(role) {
+    console.log(role);
+    let equipments = role.equipments;
+    for (let j = 0; j < equipments.length; j++) {
+        let equipment = equipments[j];
+        if (equipment.type === 41) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * 是否装备了双手武器
  * @return {boolean}
  */
@@ -322,20 +342,22 @@ function equip_equipment(index) {
             }
         }
         equipments.push(item);
-    } else if (item.pos === 15 && is_in_array(item.type, [21, 22, 23, 24, 25, 31, 32, 33]) && get_equipment_count_by_pos(16) >= 1) {
-        // 双手替换双持或单手+副手
+    } else if (item.pos === 15 && is_in_array(item.type, [21, 22, 23, 24, 25, 31, 32, 33])) {
+        // 装备双手武器
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
-            if (equipment.pos === 15) {
-                equipment_exchange_1 = equipment;
-                equipments.splice(j, 1);
-                j--;
-            } else if (equipment.pos === 16) {
-                equipment_exchange_2 = equipment;
+            if (equipment.pos === 15 || equipment.pos === 16) {
+                if (equipment_exchange_1 == null) {
+                    equipment_exchange_1 = equipment;
+                } else {
+                    equipment_exchange_2 = equipment;
+                }
                 equipments.splice(j, 1);
                 j--;
             }
         }
+        console.log(equipment_exchange_1);
+        console.log(equipment_exchange_2);
         equipments.push(item);
     } else if (item.pos === 16 && get_equipment_count_by_pos(15) === 1 && has_equip_two_hand_weapon()) {
         // 装备双手武器时装备副手

@@ -8,7 +8,7 @@ function new_role_whole() {
     role_whole.current_shield_value = 0;// 伤害护盾
     role_whole.current_health_value = 0;// 当前生命值
 
-    role_whole.max_health_value = 100;// 最大生命值
+    role_whole.max_health_value = 200;// 最大生命值
     role_whole.health_percent = 100;// 生命值百分比
 
     // 攻击强度、格挡值

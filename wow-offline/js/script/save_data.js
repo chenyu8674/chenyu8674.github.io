@@ -115,12 +115,12 @@ function create_character(job, exp, name) {
                 break;
         }
     }
-    for (let i = 0; i < MAX_ITEMS - 1; i++) {
-        current_character.items.push(create_random_equipment(1));
-    }
-    current_character.items.sort(function (a, b) {
-        return a.pos * 100 + a.type - b.pos * 100 - b.type;
-    });
+    // for (let i = 0; i < MAX_ITEMS - 1; i++) {
+    //     current_character.items.push(create_random_equipment(1));
+    // }
+    // current_character.items.sort(function (a, b) {
+    //     return a.pos * 100 + a.type - b.pos * 100 - b.type;
+    // });
 
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");

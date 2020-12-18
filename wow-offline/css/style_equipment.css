@@ -1,14 +1,53 @@
-#current_status {
-    color: whitesmoke;
-}
-
 #current_equipments {
     position: absolute;
     width: 328px;
     height: 604px;
     top: 80px;
     left: 200px;
+    color: whitesmoke;
     border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 3px ridge slategray;
+}
+
+#current_status_name {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 25px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#current_status_job {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 55px;
+    font-size: 15px;
+    color: goldenrod;
+}
+
+#current_status_area {
+    position: absolute;
+    top: 440px;
+    left: 20px;
+    font-size: 20px;
+    line-height: 35px;
+}
+
+#current_status {
+    position: absolute;
+    width: 170px;
+    height: 564px;
+    padding: 20px;
+    top: 80px;
+    left: 560px;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: 20px;
+    color: whitesmoke;
+    overflow-y: auto;
     background-color: rgba(0, 0, 0, 0.8);
     border: 3px ridge slategray;
 }

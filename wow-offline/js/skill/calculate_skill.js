@@ -375,7 +375,11 @@ function calculate_critical(attacker, target) {
  * @return {number}
  */
 function calculate_original_block(target) {
-    return target.block_rate * block_coefficient / (target.lvl + 10) + target.block_chance_final;
+    if (!has_equip_shield(target)) {
+        return 0;
+    } else {
+        return target.block_rate * block_coefficient / (target.lvl + 10) + target.block_chance_final;
+    }
 }
 
 /**
@@ -385,8 +389,12 @@ function calculate_original_block(target) {
  * @return {number}
  */
 function calculate_block(attacker, target) {
-    let lvl_chance = (target.lvl - attacker.lvl) * 3;// 每差1级，格挡率浮动3%
-    return (calculate_original_block(target) + lvl_chance) / 100;
+    if (!has_equip_shield(target)) {
+        return 0;
+    } else {
+        let lvl_chance = (target.lvl - attacker.lvl) * 3;// 每差1级，格挡率浮动3%
+        return (calculate_original_block(target) + lvl_chance) / 100;
+    }
 }
 
 /**

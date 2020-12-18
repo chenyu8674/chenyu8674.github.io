@@ -35,7 +35,7 @@ function new_buff() {
         buff.Y = 50;
         buff.Z = 5;
         buff.icon = "ability_racial_avatar";
-        buff.detail = "暴击率+" + buff.X + "%，暴击伤害+" + buff.Y + "%，受到伤害+" + buff.Z + "%";
+        buff.detail = "暴击率+" + buff.X + "%，暴击伤害+" + buff.Y + "%，承受伤害+" + buff.Z + "%";
         buff.effect = [
             "critical_chance_final+=" + buff.X,
             "critical_damage+=" + buff.Y,

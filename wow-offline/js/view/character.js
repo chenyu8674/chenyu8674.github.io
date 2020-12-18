@@ -10,6 +10,10 @@ $(document).ready(function () {
     $("#icon_warrior").click();
     $("#create_character").click(function () {
         let name = $("#view_name_input").val();
+        if (name.length < 2) {
+            alert("输入角色名称！");
+            return;
+        }
         if (name.length === 0) {
             name = dictionary_job.job_name[selected_job_1_index + selected_job_2_index];
         }

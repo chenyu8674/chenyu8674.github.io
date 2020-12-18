@@ -116,7 +116,17 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
     // 装备类型
     if (type == null) {
         if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
-            type = Math.ceil(Math.random() * 4);// 布皮锁板装备
+            // 布皮锁板装备
+            if (lvl <= 10) {
+                type = 1;
+            } else if (lvl <= 20) {
+                type = Math.ceil(Math.random() * 2);
+            } else if (lvl <= 30) {
+                type = Math.ceil(Math.random() * 3);
+            } else {
+                type = Math.ceil(Math.random() * 4);
+            }
+
             // type_random = 4;
         } else if (pos === 2 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
             type = 99;// 2项链 6衬衫 7战袍 13戒指 14饰品
@@ -129,7 +139,10 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
         }
     }
 
-    let attribute = get_attribute_by_pos(pos, type);
+    model.pos = pos;
+    model.type = type;
+    model.icon = create_equipment_icon(model);
+    let attribute = get_attribute_by_pos(pos, type, model.icon);
     // 装备属性系数
     let multiple = attribute[0];
     // 装备名称
@@ -139,12 +152,9 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
     model.name = random_in_array(random_pre_names) + name;
     model.type_name = type_name;
     model.rare = rare;
-    model.pos = pos;
-    model.type = type;
     model.c_lvl = lvl;
     model.e_lvl = lvl;
     model.effect = [];
-    model.icon = create_equipment_icon(model);
     model.affix = [multiple, pos * 1000 + inclination * 100 + type, "random", "random"];
     // console.log(model);
     return create_equipment_by_model(model);
@@ -174,9 +184,10 @@ function create_target_equipment(target_equipment) {
  * 获取装备的属性系数和名称
  * @param pos
  * @param type
+ * @param icon
  * @return {(number|string)[]}
  */
-function get_attribute_by_pos(pos, type) {
+function get_attribute_by_pos(pos, type, icon) {
     let multiple = 0;
     let name = "";
     let type_name = "";
@@ -202,7 +213,7 @@ function get_attribute_by_pos(pos, type) {
         case 2:
             multiple = 0.6;
             type_name = "颈部";
-            name = "项链";
+            name = random_in_array(["项链", "挂坠"]);
             break;
         case 3:
             multiple = 0.8;
@@ -345,74 +356,79 @@ function get_attribute_by_pos(pos, type) {
             break;
         case 13:
             multiple = 0.6;
-            type_name = name = "戒指";
+            type_name = "戒指";
+            name = random_in_array(["戒指", "指环"]);
             break;
         case 14:
             multiple = 0.6;
-            type_name = name = "饰品";
+            type_name = "饰品";
+            name = random_in_array(["饰品", "饰物", "挂件"]);
             break;
         case 15:
             switch (type) {
                 case 11:
                     multiple = 1;
-                    type_name = name = "匕首";
+                    type_name = "匕首";
+                    name = random_in_array(["匕首", "短刀", "长匕"]);
                     break;
                 case 12:
                     multiple = 1;
-                    type_name = name = "拳套";
+                    type_name = "拳套";
+                    name = random_in_array(["拳套", "指虎", "拳刃"]);
                     break;
                 case 13:
                     multiple = 1;
-                    name = "轻斧";
+                    name = random_in_array(["之斧", "轻斧", "短斧"]);
                     type_name = "单手斧";
                     break;
                 case 14:
                     multiple = 1;
-                    name = "轻锤";
+                    name = random_in_array(["之锤", "轻锤", "短锤"]);
                     type_name = "单手锤";
                     break;
                 case 15:
                     multiple = 1;
-                    name = "轻剑";
+                    name = random_in_array(["之剑", "轻剑", "刺剑"]);
                     type_name = "单手剑";
                     break;
                 case 21:
                     multiple = 2;
-                    name = "长矛";
+                    name = random_in_array(["之矛", "之戟", "长矛"]);
                     type_name = "长柄武器";
                     break;
                 case 22:
                     multiple = 2;
-                    type_name = name = "法杖";
+                    type_name = "法杖";
+                    name = random_in_array(["之杖", "法杖", "长杖"]);
                     break;
                 case 23:
                     multiple = 2;
-                    name = "巨斧";
+                    name = random_in_array(["之斧", "巨斧", "重斧"]);
                     type_name = "双手斧";
                     break;
                 case 24:
                     multiple = 2;
-                    name = "巨锤";
+                    name = random_in_array(["之锤", "巨锤", "重锤"]);
                     type_name = "双手锤";
                     break;
                 case 25:
                     multiple = 2;
-                    name = "巨剑";
+                    name = random_in_array(["之剑", "巨剑", "重剑"]);
                     type_name = "双手剑";
                     break;
                 case 31:
                     multiple = 2;
-                    name = "长弓";
+                    name = random_in_array(["之弓", "强弓", "长弓"]);
                     type_name = "远程武器";
                     break;
                 case 32:
                     multiple = 2;
-                    name = "强弩";
+                    name = random_in_array(["之弩", "强弩", "手弩"]);
                     type_name = "远程武器";
                     break;
                 case 33:
                     multiple = 2;
-                    name = "步枪";
+                    name = random_in_array(["火枪", "步枪", "火炮"]);
                     type_name = "远程武器";
                     break;
             }
@@ -421,11 +437,19 @@ function get_attribute_by_pos(pos, type) {
             multiple = 1;
             switch (type) {
                 case 41:
-                    name = "之盾";
+                    name = random_in_array(["之盾", "护盾", "壁垒"]);
                     type_name = "副手 盾牌";
                     break;
                 case 42:
-                    name = "法器";
+                    if (icon.indexOf("book") > 0) {
+                        name = random_in_array(["之书", "法典", "魔典"]);
+                    } else if (icon.indexOf("orb") > 0) {
+                        name = random_in_array(["法球", "宝珠", "宝石"]);
+                    } else if (icon.indexOf("wand") > 0) {
+                        name = random_in_array(["短杖", "魔杖", "魔棒"]);
+                    } else if (icon.indexOf("lantern") > 0) {
+                        name = "灯笼";
+                    }
                     type_name = "副手 法器";
                     break;
             }
