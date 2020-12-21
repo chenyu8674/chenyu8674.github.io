@@ -14,7 +14,7 @@ function new_monster_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级，10极低 20低 30普通 40高 50极高 99强制
         skill.X = 100;
-        skill.detail = "攻击目标造成" + skill.X + "%攻击强度的物理伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的物理伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
@@ -30,7 +30,7 @@ function new_monster_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级
         skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "%法术强度的火焰伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的火焰伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_fire);
@@ -46,7 +46,7 @@ function new_monster_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级
         skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "%法术强度的冰霜伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的冰霜伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_frost);
@@ -62,7 +62,7 @@ function new_monster_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级
         skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "%法术强度的自然伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的自然伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_natural);
@@ -78,7 +78,7 @@ function new_monster_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级
         skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "%法术强度的奥术伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_arcane);
@@ -94,7 +94,7 @@ function new_monster_skill() {
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级
         skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "%法术强度的神圣伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_holy);
@@ -106,11 +106,11 @@ function new_monster_skill() {
     skill.shadow_cast = function () {
         let skill = {};
         skill.id = 270;// Id
-        skill.name = "惩击";// 名称
+        skill.name = "暗影箭";// 名称
         skill.cooldown = 1;// 冷却
         skill.priority = 10;// 优先级
         skill.X = 100;
-        skill.detail = "对目标施法造成" + skill.X + "%法术强度的暗影伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的暗影伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_shadow);
@@ -118,6 +118,32 @@ function new_monster_skill() {
         };
         return skill;
     };
+
+    skill.savage_blow = function () {
+        let skill = {};
+        skill.id = 111;// Id
+        skill.name = "致死打击";// 名称
+        skill.cooldown = 3;// 冷却
+        skill.priority = 30;// 优先级
+        skill.X = 100;
+        skill.icon = "ability_warrior_savageblow";
+        skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
+        // 判断技能可用
+        skill.attempt = function (attacker, target) {
+            let skill_state = get_skill_state(attacker.flag, skill.id);
+            return !(skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown);
+        }
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            if (damage_obj.is_hit) {
+                target.debuffs.push(new_debuff().warrior_1());
+            }
+            return skill_cast_result(damage_obj, [], []);
+        };
+        return skill;
+    }
 
     return skill;
 }

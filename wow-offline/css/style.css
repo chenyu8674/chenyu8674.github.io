@@ -30,6 +30,10 @@ body {
     z-index: 70;
 }
 
+#view_shop {
+    z-index: 70;
+}
+
 #view_character {
     background-image: url("../img/job/warrior.jpg");
     z-index: 80;

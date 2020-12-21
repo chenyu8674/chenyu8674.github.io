@@ -116,7 +116,7 @@ function create_character(job, exp, name) {
         }
     }
     // for (let i = 0; i < MAX_ITEMS - 1; i++) {
-    //     current_character.items.push(create_random_equipment(1));
+    //     push_equipment();
     // }
     // current_character.items.sort(function (a, b) {
     //     return a.pos * 100 + a.type - b.pos * 100 - b.type;

@@ -83,17 +83,17 @@ function turn_loop() {
         role_battle_2.current_shield_value = role_shield_2;
     }
     // 首回合输出双方战斗状态
-    if (battle_turn === 1) {
-        if (in_test_mode) {
-            if (win_count_1 + win_count_2 === 0) {
-                console.log(role_battle_1);
-                console.log(role_battle_2);
-            }
-        } else {
-            console.log(role_battle_1);
-            console.log(role_battle_2);
-        }
-    }
+    // if (battle_turn === 1) {
+    //     if (in_test_mode) {
+    //         if (win_count_1 + win_count_2 === 0) {
+    //             console.log(role_battle_1);
+    //             console.log(role_battle_2);
+    //         }
+    //     } else {
+    //         console.log(role_battle_1);
+    //         console.log(role_battle_2);
+    //     }
+    // }
     // 计算dot伤害
     refresh_dots(role_battle_1);
     refresh_dots(role_battle_2);
@@ -112,6 +112,13 @@ function turn_loop() {
             skill_2 = role_battle_2.skills[i];
             break;
         }
+    }
+    // 未匹配到技能时，使用普通攻击
+    if (skill_1 == null) {
+        skill_1 = dictionary_monster_skill.physical_attack();
+    }
+    if (skill_2 == null) {
+        skill_2 = dictionary_monster_skill.physical_attack();
     }
     // 判断出手顺序
     let winner = 0;

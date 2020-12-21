@@ -299,17 +299,18 @@ function flat_skill_shield(attacker, target, skill_name, shield_value) {
 
 /**
  * 计算攻击护甲免伤
+ * 护甲免伤公式：目标护甲值 / (目标护甲值 + 85 * 等级 + 400)
  * @param target
  * @return {number}
  */
 function calculate_armor_attack(target) {
     let armor_point = target.armor_attack;
-    // 护甲免伤公式：目标护甲值 / (目标护甲值 + 85 * 攻击者等级 + 400)
     return armor_point / (armor_point + 85 * target.lvl + 400);
 }
 
 /**
  * 计算法术护甲免伤
+ * 护甲免伤公式：目标护甲值 / (目标护甲值 + 85 * 等级 + 400)
  * @param target
  * @return {number}
  */
@@ -346,6 +347,9 @@ function calculate_hit(attacker, target) {
     let hit_chance = calculate_original_hit(attacker);
     let dodge_chance = calculate_original_dodge(target);
     let lvl_chance = (attacker.lvl - target.lvl) * 3;// 每差1级，命中率浮动3%
+    if (lvl_chance > 30) {
+        lvl_chance = 30;
+    }
     return (hit_chance - dodge_chance + lvl_chance) / 100;
 }
 
@@ -366,6 +370,9 @@ function calculate_original_critical(attacker) {
  */
 function calculate_critical(attacker, target) {
     let lvl_chance = (attacker.lvl - target.lvl) * 3;// 每差1级，暴击率浮动3%
+    if (lvl_chance > 30) {
+        lvl_chance = 30;
+    }
     return (calculate_original_critical(attacker) + lvl_chance) / 100;
 }
 
@@ -393,6 +400,9 @@ function calculate_block(attacker, target) {
         return 0;
     } else {
         let lvl_chance = (target.lvl - attacker.lvl) * 3;// 每差1级，格挡率浮动3%
+        if (lvl_chance > 30) {
+            lvl_chance = 30;
+        }
         return (calculate_original_block(target) + lvl_chance) / 100;
     }
 }

@@ -55,6 +55,14 @@ function get_effect_value(X, lvl, rare, multiple) {
  */
 
 /**
+ * 添加测试装备
+ */
+function push_equipment() {
+    let equipment = create_random_equipment(MAX_LVL, 5);
+    current_character.items.push(equipment);
+}
+
+/**
  * 生成随机装备
  */
 function create_random_equipment(lvl, rare, pos, inclination, type) {
@@ -73,7 +81,6 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
         } else {
             rare = 5;// 2%
         }
-        // rare = 5;
     }
     // 装备位置
     if (pos == null) {
@@ -111,7 +118,7 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
     // 装备倾向
     if (inclination == null) {
         inclination = Math.round(Math.random()) + 1;
-        // inclination_random = 1;
+        // inclination = 1;
     }
     // 装备类型
     if (type == null) {
@@ -126,8 +133,7 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
             } else {
                 type = Math.ceil(Math.random() * 4);
             }
-
-            // type_random = 4;
+            // type = 4;
         } else if (pos === 2 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
             type = 99;// 2项链 6衬衫 7战袍 13戒指 14饰品
         } else if (pos === 5) {

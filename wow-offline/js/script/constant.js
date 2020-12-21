@@ -10,6 +10,8 @@ let MAX_RES = 75;
 let MAX_ITEMS = 100;
 // 稀有怪刷新率
 let RARE_PERCENT = 5;
+// 战斗记录行数上限
+let MAX_LOG = 200;
 
 /** 装备参数 **/
 
@@ -71,6 +73,7 @@ let int_to_magic_power = 2;
 let int_to_critical_damage = 0.3;
 
 let spr_to_heal_power = 2;
+let spr_to_magic_power = 1;
 let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/

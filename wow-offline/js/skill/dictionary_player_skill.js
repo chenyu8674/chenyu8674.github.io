@@ -42,7 +42,7 @@ function new_player_skill() {
         skill.X = 120;
         skill.Y = 25;
         skill.icon = "ability_meleedamage";
-        skill.detail = "在目标躲闪之后立刻进行压制，对其造成" + skill.X + "%攻击强度的物理伤害。压制无法被躲闪或格挡，且暴击率提高" + skill.Y + "%。";
+        skill.detail = "在目标躲闪之后立刻进行压制，对其造成" + skill.X + "%攻击强度的物理伤害。<br/>压制无法被躲闪或格挡，且暴击率提高" + skill.Y + "%。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
@@ -102,7 +102,7 @@ function new_player_skill() {
         skill.Y = 150;
         skill.Z = 50;
         skill.icon = "inv_sword_48";
-        skill.detail = "尝试终结受伤的目标，对其造成" + skill.Y + "%攻击强度的物理伤害，且暴击率提高" + skill.Z + "%。在目标生命值低于" + skill.X + "%时使用。";
+        skill.detail = "尝试终结受伤的目标，对其造成" + skill.Y + "%攻击强度的物理伤害，且暴击率提高" + skill.Z + "%。<br/>仅能在目标生命值低于" + skill.X + "%时使用。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             return target.current_health_value * 100 / target.max_health_value <= skill.X;
@@ -145,9 +145,12 @@ function new_player_skill() {
         skill.X = 100;
         skill.Y = 150;
         skill.icon = "inv_shield_05";
-        skill.detail = "用盾牌猛击目标，对其造成" + skill.X + "%攻击强度的物理伤害，并获得格挡值" + skill.Y + "%的伤害吸收护盾。";
+        skill.detail = "持盾猛击目标，造成" + skill.X + "%攻击强度的物理伤害，并获得" + skill.Y + "%格挡值的伤害护盾。<br/>必须装备盾牌才可使用。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
+            if (!has_equip_shield(attacker)) {
+                return false;
+            }
             let skill_state = get_skill_state(attacker.flag, skill.id);
             return !(skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown);
         }
@@ -191,7 +194,7 @@ function new_player_skill() {
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "spell_holy_layonhands";
-        skill.detail = "使用神圣力量使自己脱离濒死状态，回复" + skill.Y + "%治疗强度的生命。生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量使自己脱离濒死状态，回复" + skill.Y + "%治疗强度的生命。<br/>生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
@@ -218,10 +221,14 @@ function new_player_skill() {
         skill.X = 80;
         skill.Y = 100;
         skill.icon = "spell_holy_blessingofstrength";
-        skill.detail = "对目标进行清算，对其造成" + skill.X + "%攻击强度的物理伤害，该伤害根据自己损失的生命值最多提高" + skill.Y + "%。";
+        skill.detail = "对目标进行清算，对其造成" + skill.X + "%攻击强度的基础物理伤害，并根据自己损失的生命值最多提高" + skill.Y + "%。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_percent = 1 - attacker.current_health_value / attacker.max_health_value;
+            let damage_percent = attacker.current_health_value / attacker.max_health_value;
+            if (damage_percent < 0.2) {
+                damage_percent = 0.2;// 20%时到达最大伤害
+            }
+            damage_percent = skill.Y * (1 - damage_percent) / 0.8 / 100;
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + damage_percent), type_attack, element_physical);
             return skill_cast_result(damage_obj, [], []);
         };
@@ -236,7 +243,7 @@ function new_player_skill() {
         skill.priority = 50;// 优先级
         skill.X = 35;
         skill.icon = "spell_holy_divineintervention";
-        skill.detail = "使用神圣力量使自己免疫所有伤害，持续" + dictionary_buff.paladin_2_2().T + "回合。生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量使自己免疫所有伤害，持续" + dictionary_buff.paladin_2_2().T + "回合。<br/>生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
@@ -295,7 +302,7 @@ function new_player_skill() {
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "spell_holy_sealofmight";
-        skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被躲闪。目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被躲闪。<br/>目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
@@ -352,7 +359,7 @@ function new_player_skill() {
         skill.Y = 2;
         skill.Z = 5;
         skill.icon = "ability_druid_ferociousbite";
-        skill.detail = "使自己和宠物进入狂怒状态，根据当前损失的生命值对目标造成" + skill.Y + "~" + skill.Z + "次" + skill.X + "%攻击强度的物理伤害。";
+        skill.detail = "使自己和宠物进入狂怒状态，根据当前损失的生命值，对目标造成" + skill.Y + "~" + skill.Z + "次" + skill.X + "%攻击强度的物理伤害。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             return !skill_in_cd(attacker, skill);

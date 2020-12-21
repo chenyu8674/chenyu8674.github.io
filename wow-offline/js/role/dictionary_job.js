@@ -36,8 +36,8 @@ function new_job() {
     job.job_color[job.warrior] = "#C69B6D";
     job.job_name[job.warrior] = "战士";
     job.job_flag[job.warrior] = "warrior";
-    job.base_property[job.warrior] = [18, 9, 18, 4, 4];
-    job.upgrade_property[job.warrior] = [3.6, 1.8, 3.6, 0.8, 0.8];
+    job.base_property[job.warrior] = [18, 8, 16, 4, 4];
+    job.upgrade_property[job.warrior] = [3.6, 1.6, 3.2, 0.8, 0.8];
 
     job.job_name[job.warrior_1] = "武器战士";
     job.job_info[job.warrior_1] = "久经沙场的武器大师，移动灵活，攻击充满压制性。";
@@ -55,8 +55,8 @@ function new_job() {
     job.job_color[job.paladin] = "#F48CBA";
     job.job_name[job.paladin] = "圣骑士";
     job.job_flag[job.paladin] = "paladin";
-    job.base_property[job.paladin] = [14, 6, 14, 10, 14];
-    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2, 2.8];
+    job.base_property[job.paladin] = [14, 6, 14, 14, 10];
+    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2.8, 2];
 
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
@@ -74,8 +74,8 @@ function new_job() {
     job.job_color[job.hunter] = "#AAD372";
     job.job_name[job.hunter] = "猎人";
     job.job_flag[job.hunter] = "hunter";
-    job.base_property[job.hunter] = [12, 17, 10, 7, 4];
-    job.upgrade_property[job.hunter] = [2.4, 3.4, 2, 1.4, 0.8];
+    job.base_property[job.hunter] = [14, 18, 10, 4, 4];
+    job.upgrade_property[job.hunter] = [2.8, 3.6, 2, 0.8, 0.8];
 
     job.job_name[job.hunter_1] = "兽王猎人";
     job.job_info[job.hunter_1] = "对荒野了如指掌，驯服多种多样的野兽来协助作战。";
@@ -86,8 +86,8 @@ function new_job() {
 
     // 职业：萨满
     job.shaman = 40;
-    job.base_property[job.shaman] = [14, 8, 6, 14, 14];
-    job.upgrade_property[job.shaman] = [2.8, 1.6, 1.2, 2.8, 2.8];
+    job.base_property[job.shaman] = [14, 6, 10, 14, 14];
+    job.upgrade_property[job.shaman] = [2.8, 1.2, 2, 2.8, 2.8];
     // 元素
     // 灼热图腾：每回合造成X%法术强度的火焰伤害
     // 地震术：造成X%法术强度的自然伤害，并使敌人下一次攻击的伤害降低Y%
@@ -133,8 +133,8 @@ function new_job() {
 
     // 职业：盗贼
     job.rogue = 60;
-    job.base_property[job.rogue] = [16, 18, 8, 4, 4];
-    job.upgrade_property[job.rogue] = [3.2, 3.6, 1.6, 0.8, 0.8];
+    job.base_property[job.rogue] = [16, 16, 10, 4, 4];
+    job.upgrade_property[job.rogue] = [3.2, 3.2, 2, 0.8, 0.8];
     // 刺杀
     // 背刺
     // 伏击
@@ -151,8 +151,8 @@ function new_job() {
 
     // 职业：牧师
     job.priest = 70;
-    job.base_property[job.priest] = [5, 6, 8, 16, 18];
-    job.upgrade_property[job.priest] = [1, 1.2, 1.6, 3.2, 3.6];
+    job.base_property[job.priest] = [4, 4, 10, 16, 18];
+    job.upgrade_property[job.priest] = [0.8, 0.8, 2, 3.2, 3.6];
     // 戒律/神圣/法术/
     job.priest_1 = 71;
     // 神圣/神圣/法术/
@@ -163,8 +163,8 @@ function new_job() {
 
     // 职业：术士
     job.warlock = 80;
-    job.base_property[job.warlock] = [6, 6, 14, 16, 10];
-    job.upgrade_property[job.warlock] = [1.2, 1.2, 2.8, 3.2, 2];
+    job.base_property[job.warlock] = [4, 4, 14, 16, 12];
+    job.upgrade_property[job.warlock] = [0.8, 0.8, 2.8, 3.2, 2.4];
     // 痛苦/暗影/法术/
     job.warlock_1 = 81;
     // 恶魔/物理/法术/
@@ -175,8 +175,8 @@ function new_job() {
 
     // 职业：法师
     job.mage = 90;
-    job.base_property[job.mage] = [6, 6, 8, 18, 12];
-    job.upgrade_property[job.mage] = [1.2, 1.2, 1.6, 3.6, 2.4];
+    job.base_property[job.mage] = [4, 4, 10, 18, 14];
+    job.upgrade_property[job.mage] = [0.8, 0.8, 2, 3.6, 2.8];
     // 奥术/奥术/法术/
     job.mage_1 = 91;
     // 火焰/火焰/法术/

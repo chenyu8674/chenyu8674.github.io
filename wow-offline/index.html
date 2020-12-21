@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/style_battle.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_character.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_equipment.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style_shop.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_map.css"/>
     <link rel="stylesheet" type="text/css" href="css/style_test.css"/>
 
@@ -44,6 +45,7 @@
     <script type="text/javascript" src="js/view/battle.js"></script>
     <script type="text/javascript" src="js/view/character.js"></script>
     <script type="text/javascript" src="js/view/equipment.js"></script>
+    <script type="text/javascript" src="js/view/shop.js"></script>
     <script type="text/javascript" src="js/view/map.js"></script>
     <script type="text/javascript" src="js/view/test.js"></script>
 
@@ -126,34 +128,38 @@
 <!-- 装备属性 -->
 <div id="view_equipment" class="full_screen">
     <div id="current_equipments">
-        <div id="current_equipments_1" class="cell"></div>
-        <div id="current_equipments_2" class="cell"></div>
-        <div id="current_equipments_3" class="cell"></div>
-        <div id="current_equipments_4" class="cell"></div>
-        <div id="current_equipments_5" class="cell"></div>
-        <div id="current_equipments_6" class="cell"></div>
-        <div id="current_equipments_7" class="cell"></div>
-        <div id="current_equipments_8" class="cell"></div>
-        <div id="current_equipments_9" class="cell"></div>
-        <div id="current_equipments_10" class="cell"></div>
-        <div id="current_equipments_11" class="cell"></div>
-        <div id="current_equipments_12" class="cell"></div>
-        <div id="current_equipments_13" class="cell"></div>
-        <div id="current_equipments_14" class="cell"></div>
-        <div id="current_equipments_15" class="cell"></div>
-        <div id="current_equipments_16" class="cell"></div>
-        <div id="current_equipments_17" class="cell"></div>
-        <div id="current_equipments_18" class="cell"></div>
         <img id="current_equipments_icon" src="img/job/warrior.png" alt=""/>
         <div id="current_status_name"></div>
         <div id="current_status_job"></div>
-        <div id="current_status_area"></div>
+        <div id="current_status_area_1"></div>
+        <div id="current_status_area_2"></div>
+        <div id="current_equipments_1" class="equipment"></div>
+        <div id="current_equipments_2" class="equipment"></div>
+        <div id="current_equipments_3" class="equipment"></div>
+        <div id="current_equipments_4" class="equipment"></div>
+        <div id="current_equipments_5" class="equipment"></div>
+        <div id="current_equipments_6" class="equipment"></div>
+        <div id="current_equipments_7" class="equipment"></div>
+        <div id="current_equipments_8" class="equipment"></div>
+        <div id="current_equipments_9" class="equipment"></div>
+        <div id="current_equipments_10" class="equipment"></div>
+        <div id="current_equipments_11" class="equipment"></div>
+        <div id="current_equipments_12" class="equipment"></div>
+        <div id="current_equipments_13" class="equipment"></div>
+        <div id="current_equipments_14" class="equipment"></div>
+        <div id="current_equipments_15" class="equipment"></div>
+        <div id="current_equipments_16" class="equipment"></div>
+        <div id="current_equipments_17" class="equipment"></div>
+        <div id="current_equipments_18" class="equipment"></div>
     </div>
+    <div id="current_status_tab_1">基础</div>
+    <div id="current_status_tab_2">其他</div>
     <div id="current_status"></div>
     <div id="current_items"></div>
 </div>
-<!-- 拍卖行 -->
+<!-- 商店 -->
 <div id="view_shop" class="full_screen">
+    <div id="shop_items"></div>
 </div>
 <!-- 测试 -->
 <div id="view_test" class="full_screen">

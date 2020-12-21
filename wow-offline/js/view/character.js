@@ -11,7 +11,7 @@ $(document).ready(function () {
     $("#create_character").click(function () {
         let name = $("#view_name_input").val();
         if (name.length < 2) {
-            alert("输入角色名称！");
+            alert("角色名称须为2~6字符");
             return;
         }
         if (name.length === 0) {

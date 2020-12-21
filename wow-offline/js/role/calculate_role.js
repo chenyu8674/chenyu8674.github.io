@@ -192,7 +192,7 @@ function refresh_battle_attribute(attribute) {
 
     attribute.attack_power = Math.round((attribute.attack_power + attribute.str * str_to_attack_power + attribute.agi * agi_to_attack_power) * attribute.attack_power_percent / 100);// 攻击强度
     attribute.attack_power_percent = 100;
-    attribute.magic_power = Math.round((attribute.magic_power + attribute.int * int_to_magic_power) * attribute.magic_power_percent / 100);// 法术强度
+    attribute.magic_power = Math.round((attribute.magic_power + attribute.int * int_to_magic_power + attribute.spr * spr_to_magic_power) * attribute.magic_power_percent / 100);// 法术强度
     attribute.magic_power_percent = 100;
     attribute.heal_power = Math.round((attribute.heal_power + attribute.spr * spr_to_heal_power) * attribute.heal_power_percent / 100);// 治疗强度
     attribute.heal_power_percent = 100;

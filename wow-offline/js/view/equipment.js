@@ -1,9 +1,27 @@
 let view_equipment;
-let view_current_items
+let view_current_items;
+
+let current_tab = 1;
+let current_status_tab_1;
+let current_status_tab_2;
 
 $(document).ready(function () {
     view_equipment = $("#view_equipment");
     view_current_items = $("#current_items");
+    current_status_tab_1 = $("#current_status_tab_1");
+    current_status_tab_2 = $("#current_status_tab_2");
+    current_status_tab_1.click(function () {
+        current_tab = 1;
+        refresh_current_status_1();
+        current_status_tab_1.attr("class", "status_tab_click");
+        current_status_tab_2.attr("class", "status_tab_normal");
+    });
+    current_status_tab_2.click(function () {
+        current_tab = 2;
+        refresh_current_status_2();
+        current_status_tab_2.attr("class", "status_tab_click");
+        current_status_tab_1.attr("class", "status_tab_normal");
+    });
     hide_view_equipment();
 });
 
@@ -17,76 +35,99 @@ function hide_view_equipment() {
 
 function refresh_current_status() {
     let role_whole = role_battle_1;
-    refresh_current_equipment(role_whole);
-    refresh_current_items(role_whole);
+    refresh_current_equipment();
+    refresh_current_items();
 
     let job_flag = dictionary_job.job_flag[10 * Math.floor(role_whole.job / 10)];
     $("#current_equipments_icon").attr("src", "img/job/" + job_flag + ".png");
     $("#current_status_name").text(role_whole.name);
     $("#current_status_job").text("等级 " + role_whole.lvl + " " + dictionary_job.job_name[role_whole.job]);
-    $("#current_status_area").html(
-        "生命值：" + role_whole.current_health_value + "/" + role_whole.max_health_value + "<br/>" +
-        "护盾值：" + role_whole.current_shield_value + "<br/>" +
+    refresh_current_status_exp();
+    $("#current_status_area_2").html(
         "承受伤害：" + role_whole.taken_damage_percent + "%<br/>" +
         "承受治疗：" + role_whole.taken_heal_percent + "%<br/>"
     );
-
-    let role_html = "";
-    role_html += "力量：" + role_whole.str + "<br/>";
-    role_html += "敏捷：" + role_whole.agi + "<br/>";
-    role_html += "耐力：" + role_whole.sta + "<br/>";
-    role_html += "智力：" + role_whole.int + "<br/>";
-    role_html += "精神：" + role_whole.spr + "<br/>";
-    role_html += "<br/>";
-    role_html += "攻击强度：" + role_whole.attack_power + "<br/>";
-    role_html += "法术强度：" + role_whole.magic_power + "<br/>";
-    role_html += "治疗强度：" + role_whole.heal_power + "<br/>";
-    role_html += "<br/>";
-    role_html += "命中等级：" + role_whole.hit_rate + "<br/>";
-    role_html += "命中率：" + calculate_original_hit(role_whole).toFixed(2) + "%<br/>";
-    role_html += "暴击等级：" + role_whole.critical_rate + "<br/>";
-    role_html += "暴击率：" + calculate_original_critical(role_whole).toFixed(2) + "%<br/>";
-    role_html += "暴击伤害：" + role_whole.critical_damage + "%<br/>";
-    role_html += "闪避等级：" + role_whole.dodge_rate + "<br/>";
-    role_html += "闪避率：" + calculate_original_dodge(role_whole).toFixed(2) + "%<br/>";
-    if (has_equip_shield(role_whole)) {
-        let block_chance = calculate_original_block(role_whole).toFixed(2);
-        role_html += "格挡等级：" + role_whole.block_rate + "<br/>";
-        role_html += "格挡率：" + block_chance + "%<br/>";
-        role_html += "格挡值：" + role_whole.block_value + "<br/>";
+    if (current_tab === 1) {
+        current_status_tab_1.click();
+    } else {
+        current_status_tab_2.click();
     }
+}
+
+function refresh_current_status_exp() {
+    let role_whole = role_battle_1;
+    let exp_percent = get_exp_percent(current_character.lvl, current_character.exp);
+    let exp = Math.round(exp_percent * LVL_EXP[current_character.lvl - 1]);
+    let exp_max = LVL_EXP[current_character.lvl - 1];
+    $("#current_status_area_1").html(
+        "生命值：" + role_whole.current_health_value + "/" + role_whole.max_health_value + "<br/>" +
+        "护盾值：" + role_whole.current_shield_value + "<br/>" +
+        "经验值：" + exp + "/" + exp_max + "<br/>"
+    );
+}
+
+function refresh_current_status_1() {
+    let role = role_battle_1;
+    let role_html = "";
+    role_html += "力量：" + role.str + "<br/>";
+    role_html += "敏捷：" + role.agi + "<br/>";
+    role_html += "耐力：" + role.sta + "<br/>";
+    role_html += "智力：" + role.int + "<br/>";
+    role_html += "精神：" + role.spr + "<br/>";
     role_html += "<br/>";
-    role_html += "攻击护甲：" + role_whole.armor_attack + "<br/>";
-    role_html += "攻击减伤：" + (calculate_armor_attack(role_whole) * 100).toFixed(2) + "%<br/>";
-    role_html += "法术护甲：" + role_whole.armor_magic + "<br/>";
-    role_html += "法术减伤：" + (calculate_armor_magic(role_whole) * 100).toFixed(2) + "%<br/>";
+    role_html += "攻击强度：" + role.attack_power + "<br/>";
+    role_html += "法术强度：" + role.magic_power + "<br/>";
+    role_html += "治疗强度：" + role.heal_power + "<br/>";
     role_html += "<br/>";
-    role_html += "物理伤害：" + role_whole.damage_physical + "%<br/>";
-    role_html += "火焰伤害：" + role_whole.damage_fire + "%<br/>";
-    role_html += "冰霜伤害：" + role_whole.damage_frost + "%<br/>";
-    role_html += "自然伤害：" + role_whole.damage_natural + "%<br/>";
-    role_html += "奥术伤害：" + role_whole.damage_arcane + "%<br/>";
-    role_html += "神圣伤害：" + role_whole.damage_holy + "%<br/>";
-    role_html += "暗影伤害：" + role_whole.damage_shadow + "%<br/>";
+    role_html += "攻击护甲：" + role.armor_attack + "<br/>";
+    role_html += "攻击减伤：" + (calculate_armor_attack(role) * 100).toFixed(2) + "%<br/>";
+    role_html += "法术护甲：" + role.armor_magic + "<br/>";
+    role_html += "法术减伤：" + (calculate_armor_magic(role) * 100).toFixed(2) + "%<br/>";
     role_html += "<br/>";
-    role_html += "物理抗性：" + role_whole.res_physical + "%<br/>";
-    role_html += "火焰抗性：" + role_whole.res_fire + "%<br/>";
-    role_html += "冰霜抗性：" + role_whole.res_frost + "%<br/>";
-    role_html += "自然抗性：" + role_whole.res_natural + "%<br/>";
-    role_html += "奥术抗性：" + role_whole.res_arcane + "%<br/>";
-    role_html += "神圣抗性：" + role_whole.res_holy + "%<br/>";
-    role_html += "暗影抗性：" + role_whole.res_shadow + "%<br/>";
+    role_html += "命中等级：" + role.hit_rate + "<br/>";
+    role_html += "命中几率：" + calculate_original_hit(role).toFixed(2) + "%<br/>";
+    role_html += "暴击等级：" + role.critical_rate + "<br/>";
+    role_html += "暴击几率：" + calculate_original_critical(role).toFixed(2) + "%<br/>";
+    role_html += "暴击伤害：" + role.critical_damage + "%<br/>";
+    role_html += "闪避等级：" + role.dodge_rate + "<br/>";
+    role_html += "闪避几率：" + calculate_original_dodge(role).toFixed(2) + "%<br/>";
+    if (has_equip_shield(role)) {
+        let block_chance = calculate_original_block(role).toFixed(2);
+        role_html += "格挡等级：" + role.block_rate + "<br/>";
+        role_html += "格挡几率：" + block_chance + "%<br/>";
+        role_html += "盾格挡值：" + role.block_value + "<br/>";
+    }
+    $("#current_status").html(role_html);
+}
+
+function refresh_current_status_2() {
+    let role = role_battle_1;
+    let role_html = "";
+    role_html += "物理伤害：" + role.damage_physical + "%<br/>";
+    role_html += "火焰伤害：" + role.damage_fire + "%<br/>";
+    role_html += "冰霜伤害：" + role.damage_frost + "%<br/>";
+    role_html += "自然伤害：" + role.damage_natural + "%<br/>";
+    role_html += "奥术伤害：" + role.damage_arcane + "%<br/>";
+    role_html += "神圣伤害：" + role.damage_holy + "%<br/>";
+    role_html += "暗影伤害：" + role.damage_shadow + "%<br/>";
     role_html += "<br/>";
-    role_html += "物理穿透：" + role_whole.pierce_physical + "%<br/>";
-    role_html += "火焰穿透：" + role_whole.pierce_fire + "%<br/>";
-    role_html += "冰霜穿透：" + role_whole.pierce_frost + "%<br/>";
-    role_html += "自然穿透：" + role_whole.pierce_natural + "%<br/>";
-    role_html += "奥术穿透：" + role_whole.pierce_arcane + "%<br/>";
-    role_html += "神圣穿透：" + role_whole.pierce_holy + "%<br/>";
-    role_html += "暗影穿透：" + role_whole.pierce_shadow + "%<br/>";
+    role_html += "物理抗性：" + role.res_physical + "<br/>";
+    role_html += "火焰抗性：" + role.res_fire + "<br/>";
+    role_html += "冰霜抗性：" + role.res_frost + "<br/>";
+    role_html += "自然抗性：" + role.res_natural + "<br/>";
+    role_html += "奥术抗性：" + role.res_arcane + "<br/>";
+    role_html += "神圣抗性：" + role.res_holy + "<br/>";
+    role_html += "暗影抗性：" + role.res_shadow + "<br/>";
+    role_html += "<br/>";
+    role_html += "物理穿透：" + role.pierce_physical + "<br/>";
+    role_html += "火焰穿透：" + role.pierce_fire + "<br/>";
+    role_html += "冰霜穿透：" + role.pierce_frost + "<br/>";
+    role_html += "自然穿透：" + role.pierce_natural + "<br/>";
+    role_html += "奥术穿透：" + role.pierce_arcane + "<br/>";
+    role_html += "神圣穿透：" + role.pierce_holy + "<br/>";
+    role_html += "暗影穿透：" + role.pierce_shadow + "<br/>";
     role_html += "<br/>";
     $("#current_status").html(role_html);
-    return role_html;
 }
 
 /**
@@ -122,6 +163,9 @@ function show_equipment_info(equipment, x, y) {
     can_not = current_character.lvl >= equipment.e_lvl ? "" : " style='color:red'";
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
     $("body").append(info);
+    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {
+        info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
+    }
 }
 
 /**
@@ -133,10 +177,10 @@ function hide_equipment_info() {
 
 /**
  * 绘制装备栏
- * @param role
  */
-function refresh_current_equipment(role) {
-    let cell_old = $(".cell");
+function refresh_current_equipment() {
+    let role = role_battle_1;
+    let cell_old = $(".equipment");
     cell_old.css("border-color", "slategray");
     cell_old.css("background-image", "");
     cell_old.css("box-shadow", "");
@@ -195,7 +239,8 @@ function refresh_current_items() {
         let item = items[i];
         let cell = $("<div></div>");
         cell.addClass("item");
-        view_current_items.append(cell);
+        cell.css("left", 11 + (i % 10) * 58 + "px");
+        cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
@@ -213,6 +258,7 @@ function refresh_current_items() {
                 equip_equipment(i);
             });
         }
+        view_current_items.append(cell);
     }
 }
 
@@ -238,7 +284,6 @@ function get_equipment_count_by_pos(pos) {
  * @return {boolean}
  */
 function has_equip_shield(role) {
-    console.log(role);
     let equipments = role.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
@@ -356,8 +401,6 @@ function equip_equipment(index) {
                 j--;
             }
         }
-        console.log(equipment_exchange_1);
-        console.log(equipment_exchange_2);
         equipments.push(item);
     } else if (item.pos === 16 && get_equipment_count_by_pos(15) === 1 && has_equip_two_hand_weapon()) {
         // 装备双手武器时装备副手

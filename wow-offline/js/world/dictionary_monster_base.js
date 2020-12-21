@@ -28,10 +28,10 @@ function new_monster() {
     monster["森林灰狼"] = {name: "森林灰狼", species: 2, type: 1, rare: 2, multiple: 1, skill: [dictionary_monster_skill.physical_attack()],}
 
     monster["监工纳尔格"] = {name: "监工纳尔格", species: 1, type: 1, rare: 3, multiple: 1, skill: [dictionary_monster_skill.physical_attack()],}
-    monster["迪菲亚码头主管"] = {name: "迪菲亚码头主管", species: 1, type: 0, rare: 3, multiple: 1, skill: [dictionary_monster_skill.physical_attack()],}
+    monster["迪菲亚码头主管"] = {name: "迪菲亚码头主管", species: 1, type: 0, rare: 3, multiple: 1, skill: [dictionary_monster_skill.physical_attack(), dictionary_monster_skill.shadow_cast()],}
     monster["母蜘蛛"] = {name: "母蜘蛛", species: 2, type: 2, rare: 3, multiple: 1, skill: [dictionary_monster_skill.physical_attack()],}
 
-    monster["霍格"] = {name: "霍格", species: 1, type: 9, rare: 4, multiple: 1, x: 27, y: 90, skill: [dictionary_monster_skill.physical_attack()],}
+    monster["霍格"] = {name: "霍格", species: 1, type: 9, rare: 4, multiple: 1, x: 27, y: 90, skill: [dictionary_monster_skill.savage_blow()],}
 
     return monster;
 }

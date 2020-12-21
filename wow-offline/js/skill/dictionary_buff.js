@@ -13,13 +13,15 @@ function new_buff() {
         buff.id = 11;// Id
         buff.name = "战斗姿态";// 名称
         buff.T = -1;
-        buff.X = 10;
+        buff.X = 5;
         buff.Y = 5;
+        buff.Z = 5;
         buff.icon = "ability_warrior_offensivestance";
-        buff.detail = "物理穿透+" + buff.X + "%，命中等级+" + buff.Y + "%";
+        buff.detail = "命中率+" + buff.X + "%，物理伤害+" + buff.Y + "%，物理穿透+" + buff.Z;
         buff.effect = [
-            "pierce_physical+=" + buff.X,
-            "hit_rate_percent+=" + buff.Y
+            "hit_chance_final+=" + buff.X,
+            "damage_physical+=" + buff.Y,
+            "pierce_physical+=" + buff.Z
         ];
         return buff;
     }
@@ -53,11 +55,13 @@ function new_buff() {
         buff.T = -1;
         buff.X = 5;
         buff.Y = 10;
+        buff.Z = -5;
         buff.icon = "ability_warrior_defensivestance";
-        buff.detail = "格挡率+" + buff.X + "%，格挡值+" + buff.Y + "%";
+        buff.detail = "格挡率+" + buff.X + "%，格挡值+" + buff.Y + "%，承受伤害" + buff.Z + "%";
         buff.effect = [
             "block_chance_final+=" + buff.X,
-            "block_value_percent+=" + buff.Y
+            "block_value_percent+=" + buff.Y,
+            "taken_damage_percent+=" + buff.Z
         ];
         return buff;
     }
@@ -135,7 +139,7 @@ function new_buff() {
         buff.id = 31;// Id
         buff.name = "野性守护";// 名称
         buff.T = -1;
-        buff.X = 2;
+        buff.X = 1;
         buff.icon = "spell_nature_protectionformnature";
         buff.detail = "每次命中目标时，回复" + buff.X + "%最大生命值";
         buff.effect = [
@@ -153,7 +157,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 15;
         buff.icon = "spell_nature_ravenform";
-        buff.detail = "攻击强度百分比+" + buff.X + "%";
+        buff.detail = "攻击强度+" + buff.X + "%";
         buff.effect = [
             "attack_power_percent+=" + buff.X
         ];
@@ -169,7 +173,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 15;
         buff.icon = "ability_hunter_aspectofthemonkey";
-        buff.detail = "闪避等级百分比+" + buff.X + "%";
+        buff.detail = "闪避等级+" + buff.X + "%";
         buff.effect = [
             "dodge_rate_percent+=" + buff.X
         ];

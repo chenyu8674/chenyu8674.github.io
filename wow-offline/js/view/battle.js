@@ -303,7 +303,7 @@ function add_monster() {
  */
 function refresh_monster() {
     $(".monster_point").remove();
-    while (map_monster_list.length < 10) {
+    while (map_monster_list.length < 15) {
         add_monster(map_info);
     }
     for (let i = 0; i < map_monster_list.length; i++) {
@@ -420,6 +420,7 @@ function on_battle_end(index) {
             current_health_value = role_battle_1.max_health_value;
             refresh_current_status();
         }
+        refresh_current_status_exp();
         refresh_battle_status(false);
         map_monster_list.splice(target_monster, 1);
         refresh_monster();

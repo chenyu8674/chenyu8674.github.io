@@ -1,27 +1,37 @@
 /** 战斗日志输出 **/
 
-let battle_log_text = "";
+let battle_log_text = [];
 
 function battle_log_clear() {
-    battle_log_text = "";
+    battle_log_text = [];
     $("#test_log").html("");
     $("#battle_log").html("");
 }
 
 function battle_log(str) {
-    battle_log_text += str + "<br />";
     if (battle_time !== 1) {
         return;
     }
+    let log_view;
     if (in_test_mode) {
-        let log_view = $("#test_log");
-        log_view.html(battle_log_text);
-        log_view.scrollTop(log_view[0].scrollHeight);
+        battle_log_text.push(str);
+        if (battle_log_text.length > MAX_LOG) {
+            battle_log_text.splice(0, 1);
+        }
+        log_view = $("#test_log");
+        log_view.html(battle_log_text.join("<br/>"));
     } else {
-        let log_view = $("#battle_log");
-        log_view.append(str + "<br />");
-        log_view.scrollTop(log_view[0].scrollHeight);
+        log_view = $("#battle_log");
+        if (str.length === 0 && log_view.children().length > 0) {
+            log_view.append("<br/>");
+        } else {
+            log_view.append("<div>" + str + "</div>");
+        }
+        if (log_view.children().length > MAX_LOG) {
+            log_view.children().first().remove();
+        }
     }
+    log_view.scrollTop(log_view[0].scrollHeight);
 }
 
 /**
