@@ -22,8 +22,25 @@ $(document).ready(function () {
         current_status_tab_2.attr("class", "status_tab_click");
         current_status_tab_1.attr("class", "status_tab_normal");
     });
+    $("#current_pack_bag").click(function () {
+        pack_bag();
+        refresh_current_items();
+        save_data();
+    });
     hide_view_equipment();
 });
+
+function pack_bag() {
+    current_character.items.sort(function (a, b) {
+        if (a == null) {
+            return 1;
+        }
+        if (b == null) {
+            return -1;
+        }
+        return a.pos * 100 + a.type - b.pos * 100 - b.type;
+    });
+}
 
 function show_view_equipment() {
     view_equipment.show();
@@ -260,6 +277,7 @@ function refresh_current_items() {
         }
         view_current_items.append(cell);
     }
+    $("#current_money").html(get_money_html());
 }
 
 /**

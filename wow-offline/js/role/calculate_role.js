@@ -45,6 +45,7 @@ function refresh_base_attribute(role_base, role_whole) {
     role_whole.equipments = role_base.equipments;
     role_whole.items = role_base.items;
     role_whole.skills = role_base.skills;
+    role_whole.money = role_base.money;
 }
 
 /**

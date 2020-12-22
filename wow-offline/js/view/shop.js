@@ -61,3 +61,19 @@ function sell_equipment(index) {
     refresh_current_items();
     save_data();
 }
+
+function get_money_html() {
+    let money = current_character.money;
+    let copper = money % 100;
+    let silver = (money - copper) % 10000 / 100;
+    let gold = (money - silver * 100 - copper) / 10000;
+    let html = "";
+    if (gold > 0) {
+        html += gold + "<span class='money_gold'>●</span>";
+    }
+    if (silver > 0) {
+        html += silver + "<span class='money_silver'>●</span>";
+    }
+    html += copper + "<span class='money_copper'>●</span>";
+    return html;
+}

@@ -38,6 +38,7 @@ function save_data() {
     save_character.exp = current_character.exp;
     save_character.equipments = current_character.equipments;
     save_character.items = current_character.items;
+    save_character.money = current_character.money;
     character_list[current_index] = save_character;
     let json = JSON.stringify(character_list);
     localStorage.setItem("character_list", json);
@@ -57,6 +58,7 @@ function load_data() {
     create_character(character_obj.job, character_obj.exp, character_obj.name);
     current_character.equipments = character_obj.equipments;
     current_character.items = character_obj.items;
+    current_character.money = character_obj.money;
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");
     role_battle_1.current_health_value = role_battle_1.max_health_value;
@@ -87,6 +89,7 @@ function create_character(job, exp, name) {
     current_character.dots = [];
     current_character.equipments = [];
     current_character.items = [];
+    current_character.money = 0;
     if (exp === 0) {
         // 新手装备
         current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shirt"]));
@@ -115,12 +118,9 @@ function create_character(job, exp, name) {
                 break;
         }
     }
-    // for (let i = 0; i < MAX_ITEMS - 1; i++) {
-    //     push_equipment();
-    // }
-    // current_character.items.sort(function (a, b) {
-    //     return a.pos * 100 + a.type - b.pos * 100 - b.type;
-    // });
+    for (let i = 0; i < MAX_ITEMS - 1; i++) {
+        push_equipment();
+    }
 
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");

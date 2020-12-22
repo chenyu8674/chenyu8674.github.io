@@ -58,7 +58,7 @@ function get_effect_value(X, lvl, rare, multiple) {
  * 添加测试装备
  */
 function push_equipment() {
-    let equipment = create_random_equipment(MAX_LVL, 5);
+    let equipment = create_random_equipment(current_character.lvl);
     current_character.items.push(equipment);
 }
 

@@ -5,6 +5,7 @@ body {
     line-height: 15px;
     font-family: "微软雅黑", serif;
     overflow: hidden;
+    color: whitesmoke;
 }
 
 .full_screen {
@@ -102,6 +103,29 @@ body {
     display: none;
 }
 
+button {
+    padding: 0;
+    margin: 0;
+    font-weight: bolder;
+    background-color: darkred;
+    color: orange;
+    text-shadow: -1px -1px black;
+    border: 4px outset saddlebrown;
+}
+
+button:hover {
+    color: goldenrod;
+    border-color: goldenrod;
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active {
+    border-style: inset;
+}
+
 .cell {
     position: absolute;
     width: 40px;
@@ -111,4 +135,27 @@ body {
     background-size: 100%;
     background-position: center;
     border: 2px ridge slategray;
+}
+
+.money_gold {
+    margin-left: 2px;
+    margin-right: 5px;
+    font-size: 30px;
+    color: gold;
+    text-shadow: 1px 1px goldenrod;
+}
+
+.money_silver {
+    margin-left: 2px;
+    margin-right: 5px;
+    font-size: 30px;
+    color: silver;
+    text-shadow: 1px 1px gray;
+}
+
+.money_copper {
+    margin-left: 2px;
+    font-size: 30px;
+    color: chocolate;
+    text-shadow: 1px 1px saddlebrown;
 }
