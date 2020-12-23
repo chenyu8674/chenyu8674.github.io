@@ -338,7 +338,6 @@ function get_item_empty_count() {
     for (let k = 0; k < MAX_ITEMS; k++) {
         if (items[k] == null) {
             count++;
-            break;
         }
     }
     return count;

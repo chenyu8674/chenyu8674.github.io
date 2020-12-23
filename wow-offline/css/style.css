@@ -138,21 +138,22 @@ button:active {
 }
 
 .money_gold {
-    margin-left: 2px;
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
     color: gold;
     text-shadow: 1px 1px goldenrod;
 }
 
 .money_silver {
-    margin-left: 2px;
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
     color: silver;
     text-shadow: 1px 1px gray;
 }
 
 .money_copper {
-    margin-left: 2px;
+    margin-left: 3px;
+    margin-right: 3px;
     color: chocolate;
     text-shadow: 1px 1px saddlebrown;
 }

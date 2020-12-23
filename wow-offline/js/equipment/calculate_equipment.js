@@ -54,6 +54,22 @@ function get_effect_value(X, lvl, rare, multiple) {
  * 41-盾牌 42-副手
  */
 
+function get_random_rare() {
+    let rare = 100 * Math.random();
+    if (rare <= 10) {
+        rare = 1;// 10%
+    } else if (rare <= 25) {
+        rare = 2;// 15%
+    } else if (rare <= 90) {
+        rare = 3;// 65%
+    } else if (rare <= 98) {
+        rare = 4;// 8%
+    } else {
+        rare = 5;// 2%
+    }
+    return rare;
+}
+
 /**
  * 生成随机装备
  */
@@ -61,18 +77,7 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
     let model = {};
     // 稀有度
     if (rare == null) {
-        rare = 100 * Math.random();
-        if (rare <= 10) {
-            rare = 1;// 10%
-        } else if (rare <= 25) {
-            rare = 2;// 15%
-        } else if (rare <= 90) {
-            rare = 3;// 65%
-        } else if (rare <= 98) {
-            rare = 4;// 8%
-        } else {
-            rare = 5;// 2%
-        }
+        rare = get_random_rare();
     }
     // 装备位置
     if (pos == null) {
@@ -252,7 +257,7 @@ function get_attribute_by_pos(pos, type, icon) {
         case 5:
             multiple = 0.6;
             type_name = "背部 " + get_type_name(type);
-            name = "斗篷";
+            name = random_in_array(["斗篷", "披风"]);
             break;
         case 6:
             multiple = 0;
