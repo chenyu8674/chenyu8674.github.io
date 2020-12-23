@@ -19,7 +19,6 @@ function new_affix_suffix() {
     affix["暴虐"] = function (lvl, rare, multiple) {return ["critical_damage+=" + get_effect_value(1, lvl, rare, multiple)]}
     affix["精准"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(1, lvl, rare, multiple)]}
     affix["灵巧"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(1, lvl, rare, multiple)]}
-    affix["坚守"] = function (lvl, rare, multiple) {return ["block_rate+=" + get_effect_value(1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.5, lvl, rare, multiple)]}
 
     affix["锋利"] = function (lvl, rare, multiple) {return ["damage_physical+=" + get_effect_value(0.08, lvl, rare, multiple)]}
     // affix["物理穿透"] = function (lvl, rare, multiple) {return ["pierce_physical+=" + get_effect_value(0.08, lvl, rare, multiple)]}
@@ -43,5 +42,6 @@ function new_affix_suffix() {
     // affix["暗影穿透"] = function (lvl, rare, multiple) {return ["pierce_shadow+=" + get_effect_value(0.08, lvl, rare, multiple)]}
     affix["黎明"] = function (lvl, rare, multiple) {return ["res_shadow+=" + get_effect_value(0.08, lvl, rare, multiple)]}
 
+    affix["坚守"] = function (lvl, rare, multiple) {return ["block_rate+=" + get_effect_value(1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.5, lvl, rare, multiple)]}
     return affix;
 }

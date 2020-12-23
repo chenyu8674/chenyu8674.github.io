@@ -488,6 +488,10 @@ function create_equipment_by_model(model) {
                     } else {
                         affix_array = dictionary_affix_suffix;
                         affix_length = dictionary_affix_suffix_length;
+                        if (equipment.type > 20 && equipment.type < 40) {
+                            // 双手/远程武器不会有格挡词缀
+                            affix_length --;
+                        }
                     }
                     let random = Math.floor(Math.random() * affix_length);
                     let index = 0;
@@ -657,6 +661,6 @@ function get_equipment_price(equipment) {
  * 添加测试装备
  */
 function push_equipment() {
-    let equipment = create_random_equipment(60);
+    let equipment = create_random_equipment(1);
     current_character.items.push(equipment);
 }
