@@ -5,6 +5,11 @@ $(document).ready(function () {
     view_shop = $("#view_shop");
     view_shop_items = $("#shop_items");
     hide_view_shop();
+    $("#shop_pack_bag").click(function () {
+        pack_bag();
+        refresh_shop_items();
+        save_data();
+    });
 });
 
 function show_view_shop() {
@@ -39,7 +44,7 @@ function refresh_shop_items() {
             }, function () {
                 hide_equipment_info();
             });
-            // 右键点击事件，穿上装备
+            // 右键点击事件，卖出装备
             cell.contextmenu(function (e) {
                 e.preventDefault();
                 sell_equipment(i);
@@ -47,6 +52,7 @@ function refresh_shop_items() {
         }
         view_shop_items.append(cell);
     }
+    $("#shop_money").html(get_money_html(current_character.money, 20));
 }
 
 /**
@@ -56,24 +62,25 @@ function refresh_shop_items() {
 function sell_equipment(index) {
     hide_equipment_info();
     let items = current_character.items;
+    let item = items[index];
+    current_character.money += get_equipment_price(item);
     items[index] = null;
     refresh_shop_items();
-    refresh_current_items();
     save_data();
 }
 
-function get_money_html() {
-    let money = current_character.money;
+function get_money_html(money, text_size) {
     let copper = money % 100;
     let silver = (money - copper) % 10000 / 100;
     let gold = (money - silver * 100 - copper) / 10000;
     let html = "";
+    let font_size = text_size * 1.6;
     if (gold > 0) {
-        html += gold + "<span class='money_gold'>●</span>";
+        html += gold + "<span style='font-size: " + font_size + "px' class='money_gold'>●</span>";
     }
     if (silver > 0) {
-        html += silver + "<span class='money_silver'>●</span>";
+        html += silver + "<span style='font-size: " + font_size + "px' class='money_silver'>●</span>";
     }
-    html += copper + "<span class='money_copper'>●</span>";
+    html += copper + "<span style='font-size: " + font_size + "px' class='money_copper'>●</span>";
     return html;
 }

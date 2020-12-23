@@ -55,14 +55,6 @@ function get_effect_value(X, lvl, rare, multiple) {
  */
 
 /**
- * 添加测试装备
- */
-function push_equipment() {
-    let equipment = create_random_equipment(current_character.lvl);
-    current_character.items.push(equipment);
-}
-
-/**
  * 生成随机装备
  */
 function create_random_equipment(lvl, rare, pos, inclination, type) {
@@ -597,4 +589,74 @@ function check_can_equip(equipment) {
         }
     }
     return false;
+}
+
+/**
+ * 获取装备卖店价格
+ * @param equipment
+ * @return {number}
+ */
+function get_equipment_price(equipment) {
+    if (equipment.pos === 6 || equipment.pos === 7) {
+        return 1;
+    }
+    let base_price = 10;
+    switch (equipment.pos) {
+        case 2:
+        case 5:
+        case 8:
+        case 10:
+        case 13:
+        case 14:
+            base_price += 6;
+            break;
+        case 1:
+        case 3:
+        case 9:
+        case 12:
+            base_price += 8;
+            break;
+        case 4:
+        case 11:
+            base_price += 10;
+            break;
+        case 15:
+            if (equipment.type < 20) {
+                base_price += 20;
+            } else if (equipment.type < 30) {
+                base_price += 40;
+            } else {
+                base_price += 35;
+            }
+            break;
+        case 16:
+            if (equipment.type === 41) {
+                base_price += 25;
+            } else {
+                base_price += 12;
+            }
+            break;
+    }
+    base_price *= Math.pow(equipment.e_lvl, 1.5);
+    switch (equipment.type) {
+        case 2:
+            base_price *= 1.1;
+            break;
+        case 3:
+            base_price *= 1.2;
+            break;
+        case 4:
+            base_price *= 1.3;
+            break;
+    }
+    base_price *= Math.pow(get_multiple_by_rare(equipment.rare), 2);
+    return Math.round(base_price);
+}
+
+/**
+ * 添加测试装备
+ */
+function push_equipment() {
+    let equipment = create_random_equipment(60);
+    current_character.items.push(equipment);
 }

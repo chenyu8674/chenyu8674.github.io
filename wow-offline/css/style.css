@@ -140,7 +140,6 @@ button:active {
 .money_gold {
     margin-left: 2px;
     margin-right: 5px;
-    font-size: 30px;
     color: gold;
     text-shadow: 1px 1px goldenrod;
 }
@@ -148,14 +147,12 @@ button:active {
 .money_silver {
     margin-left: 2px;
     margin-right: 5px;
-    font-size: 30px;
     color: silver;
     text-shadow: 1px 1px gray;
 }
 
 .money_copper {
     margin-left: 2px;
-    font-size: 30px;
     color: chocolate;
     text-shadow: 1px 1px saddlebrown;
 }

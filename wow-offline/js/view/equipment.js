@@ -44,6 +44,7 @@ function pack_bag() {
 
 function show_view_equipment() {
     view_equipment.show();
+    refresh_current_items();
 }
 
 function hide_view_equipment() {
@@ -143,7 +144,6 @@ function refresh_current_status_2() {
     role_html += "奥术穿透：" + role.pierce_arcane + "<br/>";
     role_html += "神圣穿透：" + role.pierce_holy + "<br/>";
     role_html += "暗影穿透：" + role.pierce_shadow + "<br/>";
-    role_html += "<br/>";
     $("#current_status").html(role_html);
 }
 
@@ -179,6 +179,7 @@ function show_equipment_info(equipment, x, y) {
     }
     can_not = current_character.lvl >= equipment.e_lvl ? "" : " style='color:red'";
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
+    info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
     $("body").append(info);
     if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {
         info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
@@ -277,7 +278,7 @@ function refresh_current_items() {
         }
         view_current_items.append(cell);
     }
-    $("#current_money").html(get_money_html());
+    $("#current_money").html(get_money_html(current_character.money, 20));
 }
 
 /**
