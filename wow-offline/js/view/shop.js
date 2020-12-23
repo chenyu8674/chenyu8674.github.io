@@ -275,7 +275,7 @@ function get_money_html(money, text_size) {
     if (silver > 0) {
         html += silver + "<span style='font-size: " + font_size + "px' class='money_silver'>●</span>";
     }
-    if (copper > 0) {
+    if (copper > 0 || (gold === 0 && silver === 0)) {
         html += copper + "<span style='font-size: " + font_size + "px' class='money_copper'>●</span>";
     }
     return html;
