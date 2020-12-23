@@ -106,3 +106,24 @@ function get_multiple_by_rare(rare) {
             return 2;
     }
 }
+
+/**
+ * 阶级名称
+ * @param rare
+ */
+function get_type_name_by_rare(rare) {
+    switch (rare) {
+        case 1:
+            return "劣质";
+        case 2:
+            return "普通";
+        case 3:
+            return "优秀";
+        case 4:
+            return "精良";
+        case 5:
+            return "史诗";
+        case 6:
+            return "传说";
+    }
+}

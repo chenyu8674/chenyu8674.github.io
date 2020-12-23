@@ -12,6 +12,22 @@ $(document).ready(function () {
         refresh_shop_items();
         save_data();
     });
+    let shop_clear_bag = $("#shop_clear_bag");
+    shop_clear_bag.click(function () {
+        let items = current_character.items;
+        for (let i = 0; i < MAX_ITEMS; i++) {
+            if (items[i] != null && items[i].rare < 4) {
+                sell_equipment(i, true);
+            }
+        }
+        refresh_shop_items();
+        save_data();
+    });
+    shop_clear_bag.hover(function () {
+        show_shop_info("卖掉所有精良以下的装备", shop_clear_bag[0].offsetWidth + shop_clear_bag.offset().left, shop_clear_bag[0].offsetHeight + shop_clear_bag.offset().top);
+    }, function () {
+        hide_shop_info();
+    });
 });
 
 function show_view_shop() {
@@ -154,7 +170,7 @@ function create_shop_view() {
         shop_price.html(get_money_html(price, 20));
         shop_item.append(shop_price);
         shop_item.hover(function () {
-            show_shop_info(type, cell[0].offsetWidth + cell.offset().left, cell[0].offsetHeight + cell.offset().top);
+            show_shop_info("获得一件随机" + type, cell[0].offsetWidth + cell.offset().left, cell[0].offsetHeight + cell.offset().top);
         }, function () {
             hide_shop_info();
         });
@@ -172,8 +188,6 @@ function create_shop_view() {
  * @param price
  */
 function buy_equipment(pos, price) {
-    console.log(price)
-    console.log(current_character.money)
     if (current_character.money < price) {
         return;
     }
@@ -196,7 +210,7 @@ function buy_equipment(pos, price) {
 /**
  * 显示商店介绍
  */
-function show_shop_info(type, x, y) {
+function show_shop_info(string, x, y) {
     $(".info_window").remove();
     let info = $("<div></div>");
     info.attr('id', 'equipment_info');
@@ -204,7 +218,7 @@ function show_shop_info(type, x, y) {
     info.css("position", "fixed");
     info.css("left", x + "px");
     info.css("top", y + "px");
-    info.append("<p>获得一件随机" + type + "</p>");
+    info.append("<p>" + string + "</p>");
     $("body").append(info);
 }
 
@@ -252,15 +266,18 @@ function refresh_shop_items() {
 /**
  * 卖掉物品
  * @param index 背包位置
+ * @param not_save 不进行存储
  */
-function sell_equipment(index) {
+function sell_equipment(index, not_save) {
     hide_equipment_info();
     let items = current_character.items;
     let item = items[index];
     current_character.money += get_equipment_price(item);
     items[index] = null;
     refresh_shop_items();
-    save_data();
+    if (!not_save) {
+        save_data();
+    }
 }
 
 function get_money_html(money, text_size) {

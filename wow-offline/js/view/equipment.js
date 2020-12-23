@@ -163,7 +163,7 @@ function show_equipment_info(equipment, x, y) {
     info.append("<p style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</p>");
     let can_equip = check_can_equip(equipment);
     let can_not = can_equip ? "" : " style='color:red'";
-    info.append("<p" + can_not + ">" + equipment.type_name + "</p>");
+    info.append("<p" + can_not + ">" + get_type_name_by_rare(equipment.rare) + "的 " + equipment.type_name + "</p>");
     for (let i = 0; i < equipment.effect.length; i++) {
         let effect = equipment.effect[i];
         effect = effect.split("+=");
