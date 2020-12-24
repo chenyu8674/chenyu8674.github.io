@@ -166,11 +166,16 @@ function create_shop_view() {
         shop_item.append(shop_name);
         let shop_price = $("<div></div>");
         shop_price.addClass("shop_price");
-        price = 10 * price * current_character.lvl;
+        price = Math.round(10 * price * Math.pow(current_character.lvl, 1.5));
         shop_price.html(get_money_html(price, 20));
         shop_item.append(shop_price);
         shop_item.hover(function () {
-            show_shop_info("获得一件随机" + type, cell[0].offsetWidth + cell.offset().left, cell[0].offsetHeight + cell.offset().top);
+            let html = "<p>" + "获得一件随机" + type + "</p>"
+                + "<p><span style='color: " + color_rare_3 + "'>" + get_type_name_by_rare(3) + "</span>：60%&emsp;   "
+                + "<span style='color: " + color_rare_5 + "'>" + get_type_name_by_rare(5) + "</span>：9%</p>"
+                + "<p><span style='color: " + color_rare_4 + "'>" + get_type_name_by_rare(4) + "</span>：30%&emsp;"
+                + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：1%</p>"
+            show_shop_info(html, cell[0].offsetWidth + cell.offset().left, cell[0].offsetHeight + cell.offset().top);
         }, function () {
             hide_shop_info();
         });
@@ -195,7 +200,17 @@ function buy_equipment(pos, price) {
         return;
     }
     current_character.money -= price;
-    let equipment = create_random_equipment(current_character.lvl, get_random_rare(), pos);
+    let rare = 100 * Math.random();
+    if (rare <= 60) {
+        rare = 3;// 60%
+    } else if (rare <= 90) {
+        rare = 4;// 30%
+    } else if (rare <= 99) {
+        rare = 5;// 9%
+    } else {
+        rare = 6;// 1%
+    }
+    let equipment = create_random_equipment(current_character.lvl, rare, pos);
     let items = current_character.items;
     for (let k = 0; k < MAX_ITEMS; k++) {
         if (items[k] == null) {
@@ -210,15 +225,16 @@ function buy_equipment(pos, price) {
 /**
  * 显示商店介绍
  */
-function show_shop_info(string, x, y) {
+function show_shop_info(html, x, y) {
     $(".info_window").remove();
     let info = $("<div></div>");
     info.attr('id', 'equipment_info');
     info.addClass("info_window");
     info.css("position", "fixed");
+    info.css("font-size", "15px");
     info.css("left", x + "px");
     info.css("top", y + "px");
-    info.append("<p>" + string + "</p>");
+    info.append(html);
     $("body").append(info);
 }
 
