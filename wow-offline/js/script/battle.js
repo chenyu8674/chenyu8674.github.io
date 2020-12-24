@@ -45,6 +45,13 @@ function start_battle(role_1, role_2, t_callback, b_callback) {
 }
 
 /**
+ * 终止战斗
+ */
+function stop_battle() {
+    clearTimeout(battle_timer);
+}
+
+/**
  * 回合循环
  * @returns {boolean} 战斗是否结束
  */

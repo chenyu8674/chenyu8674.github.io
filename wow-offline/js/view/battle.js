@@ -15,6 +15,7 @@ function show_view_battle() {
 }
 
 function hide_view_battle() {
+    stop_battle();
     view_battle.hide();
     // hide_view_equipment();
 }

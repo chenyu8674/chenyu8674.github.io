@@ -129,9 +129,10 @@
     top: 680px;
     left: 818px;
     width: 100px;
-    height: 30px;
+    height: 34px;
     border-radius: 5px;
     letter-spacing: 5px;
+    border-width: 3px;
 }
 
 #current_money {

@@ -171,7 +171,7 @@ function create_shop_view() {
         shop_item.append(shop_price);
         shop_item.hover(function () {
             let html = "<p>" + "获得一件随机" + type + "</p>"
-                + "<p><span style='color: " + color_rare_3 + "'>" + get_type_name_by_rare(3) + "</span>：60%&emsp;   "
+                + "<p><span style='color: " + color_rare_3 + "'>" + get_type_name_by_rare(3) + "</span>：60%&emsp;"
                 + "<span style='color: " + color_rare_5 + "'>" + get_type_name_by_rare(5) + "</span>：9%</p>"
                 + "<p><span style='color: " + color_rare_4 + "'>" + get_type_name_by_rare(4) + "</span>：30%&emsp;"
                 + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：1%</p>"
