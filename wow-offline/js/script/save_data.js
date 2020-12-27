@@ -95,29 +95,34 @@ function create_character(job, exp, name) {
     current_character.money = 0;
     if (exp === 0) {
         // 新手装备
-        current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shirt"]));
+        current_character.equipments.push(create_target_equipment(new_equipment()["newbee_shirt"]));
         switch (job) {
             case 11:
             case 23:
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_two_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_two_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
                 break;
             case 12:
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_str"]));
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
                 break;
             case 13:
             case 22:
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_str"]));
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shield_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_shield_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
                 break;
             case 21:
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_one_hand_sword_int"]));
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_shield_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_int"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_shield_str"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
                 break;
             case 31:
             case 32:
             case 33:
-                current_character.equipments.push(create_target_equipment(dictionary_equipment["newbee_bow"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_bow"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_chain"]));
                 break;
         }
     }

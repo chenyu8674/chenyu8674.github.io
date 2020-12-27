@@ -58,7 +58,6 @@ function new_equipment() {
 
     equipment["newbee_one_hand_sword_str"] = {
         name: "训练单手剑",
-        type_name: "单手剑",
         icon: "inv_sword_04",
         rare: 2,
         pos: 15,
@@ -71,7 +70,6 @@ function new_equipment() {
 
     equipment["newbee_one_hand_sword_int"] = {
         name: "训练单手剑",
-        type_name: "单手剑",
         icon: "inv_sword_05",
         rare: 2,
         pos: 15,
@@ -84,7 +82,6 @@ function new_equipment() {
 
     equipment["newbee_shield_str"] = {
         name: "训练盾牌",
-        type_name: "盾牌",
         icon: "inv_shield_03",
         rare: 2,
         pos: 16,
@@ -97,7 +94,6 @@ function new_equipment() {
 
     equipment["newbee_bow"] = {
         name: "训练之弓",
-        type_name: "弓",
         icon: "inv_weapon_bow_02",
         rare: 2,
         pos: 15,
@@ -106,6 +102,54 @@ function new_equipment() {
         e_lvl: 1,
         effect: [],
         affix: [2, 15131]
+    };
+
+    equipment["newbee_chest_cloth"] = {
+        name: "训练罩袍",
+        icon: "inv_chest_cloth_21",
+        rare: 2,
+        pos: 4,
+        type: 1,
+        c_lvl: 1,
+        e_lvl: 1,
+        effect: [],
+        affix: [1, 4101]
+    };
+
+    equipment["newbee_chest_leather"] = {
+        name: "训练皮衣",
+        icon: "inv_chest_leather_01",
+        rare: 2,
+        pos: 4,
+        type: 2,
+        c_lvl: 1,
+        e_lvl: 1,
+        effect: [],
+        affix: [1, 4102]
+    };
+
+    equipment["newbee_chest_chain"] = {
+        name: "训练链甲",
+        icon: "inv_chest_chain_16",
+        rare: 2,
+        pos: 4,
+        type: 3,
+        c_lvl: 1,
+        e_lvl: 1,
+        effect: [],
+        affix: [1, 4103]
+    };
+
+    equipment["newbee_chest_plate"] = {
+        name: "训练胸铠",
+        icon: "inv_chest_plate01",
+        rare: 2,
+        pos: 4,
+        type: 4,
+        c_lvl: 1,
+        e_lvl: 1,
+        effect: [],
+        affix: [1, 4104]
     };
 
     equipment["test_two_hand_sword_str"] = {
