@@ -10,9 +10,7 @@ function new_player_skill() {
     skill.warrior_1_1 = function () {
         let skill = {};
         skill.id = 111;// Id
-        skill.name = "致死打击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
+        skill.name = "致死打击";// 名称 10低 20中 30高 50特殊 99强制
         skill.X = 100;
         skill.icon = "ability_warrior_savageblow";
         skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
@@ -38,7 +36,7 @@ function new_player_skill() {
         skill.id = 112;// Id
         skill.name = "压制";// 名称
         skill.cooldown = 3;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 30;// 优先级
         skill.X = 120;
         skill.Y = 25;
         skill.icon = "ability_meleedamage";
@@ -60,7 +58,6 @@ function new_player_skill() {
         };
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             battle_log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
             return skill_cast_result(damage_obj, [], []);
@@ -73,8 +70,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 121;// Id
         skill.name = "嗜血";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
         skill.X = 100;
         skill.Y = 15;
         skill.icon = "spell_nature_bloodlust";
@@ -96,8 +91,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 122;// Id
         skill.name = "斩杀";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 99;// 优先级
         skill.X = 35;
         skill.Y = 150;
         skill.Z = 50;
@@ -120,8 +114,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 131;// Id
         skill.name = "破甲";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 20;// 优先级
         skill.X = 100;
         skill.icon = "ability_warrior_sunder";
         skill.detail = "击碎目标的护甲，对其造成" + skill.X + "%攻击强度的物理伤害，并使目标的物理抗性-" + dictionary_debuff.warrior_3().X + "，持续" + dictionary_debuff.warrior_3().T + "回合。";
@@ -141,22 +133,20 @@ function new_player_skill() {
         skill.id = 132;// Id
         skill.name = "盾牌猛击";// 名称
         skill.cooldown = 5;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 30;// 优先级
         skill.X = 100;
         skill.Y = 150;
         skill.icon = "inv_shield_05";
         skill.detail = "持盾猛击目标，造成" + skill.X + "%攻击强度的物理伤害，并获得" + skill.Y + "%格挡值的伤害护盾。<br/>必须装备盾牌才可使用。";
         // 判断技能可用
-        skill.attempt = function (attacker, target) {
+        skill.attempt = function (attacker) {
             if (!has_equip_shield(attacker)) {
                 return false;
             }
-            let skill_state = get_skill_state(attacker.flag, skill.id);
-            return !(skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown);
+            return !skill_in_cd(attacker, skill);
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             let shield_value = Math.round(attacker.block_value * skill.Y / 100);
             let shield_obj = flat_skill_shield(attacker, target, skill.name, shield_value);
@@ -170,8 +160,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 211;// Id
         skill.name = "神圣震击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
         skill.X = 80;
         skill.Y = 50;
         skill.icon = "spell_holy_heal02";
@@ -190,13 +178,13 @@ function new_player_skill() {
         skill.id = 212;// Id
         skill.name = "圣疗术";// 名称
         skill.cooldown = Number.MAX_VALUE;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 99;// 优先级
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "spell_holy_layonhands";
         skill.detail = "使用神圣力量使自己脱离濒死状态，回复" + skill.Y + "%治疗强度的生命。<br/>生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
-        skill.attempt = function (attacker, target) {
+        skill.attempt = function (attacker) {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
@@ -204,7 +192,6 @@ function new_player_skill() {
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let heal_obj = normal_skill_heal(attacker, target, skill.name, skill.Y);
             return skill_cast_result([], [heal_obj], []);
         };
@@ -216,8 +203,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 221;// Id
         skill.name = "清算";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 20;// 优先级
         skill.X = 80;
         skill.Y = 100;
         skill.icon = "spell_holy_blessingofstrength";
@@ -240,12 +225,12 @@ function new_player_skill() {
         skill.id = 222;// Id
         skill.name = "圣盾术";// 名称
         skill.cooldown = Number.MAX_VALUE;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 99;// 优先级
         skill.X = 35;
         skill.icon = "spell_holy_divineintervention";
         skill.detail = "使用神圣力量使自己免疫所有伤害，持续" + dictionary_buff.paladin_2_2().T + "回合。<br/>生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
-        skill.attempt = function (attacker, target) {
+        skill.attempt = function (attacker) {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
@@ -257,8 +242,7 @@ function new_player_skill() {
             }
         }
         // 技能施放调用
-        skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
+        skill.cast = function (attacker) {
             attacker.taken_damage_percent -= dictionary_buff.paladin_2_2().X;// 当前回合免疫伤害
             attacker.buffs.push(new_buff().paladin_2_2());
             battle_log(attacker.name + " 施放了 " + skill.name);
@@ -273,8 +257,6 @@ function new_player_skill() {
         skill.id = 231;// Id
         skill.name = "命令圣印";// 名称
         skill.name_2 = "攻击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
         skill.X = 100;
         skill.Y = 40;
         skill.Z = 80;
@@ -298,7 +280,7 @@ function new_player_skill() {
         skill.id = 232;// Id
         skill.name = "愤怒之锤";// 名称
         skill.cooldown = Number.MAX_VALUE;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 99;// 优先级
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "spell_holy_sealofmight";
@@ -312,7 +294,6 @@ function new_player_skill() {
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_holy, 999);
             return skill_cast_result(damage_obj, [], []);
         };
@@ -324,8 +305,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 311;// Id
         skill.name = "多重射击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
         skill.X = 30;
         skill.Y = 2;
         skill.Z = 5;
@@ -354,19 +333,14 @@ function new_player_skill() {
         skill.name = "狂野怒火";// 名称
         skill.cooldown = 4;// 冷却
         skill.first_turn = 4;// 首次施放回合
-        skill.priority = 50;// 优先级
+        skill.priority = 30;// 优先级
         skill.X = 75;
         skill.Y = 2;
         skill.Z = 5;
         skill.icon = "ability_druid_ferociousbite";
         skill.detail = "使自己和宠物进入狂怒状态，根据当前损失的生命值，对目标造成" + skill.Y + "~" + skill.Z + "次" + skill.X + "%攻击强度的物理伤害。";
-        // 判断技能可用
-        skill.attempt = function (attacker, target) {
-            return !skill_in_cd(attacker, skill);
-        }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage_list = [];
             let damage_count;
             let hit_count = 0;
@@ -397,9 +371,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 321;// Id
         skill.name = "奥术射击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
-        skill.X = 100;
+        skill.X = 120;
         skill.icon = "ability_impalingbolt";
         skill.detail = "一次快速的射击，对目标造成" + skill.X + "%攻击强度的奥术伤害。";
         // 技能施放调用
@@ -414,20 +386,15 @@ function new_player_skill() {
         let skill = {};
         skill.id = 322;// Id
         skill.name = "瞄准射击";// 名称
-        skill.cooldown = 5;// 冷却
-        skill.first_turn = 5;// 首次施放回合
-        skill.priority = 50;// 优先级
-        skill.X = 200;
+        skill.cooldown = 4;// 冷却
+        skill.first_turn = 4;// 首次施放回合
+        skill.priority = 30;// 优先级
+        skill.X = 150;
         skill.Y = 200;
         skill.icon = "inv_spear_07";
         skill.detail = "精确瞄准后进行一次强力的射击，对目标造成" + skill.X + "%攻击强度的物理伤害，该伤害根据战斗回合数最多提高" + skill.Y + "%。";
-        // 判断技能可用
-        skill.attempt = function (attacker, target) {
-            return !skill_in_cd(attacker, skill);
-        }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage_percent = battle_turn / 5;
             if (damage_percent > skill.Y / 100) {
                 damage_percent = skill.Y / 100;
@@ -443,8 +410,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 331;// Id
         skill.name = "猛禽一击";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
         skill.X = 80;
         skill.Y = 100;
         skill.icon = "ability_meleedamage";
@@ -463,18 +428,13 @@ function new_player_skill() {
         skill.id = 332;// Id
         skill.name = "爆炸陷阱";// 名称
         skill.cooldown = 5;// 冷却
-        skill.priority = 50;// 优先级
+        skill.priority = 30;// 优先级
         skill.X = 80;
         skill.Y = 30;
         skill.icon = "spell_fire_selfdestruct";
-        skill.detail = "使目标落入火焰陷阱，造成" + skill.X + "%攻击强度的火焰伤害，并在之后的" + dictionary_dot.hunter_3().T + "回合里持续造成" + skill.Y * dictionary_dot.hunter_3().T + "%攻击强度的火焰伤害。";
-        // 判断技能可用
-        skill.attempt = function (attacker, target) {
-            return !skill_in_cd(attacker, skill);
-        }
+        skill.detail = "使目标落入火焰陷阱，造成" + skill.X + "%攻击强度的火焰伤害，并使目标每回合受到" + skill.Y + "%攻击强度的火焰伤害，持续" + dictionary_dot.hunter_3().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage_obj_x = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);
             if (damage_obj_x.is_hit) {
                 let damage_obj_y = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_fire, 999, -999, -999);
@@ -490,8 +450,6 @@ function new_player_skill() {
         let skill = {};
         skill.id = 921;// Id
         skill.name = "灼烧";// 名称
-        skill.cooldown = 1;// 冷却
-        skill.priority = 30;// 优先级
         skill.X = 80;
         skill.Y = 50;
         skill.icon = "spell_fire_soulburn";
@@ -518,19 +476,14 @@ function new_player_skill() {
         skill.name = "点燃";// 名称
         skill.cooldown = 4;// 冷却
         skill.first_turn = 4;// 首次释放回合
-        skill.priority = 50;// 优先级
+        skill.priority = 30;// 优先级
         skill.X = 100;
         skill.Y = 20;
         skill.Z = 10;
         skill.icon = "spell_fire_incinerate";
         skill.detail = "引爆所有余烬造成" + skill.X + "法术强度的火焰伤害，每层余烬会使总伤害提高" + skill.Y + "%，暴击率提高" + skill.Z + "%";
-        // 判断技能可用
-        skill.attempt = function (attacker, target) {
-            return !skill_in_cd(attacker, skill);
-        }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            regist_skill_state(skill_state(attacker.flag, skill.id, battle_turn));
             let damage_count = 0;
             // 计算余烬加成
             if (m_skill_states[attacker.flag] != null) {

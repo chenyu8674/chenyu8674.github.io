@@ -4,70 +4,41 @@
  * 生成怪物对象
  * @param name 名称
  * @param lvl 等级
- * @param type 类型 0-均衡型 1-力量型 2-敏捷型 3-耐力型 4-智力型 5-精神型 9-特殊型
+ * @param type 类型 0-均衡型 1-力量型 2-敏捷型 3-耐力型 4-智力型 5-精神型
  * @param rare 怪物阶级 1-爪牙 2-怪物 3-稀有 4-精英 5-首领 6-团队首领
  * @param multiple
+ * @param effect
  * @return {string[]}
  */
-function get_new_monster(name, lvl, type, rare, multiple) {
+function get_new_monster(name, lvl, type, rare, multiple, effect) {
+    if (multiple == null) {
+        multiple = 1;
+    }
+    multiple *= 1.5;
+    if (effect == null) {
+        effect = [];
+    }
     let monster = new_role_base();
     monster.name = name;
     monster.lvl = lvl;
-    switch (type) {
-        case 0:
-            monster.job = dictionary_job.druid;
-            monster = calculate_base_property(monster);
-            monster.str += lvl * 0.2;
-            monster.agi += lvl * 0.2;
-            monster.sta += lvl * 0.2;
-            monster.int += lvl * 0.2;
-            monster.spr += lvl * 0.2;
-            break;
-        case 1:
-            monster.job = dictionary_job.warrior;
-            monster = calculate_base_property(monster);
-            monster.str += lvl * 1;
-            break;
-        case 2:
-            monster.job = dictionary_job.rogue;
-            monster = calculate_base_property(monster);
-            monster.agi += lvl * 1;
-            break;
-        case 3:
-            monster.job = dictionary_job.warrior;
-            monster = calculate_base_property(monster);
-            monster.sta += lvl * 1;
-            break;
-        case 4:
-            monster.job = dictionary_job.mage;
-            monster = calculate_base_property(monster);
-            monster.int += lvl * 1;
-            break;
-        case 5:
-            monster.job = dictionary_job.priest;
-            monster = calculate_base_property(monster);
-            monster.spr += lvl * 1;
-            break;
-        case 9:
-            monster.job = dictionary_job.druid;
-            monster = calculate_base_property(monster);
-            monster.str += lvl * 2;
-            monster.agi += lvl * 2;
-            monster.sta += lvl * 2;
-            monster.int += lvl * 2;
-            monster.spr += lvl * 2;
-            break;
-    }
-    monster.str *= get_multiple_by_rare(rare);
-    monster.agi *= get_multiple_by_rare(rare);
-    monster.sta *= get_multiple_by_rare(rare);
-    monster.int *= get_multiple_by_rare(rare);
-    monster.spr *= get_multiple_by_rare(rare);
-    monster.str = Math.ceil(monster.str);
-    monster.agi = Math.ceil(monster.agi);
-    monster.sta = Math.ceil(monster.sta);
-    monster.int = Math.ceil(monster.int);
-    monster.spr = Math.ceil(monster.spr);
+    monster.job = type * 10;
+    monster = calculate_base_property(monster);
+    let equipment = {};
+    equipment.effect = effect;
+    monster.equipments = [equipment];
+    let buff = {};
+    buff.T = -1;
+    buff.effect = [
+        "armor_attack+=" + Math.ceil(lvl * 20 * get_multiple_by_rare(rare) * multiple),
+        "armor_magic+=" + Math.ceil(lvl * 20 * get_multiple_by_rare(rare) * multiple),
+        "health_percent+=20"
+    ];
+    monster.buffs = [buff];
+    monster.str = Math.ceil(monster.str * get_multiple_by_rare(rare) * multiple);
+    monster.agi = Math.ceil(monster.agi * get_multiple_by_rare(rare) * multiple);
+    monster.sta = Math.ceil(monster.sta * get_multiple_by_rare(rare) * multiple);
+    monster.int = Math.ceil(monster.int * get_multiple_by_rare(rare) * multiple);
+    monster.spr = Math.ceil(monster.spr * get_multiple_by_rare(rare) * multiple);
     return monster;
 }
 

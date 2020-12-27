@@ -3,6 +3,7 @@
 let view_battle;
 let battle_map;
 let map_info;
+let kill_count;
 
 $(document).ready(function () {
     view_battle = $("#view_battle");
@@ -10,11 +11,13 @@ $(document).ready(function () {
 });
 
 function show_view_battle() {
+    kill_count = 0;
     view_battle.show();
     // show_view_equipment();
 }
 
 function hide_view_battle() {
+    clearTimeout(move_timer);
     stop_battle();
     view_battle.hide();
     // hide_view_equipment();
@@ -49,8 +52,14 @@ function show_battle_view(info) {
     $("#monster_portrait").hide();
 
     show_view_battle();
-    battle_map.css("background-image", "url(\"./img/map/" + map_info.map + ".jpg\")");
-    // show_monster_area(map_info);
+    let map = map_info.map;
+    if (map == null || map.length === 0) {
+        map = map_info.name;
+    }
+    battle_map.css("background-image", "url(\"./img/map/" + map + ".jpg\")");
+    if (is_in_local_mode()) {
+        show_monster_area(map_info);
+    }
     show_player_point();
     refresh_monster();
     show_self_heal();
@@ -234,12 +243,13 @@ function get_monster_count_by_rare(rare) {
  * 判断刷新点是否过近
  */
 function has_nearly_monster(x, y) {
-    let min_distance = 10;
-    if (Math.abs(player_x - x) <= min_distance && Math.abs(player_y - y) <= min_distance) {
+    let min_distance_x = 6.18;
+    let min_distance_y = 9.26;
+    if (Math.abs(player_x - x) <= min_distance_x && Math.abs(player_y - y) <= min_distance_y) {
         return true;
     }
     for (let i = 0; i < map_monster_list.length; i++) {
-        if (Math.abs(map_monster_list[i].x - x) <= min_distance && Math.abs(map_monster_list[i].y - y) <= min_distance) {
+        if (Math.abs(map_monster_list[i].x - x) <= min_distance_x && Math.abs(map_monster_list[i].y - y) <= min_distance_y) {
             return true;
         }
     }
@@ -257,10 +267,10 @@ function add_monster() {
         lvl = map_info.max;
     }
     let monster_base_list;
-    if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
+    if (get_monster_count_by_rare(4) === 0) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
-    } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || Math.random() < RARE_PERCENT / 100)) {
+    } else if (kill_count > 0 && get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || Math.random() < RARE_PERCENT / 100)) {
         // 几率性刷新稀有怪（新角色100%）
         monster_base_list = map_info.rare;
     } else {
@@ -275,14 +285,14 @@ function add_monster() {
         monster_obj = dictionary_monster_base[random_monster_name];
     }
     // 生成怪物对象
-    let monster = get_new_monster(monster_obj.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple);
+    let monster = get_new_monster(random_monster_name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect);
     monster.species = monster_obj.species;
     monster.rare = monster_obj.rare;
     monster.lvl = lvl;
-    monster.buffs = [];
-    monster.debuffs = [];
-    monster.equipments = [];
     monster.skills = monster_obj.skill;
+    if (monster.skills == null || monster.skills.length === 0) {
+        monster.skills = [dictionary_monster_skill.physical_attack()];
+    }
     if (monster.rare === 4) {
         monster.x = monster_obj.x;
         monster.y = monster_obj.y;
@@ -304,7 +314,9 @@ function add_monster() {
  */
 function refresh_monster() {
     $(".monster_point").remove();
-    while (map_monster_list.length < 15) {
+    let try_count = 0;
+    while (try_count < 100 && map_monster_list.length < 15) {
+        try_count++;
         add_monster(map_info);
     }
     for (let i = 0; i < map_monster_list.length; i++) {
@@ -395,6 +407,7 @@ function on_battle_end(index) {
     refresh_current_status();
     $(".player_point").removeClass("on_battle");
     if (index === 1) {
+        kill_count++;
         let monster = map_monster_list[target_monster];
         if (monster.rare === 4) {
             // 击败精英怪时移位

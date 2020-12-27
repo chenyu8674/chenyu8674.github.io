@@ -10,15 +10,14 @@ function new_map() {
     map[0] = {
         id: 0,
         name: "艾尔文森林",
-        map: "elwynnforest",
         detail: "《闪金镇惊魂》",
         type: 1,
         x: 78,
         y: 63,
-        start_x:27,
-        end_x:85,
-        start_y:40,
-        end_y:90,
+        start_x: 27,
+        end_x: 85,
+        start_y: 40,
+        end_y: 90,
         min: 1,
         max: 10,
         monster: ["兔子", "鹿", "迪菲亚暴徒", "迪菲亚流浪巫师", "狗头人矿工", "狗头人地卜师", "鱼人潜伏者", "石皮野猪", "森林蜘蛛", "染病的幼狼", "森林灰狼"],
@@ -29,19 +28,24 @@ function new_map() {
     map[1] = {
         id: 1,
         name: "西部荒野",
-        map: "westfall",
         detail: "《暴风城的粮仓》",
         type: 1,
         x: 74,
         y: 62,
+        start_x: 29,
+        end_x: 65,
+        start_y: 15,
+        end_y: 82,
         min: 10,
-        max: 20
+        max: 20,
+        monster: ["生锈的麦田魔像", "看守傀儡", "收割傀儡", "小碎尸鸟", "碎尸鸟", "大碎尸鸟", "河爪豺狼人", "河爪斥候", "河爪秘法师", "迪菲亚走私者", "迪菲亚咒术师", "迪菲亚拳匪"],
+        rare: ["乌尔图斯", "利爪队长", "死神4000型"],
+        elite: ["克拉文·摩特维克"]
     }
 
     map[2] = {
         id: 2,
         name: "赤脊山",
-        map: "redridgemountains",
         detail: "《石后三兄弟》",
         type: 1,
         x: 83,
@@ -53,7 +57,6 @@ function new_map() {
     map[3] = {
         id: 0,
         name: "暮色森林",
-        map: "duskwood",
         detail: "《狼人传说》",
         type: 1,
         x: 78,
@@ -65,7 +68,7 @@ function new_map() {
     map[1001] = {
         id: 1001,
         name: "死亡矿井",
-        map: "deadmines1",
+        map: ["死亡矿井1", "死亡矿井2"],
         detail: "\"蠢货，我们的事业是正义的！\"",
         type: 5,
         x: 73,
@@ -77,7 +80,6 @@ function new_map() {
     map[10001] = {
         id: 10001,
         name: "祖尔格拉布",
-        map: "zulgurub",
         detail: "\"来吧，凡人！品尝噬灵者的愤怒吧！\"",
         type: 10,
         x: 80.2,
@@ -89,7 +91,6 @@ function new_map() {
     map[10002] = {
         id: 10002,
         name: "奥妮克希亚的巢穴",
-        map: "onyxiaslair",
         detail: "\"奥妮克希亚深深地吸了一口气……\"",
         type: 40,
         x: 25,
@@ -101,7 +102,6 @@ function new_map() {
     map[10003] = {
         id: 10003,
         name: "熔火之心",
-        map: "moltencore",
         detail: "\"让火焰净化一切！\"",
         type: 40,
         x: 80,

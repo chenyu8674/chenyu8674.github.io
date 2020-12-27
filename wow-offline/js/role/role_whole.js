@@ -48,7 +48,7 @@ function new_role_whole() {
 
     role_whole.hit_rate = 0;// 命中等级
     role_whole.hit_rate_percent = 100;// 命中等级百分比
-    role_whole.hit_chance_final = 5;// 最终命中率百分比
+    role_whole.hit_chance_final = 95;// 最终命中率百分比
 
     role_whole.dodge_rate = 0;// 闪避等级
     role_whole.dodge_rate_percent = 100;// 闪避等级百分比

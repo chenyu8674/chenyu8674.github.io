@@ -5,6 +5,15 @@ let current_tab = 1;
 let current_status_tab_1;
 let current_status_tab_2;
 
+function show_view_equipment() {
+    view_equipment.show();
+    refresh_current_items();
+}
+
+function hide_view_equipment() {
+    view_equipment.hide();
+}
+
 $(document).ready(function () {
     view_equipment = $("#view_equipment");
     view_current_items = $("#current_items");
@@ -38,17 +47,17 @@ function pack_bag() {
         if (b == null) {
             return -1;
         }
-        return a.pos * 100 + a.type - b.pos * 100 - b.type;
+        if (a.pos !== b.pos) {
+            return a.pos - b.pos;
+        }
+        if (a.type !== b.type) {
+            return a.type - b.type;
+        }
+        if (a.rare !== b.rare) {
+            return a.rare - b.rare;
+        }
+        return a.icon > b.icon ? 1 : -1;
     });
-}
-
-function show_view_equipment() {
-    view_equipment.show();
-    refresh_current_items();
-}
-
-function hide_view_equipment() {
-    view_equipment.hide();
 }
 
 function refresh_current_status() {
@@ -74,13 +83,14 @@ function refresh_current_status() {
 
 function refresh_current_status_exp() {
     let role_whole = role_battle_1;
-    let exp_percent = get_exp_percent(current_character.lvl, current_character.exp);
-    let exp = Math.round(exp_percent * LVL_EXP[current_character.lvl - 1]);
-    let exp_max = LVL_EXP[current_character.lvl - 1];
+    let lvl = current_character.lvl;
+    let exp_percent = get_exp_percent(lvl, current_character.exp);
+    let exp = Math.round(exp_percent * LVL_EXP[lvl - 1]);
+    let exp_max = LVL_EXP[lvl - 1];
     $("#current_status_area_1").html(
         "生命值：" + role_whole.current_health_value + "/" + role_whole.max_health_value + "<br/>" +
         "护盾值：" + role_whole.current_shield_value + "<br/>" +
-        "经验值：" + exp + "/" + exp_max + "<br/>"
+        "经验值：" + (lvl >= MAX_LVL ? LVL_EXP[MAX_LVL - 1] + "/" + LVL_EXP[MAX_LVL - 1] : exp + "/" + exp_max)
     );
 }
 
@@ -177,7 +187,7 @@ function show_equipment_info(equipment, x, y) {
         text = text.replace(" %", "% ");
         info.append("<p>" + text + "</p>");
     }
-    can_not = current_character.lvl >= equipment.e_lvl ? "" : " style='color:red'";
+    can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
     info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
     $("body").append(info);
@@ -244,6 +254,13 @@ function refresh_current_equipment() {
             e.preventDefault();
             take_off_equipment(equipment);
         });
+    }
+    let off_hand = $("#current_equipments_18");
+    if (has_equip_two_hand_weapon()) {
+        off_hand.css("background-image", $("#current_equipments_17").css("background-image"));
+        off_hand.addClass("gray");
+    } else {
+        off_hand.removeClass("gray");
     }
 }
 
@@ -358,7 +375,7 @@ function can_equip_two_weapons() {
 function equip_equipment(index) {
     let items = current_character.items;
     let item = items[index];
-    if (current_character.lvl < item.e_lvl) {
+    if (current_character.lvl < item.c_lvl) {
         return;// 等级不够
     }
     if (!check_can_equip(item)) {
@@ -369,7 +386,6 @@ function equip_equipment(index) {
         && get_item_empty_count() === 0) {
         return;// 双手武器替换主副手，背包无空格
     }
-    // TODO 双武器职业判定
     hide_equipment_info();
 
     let equipments = current_character.equipments;

@@ -32,16 +32,16 @@
     position: absolute;
     top: 518px;
     left: 21px;
-    font-size: 15px;
-    line-height: 25px;
+    font-size: 16px;
+    line-height: 35px;
 }
 
 #current_status_area_2 {
     position: absolute;
     top: 518px;
     left: 192px;
-    font-size: 15px;
-    line-height: 25px;
+    font-size: 16px;
+    line-height: 35px;
 }
 
 #current_status_tab_1 {

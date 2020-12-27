@@ -81,9 +81,12 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    // add_experience(MAX_EXP);
+    // if (current_character.exp === 0) {
+    //     add_experience(MAX_EXP);
+    // }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
+    // current_character.skills.push(dictionary_equipment_skill.fire_of_sulfuras());
     current_character.buffs = [dictionary_buff[job]];
     current_character.debuffs = [];
     current_character.dots = [];

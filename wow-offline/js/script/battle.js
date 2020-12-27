@@ -65,10 +65,14 @@ function turn_loop() {
     });
     // 技能按优先级排序
     role_base_1.skills.sort(function (a, b) {
-        return b.priority - a.priority;
+        let priority_a = a.priority != null ? a.priority : 20;
+        let priority_b = b.priority != null ? b.priority : 20;
+        return priority_b - priority_a;
     });
     role_base_2.skills.sort(function (a, b) {
-        return b.priority - a.priority;
+        let priority_a = a.priority != null ? a.priority : 20;
+        let priority_b = b.priority != null ? b.priority : 20;
+        return priority_b - priority_a;
     });
     battle_log("");
     battle_log("第 " + battle_turn + " 回合");
@@ -90,42 +94,45 @@ function turn_loop() {
         role_battle_2.current_shield_value = role_shield_2;
     }
     // 首回合输出双方战斗状态
-    // if (battle_turn === 1) {
-    //     if (in_test_mode) {
-    //         if (win_count_1 + win_count_2 === 0) {
-    //             console.log(role_battle_1);
-    //             console.log(role_battle_2);
-    //         }
-    //     } else {
-    //         console.log(role_battle_1);
-    //         console.log(role_battle_2);
-    //     }
-    // }
+    if (is_in_local_mode() && battle_turn === 1) {
+        if (in_test_mode) {
+            if (win_count_1 + win_count_2 === 0) {
+                console.log(role_battle_1);
+                console.log(role_battle_2);
+            }
+        } else {
+            console.log(role_battle_1);
+            console.log(role_battle_2);
+        }
+    }
     // 计算dot伤害
     refresh_dots(role_battle_1);
     refresh_dots(role_battle_2);
     // 判断敌我施放技能
     let skill_1, skill_2;
     for (let i = 0; i < role_battle_1.skills.length; i++) {
-        if (role_battle_1.skills[i].attempt == null ||
-            role_battle_1.skills[i].attempt(role_battle_1, role_battle_2)) {
-            skill_1 = role_battle_1.skills[i];
+        let skill = role_battle_1.skills[i];
+        if (skill.attempt != null) {
+            if (skill.attempt(role_battle_1, role_battle_2)) {
+                skill_1 = skill;
+                break;
+            }
+        } else if (!skill_in_cd(role_battle_1, skill)) {
+            skill_1 = skill;
             break;
         }
     }
     for (let i = 0; i < role_battle_2.skills.length; i++) {
-        if (role_battle_2.skills[i].attempt == null ||
-            role_battle_2.skills[i].attempt(role_battle_2, role_battle_1)) {
-            skill_2 = role_battle_2.skills[i];
+        let skill = role_battle_2.skills[i];
+        if (skill.attempt != null) {
+            if (skill.attempt(role_battle_2, role_battle_1)) {
+                skill_2 = skill;
+                break;
+            }
+        } else if (!skill_in_cd(role_battle_2, skill)) {
+            skill_2 = skill;
             break;
         }
-    }
-    // 未匹配到技能时，使用普通攻击
-    if (skill_1 == null) {
-        skill_1 = dictionary_monster_skill.physical_attack();
-    }
-    if (skill_2 == null) {
-        skill_2 = dictionary_monster_skill.physical_attack();
     }
     // 判断出手顺序
     let winner = 0;
@@ -206,6 +213,7 @@ function do_dot(role, dot) {
  * 执行攻击动作
  */
 function do_attack(attacker, skill, target) {
+    regist_skill_state(skill_state(attacker.flag, skill.id));
     // 技能施放
     let skill_cast_result = skill.cast(attacker, target);
     // 结算伤害

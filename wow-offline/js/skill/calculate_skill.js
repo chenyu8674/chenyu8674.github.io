@@ -13,14 +13,13 @@ function init_skill_states() {
  * 新建技能状态对象
  * @param flag 施放者标记
  * @param id 技能id
- * @param last_turn 上次施放回合
  * @return {{}}
  */
-function skill_state(flag, id, last_turn) {
+function skill_state(flag, id) {
     let skill_state = {};
     skill_state.flag = flag;
     skill_state.id = id;
-    skill_state.last_turn = last_turn;// 上次施放回合
+    skill_state.last_turn = battle_turn;
     return skill_state;
 }
 
@@ -63,8 +62,7 @@ function get_skill_state(flag, id) {
  * @return block_value 格挡数值
  * @return absorb_value 吸收数值
  */
-function normal_skill_attack(attacker, target, skill_name, damage_percent,
-                             attack_type, element_type, extra_hit, extra_critical, extra_block) {
+function normal_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block) {
     // 计算命中
     extra_hit = extra_hit == null ? 0 : extra_hit;
     let hit_chance = calculate_hit(attacker, target) + extra_hit / 100;
@@ -127,7 +125,8 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent,
             res = target.res_shadow - attacker.pierce_shadow;
             break;
     }
-    /* 基础伤害 */
+    res = res > MAX_RES ? MAX_RES : res;
+    // 基础伤害
     let damage_value;
     if (attack_type === type_attack) {
         damage_value = attacker.attack_power * dmg * damage_percent / 100 / 100;// 基础攻击伤害
@@ -325,7 +324,7 @@ function calculate_armor_magic(target) {
  * @return {number}
  */
 function calculate_original_hit(attacker) {
-    return base_hit_chance + attacker.hit_rate * hit_coefficient / (attacker.lvl + 10) + attacker.hit_chance_final;
+    return attacker.hit_rate * hit_coefficient / (attacker.lvl + 10) + attacker.hit_chance_final;
 }
 
 /**
@@ -417,20 +416,32 @@ function skill_in_cd(attacker, skill) {
         return true;// 未到首次施放回合
     }
     let skill_state = get_skill_state(attacker.flag, skill.id);
-    return (skill_state != null && battle_turn - skill_state.last_turn < skill.cooldown);
+    let cooldown = skill.cooldown != null ? skill.cooldown : 1;
+    return (skill_state != null && battle_turn - skill_state.last_turn < cooldown);
 }
 
 /**
  * 生成技能结果对象
  * @param damage_list 伤害对象列表
  * @param heal_list 治疗对象列表
- * @param shield_list
+ * @param shield_list 护盾对象列表
  * @return {{}}
  */
 function skill_cast_result(damage_list, heal_list, shield_list) {
-    if (typeof (damage_list.length) == "undefined" && heal_list.length === 0 && shield_list.length === 0) {
+    if (damage_list == null) {
+        damage_list = [];
+    } else if (typeof (damage_list.length) == "undefined") {
         damage_list = [damage_list];
+    }
+    if (heal_list == null) {
         heal_list = [];
+    } else if (typeof (heal_list.length) == "undefined") {
+        heal_list = [heal_list];
+    }
+    if (shield_list == null) {
+        shield_list = [];
+    } else if (typeof (shield_list.length) == "undefined") {
+        shield_list = [shield_list];
     }
     let skill_cast_result = {};
     skill_cast_result.damage_list = damage_list;

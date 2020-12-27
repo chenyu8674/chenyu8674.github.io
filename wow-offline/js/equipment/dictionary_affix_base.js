@@ -143,8 +143,8 @@ function new_affix() {
     affix[15133] = function (lvl, rare, multiple) {return ["attack_power+=" + (10 + get_effect_value(3, lvl, rare, multiple))]}
     affix[15233] = function (lvl, rare, multiple) {return ["attack_power+=" + (10 + get_effect_value(3, lvl, rare, multiple))]}
     // 盾牌
-    affix[16141] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(20, lvl, rare, multiple), "armor_magic+=" + get_effect_value(20, lvl, rare, multiple), "block_chance_final+=" + (19 + get_effect_value(0.3, lvl, rare, multiple)), "block_value+=" + (6 + get_effect_value(4, lvl, rare, multiple))]}
-    affix[16241] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(20, lvl, rare, multiple), "armor_magic+=" + get_effect_value(20, lvl, rare, multiple), "block_chance_final+=" + (19 + get_effect_value(0.3, lvl, rare, multiple)), "block_value+=" + (6 + get_effect_value(4, lvl, rare, multiple))]}
+    affix[16141] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(20, lvl, rare, multiple), "armor_magic+=" + get_effect_value(5, lvl, rare, multiple), "block_chance_final+=" + (19 + get_effect_value(0.2, lvl, rare, multiple)), "block_value+=" + (6 + get_effect_value(4, lvl, rare, multiple))]}
+    affix[16241] = function (lvl, rare, multiple) {return ["armor_attack+=" + get_effect_value(20, lvl, rare, multiple), "armor_magic+=" + get_effect_value(5, lvl, rare, multiple), "block_chance_final+=" + (19 + get_effect_value(0.2, lvl, rare, multiple)), "block_value+=" + (6 + get_effect_value(4, lvl, rare, multiple))]}
     // 副手
     affix[16142] = function (lvl, rare, multiple) {return ["magic_power+=" + get_effect_value(1, lvl, rare, multiple)]}
     affix[16242] = function (lvl, rare, multiple) {return ["magic_power+=" + get_effect_value(1, lvl, rare, multiple)]}

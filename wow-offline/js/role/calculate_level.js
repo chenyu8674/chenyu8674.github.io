@@ -7,7 +7,7 @@ $(document).ready(function () {
     /**
      * 经验表初始化
      */
-    for (let i = 0; i < MAX_LVL - 1; i++) {
+    for (let i = 0; i < MAX_LVL; i++) {
         // 怪物基础经验
         let monster_exp = Math.round(Math.pow(1.1, i) * 10);
         if (monster_exp >= 5000) {
@@ -31,7 +31,9 @@ $(document).ready(function () {
         }
         LVL_EXP[i] = exp;
         MONSTER_EXP[i] = monster_exp;
-        MAX_EXP += exp;
+        if (i < MAX_LVL - 1) {
+            MAX_EXP += exp;
+        }
     }
 });
 
@@ -39,8 +41,8 @@ $(document).ready(function () {
  * 计算当前等级经验百分比
  */
 function get_exp_percent(lvl, exp) {
-    for (let i = 1; i < lvl; i++) {
-        exp -= LVL_EXP[i - 1];
+    for (let i = 0; i < lvl - 1; i++) {
+        exp -= LVL_EXP[i];
     }
     return exp / LVL_EXP[lvl - 1];
 }

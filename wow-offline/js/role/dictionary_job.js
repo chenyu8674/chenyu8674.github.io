@@ -27,6 +27,11 @@ function new_job() {
     job.base_property = [];// 初始属性
     job.upgrade_property = [];// 属性成长
 
+    // 职业：怪物
+    job.monster = 0;
+    job.base_property[job.monster] = [10, 10, 10, 10, 10];
+    job.upgrade_property[job.monster] = [2, 2, 4, 2, 2];
+
     // 职业：战士
     job.warrior = 10;
     job.warrior_1 = 11;

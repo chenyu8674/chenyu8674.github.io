@@ -43,3 +43,7 @@ function is_in_array(obj, array) {
     }
     return false;
 }
+
+function is_in_local_mode() {
+    return window.location.href.indexOf("C:/") > 0;
+}

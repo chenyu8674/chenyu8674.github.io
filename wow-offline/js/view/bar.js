@@ -26,8 +26,13 @@ function hide_all_view() {
 
 function init_view_icon_click() {
     $("#bar_map").click(function () {
-        hide_all_view();
-        show_view_map();
+        if (view_battle.is(":visible") && (view_equipment.is(":visible") || view_shop.is(":visible"))) {
+            hide_view_equipment();
+            hide_view_shop();
+        } else {
+            hide_all_view();
+            show_view_map();
+        }
     });
     $("#bar_equipment").click(function () {
         if (view_equipment.is(":visible")) {

@@ -73,6 +73,7 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
         } else {
             rare = 5;// 2%
         }
+        // rare = 6;
     }
     // 装备位置
     if (pos == null) {
@@ -661,6 +662,6 @@ function get_equipment_price(equipment) {
  * 添加测试装备
  */
 function push_equipment() {
-    let equipment = create_random_equipment(1);
+    let equipment = create_random_equipment(current_character.lvl);
     current_character.items.push(equipment);
 }
