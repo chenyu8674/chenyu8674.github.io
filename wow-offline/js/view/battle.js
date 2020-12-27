@@ -415,14 +415,19 @@ function on_battle_end(index) {
             player_y += 3;
             refresh_player_point();
         }
-        // 掉落判定
-        drop_random_equipment(monster);
         // 计算经验
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
         exp = Math.round(exp);
-        // exp *= 100;
-        battle_log(current_character.name + " 获得 " + exp + " 点经验");
+        // 获得金钱
+        let money = Math.ceil(exp * (0.2 + 0.3 * Math.random()));
+        battle_log(current_character.name + " 拾取了 " + get_money_html(money, 12));
+        current_character.money += money;
+        $("#current_money").html(get_money_html(current_character.money, 20));
+        $("#shop_money").html(get_money_html(current_character.money, 20));
+        // 掉落判定
+        drop_random_equipment(monster);
         // 升级判定
+        battle_log(current_character.name + " 获得 " + exp + " 点经验");
         let old_lvl = current_character.lvl;
         add_experience(exp);
         save_data();
@@ -451,24 +456,25 @@ function on_battle_end(index) {
  * 装备掉落计算
  */
 function drop_random_equipment(monster) {
+    let lvl = monster.lvl;
     let rare = monster.rare;
     let is_drop = false;
+    let multiple = monster.lvl <= 10 ? 1 + 0.3 * (11 - lvl) : 1;
     switch (rare) {
         case 1:
-            is_drop = 100 * Math.random() < 5;
+            is_drop = 100 * Math.random() < 5 * multiple;
             break;
         case 2:
-            is_drop = 100 * Math.random() < 10;
+            is_drop = 100 * Math.random() < 10 * multiple;
             break;
         case 3:
-            is_drop = true;
+            is_drop = 100 * Math.random() < 100 * multiple;
             break;
         case 4:
-            is_drop = 100 * Math.random() < 50;
+            is_drop = 100 * Math.random() < 50 * multiple;
             break;
     }
     if (is_drop) {
-        let lvl = monster.lvl;
         let equipment = create_random_equipment(lvl);
         let items = current_character.items;
         for (let i = 0; i < MAX_ITEMS; i++) {

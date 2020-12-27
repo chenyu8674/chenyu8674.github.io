@@ -14,7 +14,7 @@ function get_new_monster(name, lvl, type, rare, multiple, effect) {
     if (multiple == null) {
         multiple = 1;
     }
-    multiple *= 1.5;
+    multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
     if (effect == null) {
         effect = [];
     }
