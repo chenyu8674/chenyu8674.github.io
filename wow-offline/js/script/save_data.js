@@ -81,9 +81,9 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    if (is_in_local_mode() && current_character.exp === 0) {
-        add_experience(MAX_EXP);
-    }
+    // if (current_character.exp === 0) {
+    //     add_experience(MAX_EXP);
+    // }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
     // current_character.skills.push(dictionary_equipment_skill.fire_of_sulfuras());
@@ -129,11 +129,9 @@ function create_character(job, exp, name) {
                 break;
         }
     }
-    if (is_in_local_mode()) {
-        for (let i = 0; i < MAX_ITEMS - 1; i++) {
-            push_equipment();
-        }
-    }
+    // for (let i = 0; i < MAX_ITEMS - 1; i++) {
+    //     push_equipment();
+    // }
 
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");
