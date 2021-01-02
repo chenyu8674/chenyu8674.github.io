@@ -107,7 +107,7 @@ function show_heal_icon() {
  * 休息循环执行
  */
 function heal_loop() {
-    current_health_value += Math.round(role_battle_1.max_health_value / 100) * is_in_local_mode() ? 100 : 1;
+    current_health_value += Math.round(role_battle_1.max_health_value / 100) * (is_in_local_mode() ? 100 : 1);
     if (current_health_value >= role_battle_1.max_health_value) {
         current_health_value = role_battle_1.max_health_value;
         battle_log(current_character.name + " 恢复了全部生命");
@@ -374,7 +374,7 @@ function do_move() {
  * 玩家移动循环执行
  */
 function move_loop() {
-    let move_distance = 10 * is_in_local_mode() ? 100 : 1;
+    let move_distance = 10 * (is_in_local_mode() ? 100 : 1);
     if (move_distance > move_step) {
         move_distance = move_step;
     }
