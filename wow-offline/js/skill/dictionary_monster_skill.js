@@ -274,5 +274,42 @@ function new_monster_skill() {
         return skill;
     }
 
+    skill.rake = function () {
+        let skill = {};
+        skill.id = 11004;// Id
+        skill.name = "撕裂";// 名称
+        skill.X = 80;
+        skill.Y = 30;
+        skill.icon = "ability_druid_rake";
+        skill.detail = "撕裂敌人的肉体，造成" + skill.X + "%攻击强度的物理伤害，并使目标每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.hunter_3().T + "回合。";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            let damage_obj_x = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            if (damage_obj_x.is_hit) {
+                let damage_obj_y = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_physical, 999, -999, -999);
+                target.dots.push(new_dot().rake(damage_obj_y.damage_value));
+            }
+            return skill_cast_result(damage_obj_x, [], []);
+        };
+        return skill;
+    }
+
+    skill.bash = function () {
+        let skill = {};
+        skill.id = 11005;// Id
+        skill.name = "猛击";// 名称
+        skill.cooldown = 4;// 冷却
+        skill.priority = 30;// 优先级
+        skill.X = 200;
+        skill.icon = "ability_warrior_decisivestrike";
+        skill.detail = "猛击目标，造成" + skill.X + "%攻击强度的物理伤害。";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
     return skill;
 }

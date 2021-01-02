@@ -81,9 +81,9 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    // if (current_character.exp === 0) {
-    //     add_experience(MAX_EXP);
-    // }
+    if (is_in_local_mode() && current_character.exp === 0) {
+        add_experience(MAX_EXP);
+    }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
     // current_character.skills.push(dictionary_equipment_skill.fire_of_sulfuras());
@@ -93,42 +93,47 @@ function create_character(job, exp, name) {
     current_character.equipments = [];
     current_character.items = [];
     current_character.money = 0;
+    if (is_in_local_mode()) {
+        current_character.money = 99999999;
+    }
     if (exp === 0) {
         // 新手装备
-        current_character.equipments.push(create_target_equipment(new_equipment()["newbee_shirt"]));
+        current_character.equipments.push(create_target_equipment(new_equipment()["新手衬衫"]));
         switch (job) {
             case 11:
             case 23:
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_two_hand_sword_str"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练双手剑"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
                 break;
             case 12:
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_str"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_str"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手剑"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手剑"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
                 break;
             case 13:
             case 22:
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_str"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_shield_str"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手剑"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练盾牌"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
                 break;
             case 21:
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_one_hand_sword_int"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_shield_str"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_plate"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手锤"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练盾牌"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
                 break;
             case 31:
             case 32:
             case 33:
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_bow"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["newbee_chest_chain"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练之弓"]));
+                current_character.equipments.push(create_target_equipment(new_equipment()["训练链甲"]));
                 break;
         }
     }
-    // for (let i = 0; i < MAX_ITEMS - 1; i++) {
-    //     push_equipment();
-    // }
+    if (is_in_local_mode()) {
+        for (let i = 0; i < MAX_ITEMS - 1; i++) {
+            push_equipment();
+        }
+    }
 
     // 刷新状态栏
     role_battle_1 = get_battle_attribute(current_character, "battle_1");

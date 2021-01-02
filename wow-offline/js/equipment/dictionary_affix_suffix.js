@@ -11,16 +11,16 @@ $(document).ready(function () {
 function new_affix_suffix() {
     let affix = {};
 
-    affix["冲击"] = function (lvl, rare, multiple) {return ["attack_power+=" + get_effect_value(0.5, lvl, rare, multiple)]}
-    affix["能量"] = function (lvl, rare, multiple) {return ["magic_power+=" + get_effect_value(0.5, lvl, rare, multiple)]}
-    affix["复苏"] = function (lvl, rare, multiple) {return ["heal_power+=" + get_effect_value(0.6, lvl, rare, multiple)]}
+    affix["冲击"] = function (lvl, rare, multiple) {return ["attack_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
+    affix["能量"] = function (lvl, rare, multiple) {return ["magic_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
+    affix["复苏"] = function (lvl, rare, multiple) {return ["heal_power+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
-    affix["致命"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.5, lvl, rare, multiple)]}
-    affix["暴虐"] = function (lvl, rare, multiple) {return ["critical_damage+=" + get_effect_value(0.5, lvl, rare, multiple)]}
-    affix["精准"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.5, lvl, rare, multiple)]}
-    affix["灵巧"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.5, lvl, rare, multiple)]}
+    affix["致命"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
+    affix["暴虐"] = function (lvl, rare, multiple) {return ["critical_damage+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.1, lvl, rare, multiple))]}
+    affix["精准"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
+    affix["灵巧"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
-    affix["锋利"] = function (lvl, rare, multiple) {return ["damage_physical+=" + (get_effect_value(get_effect_value(2, 1, 1, multiple), 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
+    affix["锋利"] = function (lvl, rare, multiple) {return ["damage_physical+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
     affix["碾压"] = function (lvl, rare, multiple) {return ["pierce_physical+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
     affix["坚硬"] = function (lvl, rare, multiple) {return ["res_physical+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
     affix["烈日"] = function (lvl, rare, multiple) {return ["damage_fire+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}

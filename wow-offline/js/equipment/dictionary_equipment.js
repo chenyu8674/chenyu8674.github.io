@@ -30,258 +30,96 @@ function new_equipment() {
      * 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
      * 31-弓 32-弩 33-枪
      * 41-盾牌 42-副手
+     *
+     * c_lvl-可装备等级
+     * e_lvl-物品等级
      */
 
-    equipment["newbee_shirt"] = {
-        name: "新手衬衫",
-        icon: "inv_shirt_01",
-        rare: 2,
-        pos: 6,
-        type: 99,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 6199]
-    };
+    equipment["新手衬衫"] = {name: "新手衬衫", icon: "inv_shirt_01", rare: 2, affix: 6199};
+    equipment["训练双手剑"] = {name: "训练双手剑", icon: "inv_sword_06", rare: 2, affix: 15125};
+    equipment["训练单手剑"] = {name: "训练单手剑", icon: "inv_sword_04", rare: 2, affix: 15115};
+    equipment["训练单手锤"] = {name: "训练单手锤", icon: "inv_mace_06", rare: 2, affix: 15214};
+    equipment["训练盾牌"] = {name: "训练盾牌", icon: "inv_shield_03", rare: 2, affix: 16141};
+    equipment["训练之弓"] = {name: "训练之弓", icon: "inv_weapon_bow_02", rare: 2, affix: 15131};
+    equipment["训练罩袍"] = {name: "训练罩袍", icon: "inv_chest_cloth_21", rare: 2, affix: 4101};
+    equipment["训练皮衣"] = {name: "训练皮衣", icon: "inv_chest_leather_01", rare: 2, affix: 4102};
+    equipment["训练链甲"] = {name: "训练链甲", icon: "inv_chest_chain_16", rare: 2, affix: 4103};
+    equipment["训练胸铠"] = {name: "训练胸铠", icon: "inv_chest_plate01", rare: 2, affix: 4104};
 
-    equipment["newbee_two_hand_sword_str"] = {
-        name: "训练双手剑",
-        icon: "inv_sword_06",
-        rare: 2,
-        pos: 15,
-        type: 25,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [2, 15125]
-    };
-
-    equipment["newbee_one_hand_sword_str"] = {
-        name: "训练单手剑",
-        icon: "inv_sword_04",
-        rare: 2,
-        pos: 15,
-        type: 15,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 15115]
-    };
-
-    equipment["newbee_one_hand_sword_int"] = {
-        name: "训练单手剑",
-        icon: "inv_sword_05",
-        rare: 2,
-        pos: 15,
-        type: 15,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 15215]
-    };
-
-    equipment["newbee_shield_str"] = {
-        name: "训练盾牌",
-        icon: "inv_shield_03",
-        rare: 2,
-        pos: 16,
-        type: 41,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 16141]
-    };
-
-    equipment["newbee_bow"] = {
-        name: "训练之弓",
-        icon: "inv_weapon_bow_02",
-        rare: 2,
-        pos: 15,
-        type: 31,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [2, 15131]
-    };
-
-    equipment["newbee_chest_cloth"] = {
-        name: "训练罩袍",
-        icon: "inv_chest_cloth_21",
-        rare: 2,
-        pos: 4,
-        type: 1,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 4101]
-    };
-
-    equipment["newbee_chest_leather"] = {
-        name: "训练皮衣",
-        icon: "inv_chest_leather_01",
-        rare: 2,
-        pos: 4,
-        type: 2,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 4102]
-    };
-
-    equipment["newbee_chest_chain"] = {
-        name: "训练链甲",
-        icon: "inv_chest_chain_16",
-        rare: 2,
-        pos: 4,
-        type: 3,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 4103]
-    };
-
-    equipment["newbee_chest_plate"] = {
-        name: "训练胸铠",
-        icon: "inv_chest_plate01",
-        rare: 2,
-        pos: 4,
-        type: 4,
-        c_lvl: 1,
-        e_lvl: 1,
-        effect: [],
-        affix: [1, 4104]
-    };
-
-    equipment["test_two_hand_sword_str"] = {
-        name: "测试用双手剑",
-        type_name: "双手剑",
-        icon: "inv_sword_06",
-        rare: 3,
-        pos: 15,
-        type: 25,
-        effect: [],
-        affix: [2, 15125, "random", "random"]
-    };
-
-    equipment["test_two_hand_bow"] = {
-        name: "测试用长弓",
-        rare: 4,
-        pos: 15,
-        type: 31,
-        effect: [],
-        affix: [2, 15131, "random", "random"]
-    };
-
-    equipment["test_one_hand_sword_str"] = {
-        name: "测试用单手剑",
-        rare: 3,
-        pos: 15,
-        type: 15,
-        effect: [],
-        affix: [1, 15115, "random", "random"]
-    };
-
-    equipment["test_one_hand_sword_int"] = {
-        name: "测试用单手剑",
-        rare: 3,
-        pos: 15,
-        type: 15,
-        effect: [],
-        affix: [1, 15215, "random", "random"]
-    };
-
-    equipment["test_shield_str"] = {
-        name: "测试用盾牌",
-        rare: 3,
-        pos: 16,
-        type: 41,
-        effect: [
-            "block_chance_final+=30"
-        ],
-        affix: [1, 16141, "random", "random"]
-    };
-
-    equipment["test_shield_int"] = {
-        name: "测试用盾牌",
-        rare: 3,
-        pos: 16,
-        type: 41,
-        effect: [
-            "block_chance_final+=30"
-        ],
-        affix: [1, 16241, "random", "random"]
-    };
-
-    equipment["test_book"] = {
-        name: "测试用法典",
-        rare: 3,
-        pos: 16,
-        type: 42,
-        effect: [
-            "magic_power_percent+=5"
-        ],
-        affix: [1, 16242, "random", "random"]
-    };
-
-    equipment["test_armor"] = {
-        name: "测试用板甲",
-        rare: 3,
-        pos: 4,
-        type: 104,
-        effect: [
-            "str+=120",
-            "agi+=120",
-            "sta+=200",
-            "int+=120",
-            "spr+=120"
-        ],
-        affix: [1, 104]
-    };
-
-    equipment["test_chain"] = {
-        name: "测试用锁甲",
-        rare: 3,
-        pos: 4,
-        type: 103,
-        effect: [
-            "str+=120",
-            "agi+=120",
-            "sta+=200",
-            "int+=120",
-            "spr+=120"
-        ],
-        affix: [1, 103]
-    };
-
-    equipment["test_leather"] = {
-        name: "测试用皮甲",
-        rare: 3,
-        pos: 4,
-        type: 102,
-        effect: [
-            "str+=120",
-            "agi+=120",
-            "sta+=200",
-            "int+=120",
-            "spr+=120"
-        ],
-        affix: [1, 102]
-    };
-
-    equipment["test_cloth"] = {
-        name: "测试用布甲",
-        rare: 3,
-        pos: 4,
-        type: 101,
-        effect: [
-            "str+=120",
-            "agi+=120",
-            "sta+=200",
-            "int+=120",
-            "spr+=120"
-        ],
-        affix: [1, 101]
-    };
+    {
+        equipment["环刺护腕"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "环刺护腕", icon: "inv_bracer_07",
+            affix: 8104, effect: ["str+=1", "int+=1", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["咆哮之口长裤"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "咆哮之口长裤", icon: "inv_pants_06",
+            affix: 11101, effect: ["int+=2", "sta+=3", "hit_rate+=1", "critical_rate+=3"]
+        };
+        equipment["阿达罗格之牙"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "阿达罗格之牙", icon: "inv_weapon_shortblade_25",
+            affix: 15111, effect: ["agi+=1", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["焦灼的炽焰猎犬之靴"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "焦灼的炽焰猎犬之靴", icon: "inv_boots_05",
+            affix: 12102, effect: ["agi+=2", "int+=2", "sta+=2", "hit_rate+=3", "critical_rate+=1"]
+        };
+        equipment["骨炭护腰"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "骨炭护腰", icon: "inv_belt_16",
+            affix: 10103, effect: ["agi+=2", "int+=2", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["黑暗仪式斗篷"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "黑暗仪式斗篷", icon: "inv_misc_cape_18",
+            affix: 5101, effect: ["str+=1", "agi+=1", "int+=1", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["破碎图腾之握"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "破碎图腾之握", icon: "inv_chest_leather_08",
+            affix: 4102, effect: ["agi+=2", "int+=2", "sta+=3", "hit_rate+=3", "critical_rate+=1"]
+        };
+        equipment["黑色元素腕轮"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "黑色元素腕轮", icon: "inv_bracer_13",
+            affix: 8101, effect: ["int+=1", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["黑暗萨满卫衣"] = {
+            rare: 4, c_lvl: 7, e_lvl: 9, name: "黑暗萨满卫衣", icon: "inv_chest_leather_08",
+            affix: 4103, effect: ["agi+=2", "int+=2", "sta+=3", "hit_rate+=1", "critical_rate+=3"]
+        };
+        equipment["焦灼链甲"] = {
+            rare: 4, c_lvl: 7, e_lvl: 10, name: "焦灼链甲", icon: "inv_chest_chain",
+            affix: 4103, effect: ["str+=2", "int+=2", "sta+=3", "hit_rate+=3", "critical_rate+=1"]
+        };
+        equipment["角质护腕"] = {
+            rare: 4, c_lvl: 7, e_lvl: 10, name: "角质护腕", icon: "inv_bracer_05",
+            affix: 8102, effect: ["agi+=1", "int+=1", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["萤火法袍"] = {
+            rare: 4, c_lvl: 7, e_lvl: 10, name: "萤火法袍", icon: "inv_chest_cloth_24",
+            affix: 4101, effect: ["int+=2", "sta+=3", "hit_rate+=3", "critical_rate+=1"]
+        };
+        equipment["甲质腕轮"] = {
+            rare: 4, c_lvl: 7, e_lvl: 10, name: "甲质腕轮", icon: "inv_bracer_05",
+            affix: 8103, effect: ["agi+=1", "int+=1", "sta+=2", "critical_rate+=1"]
+        };
+        equipment["熬心之杖"] = {
+            rare: 4, c_lvl: 7, e_lvl: 11, name: "熬心之杖", icon: "inv_staff_13",
+            affix: 15222, effect: ["int+=9", "sta+=3", "hit_rate+=1", "critical_rate+=3"]
+        };
+        equipment["踏血锁靴"] = {
+            rare: 4, c_lvl: 7, e_lvl: 11, name: "踏血锁靴", icon: "inv_boots_01",
+            affix: 12104, effect: ["str+=2", "int+=2", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["血咒魔刃"] = {
+            rare: 4, c_lvl: 7, e_lvl: 11, name: "血咒魔刃", icon: "inv_weapon_shortblade_12",
+            affix: 15111, effect: ["str+=1", "agi+=1", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["无边怒火腰带"] = {
+            rare: 4, c_lvl: 7, e_lvl: 11, name: "无边怒火腰带", icon: "inv_belt_37a",
+            affix: 10102, effect: ["agi+=2", "int+=2", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+        equipment["戈多斯的碾压之手"] = {
+            rare: 4, c_lvl: 7, e_lvl: 11, name: "戈多斯的碾压之手", icon: "inv_gauntlets_03",
+            affix: 9103, effect: ["agi+=2", "int+=2", "sta+=2", "hit_rate+=1", "critical_rate+=1"]
+        };
+    }// 怒焰裂谷
 
     return equipment;
 }

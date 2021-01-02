@@ -158,52 +158,6 @@ function refresh_current_status_2() {
 }
 
 /**
- * 显示装备介绍
- */
-function show_equipment_info(equipment, x, y) {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.attr('id', 'equipment_info');
-    info.addClass("info_window");
-    info.css("position", "fixed");
-    info.css("left", x + "px");
-    info.css("top", y + "px");
-    let rare_color = eval("color_rare_" + equipment.rare);
-    info.append("<p style='font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</p>");
-    info.append("<p style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</p>");
-    let can_equip = check_can_equip(equipment);
-    let can_not = can_equip ? "" : " style='color:red'";
-    info.append("<p" + can_not + ">" + get_type_name_by_rare(equipment.rare) + "的 " + equipment.type_name + "</p>");
-    for (let i = 0; i < equipment.effect.length; i++) {
-        let effect = equipment.effect[i];
-        effect = effect.split("+=");
-        if (effect[1] === 0) {
-            continue;
-        }
-        let text = effect[1] + " " + dictionary_attribute_name[effect[0]];
-        if (effect[1] > 0) {
-            text = "+" + text;
-        }
-        text = text.replace(" %", "% ");
-        info.append("<p>" + text + "</p>");
-    }
-    can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
-    info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
-    info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
-    $("body").append(info);
-    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {
-        info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
-    }
-}
-
-/**
- * 隐藏装备介绍
- */
-function hide_equipment_info() {
-    $("#equipment_info").remove();
-}
-
-/**
  * 绘制装备栏
  */
 function refresh_current_equipment() {
@@ -247,7 +201,7 @@ function refresh_current_equipment() {
             let view = $(this);
             show_equipment_info(equipment, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
         }, function () {
-            hide_equipment_info();
+            hide_info();
         });
         // 右键点击事件，卸下装备
         cell.contextmenu(function (e) {
@@ -285,7 +239,7 @@ function refresh_current_items() {
                 let view = $(this);
                 show_equipment_info(item, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
             }, function () {
-                hide_equipment_info();
+                hide_info();
             });
             // 右键点击事件，穿上装备
             cell.contextmenu(function (e) {
@@ -320,6 +274,10 @@ function get_equipment_count_by_pos(pos) {
  * @return {boolean}
  */
 function has_equip_shield(role) {
+    if (role.name !== current_character.name) {
+        // 怪物
+        return true;
+    }
     let equipments = role.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
@@ -386,7 +344,7 @@ function equip_equipment(index) {
         && get_item_empty_count() === 0) {
         return;// 双手武器替换主副手，背包无空格
     }
-    hide_equipment_info();
+    hide_info();
 
     let equipments = current_character.equipments;
     let equipment_exchange_1 = null;// 将被替换的装备1
@@ -487,7 +445,7 @@ function take_off_equipment(equipment) {
     if (get_item_empty_count() === 0) {
         return;// 背包已满
     }
-    hide_equipment_info();
+    hide_info();
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
         if (equipments[j] === equipment) {

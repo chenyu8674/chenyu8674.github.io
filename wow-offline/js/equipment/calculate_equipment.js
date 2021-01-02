@@ -52,6 +52,9 @@ function get_effect_value(X, lvl, rare, multiple) {
  * 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
  * 31-弓 32-弩 33-枪
  * 41-盾牌 42-副手
+ *
+ * c_lvl-可装备等级
+ * e_lvl-物品等级
  */
 
 /**
@@ -117,11 +120,11 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
     if (type == null) {
         if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
             // 布皮锁板装备
-            if (lvl <= 10) {
+            if (lvl < 10) {
                 type = 1;
-            } else if (lvl <= 20) {
+            } else if (lvl < 20) {
                 type = Math.ceil(Math.random() * 2);
-            } else if (lvl <= 30) {
+            } else if (lvl < 30) {
                 type = Math.ceil(Math.random() * 3);
             } else {
                 type = Math.ceil(Math.random() * 4);
@@ -155,7 +158,6 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
     model.e_lvl = lvl;
     model.effect = [];
     model.affix = [multiple, pos * 1000 + inclination * 100 + type, "random", "random"];
-    // console.log(model);
     return create_equipment_by_model(model);
 }
 
@@ -164,18 +166,34 @@ function create_random_equipment(lvl, rare, pos, inclination, type) {
  */
 function create_target_equipment(target_equipment) {
     let model = {};
-    let attribute = get_attribute_by_pos(target_equipment.pos, target_equipment.type);
+    let affix = target_equipment.affix;
+    if (typeof affix === "number") {
+        affix = [0, affix];
+    }
+    if (target_equipment.pos == null || target_equipment.type == null) {
+        model.pos = Math.floor(affix[1]/ 1000);
+        model.type = affix[1] % 100;
+    } else {
+        model.pos = target_equipment.pos;
+        model.type = target_equipment.type;
+    }
+    if (target_equipment.c_lvl == null || target_equipment.e_lvl == null) {
+        model.c_lvl = 1;
+        model.e_lvl = 1;
+    } else {
+        model.c_lvl = target_equipment.c_lvl;
+        model.e_lvl = target_equipment.e_lvl;
+    }
+    let attribute = get_attribute_by_pos(model.pos, model.type);
+    if (affix[0] === 0) {
+        affix[0] = attribute[0];
+    }
     model.type_name = attribute[2];
     model.name = target_equipment.name;
     model.rare = target_equipment.rare;
-    model.pos = target_equipment.pos;
-    model.type = target_equipment.type;
-    model.c_lvl = target_equipment.c_lvl;
-    model.e_lvl = target_equipment.e_lvl;
     model.effect = target_equipment.effect;
     model.icon = target_equipment.icon;
-    model.affix = target_equipment.affix;
-    // console.log(model);
+    model.affix = affix;
     return create_equipment_by_model(model);
 }
 
@@ -366,67 +384,67 @@ function get_attribute_by_pos(pos, type, icon) {
         case 15:
             switch (type) {
                 case 11:
-                    multiple = 1;
+                    multiple = 0.6;
                     type_name = "匕首";
                     name = random_in_array(["匕首", "短刀", "长匕"]);
                     break;
                 case 12:
-                    multiple = 1;
+                    multiple = 0.6;
                     type_name = "拳套";
                     name = random_in_array(["拳套", "指虎", "拳刃"]);
                     break;
                 case 13:
-                    multiple = 1;
+                    multiple = 0.6;
                     name = random_in_array(["之斧", "轻斧", "短斧"]);
                     type_name = "单手斧";
                     break;
                 case 14:
-                    multiple = 1;
+                    multiple = 0.6;
                     name = random_in_array(["之锤", "轻锤", "短锤"]);
                     type_name = "单手锤";
                     break;
                 case 15:
-                    multiple = 1;
+                    multiple = 0.6;
                     name = random_in_array(["之剑", "轻剑", "刺剑"]);
                     type_name = "单手剑";
                     break;
                 case 21:
-                    multiple = 2;
+                    multiple = 1.2;
                     name = random_in_array(["之矛", "之戟", "长矛"]);
                     type_name = "长柄武器";
                     break;
                 case 22:
-                    multiple = 2;
+                    multiple = 1.2;
                     type_name = "法杖";
                     name = random_in_array(["之杖", "法杖", "长杖"]);
                     break;
                 case 23:
-                    multiple = 2;
+                    multiple = 1.2;
                     name = random_in_array(["之斧", "巨斧", "重斧"]);
                     type_name = "双手斧";
                     break;
                 case 24:
-                    multiple = 2;
+                    multiple = 1.2;
                     name = random_in_array(["之锤", "巨锤", "重锤"]);
                     type_name = "双手锤";
                     break;
                 case 25:
-                    multiple = 2;
+                    multiple = 1.2;
                     name = random_in_array(["之剑", "巨剑", "重剑"]);
                     type_name = "双手剑";
                     break;
                 case 31:
-                    multiple = 2;
+                    multiple = 1.2;
                     name = random_in_array(["之弓", "强弓", "长弓"]);
                     type_name = "远程武器";
                     break;
                 case 32:
-                    multiple = 2;
-                    name = random_in_array(["之弩", "强弩", "手弩"]);
+                    multiple = 1.2;
+                    name = random_in_array(["之弩", "强弩", "巨弩"]);
                     type_name = "远程武器";
                     break;
                 case 33:
-                    multiple = 2;
+                    multiple = 1.2;
                     name = random_in_array(["火枪", "步枪", "火炮"]);
                     type_name = "远程武器";
                     break;
@@ -519,14 +537,15 @@ function create_equipment_by_model(model) {
                 }
             }
             let effect_list = func(equipment.e_lvl, equipment.rare, multiple);
-            for (let j = 0; j < effect_list.length; j++) {
-                equipment.effect.push(effect_list[j]);
+            if (typeof index == "number") {
+                equipment.effect = effect_list.concat(equipment.effect);
+            } else {
+                equipment.effect = equipment.effect.concat(effect_list);
             }
         }
     }
     equipment_name.push(model.name);
     equipment.name = equipment_name.join(" ");
-    // console.log(equipment);
     return equipment;
 }
 

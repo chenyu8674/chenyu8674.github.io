@@ -1,7 +1,7 @@
 /** 战斗控制 **/
 
 let battle_timer = -1;// 回合标识
-let turn_time = 1000;// 回合时间
+let turn_time = is_in_local_mode() ? 10 : 1000;// 回合时间
 
 let role_base_1;// 我方原始状态
 let role_base_2;// 敌方原始状态
@@ -159,6 +159,7 @@ function turn_loop() {
         clear_buffs_and_debuffs_and_dots(role_battle_1);
         clear_buffs_and_debuffs_and_dots(role_battle_2);
         if (battle_callback != null) {
+
             battle_callback(winner);
         }
         return true;

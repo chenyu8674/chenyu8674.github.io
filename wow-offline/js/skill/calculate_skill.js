@@ -324,7 +324,7 @@ function calculate_armor_magic(target) {
  * @return {number}
  */
 function calculate_original_hit(attacker) {
-    return attacker.hit_rate * hit_coefficient / (attacker.lvl + 10) + attacker.hit_chance_final;
+    return attacker.hit_rate * hit_coefficient / (attacker.lvl + 5) + attacker.hit_chance_final;
 }
 
 /**
@@ -333,7 +333,7 @@ function calculate_original_hit(attacker) {
  * @return {number}
  */
 function calculate_original_dodge(target) {
-    return target.dodge_rate * dodge_coefficient / (target.lvl + 10) + target.dodge_chance_final;
+    return target.dodge_rate * dodge_coefficient / (target.lvl + 5) + target.dodge_chance_final;
 }
 
 /**
@@ -358,7 +358,7 @@ function calculate_hit(attacker, target) {
  * @return {number}
  */
 function calculate_original_critical(attacker) {
-    return attacker.critical_rate * critical_coefficient / (attacker.lvl + 10) + attacker.critical_chance_final;
+    return attacker.critical_rate * critical_coefficient / (attacker.lvl + 5) + attacker.critical_chance_final;
 }
 
 /**
@@ -384,7 +384,7 @@ function calculate_original_block(target) {
     if (!has_equip_shield(target)) {
         return 0;
     } else {
-        return target.block_rate * block_coefficient / (target.lvl + 10) + target.block_chance_final;
+        return target.block_rate * block_coefficient / (target.lvl + 5) + target.block_chance_final;
     }
 }
 

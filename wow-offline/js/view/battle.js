@@ -13,14 +13,15 @@ $(document).ready(function () {
 function show_view_battle() {
     kill_count = 0;
     view_battle.show();
-    // show_view_equipment();
+    refresh_battle_status(false);
 }
 
 function hide_view_battle() {
     clearTimeout(move_timer);
     stop_battle();
+    $("#battle_log").html("");
+    role_battle_2 = null;
     view_battle.hide();
-    // hide_view_equipment();
 }
 
 let player_x;
@@ -34,6 +35,7 @@ let target_monster;
 let move_step = 0;
 let move_timer = 0;
 let on_battle = false;
+let self_heal_timer = 0;
 
 /**
  * 绘制地图
@@ -42,8 +44,6 @@ function show_battle_view(info) {
     // 初始化
     map_info = info;
     map_monster_list = [];
-    player_x = (map_info.start_x + map_info.end_x) / 2;
-    player_y = (map_info.start_y + map_info.end_y) / 2;
     target_x = 0;
     target_y = 0;
     move_step = 0;
@@ -55,23 +55,34 @@ function show_battle_view(info) {
     let map = map_info.map;
     if (map == null || map.length === 0) {
         map = map_info.name;
+    } else {
+        map = map[0];
     }
     battle_map.css("background-image", "url(\"./img/map/" + map + ".jpg\")");
-    if (is_in_local_mode()) {
-        show_monster_area(map_info);
+    $("#self_heal").show();
+    show_heal_icon();
+    if (map_info.type === 1) {
+        if (is_in_local_mode()) {
+            show_monster_area(map_info);
+        }
+        player_x = (map_info.start_x + map_info.end_x) / 2;
+        player_y = (map_info.start_y + map_info.end_y) / 2;
+        refresh_random_monster();
+    } else {
+        $("#monster_area").hide();
+        player_x = map_info.start_x;
+        player_y = map_info.start_y;
+        $("#attack_next").show();
+        refresh_raid_monster();
+        show_attack_icon();
     }
     show_player_point();
-    refresh_monster();
-    show_self_heal();
-    show_view_bar();
 }
-
-let self_heal_timer = 0;
 
 /**
  * 生成绷带图标
  */
-function show_self_heal() {
+function show_heal_icon() {
     let self_heal = $("#self_heal");
     self_heal.unbind("click");
     self_heal.click(function (e) {
@@ -80,51 +91,29 @@ function show_self_heal() {
             battle_log("");
             battle_log(current_character.name + " 开始食用补给");
             clearTimeout(self_heal_timer);
-            self_heal_timer = setTimeout(self_heal_loop, 100);
+            self_heal_timer = setTimeout(heal_loop, 100);
         }
         e.stopPropagation();
         return false;
     });
     self_heal.hover(function () {
-        show_self_heal_info();
+        show_heal_info();
     }, function () {
-        hide_self_heal_info();
+        hide_info();
     });
 }
 
 /**
- * 显示休息说明
+ * 休息循环执行
  */
-function show_self_heal_info() {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.attr('id', 'self_heal_info');
-    info.addClass("info_window");
-    info.css("position", "absolute");
-    info.css("left", "57px");
-    info.css("top", "610px");
-    info.append("<p style='color:goldenrod'>食用补给</p>");
-    info.append("<p>每秒回复10%最大生命值</p>");
-    info.append("<p>进食时必须保持坐姿</p>");
-    info.append("<p style='color:goldenrod'>大吉大利，今晚吃鸡</p>");
-    battle_map.append(info);
-}
-
-/**
- * 刷新休息说明
- */
-function hide_self_heal_info() {
-    $("#self_heal_info").remove();
-}
-
-function self_heal_loop() {
-    current_health_value += Math.round(role_battle_1.max_health_value / 100);
+function heal_loop() {
+    current_health_value += Math.round(role_battle_1.max_health_value / 100) * is_in_local_mode() ? 100 : 1;
     if (current_health_value >= role_battle_1.max_health_value) {
         current_health_value = role_battle_1.max_health_value;
         battle_log(current_character.name + " 恢复了全部生命");
     } else {
         clearTimeout(self_heal_timer);
-        self_heal_timer = setTimeout(self_heal_loop, 100);
+        self_heal_timer = setTimeout(heal_loop, 100);
     }
     role_battle_1.current_health_value = current_health_value;
     refresh_battle_status(true);
@@ -132,17 +121,30 @@ function self_heal_loop() {
 }
 
 /**
+ * 绘制怪物刷新区域（调试用）
+ */
+function show_monster_area(map_info) {
+    $("#monster_area").remove();
+    let monster_area = $("<div></div>");
+    monster_area.attr("id", "monster_area");
+    monster_area.css("left", map_info.start_x + "%");
+    monster_area.css("top", map_info.start_y + "%");
+    monster_area.css("width", map_info.end_x - map_info.start_x + "%");
+    monster_area.css("height", map_info.end_y - map_info.start_y + "%");
+    battle_map.append(monster_area);
+}
+
+/**
  * 生成玩家图标
  */
 function show_player_point() {
     $(".player_point").remove();
-    let player_point = $("<img/>");
+    let player_point = $("<img alt='' src='./img/job/" + Math.round(current_character.job / 10) * 10 + ".png'/>");
     player_point.addClass("player_point");
-    player_point.attr("src", "./img/job/" + Math.round(current_character.job / 10) * 10 + ".png");
     player_point.hover(function () {
         show_player_info();
     }, function () {
-        hide_player_info();
+        hide_info();
     });
     battle_map.append(player_point);
     refresh_player_point();
@@ -161,69 +163,6 @@ function refresh_player_point() {
     let player_point = $(".player_point");
     player_point.css("left", player_x + "%");
     player_point.css("top", player_y + "%");
-}
-
-/**
- * 显示玩家介绍
- */
-function show_player_info() {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.attr('id', 'player_info');
-    info.addClass("info_window");
-    info.css("position", "absolute");
-    info.css("left", player_x + 1.5 + "%");
-    info.css("top", player_y + 1.5 + "%");
-    info.append("<p>" + current_character.name + "</p>");
-    info.append("<p style='color:goldenrod'>lv " + current_character.lvl + " " + dictionary_job.job_name[current_character.job] + "</p>");
-    battle_map.append(info);
-}
-
-/**
- * 隐藏玩家介绍
- */
-function hide_player_info() {
-    $("#player_info").remove();
-}
-
-/**
- * 绘制怪物刷新区域（调试用）
- */
-function show_monster_area(map_info) {
-    $("#monster_area").remove();
-    let monster_area = $("<div></div>");
-    monster_area.attr("id", "monster_area");
-    monster_area.css("left", map_info.start_x + "%");
-    monster_area.css("top", map_info.start_y + "%");
-    monster_area.css("width", map_info.end_x - map_info.start_x + "%");
-    monster_area.css("height", map_info.end_y - map_info.start_y + "%");
-    battle_map.append(monster_area);
-}
-
-/**
- * 显示怪物介绍
- * @param index
- */
-function show_monster_info(index) {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.attr('id', 'monster_info');
-    info.addClass("info_window");
-    info.css("position", "absolute");
-    let monster = map_monster_list[index];
-    info.css("left", monster.x + 1.5 + "%");
-    info.css("top", monster.y + 1.5 + "%");
-    info.append("<p>" + monster.name + "</p>");
-    info.append("<p style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare) + "</p>");
-    info.append("<p style='color:goldenrod'>lv " + monster.lvl + " " + get_monster_species_name(monster.species) + "</p>");
-    battle_map.append(info);
-}
-
-/**
- * 隐藏地图介绍
- */
-function hide_monster_info() {
-    $("#monster_info").remove();
 }
 
 /**
@@ -257,9 +196,9 @@ function has_nearly_monster(x, y) {
 }
 
 /**
- * 向地图内添加怪物点
+ * 向练级地图内添加怪物点
  */
-function add_monster() {
+function add_random_monster() {
     let lvl = current_character.lvl;
     if (lvl < map_info.min) {
         lvl = map_info.min;
@@ -310,15 +249,47 @@ function add_monster() {
 }
 
 /**
- * 刷新怪物点
+ * 刷新练级地图怪物点
  */
-function refresh_monster() {
+function refresh_random_monster() {
     $(".monster_point").remove();
     let try_count = 0;
     while (try_count < 100 && map_monster_list.length < 15) {
         try_count++;
-        add_monster(map_info);
+        add_random_monster(map_info);
     }
+    show_monster_point();
+}
+
+/**
+ * 刷新副本地图怪物点
+ */
+function refresh_raid_monster() {
+    $(".monster_point").remove();
+    for (let i = 0; i < map_info.monster.length; i++) {
+        let monster_raid = map_info.monster[i];
+        let lvl = monster_raid.lvl;
+        let monster_obj = dictionary_monster_base[monster_raid.name];
+        // 生成怪物对象
+        let monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect);
+        monster.species = monster_obj.species;
+        monster.rare = monster_obj.rare;
+        monster.lvl = lvl;
+        monster.skills = monster_obj.skill;
+        if (monster.skills == null || monster.skills.length === 0) {
+            monster.skills = [dictionary_monster_skill.physical_attack()];
+        }
+        monster.x = monster_raid.x;
+        monster.y = monster_raid.y;
+        map_monster_list.push(monster);
+    }
+    show_monster_point();
+}
+
+/**
+ * 生成怪物图标
+ */
+function show_monster_point() {
     for (let i = 0; i < map_monster_list.length; i++) {
         let monster = map_monster_list[i];
         let monster_point = $("<img/>");
@@ -332,10 +303,10 @@ function refresh_monster() {
             show_monster_info(i);
         }, function () {
             monster_point.css("border-color", eval("color_rare_" + monster.rare));
-            hide_monster_info(i);
+            hide_info();
         });
         monster_point.click(function (e) {
-            if (!on_battle) {
+            if ((is_in_local_mode() || map_info.type === 1) && !on_battle) {
                 clearTimeout(self_heal_timer);
                 target_x = monster.x;
                 target_y = monster.y;
@@ -353,7 +324,34 @@ function refresh_monster() {
 }
 
 /**
- * 玩家移动
+ * 生成进攻图标
+ */
+function show_attack_icon() {
+    let attack_next = $("#attack_next");
+    attack_next.unbind("click");
+    attack_next.click(function (e) {
+        if (!on_battle) {
+            clearTimeout(self_heal_timer);
+            target_x = map_monster_list[0].x;
+            target_y = map_monster_list[0].y;
+            target_monster = 0;
+            role_battle_2 = get_battle_attribute(map_monster_list[0], "battle_2");
+            role_battle_2.current_health_value = role_battle_2.max_health_value;
+            refresh_battle_status(false);
+            do_move();
+        }
+        e.stopPropagation();
+        return false;
+    });
+    attack_next.hover(function () {
+        show_attack_info();
+    }, function () {
+        hide_info();
+    });
+}
+
+/**
+ * 玩家开始移动
  */
 function do_move() {
     let move_x = target_x - player_x;
@@ -372,8 +370,11 @@ function do_move() {
     }
 }
 
+/**
+ * 玩家移动循环执行
+ */
 function move_loop() {
-    let move_distance = 10;
+    let move_distance = 10 * is_in_local_mode() ? 100 : 1;
     if (move_distance > move_step) {
         move_distance = move_step;
     }
@@ -393,6 +394,9 @@ function move_loop() {
     }
 }
 
+/**
+ * 回合结束回调
+ */
 function on_turn_end() {
     refresh_current_status();
     refresh_battle_status(false);
@@ -403,20 +407,25 @@ function on_turn_end() {
  * @param index 0-平手，1-胜利，2-失败
  */
 function on_battle_end(index) {
+    current_character.debuffs = [];
+    current_character.dots = [];
     on_battle = false;
     refresh_current_status();
     $(".player_point").removeClass("on_battle");
     if (index === 1) {
         kill_count++;
         let monster = map_monster_list[target_monster];
-        if (monster.rare === 4) {
-            // 击败精英怪时移位
+        if (map_info.type === 1 && monster.rare === 4) {
+            // 练级地图击败精英怪时移位
             player_x += 3;
             player_y += 3;
             refresh_player_point();
         }
         // 计算经验
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
+        if (is_in_local_mode()) {
+            exp *= 0;
+        }
         exp = Math.round(exp);
         // 获得金钱
         let money = Math.ceil(exp * (0.2 + 0.3 * Math.random()));
@@ -425,7 +434,11 @@ function on_battle_end(index) {
         $("#current_money").html(get_money_html(current_character.money, 20));
         $("#shop_money").html(get_money_html(current_character.money, 20));
         // 掉落判定
-        drop_random_equipment(monster);
+        if (monster.rare >= 5) {
+            drop_raid_equipment(monster);
+        } else {
+            drop_random_equipment(monster);
+        }
         // 升级判定
         battle_log(current_character.name + " 获得 " + exp + " 点经验");
         let old_lvl = current_character.lvl;
@@ -442,7 +455,18 @@ function on_battle_end(index) {
         refresh_current_status_exp();
         refresh_battle_status(false);
         map_monster_list.splice(target_monster, 1);
-        refresh_monster();
+        if (map_info.type === 1) {
+            refresh_random_monster();
+        } else {
+            if (map_monster_list.length === 0) {
+                // 完成副本
+                battle_log("<br/><span style='color:goldenrod'>副本完成</span>");
+                $("#self_heal").hide();
+                $("#attack_next").hide();
+            }
+            $(".monster_point").remove();
+            show_monster_point();
+        }
     } else {
         player_x += 3;
         player_y += 3;
@@ -453,7 +477,8 @@ function on_battle_end(index) {
 }
 
 /**
- * 装备掉落计算
+ * 随机装备掉落计算
+ * @param monster
  */
 function drop_random_equipment(monster) {
     let lvl = monster.lvl;
@@ -476,25 +501,54 @@ function drop_random_equipment(monster) {
     }
     if (is_drop) {
         let equipment = create_random_equipment(lvl);
-        let items = current_character.items;
-        for (let i = 0; i < MAX_ITEMS; i++) {
-            if (items[i] == null) {
-                items[i] = equipment;
-                let rare_color = eval("color_rare_" + equipment.rare);
-                let id = "item" + new Date().getTime();
-                battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + equipment.name + "]</span>");
-                refresh_current_status();
-                setTimeout(function () {
-                    let view_label = $("#" + id);
-                    view_label.hover(function () {
-                        let view = $(this);
-                        show_equipment_info(equipment, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
-                    }, function () {
-                        hide_equipment_info();
-                    });
-                }, 0);
-                break;
-            }
+        put_equipment_to_items(equipment);
+    }
+}
+
+/**
+ * 副本装备掉落计算
+ * @param monster
+ */
+function drop_raid_equipment(monster) {
+    monster = dictionary_monster_base[monster.name];
+    let drop_list = monster.drop;
+    let drop_rate = Math.floor(Math.random() * 100);
+    for (let i = 0; i < drop_list.length; i++) {
+        let drop = drop_list[i];
+        drop = drop.split("|");
+        drop_rate -= Number(drop[1]);
+        if (drop_rate <= 0) {
+            let equipment = create_target_equipment(new_equipment()[drop[0]]);
+            put_equipment_to_items(equipment);
+            return;
+        }
+    }
+    alert("掉落计算异常：" + monster.name);
+}
+
+/**
+ * 将装备拾入背包
+ * @param equipment
+ */
+function put_equipment_to_items(equipment) {
+    let items = current_character.items;
+    for (let i = 0; i < MAX_ITEMS; i++) {
+        if (items[i] == null) {
+            items[i] = equipment;
+            let rare_color = eval("color_rare_" + equipment.rare);
+            let id = "item" + new Date().getTime();
+            battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + equipment.name + "]</span>");
+            refresh_current_status();
+            setTimeout(function () {
+                let view_label = $("#" + id);
+                view_label.hover(function () {
+                    let view = $(this);
+                    show_equipment_info(equipment, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                }, function () {
+                    hide_info();
+                });
+            }, 0);
+            break;
         }
     }
 }
@@ -535,39 +589,48 @@ function refresh_battle_status(only_player) {
     }
     let exp_percent = get_exp_percent(current_character.lvl, current_character.exp);
     $("#exp_bar").css("width", 927 * exp_percent + "px");
-    if (!only_player && role_battle_2 != null) {
-        let monster_portrait = $("#monster_portrait");
-        monster_portrait.show();
-        monster_portrait.css("background-image", "url(\"./img/monster/" + map_monster_list[target_monster].species + ".jpg\")");
-        $("#monster_name").text(role_battle_2.name);
-        let max_health_value = role_battle_2.max_health_value;
-        let health_value = role_battle_2.current_health_value;
-        let shield_value = role_battle_2.current_shield_value;
-        let health_width = 200 * health_value / max_health_value;
-        let monster_health_bar = $("#monster_health_bar");
-        if (health_width >= 200 * 0.7) {
-            monster_health_bar.css("background-color", "yellowgreen");
-        } else if (health_width >= 200 * 0.35) {
-            monster_health_bar.css("background-color", "goldenrod");
-        } else {
-            monster_health_bar.css("background-color", "darkred");
-        }
-        monster_health_bar.css("width", health_width + "px");
-        let monster_health_number = $("#monster_health_number");
-        monster_health_number.css("right", health_width + 100 + "px");
-        monster_health_number.text(health_value + "/" + max_health_value);
-        if (shield_value > 0) {
-            let shield_width = 1000 * shield_value / max_health_value;
-            if (shield_width > 200) {
-                shield_width = 200;
-            }
-            $("#monster_shield_bar").css("width", shield_width + "px");
-            let monster_shield_number = $("#monster_shield_number");
-            monster_shield_number.css("right", shield_width + 100 + "px");
-            monster_shield_number.text(shield_value);
-        } else {
+    if (!only_player) {
+        if (role_battle_2 == null) {
+            $("#monster_portrait").hide();
+            $("#monster_name").text("");
+            $("#monster_health_bar").css("width", "0px");
+            $("#monster_health_number").text("");
             $("#monster_shield_bar").css("width", "0px");
             $("#monster_shield_number").text("");
+        } else {
+            let monster_portrait = $("#monster_portrait");
+            monster_portrait.show();
+            monster_portrait.css("background-image", "url(\"./img/monster/" + map_monster_list[target_monster].species + ".jpg\")");
+            $("#monster_name").text(role_battle_2.name);
+            let max_health_value = role_battle_2.max_health_value;
+            let health_value = role_battle_2.current_health_value;
+            let shield_value = role_battle_2.current_shield_value;
+            let health_width = 200 * health_value / max_health_value;
+            let monster_health_bar = $("#monster_health_bar");
+            if (health_width >= 200 * 0.7) {
+                monster_health_bar.css("background-color", "yellowgreen");
+            } else if (health_width >= 200 * 0.35) {
+                monster_health_bar.css("background-color", "goldenrod");
+            } else {
+                monster_health_bar.css("background-color", "darkred");
+            }
+            monster_health_bar.css("width", health_width + "px");
+            let monster_health_number = $("#monster_health_number");
+            monster_health_number.css("right", health_width + 100 + "px");
+            monster_health_number.text(health_value + "/" + max_health_value);
+            if (shield_value > 0) {
+                let shield_width = 1000 * shield_value / max_health_value;
+                if (shield_width > 200) {
+                    shield_width = 200;
+                }
+                $("#monster_shield_bar").css("width", shield_width + "px");
+                let monster_shield_number = $("#monster_shield_number");
+                monster_shield_number.css("right", shield_width + 100 + "px");
+                monster_shield_number.text(shield_value);
+            } else {
+                $("#monster_shield_bar").css("width", "0px");
+                $("#monster_shield_number").text("");
+            }
         }
     }
 }

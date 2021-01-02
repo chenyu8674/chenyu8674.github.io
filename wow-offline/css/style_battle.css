@@ -35,6 +35,21 @@
     box-shadow: 0 0 20px goldenrod;
 }
 
+#attack_next {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    bottom: 5px;
+    right: 5px;
+    border-radius: 5px;
+    background-image: url("../img/icon/ability_dualwield.png");
+    background-size: 100%;
+}
+
+#attack_next:hover {
+    box-shadow: 0 0 20px goldenrod;
+}
+
 #battle_log {
     position: absolute;
     height: 408px;

@@ -19,6 +19,18 @@ function new_dot() {
         return dot;
     }
 
+    dot.rake = function (damage) {
+        let dot = {};
+        dot.id = 11004;// Id
+        dot.name = "撕裂";// 名称
+        dot.T = 3;
+        dot.damage = damage;
+        dot.type = element_physical;
+        dot.icon = "ability_druid_rake";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
     dot.hunter_3 = function (damage) {
         let dot = {};
         dot.id = 33;// Id

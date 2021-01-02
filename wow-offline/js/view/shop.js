@@ -26,7 +26,7 @@ $(document).ready(function () {
     shop_clear_bag.hover(function () {
         show_shop_info("卖掉所有精良以下的装备", shop_clear_bag[0].offsetWidth + shop_clear_bag.offset().left, shop_clear_bag[0].offsetHeight + shop_clear_bag.offset().top);
     }, function () {
-        hide_shop_info();
+        hide_info();
     });
 });
 
@@ -177,7 +177,7 @@ function create_shop_view() {
                 + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：1%</p>"
             show_shop_info(html, cell[0].offsetWidth + cell.offset().left, cell[0].offsetHeight + cell.offset().top);
         }, function () {
-            hide_shop_info();
+            hide_info();
         });
         // 右键点击事件，购买装备
         shop_item.contextmenu(function (e) {
@@ -223,29 +223,6 @@ function buy_equipment(pos, price) {
 }
 
 /**
- * 显示商店介绍
- */
-function show_shop_info(html, x, y) {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.attr('id', 'equipment_info');
-    info.addClass("info_window");
-    info.css("position", "fixed");
-    info.css("font-size", "15px");
-    info.css("left", x + "px");
-    info.css("top", y + "px");
-    info.append(html);
-    $("body").append(info);
-}
-
-/**
- * 隐藏商店介绍
- */
-function hide_shop_info() {
-    $("#equipment_info").remove();
-}
-
-/**
  * 绘制物品栏
  */
 function refresh_shop_items() {
@@ -266,7 +243,7 @@ function refresh_shop_items() {
                 let view = $(this);
                 show_equipment_info(item, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
             }, function () {
-                hide_equipment_info();
+                hide_info();
             });
             // 右键点击事件，卖出装备
             cell.contextmenu(function (e) {
@@ -285,7 +262,7 @@ function refresh_shop_items() {
  * @param not_save 不进行存储
  */
 function sell_equipment(index, not_save) {
-    hide_equipment_info();
+    hide_info();
     let items = current_character.items;
     let item = items[index];
     current_character.money += get_equipment_price(item);
