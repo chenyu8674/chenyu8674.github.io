@@ -65,6 +65,7 @@ function show_battle_view(info) {
         if (is_in_local_mode()) {
             show_monster_area(map_info);
         }
+        $("#attack_next").hide();
         player_x = (map_info.start_x + map_info.end_x) / 2;
         player_y = (map_info.start_y + map_info.end_y) / 2;
         refresh_random_monster();
@@ -424,7 +425,7 @@ function on_battle_end(index) {
         // 计算经验
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
         if (is_in_local_mode()) {
-            exp *= 0;
+            exp *= 100;
         }
         exp = Math.round(exp);
         // 获得金钱
