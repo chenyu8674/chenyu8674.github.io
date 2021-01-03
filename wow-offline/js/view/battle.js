@@ -424,12 +424,12 @@ function on_battle_end(index) {
         }
         // 计算经验
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
-        if (is_in_local_mode()) {
-            exp *= 10;
-        }
+        exp *= EXP_MULTIPLE;
         exp = Math.round(exp);
         // 获得金钱
-        let money = Math.ceil(exp * (0.2 + 0.3 * Math.random()));
+        let money = exp * (0.2 + 0.3 * Math.random());
+        money *= MONEY_MULTIPLE;
+        money = Math.ceil(money);
         battle_log(current_character.name + " 拾取了 " + get_money_html(money, 12));
         current_character.money += money;
         $("#current_money").html(get_money_html(current_character.money, 20));
@@ -488,16 +488,16 @@ function drop_random_equipment(monster) {
     let multiple = monster.lvl <= 10 ? 1 + 0.3 * (11 - lvl) : 1;
     switch (rare) {
         case 1:
-            is_drop = 100 * Math.random() < 5 * multiple;
+            is_drop = 100 * Math.random() < 5 * multiple * DROP_MULTIPLE;
             break;
         case 2:
-            is_drop = 100 * Math.random() < 10 * multiple;
+            is_drop = 100 * Math.random() < 10 * multiple * DROP_MULTIPLE;
             break;
         case 3:
-            is_drop = 100 * Math.random() < 100 * multiple;
+            is_drop = 100 * Math.random() < 100 * multiple * DROP_MULTIPLE;
             break;
         case 4:
-            is_drop = 100 * Math.random() < 50 * multiple;
+            is_drop = 100 * Math.random() < 50 * multiple * DROP_MULTIPLE;
             break;
     }
     if (is_drop) {
