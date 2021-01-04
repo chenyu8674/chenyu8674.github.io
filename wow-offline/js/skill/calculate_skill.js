@@ -62,7 +62,7 @@ function get_skill_state(flag, id) {
  * @return block_value 格挡数值
  * @return absorb_value 吸收数值
  */
-function normal_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block) {
+function normal_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block, pierce_shield) {
     // 计算命中
     extra_hit = extra_hit == null ? 0 : extra_hit;
     let hit_chance = calculate_hit(attacker, target) + extra_hit / 100;
@@ -171,7 +171,7 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent, attac
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance * 100);
     }
     let is_block = Math.random() < block_chance;
-    let block_value = target.block_value;
+    let block_value = target.block_value * (0.9 + Math.random() * 0.2);
     if (is_block) {
         damage_value = damage_value - block_value;
         if (damage_value < 0) {
@@ -183,6 +183,9 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent, attac
     // 计算伤害吸收
     let absorb_value = 0;
     let shield_point = target.current_shield_value;
+    if (pierce_shield) {
+        shield_point = 0;
+    }
     if (damage_value > 0 && shield_point > 0) {
         if (damage_value > shield_point) {
             // 伤害吸收护盾被击穿

@@ -286,7 +286,7 @@ function new_monster_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj_x = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj_x.is_hit) {
-                let damage_obj_y = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_physical, 999, -999, -999);
+                let damage_obj_y = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_physical, 999, -999, -999, true);
                 target.dots.push(new_dot().rake(damage_obj_y.damage_value));
             }
             return skill_cast_result(damage_obj_x, [], []);

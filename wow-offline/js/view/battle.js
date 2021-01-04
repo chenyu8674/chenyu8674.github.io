@@ -408,6 +408,8 @@ function on_turn_end() {
  * @param index 0-平手，1-胜利，2-失败
  */
 function on_battle_end(index) {
+    current_shield_value = 0;
+    role_battle_1.current_shield_value = 0;
     current_character.debuffs = [];
     current_character.dots = [];
     on_battle = false;
@@ -422,22 +424,27 @@ function on_battle_end(index) {
             player_y += 3;
             refresh_player_point();
         }
-        // 计算经验
+        // 计算经验/金钱
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
-        exp *= EXP_MULTIPLE;
-        exp = Math.round(exp);
-        // 获得金钱
+        // 等级经验惩戒，相差超出3级，每级-10%
+        let exp_multiple = Math.abs(current_character.lvl - monster.lvl) - 3;
+        exp_multiple = exp_multiple < 0 ? 0 : exp_multiple;
+        exp_multiple =  10 - exp_multiple < 0 ? 0 : 10 - exp_multiple;
+        exp *= exp_multiple / 10;
         let money = exp * (0.2 + 0.3 * Math.random());
-        money *= MONEY_MULTIPLE;
-        money = Math.ceil(money);
+        exp = Math.round(exp * EXP_MULTIPLE);
+        money = Math.ceil(money * MONEY_MULTIPLE);
+        // 输出金钱拾取
         battle_log(current_character.name + " 拾取了 " + get_money_html(money, 12));
         current_character.money += money;
         $("#current_money").html(get_money_html(current_character.money, 20));
         $("#shop_money").html(get_money_html(current_character.money, 20));
-        // 掉落判定
+        // 道具掉落判定
         if (monster.rare >= 5) {
+            // 副本BOSS掉落
             drop_raid_equipment(monster);
         } else {
+            // 小怪随机掉落
             drop_random_equipment(monster);
         }
         // 升级判定
@@ -455,6 +462,7 @@ function on_battle_end(index) {
         }
         refresh_current_status_exp();
         refresh_battle_status(false);
+        // 刷新地图怪物列表
         map_monster_list.splice(target_monster, 1);
         if (map_info.type === 1) {
             refresh_random_monster();
