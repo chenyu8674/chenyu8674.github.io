@@ -8,15 +8,19 @@
  * @param rare 怪物阶级 1-爪牙 2-怪物 3-稀有 4-精英 5-首领 6-团队首领
  * @param multiple
  * @param effect
+ * @param buffs
  * @return {string[]}
  */
-function get_new_monster(name, lvl, type, rare, multiple, effect) {
+function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
     if (multiple == null) {
         multiple = 1;
     }
     multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
     if (effect == null) {
         effect = [];
+    }
+    if (buffs == null) {
+        buffs = [];
     }
     let monster = new_role_base();
     monster.name = name;
@@ -26,6 +30,7 @@ function get_new_monster(name, lvl, type, rare, multiple, effect) {
     let equipment = {};
     equipment.effect = effect;
     monster.equipments = [equipment];
+    monster.buffs = buffs;
     let buff = {};
     buff.T = -1;
     buff.effect = [
@@ -33,7 +38,7 @@ function get_new_monster(name, lvl, type, rare, multiple, effect) {
         "armor_magic+=" + Math.ceil(lvl * 20 * get_multiple_by_rare(rare) * multiple),
         "health_percent+=20"
     ];
-    monster.buffs = [buff];
+    monster.buffs.push(buff);
     monster.str = Math.ceil(monster.str * get_multiple_by_rare(rare) * multiple);
     monster.agi = Math.ceil(monster.agi * get_multiple_by_rare(rare) * multiple);
     monster.sta = Math.ceil(monster.sta * get_multiple_by_rare(rare) * multiple);

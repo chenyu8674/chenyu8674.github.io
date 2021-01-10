@@ -56,21 +56,28 @@ function new_monster() {
         monster["强壮的烈焰猎犬"] = {species: 3, type: 5, rare: 4}
         monster["成年的烈焰猎犬"] = {species: 3, type: 2, rare: 4, skill: [dictionary_monster_skill.rake()]}
         monster["堕落的驯犬人"] = {species: 1, type: 1, rare: 4, skill: [dictionary_monster_skill.mortal_strike()]}
-        monster["阿达罗格"] = {species: 3, type: 3, rare: 5, skill: [dictionary_monster_skill.fire_attack()],
+
+        monster["阿达罗格"] = {species: 3, type: 3, rare: 5, buffs: [new_buff().rage()], effect:["attack_power_percent-=20"], skill: [dictionary_monster_skill.fire_attack()],
             drop:["环刺护腕|20", "咆哮之口长裤|20", "阿达罗格之牙|20", "焦灼的炽焰猎犬之靴|20", "骨炭护腰|20"]}
+
         monster["黑暗萨满助手"] = {species: 1, type: 4, rare: 4, effect:["block_chance_final+=30", "block_value=100"], skill: [dictionary_monster_skill.fire_cast()]}
         monster["黑暗萨满研究者"] = {species: 1, type: 4, rare: 4, effect:["damage_fire+=50"], skill: [dictionary_monster_skill.fire_cast()]}
-        monster["黑暗萨满柯兰萨"] = {species: 1, type: 4, rare: 5, effect:["damage_shadow+=30"], skill: [dictionary_monster_skill.shadow_cast()],
+
+        monster["黑暗萨满柯兰萨"] = {species: 1, type: 4, rare: 5, buffs: [new_buff().rage()], effect:["damage_shadow+=30"], skill: [dictionary_monster_skill.shadow_cast()],
             drop:["黑暗仪式斗篷|25", "破碎图腾之握|25", "黑色元素腕轮|25", "黑暗萨满卫衣|25"]}
+
         monster["熔岩元素"] = {species: 5, type: 1, rare: 4, effect:["armor_attack_percent+=30"]}
         monster["怒焰穴居人"] = {species: 1, type: 6, rare: 4}
         monster["怒焰萨满祭司"] = {species: 1, type: 4, rare: 4, skill: [dictionary_monster_skill.natural_cast()]}
-        monster["焰喉"] = {species: 2, type: 9, rare: 5, skill: [dictionary_monster_skill.fire_cast()],
+
+        monster["焰喉"] = {species: 2, type: 9, rare: 5, buffs: [new_buff().rage()], skill: [dictionary_monster_skill.fire_cast()],
             drop:["焦灼链甲|25", "角质护腕|25", "萤火法袍|25", "甲质腕轮|25"]}
+
         monster["燃刃术士"] = {species: 1, type: 8, rare: 4, skill: [dictionary_monster_skill.shadow_cast()]}
         monster["燃刃信徒"] = {species: 1, type: 6, rare: 4}
         monster["燃刃执行者"] = {species: 1, type: 1, rare: 4, skill: [dictionary_monster_skill.mortal_strike()]}
-        monster["熔岩守卫戈多斯"] = {species: 1, type: 2, rare: 5, skill: [dictionary_monster_skill.bash(), dictionary_monster_skill.physical_attack()],
+
+        monster["熔岩守卫戈多斯"] = {species: 1, type: 2, rare: 5, buffs: [new_buff().rage()], effect:["attack_power_percent-=40"], skill: [dictionary_monster_skill.bash(), dictionary_monster_skill.physical_attack()],
             drop:["熬心之杖|20", "踏血锁靴|20", "血咒魔刃|20", "无边怒火腰带|20", "戈多斯的碾压之手|20"]}
     }// 怒焰裂谷
     return monster;

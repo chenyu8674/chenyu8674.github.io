@@ -201,5 +201,20 @@ function new_buff() {
     }
     buff[92] = buff.mage_2();
 
+    buff.rage = function () {
+        let buff = {};
+        buff.id = 10001;// Id
+        buff.name = "首领狂暴";// 名称
+        buff.T = -1;
+        buff.X = 5;
+        buff.icon = "ability_racial_bloodrage";
+        buff.detail = "伤害每回合提升" + buff.X + "%";
+        buff.effect = [
+            "attack_power_percent+=battle_turn*" + buff.X,
+            "magic_power_percent+=battle_turn*" + buff.X,
+        ];
+        return buff;
+    }
+
     return buff;
 }

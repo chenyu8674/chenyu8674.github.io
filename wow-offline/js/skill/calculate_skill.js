@@ -171,7 +171,7 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent, attac
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance * 100);
     }
     let is_block = Math.random() < block_chance;
-    let block_value = target.block_value * (0.9 + Math.random() * 0.2);
+    let block_value = target.block_value;
     if (is_block) {
         damage_value = damage_value - block_value;
         if (damage_value < 0) {
@@ -451,6 +451,30 @@ function skill_cast_result(damage_list, heal_list, shield_list) {
     skill_cast_result.heal_list = heal_list;
     skill_cast_result.shield_list = shield_list;
     return skill_cast_result;
+}
+
+/**
+ * 计算dot伤害
+ */
+function refresh_dots(role_whole) {
+    let dots = role_whole.dots;
+    if (dots != null && dots.length > 0) {
+        for (let i = 0; i < dots.length; i++) {
+            let dot = dots[i];
+            do_dot(role_whole, dot);
+            // 剩余回合-1
+            let turn_left = dot.T;
+            if (turn_left > 0) {
+                turn_left--;
+                if (turn_left === 0) {
+                    dots.splice(i, 1);
+                    i--;
+                } else {
+                    dot.T = turn_left;
+                }
+            }
+        }
+    }
 }
 
 /**

@@ -60,9 +60,8 @@ function load_data() {
     current_character.items = character_obj.items;
     current_character.money = character_obj.money;
     // 刷新状态栏
-    role_battle_1 = get_battle_attribute(current_character, "battle_1");
-    role_battle_1.current_health_value = role_battle_1.max_health_value;
-    current_health_value = role_battle_1.max_health_value;
+    calculate_role_1(current_character);
+    fill_role_1_health();
     refresh_current_status();
 }
 
@@ -134,9 +133,8 @@ function create_character(job, exp, name) {
     // }
 
     // 刷新状态栏
-    role_battle_1 = get_battle_attribute(current_character, "battle_1");
-    role_battle_1.current_health_value = role_battle_1.max_health_value;
-    current_health_value = role_battle_1.max_health_value;
+    calculate_role_1(current_character);
+    fill_role_1_health();
     refresh_current_status();
     return current_character;
 }

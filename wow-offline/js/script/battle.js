@@ -1,23 +1,23 @@
 /** 战斗控制 **/
 
 let battle_timer = -1;// 回合标识
-let turn_time = is_in_local_mode() ? 100 : 1000;// 回合时间
-
-let role_base_1;// 我方原始状态
-let role_base_2;// 敌方原始状态
-
-let role_battle_1;// 我方战斗状态
-let role_health_1;// 我方当前血量
-let role_shield_1;// 我方当前护盾
-let role_battle_2;// 敌方战斗状态
-let role_health_2;// 敌方当前血量
-let role_shield_2;// 敌方当前护盾
+let turn_time = TURN_TIME;// 回合时间
+if (is_in_local_mode()) {
+    turn_time = TURN_TIME / LOCAL_MULTIPLE;
+}
 
 let battle_time = 1;// 战斗进行次数
 let battle_turn = 1;// 当前回合数
 
 let turn_callback;// 回合完成回调
 let battle_callback;// 战斗完成回调
+
+/**
+ * 是否处于战斗中
+ */
+function is_in_battle() {
+    return battle_callback != null;
+}
 
 /**
  * 战斗初始化
@@ -29,26 +29,32 @@ let battle_callback;// 战斗完成回调
 function start_battle(role_1, role_2, t_callback, b_callback) {
     // 战斗初始化
     battle_turn = 1;
+    turn_callback = t_callback;
+    battle_callback = b_callback;
     init_skill_states();
     // 状态初始化
     role_base_1 = role_1;
     role_base_2 = role_2;
-    role_health_1 = current_health_value;
-    role_shield_1 = current_shield_value;
-    role_health_2 = 0;
-    role_shield_2 = 0;
-    turn_callback = t_callback;
-    battle_callback = b_callback;
     // 开始回合循环
     clearTimeout(battle_timer);
     battle_timer = setTimeout(turn_loop, 0);
 }
 
 /**
- * 终止战斗
+ * 技能排序
+ * @param role
  */
-function stop_battle() {
-    clearTimeout(battle_timer);
+function sort_role_skills(role) {
+    // 随机打乱技能
+    role.skills.sort(function () {
+        return (0.5 - Math.random());
+    });
+    // 技能按优先级排序
+    role.skills.sort(function (a, b) {
+        let priority_a = a.priority != null ? a.priority : 20;
+        let priority_b = b.priority != null ? b.priority : 20;
+        return priority_b - priority_a;
+    });
 }
 
 /**
@@ -56,36 +62,21 @@ function stop_battle() {
  * @returns {boolean} 战斗是否结束
  */
 function turn_loop() {
-    // 随机打乱技能
-    role_base_1.skills.sort(function () {
-        return (0.5 - Math.random());
-    });
-    role_base_2.skills.sort(function () {
-        return (0.5 - Math.random());
-    });
-    // 技能按优先级排序
-    role_base_1.skills.sort(function (a, b) {
-        let priority_a = a.priority != null ? a.priority : 20;
-        let priority_b = b.priority != null ? b.priority : 20;
-        return priority_b - priority_a;
-    });
-    role_base_2.skills.sort(function (a, b) {
-        let priority_a = a.priority != null ? a.priority : 20;
-        let priority_b = b.priority != null ? b.priority : 20;
-        return priority_b - priority_a;
-    });
     battle_log("");
     battle_log("第 " + battle_turn + " 回合");
+    // 技能排序
+    sort_role_skills(role_base_1);
+    sort_role_skills(role_base_2);
     // 更新战斗状态
-    role_battle_1 = get_battle_attribute(role_base_1, "battle_1");
-    role_battle_2 = get_battle_attribute(role_base_2, "battle_2");
+    calculate_role_1(role_base_1);
+    calculate_role_2(role_base_2);
     // 设置生命值
-    role_battle_1.current_health_value = current_health_value;
-    role_battle_1.current_shield_value = current_shield_value;
+    role_battle_1.current_health_value = role_health_1;
+    role_battle_1.current_shield_value = role_shield_1;
     if (battle_turn === 1) {
         if (in_test_mode) {
-            current_health_value = role_battle_1.max_health_value;
-            current_shield_value = 0;
+            role_health_1 = role_battle_1.max_health_value;
+            role_shield_1 = 0;
             role_battle_1.current_health_value = role_battle_1.max_health_value;
         }
         role_battle_2.current_health_value = role_battle_2.max_health_value;
@@ -151,16 +142,16 @@ function turn_loop() {
             winner = 1;
         }
     }
-    current_health_value = role_battle_1.current_health_value;
-    current_shield_value = role_battle_1.current_shield_value;
+    role_health_1 = role_battle_1.current_health_value;
+    role_shield_1 = role_battle_1.current_shield_value;
     role_health_2 = role_battle_2.current_health_value;
     role_shield_2 = role_battle_2.current_shield_value;
     if (winner !== 0) {
         clear_buffs_and_debuffs_and_dots(role_battle_1);
         clear_buffs_and_debuffs_and_dots(role_battle_2);
         if (battle_callback != null) {
-
             battle_callback(winner);
+            battle_callback = null;
         }
         return true;
     }
@@ -181,6 +172,7 @@ function turn_loop() {
         }
         if (battle_callback != null) {
             battle_callback(0);
+            battle_callback = null;
         }
         return true;
     } else {
@@ -285,9 +277,39 @@ function do_attack(attacker, skill, target) {
  */
 function is_death(role) {
     if (role.current_health_value <= 0) {
+        battle_log("");
         battle_log(role.name + " 战败");
         return true;
     } else {
         return false;
     }
+}
+
+/**
+ * 清空非常驻增减益属性
+ */
+function clear_buffs_and_debuffs_and_dots(role_battle) {
+    let battle_buffs = role_battle.buffs;
+    if (battle_buffs != null && battle_buffs.length > 0) {
+        for (let i = 0; i < battle_buffs.length; i++) {
+            let buffs = battle_buffs[i];
+            let turn_left = buffs.T;
+            if (turn_left > 0) {
+                battle_buffs.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    let battle_debuffs = role_battle.debuffs;
+    if (battle_debuffs != null && battle_debuffs.length > 0) {
+        for (let i = 0; i < battle_debuffs.length; i++) {
+            let debuffs = battle_debuffs[i];
+            let turn_left = debuffs.T;
+            if (turn_left > 0) {
+                battle_debuffs.splice(i, 1);
+                i--;
+            }
+        }
+    }
+    role_battle.dots = [];
 }

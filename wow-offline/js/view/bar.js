@@ -30,6 +30,9 @@ function init_view_icon_click() {
             hide_view_equipment();
             hide_view_shop();
         } else {
+            if (is_in_battle()) {
+                return;
+            }
             hide_all_view();
             show_view_map();
         }
@@ -51,8 +54,9 @@ function init_view_icon_click() {
         }
     });
     $("#bar_character").click(function () {
-        // hide_all_view();
-        // show_view_character();
+        if (is_in_battle()) {
+            return;
+        }
         release_data();
     });
     $("#bar_test").click(function () {

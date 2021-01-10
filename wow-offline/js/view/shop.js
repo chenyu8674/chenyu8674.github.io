@@ -24,7 +24,7 @@ $(document).ready(function () {
         save_data();
     });
     shop_clear_bag.hover(function () {
-        show_shop_info("卖掉所有精良以下的装备", shop_clear_bag[0].offsetWidth + shop_clear_bag.offset().left, shop_clear_bag[0].offsetHeight + shop_clear_bag.offset().top);
+        show_shop_info("售出所有精良以下的装备", shop_clear_bag[0].offsetWidth + shop_clear_bag.offset().left, shop_clear_bag[0].offsetHeight + shop_clear_bag.offset().top);
     }, function () {
         hide_info();
     });

@@ -164,3 +164,20 @@ function show_shop_info(html, x, y) {
     info.append(html);
     $("body").append(info);
 }
+
+/**
+ * 显示文字介绍
+ */
+function show_text_info(html, x, y) {
+    $(".info_window").remove();
+    let info = $("<div></div>");
+    info.addClass("info_window");
+    info.css("position", "fixed");
+    info.css("font-size", "15px");
+    info.css("padding-right", "10px");
+    info.css("line-height", "25px");
+    info.css("left", x + "px");
+    info.css("top", y + "px");
+    info.append(html);
+    $("body").append(info);
+}

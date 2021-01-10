@@ -5,11 +5,11 @@ function new_role_whole() {
     role_whole.lvl = 0;
     role_whole.job = 0;
 
-    role_whole.current_shield_value = 0;// 伤害护盾
     role_whole.current_health_value = 0;// 当前生命值
+    role_whole.current_shield_value = 0;// 伤害护盾
 
     role_whole.max_health_value = 200;// 最大生命值
-    role_whole.health_percent = 100;// 生命值百分比
+    role_whole.health_percent = 100;// 最大生命值百分比
 
     // 攻击强度、格挡值
     role_whole.str = 0;// 力量
@@ -40,11 +40,10 @@ function new_role_whole() {
     role_whole.heal_power = 0;// 治疗强度
     role_whole.heal_power_percent = 100;// 法术强度百分比
 
-    role_whole.critical_rate = 0;// 暴击等级
-    role_whole.critical_rate_percent = 100;// 暴击等级百分比
-    role_whole.critical_chance_final = 5;// 最终暴击率百分比
-
-    role_whole.critical_damage = 150;// 暴击伤害系数
+    role_whole.armor_attack = 0;// 攻击护甲
+    role_whole.armor_attack_percent = 100;// 攻击护甲百分比
+    role_whole.armor_magic = 0;// 法术护甲
+    role_whole.armor_magic_percent = 100;// 法术护甲百分比
 
     role_whole.hit_rate = 0;// 命中等级
     role_whole.hit_rate_percent = 100;// 命中等级百分比
@@ -54,17 +53,17 @@ function new_role_whole() {
     role_whole.dodge_rate_percent = 100;// 闪避等级百分比
     role_whole.dodge_chance_final = 5;// 最终闪避率百分比
 
+    role_whole.critical_rate = 0;// 暴击等级
+    role_whole.critical_rate_percent = 100;// 暴击等级百分比
+    role_whole.critical_chance_final = 5;// 最终暴击率百分比
+    role_whole.critical_damage = 150;// 暴击伤害系数
+
     role_whole.block_rate = 0;// 格挡等级
     role_whole.block_rate_percent = 100;// 格挡等级百分比
     role_whole.block_chance_final = 0;// 最终格挡率百分比
 
     role_whole.block_value = 0;// 格挡值
     role_whole.block_value_percent = 100;// 格挡值百分比
-
-    role_whole.armor_attack = 0;// 攻击护甲
-    role_whole.armor_attack_percent = 100;// 攻击护甲百分比
-    role_whole.armor_magic = 0;// 法术护甲
-    role_whole.armor_magic_percent = 100;// 法术护甲百分比
 
     role_whole.damage_physical = 100;// 物理伤害百分比
     role_whole.damage_fire = 100;// 火焰伤害百分比

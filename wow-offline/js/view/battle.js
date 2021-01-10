@@ -17,8 +17,9 @@ function show_view_battle() {
 }
 
 function hide_view_battle() {
+    clearTimeout(self_heal_timer);
     clearTimeout(move_timer);
-    stop_battle();
+    clearTimeout(battle_timer);
     $("#battle_log").html("");
     role_battle_2 = null;
     view_battle.hide();
@@ -108,15 +109,19 @@ function show_heal_icon() {
  * 休息循环执行
  */
 function heal_loop() {
-    current_health_value += Math.round(role_battle_1.max_health_value / 100) * (is_in_local_mode() ? 10 : 1);
-    if (current_health_value >= role_battle_1.max_health_value) {
-        current_health_value = role_battle_1.max_health_value;
+    let heal_time = HEAL_TIME;
+    if (is_in_local_mode()) {
+        heal_time = HEAL_TIME / LOCAL_MULTIPLE;
+    }
+    role_health_1 += Math.round(role_battle_1.max_health_value * TURN_TIME / HEAL_TIME / 1000);
+    if (role_health_1 >= role_battle_1.max_health_value) {
+        role_health_1 = role_battle_1.max_health_value;
         battle_log(current_character.name + " 恢复了全部生命");
     } else {
         clearTimeout(self_heal_timer);
-        self_heal_timer = setTimeout(heal_loop, 100);
+        self_heal_timer = setTimeout(heal_loop, TURN_TIME);
     }
-    role_battle_1.current_health_value = current_health_value;
+    role_battle_1.current_health_value = role_health_1;
     refresh_battle_status(true);
     refresh_current_status();
 }
@@ -133,6 +138,11 @@ function show_monster_area(map_info) {
     monster_area.css("width", map_info.end_x - map_info.start_x + "%");
     monster_area.css("height", map_info.end_y - map_info.start_y + "%");
     battle_map.append(monster_area);
+    monster_area.click(hide_monster_area);
+}
+
+function hide_monster_area() {
+    $("#monster_area").hide();
 }
 
 /**
@@ -152,8 +162,7 @@ function show_player_point() {
     // 更新英雄头像状态
     $("#player_portrait").css("background-image", "url(\"./img/job/" + Math.round(current_character.job / 10) * 10 + ".png\")");
     $("#player_name").text(current_character.name);
-    role_battle_1 = get_battle_attribute(current_character, "battle_1");
-    current_health_value = role_battle_1.max_health_value;
+    calculate_role_1(current_character);
     refresh_battle_status(true);
 }
 
@@ -218,14 +227,14 @@ function add_random_monster() {
         monster_base_list = map_info.monster;
     }
     let random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
-    let monster_obj = dictionary_monster_base[random_monster_name];
+    let monster_obj = new_monster()[random_monster_name];
     while (get_monster_count_by_rare(1) >= 3 && monster_obj.rare === 1) {
         // 弱小怪物最多同时存在3个
         random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
-        monster_obj = dictionary_monster_base[random_monster_name];
+        monster_obj = new_monster()[random_monster_name];
     }
     // 生成怪物对象
-    let monster = get_new_monster(random_monster_name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect);
+    let monster = get_new_monster(random_monster_name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
     monster.species = monster_obj.species;
     monster.rare = monster_obj.rare;
     monster.lvl = lvl;
@@ -270,9 +279,9 @@ function refresh_raid_monster() {
     for (let i = 0; i < map_info.monster.length; i++) {
         let monster_raid = map_info.monster[i];
         let lvl = monster_raid.lvl;
-        let monster_obj = dictionary_monster_base[monster_raid.name];
+        let monster_obj = new_monster()[monster_raid.name];
         // 生成怪物对象
-        let monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect);
+        let monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
         monster.species = monster_obj.species;
         monster.rare = monster_obj.rare;
         monster.lvl = lvl;
@@ -312,8 +321,8 @@ function show_monster_point() {
                 target_x = monster.x;
                 target_y = monster.y;
                 target_monster = i;
-                role_battle_2 = get_battle_attribute(map_monster_list[i], "battle_2");
-                role_battle_2.current_health_value = role_battle_2.max_health_value;
+                calculate_role_2(map_monster_list[i]);
+                fill_role_2_health();
                 refresh_battle_status(false);
                 do_move();
             }
@@ -336,8 +345,8 @@ function show_attack_icon() {
             target_x = map_monster_list[0].x;
             target_y = map_monster_list[0].y;
             target_monster = 0;
-            role_battle_2 = get_battle_attribute(map_monster_list[0], "battle_2");
-            role_battle_2.current_health_value = role_battle_2.max_health_value;
+            calculate_role_2(map_monster_list[0]);
+            fill_role_2_health();
             refresh_battle_status(false);
             do_move();
         }
@@ -375,7 +384,10 @@ function do_move() {
  * 玩家移动循环执行
  */
 function move_loop() {
-    let move_distance = 10 * (is_in_local_mode() ? 10 : 1);
+    let move_distance = MOVE_DISTANCE;
+    if (is_in_local_mode()) {
+        move_distance = MOVE_DISTANCE * LOCAL_MULTIPLE;
+    }
     if (move_distance > move_step) {
         move_distance = move_step;
     }
@@ -391,7 +403,7 @@ function move_loop() {
         start_battle(current_character, map_monster_list[target_monster], on_turn_end, on_battle_end);
     } else {
         clearTimeout(move_timer);
-        move_timer = setTimeout(move_loop, 10);
+        move_timer = setTimeout(move_loop, 5);
     }
 }
 
@@ -408,7 +420,7 @@ function on_turn_end() {
  * @param index 0-平手，1-胜利，2-失败
  */
 function on_battle_end(index) {
-    current_shield_value = 0;
+    role_shield_1 = 0;
     role_battle_1.current_shield_value = 0;
     current_character.debuffs = [];
     current_character.dots = [];
@@ -429,7 +441,7 @@ function on_battle_end(index) {
         // 等级经验惩戒，相差超出3级，每级-10%
         let exp_multiple = Math.abs(current_character.lvl - monster.lvl) - 3;
         exp_multiple = exp_multiple < 0 ? 0 : exp_multiple;
-        exp_multiple =  10 - exp_multiple < 0 ? 0 : 10 - exp_multiple;
+        exp_multiple = 10 - exp_multiple < 0 ? 0 : 10 - exp_multiple;
         exp *= exp_multiple / 10;
         let money = exp * (0.2 + 0.3 * Math.random());
         exp = Math.round(exp * EXP_MULTIPLE);
@@ -455,9 +467,7 @@ function on_battle_end(index) {
         calculate_base_property(current_character);
         if (current_character.lvl > old_lvl) {
             battle_log(current_character.name + " 升到了 " + current_character.lvl + " 级");
-            role_battle_1 = get_battle_attribute(current_character, "battle_1");
-            role_battle_1.current_health_value = role_battle_1.max_health_value;
-            current_health_value = role_battle_1.max_health_value;
+            calculate_role_1(current_character);
             refresh_current_status();
         }
         refresh_current_status_exp();
@@ -519,8 +529,7 @@ function drop_random_equipment(monster) {
  * @param monster
  */
 function drop_raid_equipment(monster) {
-    monster = dictionary_monster_base[monster.name];
-    let drop_list = monster.drop;
+    let drop_list = dictionary_monster_base[monster.name].drop;
     let drop_rate = Math.floor(Math.random() * 100);
     for (let i = 0; i < drop_list.length; i++) {
         let drop = drop_list[i];
@@ -568,7 +577,7 @@ function put_equipment_to_items(equipment) {
  */
 function refresh_battle_status(only_player) {
     let max_health_value = role_battle_1.max_health_value;
-    let health_value = current_health_value;
+    let health_value = role_battle_1.current_health_value;
     let shield_value = role_battle_1.current_shield_value;
     let health_width = 200 * health_value / max_health_value;
     let player_health_bar = $("#player_health_bar");
