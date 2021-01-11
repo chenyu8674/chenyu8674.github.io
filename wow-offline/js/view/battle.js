@@ -216,7 +216,8 @@ function add_random_monster() {
         lvl = map_info.max;
     }
     let monster_base_list;
-    if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
+    // if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
+    if (get_monster_count_by_rare(4) === 0) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
     } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || (kill_count > 0 && Math.random() < RARE_PERCENT / 100))) {
