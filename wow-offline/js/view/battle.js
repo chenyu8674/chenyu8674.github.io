@@ -444,7 +444,7 @@ function on_battle_end(index) {
         exp_multiple = exp_multiple < 0 ? 0 : exp_multiple;
         exp_multiple = 10 - exp_multiple < 0 ? 0 : 10 - exp_multiple;
         exp *= exp_multiple / 10;
-        let money = exp * (0.2 + 0.3 * Math.random());
+        let money = exp * get_multiple_by_rare(monster.rare) * (0.5 + 0.5 * Math.random());
         exp = Math.round(exp * EXP_MULTIPLE);
         money = Math.ceil(money * MONEY_MULTIPLE);
         // 输出金钱拾取

@@ -30,7 +30,7 @@ function new_monster() {
         monster["迪菲亚码头主管"] = {species: 1, type: 3, rare: 3}
         monster["母蜘蛛"] = {species: 2, type: 6, rare: 3}
 
-        monster["霍格"] = {species: 1, type: 1, rare: 4, x: 27, y: 90, multiple: 1.5, effect:[]}
+        monster["霍格"] = {species: 1, type: 1, rare: 4, x: 27, y: 90, effect:[]}
     }// 艾尔文森林
     {
         monster["生锈的麦田魔像"] = {species: 7, type: 0, rare: 1, effect:["armor_attack_percent+=100"]}
@@ -50,7 +50,7 @@ function new_monster() {
         monster["利爪队长"] = {species: 1, type: 1, rare: 3}
         monster["死神4000型"] = {species: 7, type: 2, rare: 3, skill: [dictionary_monster_skill.natural_attack()]}
 
-        monster["克拉文·摩特维克"] = {species: 1, type: 6, rare: 4, x: 70, y: 78, multiple: 1.5, effect: ["critical_chance_final+=100","attack_power_percent-=30"]}
+        monster["克拉文·摩特维克"] = {species: 1, type: 6, rare: 4, x: 70, y: 78, effect: ["critical_chance_final+=100","attack_power_percent-=30"]}
     }// 西部荒野
     {
         monster["强壮的烈焰猎犬"] = {species: 3, type: 5, rare: 4}
