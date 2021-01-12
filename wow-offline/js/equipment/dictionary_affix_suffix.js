@@ -1,6 +1,7 @@
 /** 装备随机词缀 **/
 let dictionary_affix_suffix;
 let dictionary_affix_suffix_length = 0;
+
 $(document).ready(function () {
     dictionary_affix_suffix = new_affix_suffix()
     for (let affix in dictionary_affix_suffix) {
