@@ -41,10 +41,16 @@ function new_equipment() {
     equipment["训练单手锤"] = {name: "训练单手锤", icon: "inv_mace_06", rare: 2, affix: 15214};
     equipment["训练盾牌"] = {name: "训练盾牌", icon: "inv_shield_03", rare: 2, affix: 16141};
     equipment["训练之弓"] = {name: "训练之弓", icon: "inv_weapon_bow_02", rare: 2, affix: 15131};
+
     equipment["训练罩袍"] = {name: "训练罩袍", icon: "inv_chest_cloth_21", rare: 2, affix: 4101};
     equipment["训练皮衣"] = {name: "训练皮衣", icon: "inv_chest_leather_01", rare: 2, affix: 4102};
     equipment["训练链甲"] = {name: "训练链甲", icon: "inv_chest_chain_16", rare: 2, affix: 4103};
     equipment["训练胸铠"] = {name: "训练胸铠", icon: "inv_chest_plate01", rare: 2, affix: 4104};
+
+    equipment["阿什坎迪，兄弟会之剑"] = {
+        rare: 5, c_lvl: 60, e_lvl: 81, name: "阿什坎迪，兄弟会之剑", icon: "inv_sword_50",
+        affix: 15125, effect: ["sta+=33", "attack_power+=86"], detail: "\"刀柄上刻有大写字母A.L。\""
+    };
 
     {
         equipment["环刺护腕"] = {

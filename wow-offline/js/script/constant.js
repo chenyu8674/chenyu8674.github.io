@@ -85,6 +85,22 @@ let critical_coefficient = 2.5;// 暴击等级转化系数
 
 let block_coefficient = 2.5;// 格挡等级转化系数
 
+let resilient_coefficient = 2;// 韧性等级转化系数（暴击）
+let resilient_multiple = 1;// 韧性等级转化系数（dot）
+
+let mastery_per_lvl = 10;// 每级附加精通等级
+let mastery_coefficient = [];// 精通等级转化系数
+
+mastery_coefficient[11] = 1;
+mastery_coefficient[12] = 1;
+mastery_coefficient[13] = 1;
+mastery_coefficient[21] = 1;
+mastery_coefficient[22] = 1;
+mastery_coefficient[23] = 1;
+mastery_coefficient[31] = 1;
+mastery_coefficient[32] = 1;
+mastery_coefficient[33] = 1;
+
 /**
  * 阶级系数
  * @param rare

@@ -104,11 +104,11 @@ function refresh_current_status_exp() {
 function create_status_line(show, info) {
     let line = $("<div>" + show + "</div>");
     line.css("float", "left");
-    line.css("padding-right", "15px");
+    line.css("padding-right", "10px");
     if (show.length > 0) {
-        line.css("margin-right", "20px");
+        line.css("margin-right", "30px");
     } else {
-        line.css("height", "15px");
+        line.css("height", "18px");
         line.css("margin-right", "150px");
     }
     line.hover(function () {
@@ -125,70 +125,71 @@ function create_status_line(show, info) {
 function refresh_current_status_1() {
     let current_status = $("#current_status");
     current_status.empty();
+    current_status.attr("class", "current_status_1");
     create_status_line("力量：" + role_battle_1.str,
         role_base_1.str + "+" + (role_status_1.str - role_base_1.str) + " (" + role_status_1.str_percent + "%)<br/>"
-        + "每点提高" + str_to_attack_power + "点攻击强度，" + str_to_block_value + "点格挡值"
+        + "每点提高" + str_to_attack_power + "攻击强度，" + str_to_block_value + "格挡值"
     );
     create_status_line("敏捷：" + role_battle_1.agi,
         role_base_1.agi + "+" + (role_status_1.agi - role_base_1.agi) + " (" + role_status_1.agi_percent + "%)<br/>"
-        + "每点提高" + agi_to_attack_power + "点攻击强度，" + agi_to_hit_rate + "点命中等级，" + agi_to_critical_rate + "点暴击等级，" + agi_to_dodge_rate + "点躲闪等级"
+        + "每点提高" + agi_to_attack_power + "攻击强度，" + agi_to_hit_rate + "命中等级，" + agi_to_critical_rate + "暴击等级，" + agi_to_dodge_rate + "躲闪等级"
     );
     create_status_line("耐力：" + role_battle_1.sta,
         role_base_1.sta + "+" + (role_status_1.sta - role_base_1.sta) + " (" + role_status_1.sta_percent + "%)<br/>"
-        + "每点提高" + sta_to_health_max + "点最大生命值，" + sta_to_armor_attack + "点攻击护甲"
+        + "每点提高" + sta_to_health_max + "最大生命值，" + sta_to_armor_attack + "攻击护甲"
     );
     create_status_line("智力：" + role_battle_1.int,
         role_base_1.int + "+" + (role_status_1.int - role_base_1.int) + " (" + role_status_1.int_percent + "%)<br/>"
-        + "每点提高" + int_to_magic_power + "点法术强度，" + int_to_critical_damage + "点暴击伤害"
+        + "每点提高" + int_to_magic_power + "法术强度，" + int_to_critical_damage + "%暴击伤害"
     );
     create_status_line("精神：" + role_battle_1.spr,
         role_base_1.spr + "+" + (role_status_1.spr - role_base_1.spr) + " (" + role_status_1.spr_percent + "%)<br/>"
-        + "每点提高" + spr_to_heal_power + "点治疗强度，" + spr_to_magic_power + "点法术强度，" + spr_to_armor_magic + "点法术护甲"
+        + "每点提高" + spr_to_heal_power + "治疗强度，" + spr_to_magic_power + "法术强度，" + spr_to_armor_magic + "法术护甲"
     );
     create_status_line("", "");
     create_status_line("攻击强度：" + role_battle_1.attack_power,
-        (role_status_1.str * str_to_attack_power + role_status_1.agi * agi_to_attack_power) + "+" + role_status_1.attack_power + " (" + role_status_1.attack_power_percent + "%)<br/>"
-        + "提高攻击技能造成的效果"
+        (role_battle_1.str * str_to_attack_power + role_battle_1.agi * agi_to_attack_power) + "+" + role_status_1.attack_power + " (" + role_status_1.attack_power_percent + "%)<br/>"
+        + "影响攻击技能造成的效果"
     );
     create_status_line("法术强度：" + role_battle_1.magic_power,
-        (role_status_1.int * int_to_magic_power + role_status_1.spr * spr_to_magic_power) + "+" + role_status_1.magic_power + " (" + role_status_1.magic_power_percent + "%)<br/>"
-        + "提高法术技能造成的效果"
+        (role_battle_1.int * int_to_magic_power + role_battle_1.spr * spr_to_magic_power) + "+" + role_status_1.magic_power + " (" + role_status_1.magic_power_percent + "%)<br/>"
+        + "影响法术技能造成的效果"
     );
     create_status_line("治疗强度：" + role_battle_1.heal_power,
-        (role_status_1.spr * spr_to_heal_power) + "+" + role_status_1.heal_power + " (" + role_status_1.heal_power_percent + "%)<br/>"
-        + "提高治疗技能造成的效果"
+        (role_battle_1.spr * spr_to_heal_power) + "+" + role_status_1.heal_power + " (" + role_status_1.heal_power_percent + "%)<br/>"
+        + "影响治疗技能造成的效果"
     );
     create_status_line("", "");
     create_status_line("攻击护甲：" + role_battle_1.armor_attack,
-        (role_status_1.sta * sta_to_armor_attack) + "+" + role_status_1.armor_attack + " (" + role_status_1.armor_attack_percent + "%)<br/>"
-        + "受到的攻击伤害减少" + (calculate_armor_attack(role_battle_1) * 100).toFixed(2) + "%"
+        (role_battle_1.sta * sta_to_armor_attack) + "+" + role_status_1.armor_attack + " (" + role_status_1.armor_attack_percent + "%)<br/>"
+        + "受到的攻击伤害减少 " + (calculate_armor_attack(role_battle_1) * 100).toFixed(2) + "%"
     );
     create_status_line("法术护甲：" + role_battle_1.armor_magic,
-        (role_status_1.spr * spr_to_armor_magic) + "+" + role_status_1.armor_magic + " (" + role_status_1.armor_attack_percent + "%)<br/>"
-        + "受到的法术伤害减少" + (calculate_armor_magic(role_battle_1) * 100).toFixed(2) + "%"
+        (role_battle_1.spr * spr_to_armor_magic) + "+" + role_status_1.armor_magic + " (" + role_status_1.armor_attack_percent + "%)<br/>"
+        + "受到的法术伤害减少 " + (calculate_armor_magic(role_battle_1) * 100).toFixed(2) + "%"
     );
     create_status_line("", "");
     create_status_line("命中等级：" + role_battle_1.hit_rate,
         role_battle_1.agi * agi_to_hit_rate + "+" + role_status_1.hit_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
-        + "命中几率提高" + (calculate_original_hit(role_battle_1) - role_battle_1.hit_chance_final).toFixed(2) + "%"
+        + "命中几率提高 " + (calculate_original_hit(role_battle_1) - role_battle_1.hit_chance_final).toFixed(2) + "%"
     );
     create_status_line("命中几率：" + calculate_original_hit(role_battle_1).toFixed(2) + "%",
         "技能命中敌方的基础几率<br/>受到双方等级与对方闪避率的影响"
     );
     create_status_line("暴击等级：" + role_battle_1.critical_rate,
         role_battle_1.agi * agi_to_critical_rate + "+" + role_status_1.critical_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
-        + "暴击几率提高" + (calculate_original_critical(role_battle_1) - role_battle_1.critical_chance_final).toFixed(2) + "%"
+        + "暴击几率提高 " + (calculate_original_critical(role_battle_1) - role_battle_1.critical_chance_final).toFixed(2) + "%"
     );
     create_status_line("暴击几率：" + calculate_original_critical(role_battle_1).toFixed(2) + "%",
         "技能造成暴击的几率<br/>受到双方等级的影响"
     );
     create_status_line("暴击伤害：" + role_battle_1.critical_damage + "%",
-        role_status_1.critical_damage + "+" + role_battle_1.int * int_to_critical_damage + "%<br/>"
-        + "提高暴击时造成的伤害"
+        Math.round(150 + role_battle_1.int * int_to_critical_damage) + "+" + (role_status_1.critical_damage - 150) + "%<br/>"
+        + "造成的暴击伤害的百分比"
     );
     create_status_line("闪避等级：" + role_battle_1.dodge_rate,
         role_battle_1.agi * agi_to_dodge_rate + "+" + role_status_1.dodge_rate + " (" + role_status_1.dodge_rate_percent + "%)<br/>"
-        + "闪避几率提高" + (calculate_original_dodge(role_battle_1) - role_battle_1.dodge_chance_final).toFixed(2) + "%"
+        + "闪避几率提高 " + (calculate_original_dodge(role_battle_1) - role_battle_1.dodge_chance_final).toFixed(2) + "%"
     );
     create_status_line("闪避几率：" + calculate_original_dodge(role_battle_1).toFixed(2) + "%",
         "闪避敌方技能的几率<br/>受到双方等级的影响"
@@ -196,7 +197,7 @@ function refresh_current_status_1() {
     if (has_equip_shield(current_character)) {
         create_status_line("格挡等级：" + role_battle_1.block_rate,
             role_status_1.block_rate + " (" + role_status_1.block_rate_percent + "%)<br/>"
-            + "格挡几率提高" + (calculate_original_block(role_battle_1) - role_battle_1.block_chance_final).toFixed(2) + "%"
+            + "格挡几率提高 " + (calculate_original_block(role_battle_1) - role_battle_1.block_chance_final).toFixed(2) + "%"
         );
         create_status_line("格挡几率：" + calculate_original_block(role_battle_1).toFixed(2) + "%",
             "格挡敌方技能的几率<br/>受到双方等级的影响"
@@ -206,34 +207,87 @@ function refresh_current_status_1() {
             + "格挡敌方技能时减少受到的伤害"
         );
     }
+    create_status_line("", "");
+    create_status_line("精通等级：" + role_battle_1.mastery_rate,
+        (role_battle_1.lvl * mastery_per_lvl) + "+" + (role_status_1.mastery_rate - role_battle_1.lvl * mastery_per_lvl) + " (" + role_status_1.mastery_rate_percent + "%)<br/>"
+        + "技能效果提高 " + calculate_original_mastery(role_battle_1).toFixed(2) + "%"
+    );
+    create_status_line("韧性等级：" + role_battle_1.resilient_rate,
+        role_status_1.resilient_rate + " (" + role_status_1.resilient_rate_percent + "%)<br/>"
+        + "被暴击时的额外伤害减少 " + calculate_original_resilient(role_battle_1).toFixed(2) + "%<br/>"
+        + "受到的持续伤害减少 " + (resilient_multiple * calculate_original_resilient(role_battle_1)).toFixed(2) + "%<br/>"
+    );
 }
 
 function refresh_current_status_2() {
-    let role_html = "";
-    role_html += "物理伤害：" + role_battle_1.damage_physical + "%<br/>";
-    role_html += "火焰伤害：" + role_battle_1.damage_fire + "%<br/>";
-    role_html += "冰霜伤害：" + role_battle_1.damage_frost + "%<br/>";
-    role_html += "自然伤害：" + role_battle_1.damage_natural + "%<br/>";
-    role_html += "奥术伤害：" + role_battle_1.damage_arcane + "%<br/>";
-    role_html += "神圣伤害：" + role_battle_1.damage_holy + "%<br/>";
-    role_html += "暗影伤害：" + role_battle_1.damage_shadow + "%<br/>";
-    role_html += "<br/>";
-    role_html += "物理抗性：" + role_battle_1.res_physical + "<br/>";
-    role_html += "火焰抗性：" + role_battle_1.res_fire + "<br/>";
-    role_html += "冰霜抗性：" + role_battle_1.res_frost + "<br/>";
-    role_html += "自然抗性：" + role_battle_1.res_natural + "<br/>";
-    role_html += "奥术抗性：" + role_battle_1.res_arcane + "<br/>";
-    role_html += "神圣抗性：" + role_battle_1.res_holy + "<br/>";
-    role_html += "暗影抗性：" + role_battle_1.res_shadow + "<br/>";
-    role_html += "<br/>";
-    role_html += "物理穿透：" + role_battle_1.pierce_physical + "<br/>";
-    role_html += "火焰穿透：" + role_battle_1.pierce_fire + "<br/>";
-    role_html += "冰霜穿透：" + role_battle_1.pierce_frost + "<br/>";
-    role_html += "自然穿透：" + role_battle_1.pierce_natural + "<br/>";
-    role_html += "奥术穿透：" + role_battle_1.pierce_arcane + "<br/>";
-    role_html += "神圣穿透：" + role_battle_1.pierce_holy + "<br/>";
-    role_html += "暗影穿透：" + role_battle_1.pierce_shadow + "<br/>";
-    $("#current_status").html(role_html);
+    let current_status = $("#current_status");
+    current_status.empty();
+    current_status.attr("class", "current_status_2");
+    create_status_line("物理伤害：" + role_battle_1.damage_physical + "%",
+        "造成的物理伤害的百分比"
+    );
+    create_status_line("火焰伤害：" + role_battle_1.damage_fire + "%",
+        "造成的火焰伤害的百分比"
+    );
+    create_status_line("冰霜伤害：" + role_battle_1.damage_frost + "%",
+        "造成的冰霜伤害的百分比"
+    );
+    create_status_line("自然伤害：" + role_battle_1.damage_natural + "%",
+        "造成的自然伤害的百分比"
+    );
+    create_status_line("奥术伤害：" + role_battle_1.damage_arcane + "%",
+        "造成的奥术伤害的百分比"
+    );
+    create_status_line("神圣伤害：" + role_battle_1.damage_holy + "%",
+        "造成的神圣伤害的百分比"
+    );
+    create_status_line("暗影伤害：" + role_battle_1.damage_shadow + "%",
+        "造成的暗影伤害的百分比"
+    );
+    create_status_line("", "");
+    create_status_line("物理抗性：" + role_battle_1.res_physical + "%",
+        "对物理伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("火焰抗性：" + role_battle_1.res_fire + "%",
+        "对火焰伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("冰霜抗性：" + role_battle_1.res_frost + "%",
+        "对冰霜伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("自然抗性：" + role_battle_1.res_natural + "%",
+        "对自然伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("奥术抗性：" + role_battle_1.res_arcane + "%",
+        "对奥术伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("神圣抗性：" + role_battle_1.res_holy + "%",
+        "对神圣伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("暗影抗性：" + role_battle_1.res_shadow + "%",
+        "对暗影伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+    );
+    create_status_line("", "");
+    create_status_line("物理穿透：" + role_battle_1.pierce_physical + "%",
+        "物理伤害抵消对方抗性的百分比"
+    );
+    create_status_line("火焰穿透：" + role_battle_1.pierce_fire + "%",
+        "火焰伤害抵消对方抗性的百分比"
+    );
+    create_status_line("冰霜穿透：" + role_battle_1.pierce_frost + "%",
+        "冰霜伤害抵消对方抗性的百分比"
+    );
+    create_status_line("自然穿透：" + role_battle_1.pierce_natural + "%",
+        "自然伤害抵消对方抗性的百分比"
+    );
+    create_status_line("奥术穿透：" + role_battle_1.pierce_arcane + "%",
+        "奥术伤害抵消对方抗性的百分比"
+    );
+    create_status_line("神圣穿透：" + role_battle_1.pierce_holy + "%",
+        "神圣伤害抵消对方抗性的百分比"
+    );
+    create_status_line("暗影穿透：" + role_battle_1.pierce_shadow + "%",
+        "暗影伤害抵消对方抗性的百分比"
+    );
 }
 
 /**

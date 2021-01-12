@@ -58,6 +58,12 @@ function new_role_whole() {
     role_whole.critical_chance_final = 5;// 最终暴击率百分比
     role_whole.critical_damage = 150;// 暴击伤害系数
 
+    role_whole.mastery_rate = 0;// 精通等级
+    role_whole.mastery_rate_percent = 100;// 精通等级百分比
+
+    role_whole.resilient_rate = 0;// 韧性等级
+    role_whole.resilient_rate_percent = 100;// 韧性等级百分比
+
     role_whole.block_rate = 0;// 格挡等级
     role_whole.block_rate_percent = 100;// 格挡等级百分比
     role_whole.block_chance_final = 0;// 最终格挡率百分比

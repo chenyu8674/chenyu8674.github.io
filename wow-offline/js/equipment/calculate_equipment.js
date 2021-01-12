@@ -193,6 +193,7 @@ function create_target_equipment(target_equipment) {
     model.rare = target_equipment.rare;
     model.effect = target_equipment.effect;
     model.icon = target_equipment.icon;
+    model.detail = target_equipment.detail;
     model.affix = affix;
     return create_equipment_by_model(model);
 }
@@ -489,6 +490,7 @@ function create_equipment_by_model(model) {
     equipment.type_name = model.type_name;
     equipment.c_lvl = model.c_lvl;
     equipment.e_lvl = model.e_lvl;
+    equipment.detail = model.detail;
     equipment.effect = model.effect == null ? [] : model.effect;
     if (model.affix != null) {
         let multiple = model.affix[0];
@@ -681,6 +683,6 @@ function get_equipment_price(equipment) {
  * 添加测试装备
  */
 function push_equipment() {
-    let equipment = create_random_equipment(current_character.lvl);
+    let equipment = create_random_equipment(MAX_LVL + 20, 5);
     current_character.items.push(equipment);
 }

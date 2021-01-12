@@ -142,6 +142,9 @@ function show_equipment_info(equipment, x, y) {
     }
     can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
+    if (equipment.detail != null) {
+        info.append("<p style='color:goldenrod'>" + equipment.detail + "</p>");
+    }
     info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
     $("body").append(info);
     if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {

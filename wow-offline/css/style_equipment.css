@@ -89,19 +89,28 @@
 #current_status {
     position: absolute;
     width: 185px;
-    height: 583px;
-    padding-top: 18px;
     padding-left: 25px;
     top: 116px;
     left: 560px;
     font-size: 16px;
-    line-height: 22px;
     color: whitesmoke;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 0 0 10px 10px;
     border-left: 3px ridge slategray;
     border-bottom: 3px ridge slategray;
     border-right: 3px ridge slategray;
+}
+
+.current_status_1 {
+    height: 584px;
+    padding-top: 17px;
+    line-height: 23px;
+}
+
+.current_status_2 {
+    height: 583px;
+    padding-top: 18px;
+    line-height: 24px;
 }
 
 #current_equipments_icon {

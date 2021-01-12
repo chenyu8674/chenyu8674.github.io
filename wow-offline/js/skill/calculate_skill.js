@@ -331,15 +331,6 @@ function calculate_original_hit(attacker) {
 }
 
 /**
- * 计算原始躲闪率
- * @param target
- * @return {number}
- */
-function calculate_original_dodge(target) {
-    return target.dodge_rate * dodge_coefficient / (target.lvl + 5) + target.dodge_chance_final;
-}
-
-/**
  * 计算最终命中率
  * @param attacker
  * @param target
@@ -353,6 +344,15 @@ function calculate_hit(attacker, target) {
         lvl_chance = 30;
     }
     return (hit_chance - dodge_chance + lvl_chance) / 100;
+}
+
+/**
+ * 计算原始躲闪率
+ * @param target
+ * @return {number}
+ */
+function calculate_original_dodge(target) {
+    return target.dodge_rate * dodge_coefficient / (target.lvl + 5) + target.dodge_chance_final;
 }
 
 /**
@@ -407,6 +407,24 @@ function calculate_block(attacker, target) {
         }
         return (calculate_original_block(target) + lvl_chance) / 100;
     }
+}
+
+/**
+ * 计算原始精通数值
+ * @param attacker
+ * @return {number}
+ */
+function calculate_original_mastery(attacker) {
+    return attacker.mastery_rate * mastery_coefficient[attacker.job] / attacker.lvl;
+}
+
+/**
+ * 计算原始坚韧数值
+ * @param attacker
+ * @return {number}
+ */
+function calculate_original_resilient(attacker) {
+    return attacker.resilient_rate * resilient_coefficient / attacker.lvl;
 }
 
 /**

@@ -128,9 +128,12 @@ function create_character(job, exp, name) {
                 break;
         }
     }
+    
     // for (let i = 0; i < MAX_ITEMS - 1; i++) {
     //     push_equipment();
     // }
+    // let equipment = create_target_equipment(new_equipment()["阿什坎迪，兄弟会之剑"]);
+    // current_character.items.push(equipment);
 
     // 刷新状态栏
     calculate_role_1(current_character);
