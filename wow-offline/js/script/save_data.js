@@ -128,7 +128,7 @@ function create_character(job, exp, name) {
                 break;
         }
     }
-    
+
     // for (let i = 0; i < MAX_ITEMS - 1; i++) {
     //     push_equipment();
     // }
