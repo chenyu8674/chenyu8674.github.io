@@ -178,9 +178,6 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.skills = role_status.skills;
     role_battle.money = role_status.money;
 
-    role_battle.max_health_value = Math.round((role_status.max_health_value + role_status.sta * sta_to_health_max) * role_status.health_percent / 100);// 最大生命值
-    role_battle.health_percent = 100;
-
     role_battle.str = Math.round(role_status.str * role_status.str_percent / 100);// 力量
     role_battle.str_percent = 100;
     role_battle.agi = Math.round(role_status.agi * role_status.agi_percent / 100);// 敏捷
@@ -191,6 +188,9 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.int_percent = 100;
     role_battle.spr = Math.round(role_status.spr * role_status.spr_percent / 100);// 精神
     role_battle.spr_percent = 100;
+
+    role_battle.max_health_value = Math.round((role_status.max_health_value + role_battle.sta * sta_to_health_max) * role_status.health_percent / 100);// 最大生命值
+    role_battle.health_percent = 100;
 
     role_battle.attack_power = Math.round((role_status.attack_power + role_battle.str * str_to_attack_power + role_battle.agi * agi_to_attack_power) * role_status.attack_power_percent / 100);// 攻击强度
     role_battle.attack_power_percent = 100;

@@ -34,9 +34,11 @@ function hide_all_view() {
 
 function init_view_icon_click() {
     $("#bar_map").click(function () {
-        if (view_battle.is(":visible") && (view_equipment.is(":visible") || view_shop.is(":visible"))) {
+        if (view_battle.is(":visible") &&
+            (view_equipment.is(":visible") || view_shop.is(":visible") || view_talent.is(":visible"))) {
             hide_view_equipment();
             hide_view_shop();
+            hide_view_talent();
         } else {
             if (is_in_battle()) {
                 return;
