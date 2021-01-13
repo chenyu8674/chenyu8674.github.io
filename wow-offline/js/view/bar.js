@@ -4,6 +4,14 @@ $(document).ready(function () {
     view_bar = $("#view_bar");
     hide_view_bar();
     init_view_icon_click();
+
+    set_bar_info_hover($("#bar_map"), "地图");
+    set_bar_info_hover($("#bar_equipment"), "装备");
+    set_bar_info_hover($("#bar_shop"), "商店");
+    set_bar_info_hover($("#bar_talent"), "天赋");
+    set_bar_info_hover($("#bar_character"), "删除");
+    set_bar_info_hover($("#bar_test"), "测试");
+    set_bar_info_hover($("#bar_setting"), "设置");
 });
 
 function show_view_bar() {
@@ -42,6 +50,7 @@ function init_view_icon_click() {
             hide_view_equipment();
         } else {
             hide_view_shop();
+            hide_view_talent();
             show_view_equipment();
         }
     });
@@ -50,7 +59,17 @@ function init_view_icon_click() {
             hide_view_shop();
         } else {
             hide_view_equipment();
+            hide_view_talent();
             show_view_shop();
+        }
+    });
+    $("#bar_talent").click(function () {
+        if (view_talent.is(":visible")) {
+            hide_view_talent();
+        } else {
+            hide_view_equipment();
+            hide_view_shop();
+            show_view_talent();
         }
     });
     $("#bar_character").click(function () {

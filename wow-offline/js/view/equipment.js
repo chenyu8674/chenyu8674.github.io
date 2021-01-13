@@ -7,6 +7,7 @@ let current_status_tab_2;
 
 function show_view_equipment() {
     view_equipment.show();
+    refresh_current_status();
     refresh_current_items();
 }
 
@@ -31,12 +32,14 @@ $(document).ready(function () {
         current_status_tab_2.attr("class", "status_tab_click");
         current_status_tab_1.attr("class", "status_tab_normal");
     });
-    $("#current_pack_bag").click(function () {
+    let current_pack_bag = $("#current_pack_bag");
+    current_pack_bag.click(function () {
         pack_bag();
         refresh_current_items();
         save_data();
     });
     hide_view_equipment();
+    set_info_hover(current_pack_bag, "为背包物品排序");
 });
 
 /**
@@ -113,8 +116,7 @@ function create_status_line(show, info) {
     }
     line.hover(function () {
         line.css("color", "goldenrod");
-        let view = $(this);
-        show_text_info(info, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+        show_text_info($(this), info);
     }, function () {
         line.css("color", "whitesmoke");
         hide_info();

@@ -35,6 +35,10 @@ body {
     z-index: 70;
 }
 
+#view_talent {
+    z-index: 70;
+}
+
 #view_character {
     background-image: url("../img/job/warrior.jpg");
     z-index: 80;
@@ -53,11 +57,10 @@ body {
 }
 
 #view_bar {
-    position: absolute;
-    top: 800px;
-    left: 666px;
-    height: 60px;
-    width: auto;
+    position:absolute;
+    top: 830px;
+    left:50%;
+    transform:translateY(-50%) translateX(-50%);
     z-index: 90;
 }
 
@@ -65,7 +68,7 @@ body {
     position: relative;
     width: 60px;
     height: 60px;
-    margin: 6px;
+    margin: 4px;
     float: left;
     background-size: 115%;
     background-position: center;
@@ -87,6 +90,10 @@ body {
 
 #bar_shop {
     background-image: url(../img/icon/coin.png);
+}
+
+#bar_talent {
+    background-image: url(../img/icon/inv_jewelry_amulet_01.png);
 }
 
 #bar_character {

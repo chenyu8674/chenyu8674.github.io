@@ -601,9 +601,9 @@ function check_can_equip(equipment) {
         } else if (current_character.job < 40) {
             return is_in_array(type, [31, 32, 33]);
         } else if (current_character.job < 50) {
-            return is_in_array(type, [12, 13, 14, 22, 23, 24, 41, 42]);
+            return is_in_array(type, [11, 12, 13, 14, 22, 23, 24, 41, 42]);
         } else if (current_character.job < 60) {
-            return is_in_array(type, [11, 14, 21, 22, 24, 42]);
+            return is_in_array(type, [11, 12, 14, 21, 22, 24, 42]);
         } else if (current_character.job < 70) {
             return is_in_array(type, [11, 12, 13, 14, 15]);
         } else if (current_character.job < 80) {

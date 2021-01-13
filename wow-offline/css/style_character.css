@@ -153,7 +153,6 @@
     font-size: 30px;
     letter-spacing: 5px;
     font-weight: bolder;
-    color: goldenrod;
     text-shadow: 0 0 5px goldenrod;
 }
 
@@ -268,8 +267,7 @@
     position: absolute;
     width: 185px;
     height: 30px;
-    line-height: 30px;
-    font-size: 28px;
+    font-size: 26px;
     padding-left: 10px;
     padding-right: 10px;
     top: 23px;

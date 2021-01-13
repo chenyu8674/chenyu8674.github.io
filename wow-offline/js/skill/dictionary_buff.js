@@ -17,7 +17,7 @@ function new_buff() {
         buff.Y = 5;
         buff.Z = 5;
         buff.icon = "ability_warrior_offensivestance";
-        buff.detail = "命中率+" + buff.X + "%，物理伤害+" + buff.Y + "%，物理穿透+" + buff.Z;
+        buff.detail = "命中率+" + buff.X + "%，物理伤害+" + buff.Y + "%，物理穿透+" + buff.Z + "%";
         buff.effect = [
             "hit_chance_final+=" + buff.X,
             "damage_physical+=" + buff.Y,

@@ -5,9 +5,6 @@ let character_list = [];
 let current_character;
 let current_index = 0;
 
-let current_health_value = 0;
-let current_shield_value = 0;
-
 $(document).ready(function () {
     if (!window.localStorage) {
         alert("不支持存档，请更换浏览器访问");

@@ -7,7 +7,8 @@ $(document).ready(function () {
     shop_view = $("#shop_view");
     view_shop_items = $("#shop_items");
     hide_view_shop();
-    $("#shop_pack_bag").click(function () {
+    let shop_pack_bag = $("#shop_pack_bag")
+    shop_pack_bag.click(function () {
         pack_bag();
         refresh_shop_items();
         save_data();
@@ -23,11 +24,8 @@ $(document).ready(function () {
         refresh_shop_items();
         save_data();
     });
-    shop_clear_bag.hover(function () {
-        show_shop_info("售出所有精良以下的装备", shop_clear_bag[0].offsetWidth + shop_clear_bag.offset().left, shop_clear_bag[0].offsetHeight + shop_clear_bag.offset().top);
-    }, function () {
-        hide_info();
-    });
+    set_info_hover(shop_pack_bag, "为背包物品排序");
+    set_info_hover(shop_clear_bag, "售出所有精良以下的装备");
 });
 
 function show_view_shop() {
@@ -169,16 +167,12 @@ function create_shop_view() {
         price = Math.round(10 * price * Math.pow(current_character.lvl, 1.5));
         shop_price.html(get_money_html(price, 20));
         shop_item.append(shop_price);
-        shop_item.hover(function () {
-            let html = "<p>" + "获得一件随机" + type + "</p>"
-                + "<p><span style='color: " + color_rare_3 + "'>" + get_type_name_by_rare(3) + "</span>：60%&emsp;"
-                + "<span style='color: " + color_rare_5 + "'>" + get_type_name_by_rare(5) + "</span>：9%</p>"
-                + "<p><span style='color: " + color_rare_4 + "'>" + get_type_name_by_rare(4) + "</span>：30%&emsp;"
-                + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：1%</p>"
-            show_shop_info(html, cell[0].offsetWidth + cell.offset().left, cell[0].offsetHeight + cell.offset().top);
-        }, function () {
-            hide_info();
-        });
+        let html = "<div>" + "获得一件随机" + type + "</div>"
+            + "<div><span style='color: " + color_rare_3 + "'>" + get_type_name_by_rare(3) + "</span>：60%&emsp;"
+            + "<span style='color: " + color_rare_5 + "'>" + get_type_name_by_rare(5) + "</span>：9%</div>"
+            + "<div><span style='color: " + color_rare_4 + "'>" + get_type_name_by_rare(4) + "</span>：30%&emsp;"
+            + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：1%</div>"
+        set_info_hover(shop_item, html, cell);
         // 右键点击事件，购买装备
         shop_item.contextmenu(function (e) {
             e.preventDefault();

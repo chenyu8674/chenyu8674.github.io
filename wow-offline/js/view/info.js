@@ -11,7 +11,6 @@ function hide_info() {
  */
 function show_map_info(map_info) {
     let info = $("<div></div>");
-    info.attr('id', 'map_info');
     info.addClass("info_window");
     info.css("left", 1600 * map_info.x / 100 + 25 + "px");
     info.css("top", 900 * map_info.y / 100 + 25 + "px");
@@ -48,9 +47,7 @@ function show_map_info(map_info) {
 function show_heal_info() {
     $(".info_window").remove();
     let info = $("<div></div>");
-    info.attr('id', 'self_heal_info');
     info.addClass("info_window");
-    info.css("position", "absolute");
     info.css("left", "57px");
     info.css("top", "610px");
     info.append("<p style='color:goldenrod'>食用补给</p>");
@@ -66,9 +63,7 @@ function show_heal_info() {
 function show_attack_info() {
     $(".info_window").remove();
     let info = $("<div></div>");
-    info.attr('id', 'attack_next_info');
     info.addClass("info_window");
-    info.css("position", "absolute");
     info.css("right", "57px");
     info.css("top", "610px");
     info.append("<p style='color:goldenrod'>前进！</p>");
@@ -82,9 +77,7 @@ function show_attack_info() {
 function show_player_info() {
     $(".info_window").remove();
     let info = $("<div></div>");
-    info.attr('id', 'player_info');
     info.addClass("info_window");
-    info.css("position", "absolute");
     info.css("left", player_x + 1.5 + "%");
     info.css("top", player_y + 1.5 + "%");
     info.append("<p>" + current_character.name + "</p>");
@@ -98,9 +91,7 @@ function show_player_info() {
 function show_monster_info(index) {
     $(".info_window").remove();
     let info = $("<div></div>");
-    info.attr('id', 'monster_info');
     info.addClass("info_window");
-    info.css("position", "absolute");
     let monster = map_monster_list[index];
     info.css("left", monster.x + 1.5 + "%");
     info.css("top", monster.y + 1.5 + "%");
@@ -116,9 +107,7 @@ function show_monster_info(index) {
 function show_equipment_info(equipment, x, y) {
     $(".info_window").remove();
     let info = $("<div></div>");
-    info.attr('id', 'equipment_info');
     info.addClass("info_window");
-    info.css("position", "fixed");
     info.css("left", x + "px");
     info.css("top", y + "px");
     let rare_color = eval("color_rare_" + equipment.rare);
@@ -152,30 +141,59 @@ function show_equipment_info(equipment, x, y) {
     }
 }
 
-/**
- * 显示商店介绍
- */
-function show_shop_info(html, x, y) {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.attr('id', 'equipment_info');
-    info.addClass("info_window");
-    info.css("position", "fixed");
-    info.css("font-size", "15px");
-    info.css("left", x + "px");
-    info.css("top", y + "px");
-    info.append(html);
-    $("body").append(info);
+function set_bar_info_hover(view, html) {
+    view.hover(function () {
+        show_bar_info(view, html);
+    }, function () {
+        hide_info();
+    });
 }
 
 /**
  * 显示文字介绍
  */
-function show_text_info(html, x, y) {
+function show_bar_info(view, html) {
+    let x = view[0].offsetWidth + view.offset().left;
+    let y = view[0].offsetHeight + view.offset().top;
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
-    info.css("position", "fixed");
+    info.css("font-size", "15px");
+    info.css("letter-spacing", "2px");
+    info.css("line-height", "20px");
+    info.css("margin-top", "-3px");
+    info.css("left", (x - 66) + "px");
+    info.css("top", y + "px");
+    info.css("width", "54px");
+    info.css("text-align", "center");
+    info.css("padding", "5px 3px 6px 3px");
+    info.css("border", "3px solid gray");
+    info.css("border-radius", "6px");
+    info.css("background-color", "rgba(0, 0, 0, 0.6)");
+    info.append(html);
+    $("body").append(info);
+}
+
+function set_info_hover(view, html, item) {
+    if (item == null) {
+        item = view;
+    }
+    view.hover(function () {
+        show_text_info(item, html);
+    }, function () {
+        hide_info();
+    });
+}
+
+/**
+ * 显示文字介绍
+ */
+function show_text_info(view, html) {
+    let x = view[0].offsetWidth + view.offset().left;
+    let y = view[0].offsetHeight + view.offset().top;
+    $(".info_window").remove();
+    let info = $("<div></div>");
+    info.addClass("info_window");
     info.css("font-size", "15px");
     info.css("padding-right", "10px");
     info.css("line-height", "25px");
