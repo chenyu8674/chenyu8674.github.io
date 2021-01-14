@@ -4,13 +4,11 @@ let dictionary_affix_suffix_length = 0;
 
 $(document).ready(function () {
     dictionary_affix_suffix = new_affix_suffix();
-    for (let affix in dictionary_affix_suffix) {
-        dictionary_affix_suffix_length++;
-    }
+    dictionary_affix_suffix_length = dictionary_affix_suffix.length;
 })
 
 function new_affix_suffix() {
-    let affix = {};
+    let affix = [];
 
     affix[0] = "冲击";
     affix["冲击"] = function (lvl, rare, multiple) {return ["attack_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
@@ -27,6 +25,10 @@ function new_affix_suffix() {
     affix["精准"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     affix[6] = "灵巧";
     affix["灵巧"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
+    affix[28] = "工匠";
+    affix["工匠"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
+    affix[29] = "坚韧";
+    affix["坚韧"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
     affix[7] = "锋利";
     affix["锋利"] = function (lvl, rare, multiple) {return ["damage_physical+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
@@ -71,7 +73,7 @@ function new_affix_suffix() {
     affix[27] = "黎明";
     affix["黎明"] = function (lvl, rare, multiple) {return ["res_shadow+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
 
-    affix[28] = "坚守";
+    affix[100] = "坚守";
     affix["坚守"] = function (lvl, rare, multiple) {return ["block_rate+=" + get_effect_value(0.6, lvl, rare, multiple), "block_value+=" + get_effect_value(0.6, lvl, rare, multiple)]}
     return affix;
 }

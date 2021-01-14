@@ -89,8 +89,8 @@ let critical_coefficient = 2.5;// 暴击等级转化系数
 
 let block_coefficient = 2.5;// 格挡等级转化系数
 
-let resilient_coefficient = 2;// 韧性等级转化系数（暴击）
-let resilient_multiple = 1;// 韧性等级转化系数（dot）
+let resilient_coefficient = 4;// 韧性等级转化系数（dot）
+let resilient_multiple = 1.25;// 韧性等级转化系数（暴击）
 
 let mastery_per_lvl = 10;// 每级附加精通等级
 let mastery_coefficient = [];// 精通等级转化系数

@@ -40,6 +40,10 @@ function new_attribute_name() {
     name.block_chance_final = "%格挡率";
     name.block_value = "格挡值";
     name.block_value_percent = "%格挡值";
+    name.mastery_rate = "精通等级";
+    name.mastery_rate_percent = "%精通等级";
+    name.resilient_rate = "韧性等级";
+    name.resilient_rate_percent = "%韧性等级";
     name.armor_attack = "攻击护甲";
     name.armor_attack_percent = "%攻击护甲";
     name.armor_magic = "法术护甲";

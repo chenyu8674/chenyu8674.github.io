@@ -140,6 +140,14 @@ function create_character(job, exp, name) {
 }
 
 /**
+ * 添加测试装备
+ */
+function push_equipment() {
+    let model = create_random_equipment_model(current_character.lvl, 6, null, 1);
+    current_character.items.push(model);
+}
+
+/**
  * 获得经验
  * @param exp
  * @return {*}

@@ -666,11 +666,3 @@ function get_equipment_price(equipment) {
     base_price *= Math.pow(get_multiple_by_rare(equipment.rare), 4);
     return Math.round(base_price);
 }
-
-/**
- * 添加测试装备
- */
-function push_equipment() {
-    let model = create_random_equipment_model(MAX_LVL + 20, 5);
-    current_character.items.push(model);
-}

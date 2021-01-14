@@ -128,7 +128,19 @@ function show_equipment_info(equipment, x, y) {
             text = "+" + text;
         }
         text = text.replace(" %", "% ");
-        info.append("<p>" + text + "</p>");
+        let color = "";
+        if (is_in_array(equipment.pos, [1, 3, 4, 5, 8, 9, 10, 11, 12]) && i < 2) {
+            color = " style='color:lightblue'"
+        } else if (equipment.pos === 15) {
+            if ((text.indexOf(dictionary_attribute_name.attack_power) > 0 || text.indexOf(dictionary_attribute_name.magic_power) > 0 || text.indexOf(dictionary_attribute_name.heal_power) > 0) && i < 2) {
+                color = " style='color:lightblue'"
+            }
+        } else if (equipment.pos === 16) {
+            if (equipment.type === 41 && i < 2) {
+                color = " style='color:lightblue'"
+            }
+        }
+        info.append("<p" + color + ">" + text + "</p>");
     }
     can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
