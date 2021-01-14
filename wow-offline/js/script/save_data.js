@@ -82,7 +82,7 @@ function create_character(job, exp, name) {
     // }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
-    // current_character.skills.push(dictionary_equipment_skill.fire_of_sulfuras());
+    current_character.skills.push(dictionary_equipment_skill.fire_of_sulfuras());
     current_character.buffs = [dictionary_buff[job]];
     current_character.debuffs = [];
     current_character.dots = [];
@@ -94,34 +94,34 @@ function create_character(job, exp, name) {
     }
     if (exp === 0) {
         // 新手装备
-        current_character.equipments.push(create_target_equipment(new_equipment()["新手衬衫"]));
+        current_character.equipments.push("新手衬衫");
         switch (job) {
             case 11:
             case 23:
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练双手剑"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
+                current_character.equipments.push("训练双手剑");
+                current_character.equipments.push("训练胸铠");
                 break;
             case 12:
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手剑"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手剑"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
+                current_character.equipments.push("训练单手剑");
+                current_character.equipments.push("训练单手剑");
+                current_character.equipments.push("训练胸铠");
                 break;
             case 13:
             case 22:
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手剑"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练盾牌"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
+                current_character.equipments.push("训练单手剑");
+                current_character.equipments.push("训练盾牌");
+                current_character.equipments.push("训练胸铠");
                 break;
             case 21:
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练单手锤"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练盾牌"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练胸铠"]));
+                current_character.equipments.push("训练单手锤");
+                current_character.equipments.push("训练盾牌");
+                current_character.equipments.push("训练胸铠");
                 break;
             case 31:
             case 32:
             case 33:
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练之弓"]));
-                current_character.equipments.push(create_target_equipment(new_equipment()["训练链甲"]));
+                current_character.equipments.push("训练之弓");
+                current_character.equipments.push("训练链甲");
                 break;
         }
     }
@@ -129,7 +129,7 @@ function create_character(job, exp, name) {
     // for (let i = 0; i < MAX_ITEMS - 1; i++) {
     //     push_equipment();
     // }
-    // let equipment = create_target_equipment(new_equipment()["阿什坎迪，兄弟会之剑"]);
+    // let equipment = "阿什坎迪，兄弟会之剑";
     // current_character.items.push(equipment);
 
     // 刷新状态栏

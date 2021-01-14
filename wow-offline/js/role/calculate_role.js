@@ -99,6 +99,10 @@ function refresh_attribute_equipments(role_status) {
     if (battle_equipments != null && battle_equipments.length > 0) {
         for (let i = 0; i < battle_equipments.length; i++) {
             let equipments = battle_equipments[i];
+            if (typeof equipments === "string") {
+                equipments = create_static_equipment_model(new_equipment()[equipments]);
+            }
+            equipments = create_equipment_by_model(equipments);
             equipments = equipments.effect;
             for (let j = 0; j < equipments.length; j++) {
                 let equipment = equipments[j];

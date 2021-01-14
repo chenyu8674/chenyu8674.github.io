@@ -110,6 +110,7 @@ function show_equipment_info(equipment, x, y) {
     info.addClass("info_window");
     info.css("left", x + "px");
     info.css("top", y + "px");
+    equipment = create_equipment_by_model(equipment);
     let rare_color = eval("color_rare_" + equipment.rare);
     info.append("<p style='font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</p>");
     info.append("<p style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</p>");

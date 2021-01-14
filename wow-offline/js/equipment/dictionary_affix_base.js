@@ -60,15 +60,15 @@ function new_affix() {
     affix[15111] = affix[15112] = affix[15113] = affix[15114] = affix[15115] =
         function (lvl, rare, multiple) {
             return [
-                "attack_power+=" + (5 + get_effect_value(5, lvl, rare, multiple))
+                "attack_power+=" + (WEAPON_ATTACK_ + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple))
             ]
         }
     // 单手法术武器
     affix[15211] = affix[15212] = affix[15213] = affix[15214] = affix[15215] =
         function (lvl, rare, multiple) {
             return [
-                "magic_power+=" + (5 + get_effect_value(5, lvl, rare, multiple)),
-                "heal_power+=" + (5 + get_effect_value(5, lvl, rare, multiple))
+                "magic_power+=" + (WEAPON_ATTACK_ + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple)),
+                "heal_power+=" + (WEAPON_ATTACK_ + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple))
             ]
         }
     // 双手攻击武器
@@ -76,15 +76,15 @@ function new_affix() {
         affix[15131] = affix[15231] = affix[15132] = affix[15232] = affix[15133] = affix[15233] =
             function (lvl, rare, multiple) {
                 return [
-                    "attack_power+=" + (10 + get_effect_value(5, lvl, rare, multiple))
+                    "attack_power+=" + (WEAPON_ATTACK_ * 2 + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple))
                 ]
             }
     // 双手法术武器
     affix[15222] =
         function (lvl, rare, multiple) {
             return [
-                "magic_power+=" + (10 + get_effect_value(5, lvl, rare, multiple)),
-                "heal_power+=" + (10 + get_effect_value(5, lvl, rare, multiple))
+                "magic_power+=" + (WEAPON_ATTACK_ * 2 + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple)),
+                "heal_power+=" + (WEAPON_ATTACK_ * 2 + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple))
             ]
         }
     // 盾牌

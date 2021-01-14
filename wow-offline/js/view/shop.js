@@ -17,7 +17,11 @@ $(document).ready(function () {
     shop_clear_bag.click(function () {
         let items = current_character.items;
         for (let i = 0; i < MAX_ITEMS; i++) {
-            if (items[i] != null && items[i].rare < 4) {
+            let item = items[i];
+            if (typeof item === "string") {
+                item = create_static_equipment_model(new_equipment()[item]);
+            }
+            if (item != null && item.rare < 4) {
                 sell_equipment(i, true);
             }
         }
@@ -164,7 +168,11 @@ function create_shop_view() {
         shop_item.append(shop_name);
         let shop_price = $("<div></div>");
         shop_price.addClass("shop_price");
-        price = Math.round(10 * price * Math.pow(current_character.lvl, 1.5));
+        price = Math.round(price * Math.pow(current_character.lvl + 5, 2.2064));
+        if (price > 1000) {
+            // 10银以上时铜币为0
+            price = Math.floor(price / 100) * 100;
+        }
         shop_price.html(get_money_html(price, 20));
         shop_item.append(shop_price);
         let html = "<div>" + "获得一件随机" + type + "</div>"
@@ -204,11 +212,11 @@ function buy_equipment(pos, price) {
     } else {
         rare = 6;// 1%
     }
-    let equipment = create_random_equipment(current_character.lvl, rare, pos);
+    let model = create_random_equipment_model(current_character.lvl, rare, pos);
     let items = current_character.items;
     for (let k = 0; k < MAX_ITEMS; k++) {
         if (items[k] == null) {
-            items[k] = equipment;
+            items[k] = model;
             break;
         }
     }
@@ -229,6 +237,10 @@ function refresh_shop_items() {
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
+            if (typeof item === "string") {
+                // 生成固定装备model
+                item = create_static_equipment_model(new_equipment()[item]);
+            }
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
             cell.css("box-shadow", "0 0 10px inset " + rare_color);
@@ -259,6 +271,10 @@ function sell_equipment(index, not_save) {
     hide_info();
     let items = current_character.items;
     let item = items[index];
+    if (typeof item === "string") {
+        // 生成固定装备model
+        item = create_static_equipment_model(new_equipment()[item]);
+    }
     current_character.money += get_equipment_price(item);
     items[index] = null;
     refresh_shop_items();

@@ -18,6 +18,13 @@ body {
     display: none;
 }
 
+#timestamp {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: rgba(255, 255, 255, 0.1);
+}
+
 #view_map {
     background-image: url(../img/map.jpg);
     z-index: 50;
@@ -57,10 +64,10 @@ body {
 }
 
 #view_bar {
-    position:absolute;
+    position: absolute;
     top: 830px;
-    left:50%;
-    transform:translateY(-50%) translateX(-50%);
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
     z-index: 90;
 }
 

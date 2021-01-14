@@ -24,6 +24,10 @@ let ARMOR_MAGIC_2 = 6;
 let ARMOR_MAGIC_3 = 4;
 let ARMOR_MAGIC_4 = 2;
 
+/** 武器参数 **/
+
+let WEAPON_ATTACK_ = 8;
+
 /** 系统设置 **/
 
 let show_hit_percent_in_log = false;// 输出命中几率

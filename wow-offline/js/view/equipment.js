@@ -53,6 +53,12 @@ function pack_bag() {
         if (b == null) {
             return -1;
         }
+        if (typeof a === "string") {
+            a = create_static_equipment_model(new_equipment()[a]);
+        }
+        if (typeof b === "string") {
+            b = create_static_equipment_model(new_equipment()[b]);
+        }
         if (a.pos !== b.pos) {
             return a.pos - b.pos;
         }
@@ -308,6 +314,11 @@ function refresh_current_equipment() {
     let weapon_count = 0;
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
+        let equipment_name;
+        if (typeof equipment === "string") {
+            equipment_name = equipment;
+            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        }
         let pos_new = equipment.pos;
         let rare = equipment.rare;
         let icon = equipment.icon;
@@ -340,7 +351,7 @@ function refresh_current_equipment() {
         // 右键点击事件，卸下装备
         cell.contextmenu(function (e) {
             e.preventDefault();
-            take_off_equipment(equipment);
+            take_off_equipment(equipment_name != null ? equipment_name : equipment);
         });
     }
     let off_hand = $("#current_equipments_18");
@@ -365,6 +376,10 @@ function refresh_current_items() {
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
+            if (typeof item === "string") {
+                // 生成固定装备model
+                item = create_static_equipment_model(new_equipment()[item]);
+            }
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
             cell.css("box-shadow", "0 0 10px inset " + rare_color);
@@ -470,6 +485,11 @@ function equip_equipment(index) {
     }
     let items = current_character.items;
     let item = items[index];
+    let item_name;
+    if (typeof item === "string") {
+        item_name = item;
+        item = create_static_equipment_model(new_equipment()[item]);
+    }
     if (current_character.lvl < item.c_lvl) {
         return;// 等级不够
     }
@@ -493,65 +513,90 @@ function equip_equipment(index) {
         if (count === 2) {
             for (let j = 0; j < equipments.length; j++) {
                 let equipment = equipments[j];
+                let equipment_name;
+                if (typeof equipment === "string") {
+                    equipment_name = equipment;
+                    equipment = create_static_equipment_model(new_equipment()[equipment]);
+                }
                 if (equipment.pos === item.pos) {
-                    equipment_exchange_1 = equipment;
+                    equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                     equipments[j] = item;
                     break;
                 }
             }
         } else {
-            equipments.push(item);
+            equipments.push(item_name != null ? item_name : item);
         }
     } else if (item.pos === 15 && !has_equip_two_hand_weapon() && is_in_array(item.type, [11, 12, 13, 14, 15]) && can_equip_two_weapons() && get_equipment_count_by_pos(15) === 1 && get_equipment_count_by_pos(16) === 0) {
         // 双持职业副手为空时装备单手武器
-        equipments.push(item);
+        equipments.push(item_name != null ? item_name : item);
     } else if (item.pos === 16 && get_equipment_count_by_pos(15) === 2) {
         // 双持时装备副手
         for (let j = equipments.length - 1; j >= 0; j--) {
             let equipment = equipments[j];
+            let equipment_name;
+            if (typeof equipment === "string") {
+                equipment_name = equipment;
+                equipment = create_static_equipment_model(new_equipment()[equipment]);
+            }
             if (equipment.pos === 15) {
-                equipment_exchange_1 = equipment;
+                equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 equipments.splice(j, 1);
                 break;
             }
         }
-        equipments.push(item);
+        equipments.push(item_name != null ? item_name : item);
     } else if (item.pos === 15 && is_in_array(item.type, [21, 22, 23, 24, 25, 31, 32, 33])) {
         // 装备双手武器
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
+            let equipment_name;
+            if (typeof equipment === "string") {
+                equipment_name = equipment;
+                equipment = create_static_equipment_model(new_equipment()[equipment]);
+            }
             if (equipment.pos === 15 || equipment.pos === 16) {
                 if (equipment_exchange_1 == null) {
-                    equipment_exchange_1 = equipment;
+                    equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 } else {
-                    equipment_exchange_2 = equipment;
+                    equipment_exchange_2 = equipment_name != null ? equipment_name : equipment;
                 }
                 equipments.splice(j, 1);
                 j--;
             }
         }
-        equipments.push(item);
+        equipments.push(item_name != null ? item_name : item);
     } else if (item.pos === 16 && get_equipment_count_by_pos(15) === 1 && has_equip_two_hand_weapon()) {
         // 装备双手武器时装备副手
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
+            let equipment_name;
+            if (typeof equipment === "string") {
+                equipment_name = equipment;
+                equipment = create_static_equipment_model(new_equipment()[equipment]);
+            }
             if (equipment.pos === 15) {
-                equipment_exchange_1 = equipment;
+                equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 equipments.splice(j, 1);
                 break;
             }
         }
-        equipments.push(item);
+        equipments.push(item_name != null ? item_name : item);
     } else {
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
+            let equipment_name;
+            if (typeof equipment === "string") {
+                equipment_name = equipment;
+                equipment = create_static_equipment_model(new_equipment()[equipment]);
+            }
             if (equipment.pos === item.pos) {
-                equipment_exchange_1 = equipment;
+                equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 equipments.splice(j, 1);
                 break;
             }
         }
-        equipments.push(item);
+        equipments.push(item_name != null ? item_name : item);
     }
 
     items[index] = null;
@@ -582,9 +627,14 @@ function take_off_equipment(equipment) {
         return;// 背包已满
     }
     hide_info();
+    let equipment_name;
+    if (typeof equipment === "string") {
+        equipment_name = equipment;
+        equipment = create_static_equipment_model(new_equipment()[equipment]);
+    }
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
-        if (equipments[j] === equipment) {
+        if (equipments[j] === (equipment_name != null ? equipment_name : equipment)) {
             equipments.splice(j, 1);
             break;
         }
@@ -592,7 +642,7 @@ function take_off_equipment(equipment) {
     let items = current_character.items;
     for (let k = 0; k < MAX_ITEMS; k++) {
         if (items[k] == null) {
-            items[k] = equipment;
+            items[k] = equipment_name != null ? equipment_name : equipment;
             break;
         }
     }

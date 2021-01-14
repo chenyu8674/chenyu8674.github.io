@@ -217,7 +217,7 @@ function add_random_monster() {
     }
     let monster_base_list;
     if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
-    // if (get_monster_count_by_rare(4) === 0) {
+        // if (get_monster_count_by_rare(4) === 0) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
     } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || (kill_count > 0 && Math.random() < RARE_PERCENT / 100))) {
@@ -520,8 +520,8 @@ function drop_random_equipment(monster) {
             break;
     }
     if (is_drop) {
-        let equipment = create_random_equipment(lvl);
-        put_equipment_to_items(equipment);
+        let model = create_random_equipment_model(lvl);
+        put_equipment_to_items(model);
     }
 }
 
@@ -537,7 +537,7 @@ function drop_raid_equipment(monster) {
         drop = drop.split("|");
         drop_rate -= Number(drop[1]);
         if (drop_rate <= 0) {
-            let equipment = create_target_equipment(new_equipment()[drop[0]]);
+            let equipment = drop[0];
             put_equipment_to_items(equipment);
             return;
         }
@@ -547,22 +547,27 @@ function drop_raid_equipment(monster) {
 
 /**
  * 将装备拾入背包
- * @param equipment
+ * @param model
  */
-function put_equipment_to_items(equipment) {
+function put_equipment_to_items(model) {
     let items = current_character.items;
     for (let i = 0; i < MAX_ITEMS; i++) {
         if (items[i] == null) {
-            items[i] = equipment;
-            let rare_color = eval("color_rare_" + equipment.rare);
+            items[i] = model;
+            if (typeof model === "string") {
+                // 生成固定装备model
+                model = create_static_equipment_model(new_equipment()[model]);
+            }
+            model = create_equipment_by_model(model);
+            let rare_color = eval("color_rare_" + model.rare);
             let id = "item" + new Date().getTime();
-            battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + equipment.name + "]</span>");
+            battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + model.name + "]</span>");
             refresh_current_status();
             setTimeout(function () {
                 let view_label = $("#" + id);
                 view_label.hover(function () {
                     let view = $(this);
-                    show_equipment_info(equipment, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                    show_equipment_info(model, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
                 }, function () {
                     hide_info();
                 });
