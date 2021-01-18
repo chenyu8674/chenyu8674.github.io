@@ -53,12 +53,12 @@ function new_player_skill() {
                 return false;
             } else {
                 // 未命中则触发压制
+                battle_log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
                 return true;
             }
         };
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            battle_log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
             return skill_cast_result(damage_obj, [], []);
         };

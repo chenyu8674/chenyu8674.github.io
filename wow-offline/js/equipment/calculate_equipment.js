@@ -107,14 +107,47 @@ function create_random_equipment_model(lvl, rare, pos, inclination, type) {
     if (type == null) {
         if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
             // 布皮锁板装备
+            type = 100 * Math.random();
             if (lvl < 10) {
-                type = 1;
+                if (type <= 40) {
+                    type = 1;
+                } else if (type <= 70) {
+                    type = 2;
+                } else if (type <= 90) {
+                    type = 3;
+                } else {
+                    type = 4;
+                }
             } else if (lvl < 20) {
-                type = Math.ceil(Math.random() * 2);
+                if (type <= 35) {
+                    type = 1;
+                } else if (type <= 60) {
+                    type = 2;
+                } else if (type <= 85) {
+                    type = 3;
+                } else {
+                    type = 4;
+                }
             } else if (lvl < 30) {
-                type = Math.ceil(Math.random() * 3);
+                if (type <= 30) {
+                    type = 1;
+                } else if (type <= 55) {
+                    type = 2;
+                } else if (type <= 80) {
+                    type = 3;
+                } else {
+                    type = 4;
+                }
             } else {
-                type = Math.ceil(Math.random() * 4);
+                if (type <= 25) {
+                    type = 1;
+                } else if (type <= 50) {
+                    type = 2;
+                } else if (type <= 75) {
+                    type = 3;
+                } else {
+                    type = 4;
+                }
             }
             // type = 4;
         } else if (pos === 2 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
@@ -146,13 +179,13 @@ function create_random_equipment_model(lvl, rare, pos, inclination, type) {
     model.effect = [];
     // 生成随机前缀
     let affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
-    while (dictionary_affix_prefix[affix_prefix] == null) {
+    while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
         affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
     }
     // 生成随机后缀，双手/远程武器不会有格挡词缀
     let affix_suffix_length = (model.type > 20 && model.type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
     let affix_suffix = Math.floor(Math.random() * affix_suffix_length);
-    while (dictionary_affix_suffix[affix_suffix] == null) {
+    while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {
         affix_suffix = Math.floor(Math.random() * affix_suffix_length);
     }
     model.affix = [multiple, pos * 1000 + inclination * 100 + type, affix_prefix, affix_suffix];
@@ -505,7 +538,7 @@ function create_equipment_by_model(model) {
         // 装备前缀属性
         let affix_prefix_index = model.affix[2];
         if (affix_prefix_index != null) {
-            let affix_prefix_name = dictionary_affix_prefix[affix_prefix_index];
+            let affix_prefix_name = dictionary_affix_prefix[affix_prefix_index](true);
             equipment_name.push(affix_prefix_name + "之");
             let affix_prefix_func = dictionary_affix_prefix[affix_prefix_name];
             let affix_prefix_effect = affix_prefix_func(equipment.e_lvl, equipment.rare, multiple);
@@ -514,7 +547,7 @@ function create_equipment_by_model(model) {
         // 装备后缀属性
         let affix_suffix_index = model.affix[3];
         if (affix_suffix_index != null) {
-            let affix_suffix_name = dictionary_affix_suffix[affix_suffix_index];
+            let affix_suffix_name = dictionary_affix_suffix[affix_suffix_index](true);
             equipment_name.push(affix_suffix_name + "的");
             let affix_suffix_func = dictionary_affix_suffix[affix_suffix_name];
             let affix_suffix_effect = affix_suffix_func(equipment.e_lvl, equipment.rare, multiple);
