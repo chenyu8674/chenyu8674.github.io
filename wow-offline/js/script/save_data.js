@@ -92,6 +92,9 @@ function create_character(job, exp, name) {
     if (is_in_local_mode()) {
         current_character.money = 99999999;
     }
+    if (current_character.name === "GHOST") {
+        current_character.money = 1000000;
+    }
     if (exp === 0) {
         // 新手装备
         current_character.equipments.push("新手衬衫");
