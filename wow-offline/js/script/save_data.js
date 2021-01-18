@@ -132,8 +132,8 @@ function create_character(job, exp, name) {
     // for (let i = 0; i < MAX_ITEMS - 1; i++) {
     //     push_equipment();
     // }
-    // let equipment = "阿什坎迪，兄弟会之剑";
-    // current_character.items.push(equipment);
+    let equipment = "萨弗拉斯，炎魔拉格纳罗斯之手";
+    current_character.items.push(equipment);
 
     // 刷新状态栏
     calculate_role_1(current_character);

@@ -229,6 +229,7 @@ function create_static_equipment_model(base_model) {
     model.effect = base_model.effect;
     model.icon = base_model.icon;
     model.detail = base_model.detail;
+    model.skill = base_model.skill;
     model.affix = affix;
     return model;
 }
@@ -527,6 +528,9 @@ function create_equipment_by_model(model) {
     equipment.e_lvl = model.e_lvl;
     equipment.detail = model.detail;
     equipment.effect = model.effect == null ? [] : model.effect;
+    if (model.skill != null) {
+        equipment.skill = eval("dictionary_equipment_skill." + model.skill + "()");
+    }
     if (model.affix != null) {
         // 装备属性系数
         let multiple = model.affix[0];

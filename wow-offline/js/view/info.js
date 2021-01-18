@@ -110,12 +110,16 @@ function show_equipment_info(equipment, x, y) {
     info.addClass("info_window");
     info.css("left", x + "px");
     info.css("top", y + "px");
+    info.css("max-width", "250px");
     equipment = create_equipment_by_model(equipment);
     let rare_color = eval("color_rare_" + equipment.rare);
+    // 装备名称
     info.append("<p style='font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</p>");
+    // 物品等级
     info.append("<p style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</p>");
     let can_equip = check_can_equip(equipment);
     let can_not = can_equip ? "" : " style='color:red'";
+    // 装备品质+类型
     info.append("<p" + can_not + ">" + get_type_name_by_rare(equipment.rare) + "的 " + equipment.type_name + "</p>");
     for (let i = 0; i < equipment.effect.length; i++) {
         let effect = equipment.effect[i];
@@ -140,13 +144,22 @@ function show_equipment_info(equipment, x, y) {
                 color = " style='color:lightblue'"
             }
         }
+        // 装备属性
         info.append("<p" + color + ">" + text + "</p>");
     }
     can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
+    // 需要等级
     info.append("<p" + can_not + ">需要等级：" + equipment.c_lvl + "</p>");
+    if (equipment.skill != null) {
+        // 附加技能
+        let skill = equipment.skill;
+        info.append("<p style='color:" + color_rare_3 + "'>击中时可能：" + skill.detail + "</p>");
+    }
     if (equipment.detail != null) {
+        // 文字介绍
         info.append("<p style='color:goldenrod'>" + equipment.detail + "</p>");
     }
+    // 售价
     info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
     $("body").append(info);
     if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {

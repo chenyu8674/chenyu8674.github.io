@@ -53,12 +53,13 @@ element_shadow = 70;// 暗影
 element_chaos = 99;// 混乱
 
 /** 阶级对应颜色 **/
-color_rare_6 = "darkorange";
-color_rare_5 = "rebeccapurple";
-color_rare_4 = "dodgerblue";
-color_rare_3 = "forestgreen";
-color_rare_2 = "whitesmoke";
-color_rare_1 = "darkgray";
+color_rare_7 = "#e5cc80";
+color_rare_6 = "#ff8000";
+color_rare_5 = "#9345ff";
+color_rare_4 = "#0070dd";
+color_rare_3 = "#1eff00";
+color_rare_2 = "#ffffff";
+color_rare_1 = "#9d9d9d";
 
 /** 主属性对其他属性的转化值 **/
 

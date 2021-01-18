@@ -10,7 +10,7 @@ function new_player_skill() {
     skill.warrior_1_1 = function () {
         let skill = {};
         skill.id = 111;// Id
-        skill.name = "致死打击";// 名称 10低 20中 30高 50特殊 99强制
+        skill.name = "致死打击";// 名称
         skill.X = 100;
         skill.icon = "ability_warrior_savageblow";
         skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
@@ -36,7 +36,7 @@ function new_player_skill() {
         skill.id = 112;// Id
         skill.name = "压制";// 名称
         skill.cooldown = 3;// 冷却
-        skill.priority = 30;// 优先级
+        skill.priority = 30;// 优先级 0触发 10低 20中 30高 50特殊 99强制
         skill.X = 120;
         skill.Y = 25;
         skill.icon = "ability_meleedamage";
@@ -440,7 +440,7 @@ function new_player_skill() {
         skill.X = 80;
         skill.Y = 30;
         skill.icon = "spell_fire_selfdestruct";
-        skill.detail = "使目标落入火焰陷阱，造成" + skill.X + "%攻击强度的火焰伤害，并使目标每回合受到" + skill.Y + "%攻击强度的火焰伤害，持续" + dictionary_dot.hunter_3().T + "回合。";
+        skill.detail = "使目标落入火焰陷阱，造成" + skill.X + "%攻击强度的火焰伤害，并使其每回合受到" + skill.Y + "%攻击强度的火焰伤害，持续" + dictionary_dot.hunter_3().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj_x = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);

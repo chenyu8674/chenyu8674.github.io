@@ -1,7 +1,7 @@
 /** 装备基础属性 **/
-let dictionary_monster_base;
+let dictionary_monster;
 $(document).ready(function () {
-    dictionary_monster_base = new_monster();
+    dictionary_monster = new_monster();
 });
 
 function new_monster() {

@@ -64,13 +64,10 @@ function sort_role_skills(role) {
 function turn_loop() {
     battle_log("");
     battle_log("第 " + battle_turn + " 回合");
-    // 技能排序
-    sort_role_skills(role_base_1);
-    sort_role_skills(role_base_2);
-    // 更新战斗状态
+    // 更新角色属性状态
     calculate_role_1(role_base_1);
     calculate_role_2(role_base_2);
-    // 设置生命值
+    // 更新生命/护盾值
     role_battle_1.current_health_value = role_health_1;
     role_battle_1.current_shield_value = role_shield_1;
     if (battle_turn === 1) {
@@ -96,50 +93,76 @@ function turn_loop() {
             console.log(role_battle_2);
         }
     }
-    // 计算dot伤害
-    refresh_dots(role_battle_1);
-    refresh_dots(role_battle_2);
-    // 判断敌我施放技能
-    let skill_1, skill_2;
-    for (let i = 0; i < role_battle_1.skills.length; i++) {
-        let skill = role_battle_1.skills[i];
-        if (skill.attempt != null) {
-            if (skill.attempt(role_battle_1, role_battle_2)) {
-                skill_1 = skill;
-                break;
-            }
-        } else if (!skill_in_cd(role_battle_1, skill)) {
-            skill_1 = skill;
-            break;
-        }
-    }
-    for (let i = 0; i < role_battle_2.skills.length; i++) {
-        let skill = role_battle_2.skills[i];
-        if (skill.attempt != null) {
-            if (skill.attempt(role_battle_2, role_battle_1)) {
-                skill_2 = skill;
-                break;
-            }
-        } else if (!skill_in_cd(role_battle_2, skill)) {
-            skill_2 = skill;
-            break;
-        }
-    }
-    // 判断出手顺序
+    // 记录胜负
     let winner = 0;
-    if (Math.random() < role_battle_1.agi / (role_battle_1.agi + role_battle_2.agi)) {
-        if (do_attack(role_battle_1, skill_1, role_battle_2)) {
+    // 判断出手顺序
+    let role_1_first = Math.random() < role_battle_1.agi / (role_battle_1.agi + role_battle_2.agi);
+    // 计算dot伤害
+    if (role_1_first) {
+        if (winner === 0 && refresh_dots(role_battle_2)) {
             winner = 1;
         }
-        if (winner === 0 && do_attack(role_battle_2, skill_2, role_battle_1)) {
+        if (winner === 0 && refresh_dots(role_battle_1)) {
             winner = 2;
         }
     } else {
-        if (do_attack(role_battle_2, skill_2, role_battle_1)) {
+        if (winner === 0 && refresh_dots(role_battle_1)) {
             winner = 2;
         }
-        if (winner === 0 && do_attack(role_battle_1, skill_1, role_battle_2)) {
+        if (winner === 0 && refresh_dots(role_battle_2)) {
             winner = 1;
+        }
+    }
+    if (winner === 0) {
+        // 判断敌我施放技能
+        let cast_skill_1 = get_cast_skill(role_battle_1, role_battle_2);
+        let cast_skill_2 = get_cast_skill(role_battle_2, role_battle_1);
+        // 判断敌我装备触发技能
+        let equipment_skill_1 = get_equipment_skill(role_battle_1, role_battle_2);
+        let equipment_skill_2 = get_equipment_skill(role_battle_2, role_battle_1);
+        // 技能施放
+        if (role_1_first) {
+            if (winner === 0 && do_attack(role_battle_1, cast_skill_1, role_battle_2)) {
+                winner = 1;
+            }
+            if (winner === 0) {
+                for (let i = 0; i < equipment_skill_1.length; i++) {
+                    if (do_attack(role_battle_1, equipment_skill_1[i], role_battle_2)) {
+                        winner = 1;
+                    }
+                }
+            }
+            if (winner === 0 && do_attack(role_battle_2, cast_skill_2, role_battle_1)) {
+                winner = 2;
+            }
+            if (winner === 0) {
+                for (let i = 0; i < equipment_skill_2.length; i++) {
+                    if (do_attack(role_battle_2, equipment_skill_2[i], role_battle_1)) {
+                        winner = 2;
+                    }
+                }
+            }
+        } else {
+            if (winner === 0 && do_attack(role_battle_2, cast_skill_2, role_battle_1)) {
+                winner = 2;
+            }
+            if (winner === 0) {
+                for (let i = 0; i < equipment_skill_2.length; i++) {
+                    if (do_attack(role_battle_2, equipment_skill_2[i], role_battle_1)) {
+                        winner = 2;
+                    }
+                }
+            }
+            if (winner === 0 && do_attack(role_battle_1, cast_skill_1, role_battle_2)) {
+                winner = 1;
+            }
+            if (winner === 0) {
+                for (let i = 0; i < equipment_skill_1.length; i++) {
+                    if (do_attack(role_battle_1, equipment_skill_1[i], role_battle_2)) {
+                        winner = 1;
+                    }
+                }
+            }
         }
     }
     role_health_1 = role_battle_1.current_health_value;
@@ -157,8 +180,8 @@ function turn_loop() {
     }
     // battle_log(battle_attribute_1.name + "：" + battle_attribute_1.current_health_value + " / " + battle_attribute_1.max_health_value);
     // battle_log(battle_attribute_2.name + "：" + battle_attribute_2.current_health_value + " / " + battle_attribute_2.max_health_value);
-    // 100回合不分胜负则判定为平局
     battle_turn++;
+    // 100回合不分胜负则判定为平局
     if (battle_turn > 100) {
         clear_buffs_and_debuffs_and_dots(role_battle_1);
         clear_buffs_and_debuffs_and_dots(role_battle_2);
@@ -197,9 +220,65 @@ function do_dot(role, dot) {
     dot_obj.element_type = get_element_name(dot.type);
     dot_log(dot_obj);
     role.current_health_value -= dot_obj.damage_value;
-    if (role.current_health_value < 0) {
+    if (role.current_health_value <= 0) {
         role.current_health_value = 0;
     }
+}
+
+/**
+ * 判断人物施放技能
+ * @param attacker
+ * @param target
+ */
+function get_cast_skill(attacker, target) {
+    // 技能排序
+    sort_role_skills(attacker);
+    let cast_skill = null;
+    // 判断施放技能
+    for (let i = 0; i < attacker.skills.length; i++) {
+        let skill = attacker.skills[i];
+        if (skill.attempt != null) {
+            if (skill.attempt(attacker, target)) {
+                cast_skill = skill;
+                break;
+            }
+        } else if (!skill_in_cd(attacker, skill)) {
+            cast_skill = skill;
+            break;
+        }
+    }
+    return cast_skill;
+}
+
+/**
+ * 判断装备触发技能
+ * @param attacker
+ * @param target
+ */
+function get_equipment_skill(attacker, target) {
+    let equipment_skills = [];
+    let equipments = attacker.equipments;
+    for (let i = 0; i < equipments.length; i++) {
+        let equipment = equipments[i];
+        if (typeof equipment === "string") {
+            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        }
+        if (equipment.skill != null) {
+            let skill = eval("dictionary_equipment_skill." + equipment.skill + "()");
+            if (skill.attempt != null) {
+                if (skill.attempt(attacker, target)) {
+                    if (Math.random() * 100 < skill.chance) {
+                        equipment_skills.push(skill);
+                    }
+                }
+            } else if (!skill_in_cd(attacker, skill)) {
+                if (Math.random() * 100 < skill.chance) {
+                    equipment_skills.push(skill);
+                }
+            }
+        }
+    }
+    return equipment_skills;
 }
 
 /**

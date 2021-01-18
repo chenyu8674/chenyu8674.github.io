@@ -530,7 +530,7 @@ function drop_random_equipment(monster) {
  * @param monster
  */
 function drop_raid_equipment(monster) {
-    let drop_list = dictionary_monster_base[monster.name].drop;
+    let drop_list = dictionary_monster[monster.name].drop;
     let drop_rate = Math.floor(Math.random() * 100);
     for (let i = 0; i < drop_list.length; i++) {
         let drop = drop_list[i];

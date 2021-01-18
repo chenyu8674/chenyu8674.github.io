@@ -57,6 +57,7 @@ function new_affix() {
             ]
         }
     // 单手攻击武器
+    // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
     affix[15111] = affix[15112] = affix[15113] = affix[15114] = affix[15115] =
         function (lvl, rare, multiple) {
             return [
@@ -64,6 +65,7 @@ function new_affix() {
             ]
         }
     // 单手法术武器
+    // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
     affix[15211] = affix[15212] = affix[15213] = affix[15214] = affix[15215] =
         function (lvl, rare, multiple) {
             return [
@@ -72,6 +74,7 @@ function new_affix() {
             ]
         }
     // 双手攻击武器
+    // 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
     affix[15121] = affix[15122] = affix[15221] = affix[15123] = affix[15223] = affix[15124] = affix[15224] = affix[15125] = affix[15225] =
         affix[15131] = affix[15231] = affix[15132] = affix[15232] = affix[15133] = affix[15233] =
             function (lvl, rare, multiple) {
@@ -80,6 +83,7 @@ function new_affix() {
                 ]
             }
     // 双手法术武器
+    // 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
     affix[15222] =
         function (lvl, rare, multiple) {
             return [

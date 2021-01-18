@@ -493,6 +493,7 @@ function refresh_dots(role_whole) {
             }
         }
     }
+    return role_whole.current_health_value <= 0;
 }
 
 /**

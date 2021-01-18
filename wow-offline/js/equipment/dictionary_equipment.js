@@ -52,6 +52,11 @@ function new_equipment() {
         affix: 15125, effect: ["sta+=33", "attack_power+=86"], detail: "\"刀柄上刻有大写字母A.L。\""
     };
 
+    equipment["萨弗拉斯，炎魔拉格纳罗斯之手"] = {
+        rare: 6, c_lvl: 1, e_lvl: 1, name: "萨弗拉斯，炎魔拉格纳罗斯之手", icon: "inv_hammer_unique_sulfuras",
+        affix: 15124, effect: ["str+=1", "sta+=1", "res_fire+=30"], detail: "\"让火焰净化一切！\"", skill: "fire_of_sulfuras"
+    };
+
     {
         equipment["环刺护腕"] = {
             rare: 4, c_lvl: 7, e_lvl: 9, name: "环刺护腕", icon: "inv_bracer_07",
