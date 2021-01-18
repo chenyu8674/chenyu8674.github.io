@@ -203,19 +203,27 @@ function new_player_skill() {
         let skill = {};
         skill.id = 221;// Id
         skill.name = "清算";// 名称
+        skill.name_2 = "攻击";// 名称
         skill.X = 80;
-        skill.Y = 100;
+        skill.Y = 80;
         skill.icon = "spell_holy_blessingofstrength";
-        skill.detail = "对目标进行清算，对其造成" + skill.X + "%攻击强度的基础物理伤害，并根据自己损失的生命值最多提高" + skill.Y + "%。";
+        skill.detail = "攻击目标造成" + skill.X + "%攻击强度的物理伤害，并对其进行清算，根据自己损失的生命值造成最高" + skill.Y + "%攻击强度的神圣伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
+            let damage_list = [];
+            let damage_obj = normal_skill_attack(attacker, target, skill.name_2, skill.X, type_attack, element_physical);
+            damage_list.push(damage_obj);
             let damage_percent = attacker.current_health_value / attacker.max_health_value;
             if (damage_percent < 0.2) {
                 damage_percent = 0.2;// 20%时到达最大伤害
             }
-            damage_percent = skill.Y * (1 - damage_percent) / 0.8 / 100;
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + damage_percent), type_attack, element_physical);
-            return skill_cast_result(damage_obj, [], []);
+            damage_percent = (1 - damage_percent) / 0.8;
+            console.log(damage_percent);
+            if (damage_percent > 0) {
+                damage_obj = normal_skill_attack(attacker, target, skill.name, skill.Y * damage_percent, type_attack, element_holy);
+                damage_list.push(damage_obj);
+            }
+            return skill_cast_result(damage_list, [], []);
         };
         return skill;
     }
