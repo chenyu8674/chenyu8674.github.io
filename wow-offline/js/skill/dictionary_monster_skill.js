@@ -15,7 +15,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的物理伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -29,7 +29,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的火焰伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -43,7 +43,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的冰霜伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_frost);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_frost);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -57,7 +57,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的自然伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_natural);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_natural);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -71,7 +71,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的奥术伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_arcane);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_arcane);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -85,7 +85,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的神圣伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_holy);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_holy);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -99,7 +99,7 @@ function new_monster_skill() {
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的暗影伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_shadow);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_shadow);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -113,7 +113,7 @@ function new_monster_skill() {
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的火焰伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_fire);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_fire);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -127,7 +127,7 @@ function new_monster_skill() {
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的冰霜伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_frost);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_frost);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -141,7 +141,7 @@ function new_monster_skill() {
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的自然伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_natural);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_natural);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -155,7 +155,7 @@ function new_monster_skill() {
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_arcane);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_arcane);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -169,7 +169,7 @@ function new_monster_skill() {
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_holy);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_holy);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -183,7 +183,7 @@ function new_monster_skill() {
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的暗影伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_shadow);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_shadow);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -207,7 +207,7 @@ function new_monster_skill() {
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let heal_obj = normal_skill_heal(attacker, target, skill.name, skill.X);
+            let heal_obj = calculate_skill_heal(attacker, target, skill.name, skill.X);
             return skill_cast_result([], heal_obj);
         };
         return skill;
@@ -222,7 +222,7 @@ function new_monster_skill() {
         skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj.is_hit) {
                 target.debuffs.push(new_debuff().warrior_1());
             }
@@ -245,7 +245,7 @@ function new_monster_skill() {
             let damage_list = [];
             let damage_count = Math.round(skill.Y + Math.random() * (skill.Z - skill.Y));
             for (let i = 0; i < damage_count; i++) {
-                let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+                let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
                 damage_list.push(damage_obj);
             }
             return skill_cast_result(damage_list);
@@ -263,11 +263,11 @@ function new_monster_skill() {
         skill.detail = "在嗜血的狂乱中攻击目标，对其造成" + skill.X + "%攻击强度的物理伤害，并使自己回复造成伤害" + skill.Y + "%的生命。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             let heal_obj = null;
             if (damage_obj.is_hit) {
                 let heal_value = Math.round(damage_obj.damage_value * 10 * attacker.taken_heal_percent / 100 / 100);
-                heal_obj = flat_skill_heal(attacker, target, skill.name, heal_value);
+                heal_obj = calculate_flat_heal(attacker, target, skill.name, heal_value);
             }
             return skill_cast_result(damage_obj, heal_obj);
         };
@@ -284,9 +284,9 @@ function new_monster_skill() {
         skill.detail = "撕裂敌人的肉体，造成" + skill.X + "%攻击强度的物理伤害，并使目标每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.hunter_3().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj_x = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            let damage_obj_x = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj_x.is_hit) {
-                let damage_obj_y = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_physical, 999, -999, -999, true);
+                let damage_obj_y = calculate_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_physical, 999, -999, -999, true);
                 target.dots.push(new_dot().rake(damage_obj_y.damage_value));
             }
             return skill_cast_result(damage_obj_x, [], []);
@@ -305,7 +305,7 @@ function new_monster_skill() {
         skill.detail = "猛击目标，造成" + skill.X + "%攻击强度的物理伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             return skill_cast_result(damage_obj);
         };
         return skill;

@@ -78,6 +78,8 @@ function dot_log(dot_obj) {
     battle_log(dot_obj.target_name
         + " 因 " + dot_obj.skill_name
         + " 受到 " + dot_obj.damage_value + " 点 " + dot_obj.element_type + " 伤害"
+        + (dot_obj.is_critical ? " (暴击)" : "")
+        + (dot_obj.absorb_value > 0 ? " (" + dot_obj.absorb_value + "点被吸收)" : "")
     );
 }
 

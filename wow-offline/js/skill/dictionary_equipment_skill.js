@@ -20,10 +20,10 @@ function new_equipment_skill() {
         skill.detail = "以炎魔之力焚烧目标，造成" + skill.X + "%攻击强度的火焰伤害，并使其每回合受到" + skill.Y + "%攻击强度的火焰伤害，持续" + dictionary_dot.fire_of_sulfuras().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj_x = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);
+            let damage_obj_x = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);
             if (damage_obj_x.is_hit) {
-                let damage_obj_y = normal_skill_attack(attacker, target, skill.name, skill.Y, type_attack, element_fire, 999, -999, -999);
-                target.dots.push(new_dot().fire_of_sulfuras(damage_obj_y.damage_value));
+                let dot_damage = calculate_dot_base_damage(attacker, target, skill.Y, type_attack);
+                target.dots.push(new_dot().fire_of_sulfuras(dot_damage));
             }
             return skill_cast_result(damage_obj_x, [], []);
         };

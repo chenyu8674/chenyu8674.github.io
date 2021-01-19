@@ -12,9 +12,9 @@ function new_affix_suffix() {
 
     affix[0] = function(surely) {return surely || Math.random() <= 1 ? "冲击" : null};
     affix["冲击"] = function (lvl, rare, multiple) {return ["attack_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
-    affix[1] = function(surely) {return surely || Math.random() <= 0.5 ? "能量" : null};
+    affix[1] = function(surely) {return surely || Math.random() <= 0.2 ? "能量" : null};
     affix["能量"] = function (lvl, rare, multiple) {return ["magic_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
-    affix[2] = function(surely) {return surely || Math.random() <= 0.5 ? "复苏" : null};
+    affix[2] = function(surely) {return surely || Math.random() <= 0.2 ? "复苏" : null};
     affix["复苏"] = function (lvl, rare, multiple) {return ["heal_power+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
     affix[3] = function(surely) {return surely || Math.random() <= 1 ? "致命" : null};
@@ -27,7 +27,7 @@ function new_affix_suffix() {
     affix["灵巧"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     affix[28] = function(surely) {return surely || Math.random() <= 1 ? "工匠" : null};
     affix["工匠"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[29] = function(surely) {return surely || Math.random() <= 0 ? "坚韧" : null};
+    affix[29] = function(surely) {return surely || Math.random() <= 1 ? "坚韧" : null};
     affix["坚韧"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
     affix[7] = function(surely) {return surely || Math.random() <= 0.1 ? "锋利" : null};
@@ -73,7 +73,7 @@ function new_affix_suffix() {
     affix[27] = function(surely) {return surely || Math.random() <= 0.1 ? "黎明" : null};
     affix["黎明"] = function (lvl, rare, multiple) {return ["res_shadow+=" + (get_effect_value(2, 1, 1, multiple) + get_effect_value(0.05, lvl, rare, multiple))]}
 
-    affix[100] = function(surely) {return surely || Math.random() <= 0.5 ? "坚守" : null};
+    affix[100] = function(surely) {return surely || Math.random() <= 0.2 ? "坚守" : null};
     affix["坚守"] = function (lvl, rare, multiple) {return ["block_rate+=" + get_effect_value(0.6, lvl, rare, multiple), "block_value+=" + get_effect_value(0.6, lvl, rare, multiple)]}
     return affix;
 }

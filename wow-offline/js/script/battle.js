@@ -99,17 +99,17 @@ function turn_loop() {
     let role_1_first = Math.random() < role_battle_1.agi / (role_battle_1.agi + role_battle_2.agi);
     // 计算dot伤害
     if (role_1_first) {
-        if (winner === 0 && refresh_dots(role_battle_2)) {
+        if (winner === 0 && refresh_dots(role_battle_1, role_battle_2)) {
             winner = 1;
         }
-        if (winner === 0 && refresh_dots(role_battle_1)) {
+        if (winner === 0 && refresh_dots(role_battle_2, role_battle_1)) {
             winner = 2;
         }
     } else {
-        if (winner === 0 && refresh_dots(role_battle_1)) {
+        if (winner === 0 && refresh_dots(role_battle_2, role_battle_1)) {
             winner = 2;
         }
-        if (winner === 0 && refresh_dots(role_battle_2)) {
+        if (winner === 0 && refresh_dots(role_battle_1, role_battle_2)) {
             winner = 1;
         }
     }
@@ -212,16 +212,15 @@ function turn_loop() {
 /**
  * 执行dot伤害
  */
-function do_dot(role, dot) {
-    let dot_obj = {};
-    dot_obj.target_name = role.name;
-    dot_obj.skill_name = dot.name;
-    dot_obj.damage_value = dot.damage;
+function do_dot(attacker, dot, target) {
+    // 结算伤害
+    let dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
     dot_obj.element_type = get_element_name(dot.type);
     dot_log(dot_obj);
-    role.current_health_value -= dot_obj.damage_value;
-    if (role.current_health_value <= 0) {
-        role.current_health_value = 0;
+    let damage_value = dot_obj.damage_value;
+    target.current_health_value -= damage_value;
+    if (target.current_health_value <= 0) {
+        target.current_health_value = 0;
     }
 }
 

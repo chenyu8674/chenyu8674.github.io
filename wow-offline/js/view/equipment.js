@@ -222,8 +222,8 @@ function refresh_current_status_1() {
     );
     create_status_line("韧性等级：" + role_battle_1.resilient_rate,
         role_status_1.resilient_rate + " (" + role_status_1.resilient_rate_percent + "%)<br/>"
-        + "受到的持续伤害减少 " + calculate_original_resilient(role_battle_1).toFixed(2) + "%<br/>"
-        + "被暴击时受到的额外伤害减少 " + (resilient_multiple * calculate_original_resilient(role_battle_1)).toFixed(2) + "%<br/>"
+        + "受到的持续伤害减少 " + calculate_original_resilient_dot(role_battle_1).toFixed(2) + "%<br/>"
+        + "被暴击时受到的额外伤害减少 " + calculate_original_resilient_cri(role_battle_1).toFixed(2) + "%<br/>"
     );
 }
 

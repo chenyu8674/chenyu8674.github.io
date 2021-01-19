@@ -6,7 +6,7 @@ $(document).ready(function () {
     $(document).bind("selectstart", function () {
         return false;
     });
-    $("#timestamp").text("2021年1月19日10:47:37");
+    $("#timestamp").text("2021年1月19日15:36:53");
 
     do_adapt();
     $(window).resize(do_adapt);

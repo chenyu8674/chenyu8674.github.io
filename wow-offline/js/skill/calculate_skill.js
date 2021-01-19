@@ -53,6 +53,7 @@ function get_skill_state(flag, id) {
  * @param extra_hit 额外命中率
  * @param extra_critical 额外暴击率
  * @param extra_block 额外格挡率
+ * @param pierce_shield 是否无视护盾
  *
  * @return damage 造成伤害
  * @return attack_type 攻击类型，1攻击（以攻击强度结算） 2法术（以法术强度结算）
@@ -62,7 +63,7 @@ function get_skill_state(flag, id) {
  * @return block_value 格挡数值
  * @return absorb_value 吸收数值
  */
-function normal_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block, pierce_shield) {
+function calculate_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block, pierce_shield) {
     // 计算命中
     extra_hit = extra_hit == null ? 0 : extra_hit;
     let hit_chance = calculate_hit(attacker, target) + extra_hit / 100;
@@ -155,7 +156,9 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent, attac
     let is_critical = Math.random() < critical_chance;
     if (is_critical) {
         // 计算暴击加成
-        damage_value *= attacker.critical_damage / 100;
+        let critical_damage = attacker.critical_damage;
+        critical_damage = 100 + (critical_damage - 100) * (100 - calculate_original_resilient_cri(target)) / 100;
+        damage_value *= critical_damage / 100;
     }
     // 计算属性减伤百分比
     damage_value = damage_value * (100 - res) / 100;
@@ -217,6 +220,133 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent, attac
 }
 
 /**
+ * 计算dot基础伤害
+ */
+function calculate_dot_base_damage(attacker, target, damage_percent, attack_type) {
+    // 基础伤害
+    let damage_value;
+    if (attack_type === type_attack) {
+        damage_value = attacker.attack_power * damage_percent / 100;// 基础攻击伤害
+        damage_value *= (1 - calculate_armor_attack(target));// 计算攻击护甲减伤
+    } else {
+        damage_value = attacker.magic_power * damage_percent / 100;// 基础法术伤害
+        damage_value *= (1 - calculate_armor_magic(target));// 计算法术护甲减伤
+    }
+    return damage_value;
+}
+
+/**
+ * 计算dot最终伤害
+ */
+function calculate_dot_final_damage(attacker, target, skill_name, damage_value, element_type) {
+    /* 计算增减伤百分比 */
+    let dmg;// 攻击者属性伤害百分比
+    let res;// 目标属性减伤百分比
+    switch (element_type) {
+        case element_none:
+            dmg = 100;
+            res = 0;
+            break;
+        case element_chaos:
+            dmg = 100;
+            res = 0;
+            break;
+        case element_physical:
+            dmg = attacker.damage_physical;
+            res = target.res_physical - attacker.pierce_physical;
+            break;
+        case element_fire:
+            dmg = attacker.damage_fire;
+            res = target.res_fire - attacker.pierce_fire;
+            break;
+        case element_frost:
+            dmg = attacker.damage_frost;
+            res = target.res_frost - -attacker.pierce_frost;
+            break;
+        case element_natural:
+            dmg = attacker.damage_natural;
+            res = target.res_natural - -attacker.pierce_natural;
+            break;
+        case element_arcane:
+            dmg = attacker.damage_arcane;
+            res = target.res_arcane - -attacker.pierce_arcane;
+            break;
+        case element_holy:
+            dmg = attacker.damage_holy;
+            res = target.res_holy - attacker.pierce_holy;
+            break;
+        case element_shadow:
+            dmg = attacker.damage_shadow;
+            res = target.res_shadow - attacker.pierce_shadow;
+            break;
+    }
+    res = res > MAX_RES ? MAX_RES : res;
+    // 伤害随机浮动(0.9~1.1)
+    damage_value *= (0.9 + Math.random() * 0.2);
+    // 每差1级，伤害浮动5%，范围50~200%
+    let lvl_percent = (attacker.lvl - target.lvl) * 5;
+    if (lvl_percent > 100) {
+        lvl_percent = 100;
+    }
+    if (lvl_percent < -50) {
+        lvl_percent = -50;
+    }
+    damage_value *= (100 + lvl_percent) / 100;
+    // 计算暴击
+    let critical_chance = calculate_critical(attacker, target);
+    if (show_critical_percent_in_log) {
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance * 100);
+    }
+    let is_critical = Math.random() < critical_chance;
+    if (is_critical) {
+        // 计算暴击加成
+        let critical_damage = attacker.critical_damage;
+        critical_damage = 100 + (critical_damage - 100) * (100 - calculate_original_resilient_cri(target)) / 100;
+        damage_value *= critical_damage / 100;
+    }
+    // 计算韧性减伤
+    damage_value = damage_value * (100 - calculate_original_resilient_dot(target)) / 100;
+    // 计算属性减伤百分比
+    damage_value = damage_value * (100 - res) / 100;
+    // 计算全局受伤百分比
+    damage_value = damage_value * target.taken_damage_percent / 100;
+    if (damage_value < 0) {
+        damage_value = 0;
+    }
+    damage_value = Math.round(damage_value);
+    // 计算伤害吸收
+    let absorb_value = 0;
+    let shield_point = target.current_shield_value;
+    if (damage_value > 0 && shield_point > 0) {
+        if (damage_value > shield_point) {
+            // 伤害吸收护盾被击穿
+            damage_value -= shield_point;
+            absorb_value = shield_point;
+            target.current_shield_value = 0;
+        } else {
+            target.current_shield_value -= damage_value;
+            absorb_value = damage_value;
+            damage_value = 0;
+        }
+    }
+    // 数值取整
+    absorb_value = Math.round(absorb_value);
+    // 生成结果
+    let damage_obj = {};
+    damage_obj.attacker_name = attacker.name;
+    damage_obj.target_name = target.name;
+    damage_obj.skill_name = skill_name;
+    damage_obj.damage_value = damage_value;
+    damage_obj.attack_type = 0;
+    damage_obj.element_type = element_type;
+    damage_obj.is_hit = true;
+    damage_obj.is_critical = is_critical;
+    damage_obj.block_value = 0;
+    damage_obj.absorb_value = absorb_value;
+    return damage_obj;
+}
+
+/**
  * 计算常规治疗
  * @param attacker 攻击者obj
  * @param target 目标obj
@@ -224,7 +354,7 @@ function normal_skill_attack(attacker, target, skill_name, damage_percent, attac
  * @param heal_percent 技能治疗系数
  * @param extra_critical 额外暴击率
  */
-function normal_skill_heal(attacker, target, skill_name, heal_percent, extra_critical) {
+function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_critical) {
     /* 基础治疗 */
     let heal_value = attacker.magic_power * heal_percent / 100;// 基础治疗
     if (heal_value < 0) {
@@ -264,7 +394,7 @@ function normal_skill_heal(attacker, target, skill_name, heal_percent, extra_cri
  * @param heal_value
  * @return {{}}
  */
-function flat_skill_heal(attacker, target, skill_name, heal_value) {
+function calculate_flat_heal(attacker, target, skill_name, heal_value) {
     if (heal_value <= 0) {
         heal_value = 0;
     }
@@ -286,7 +416,7 @@ function flat_skill_heal(attacker, target, skill_name, heal_value) {
  * @param shield_value
  * @return {{}}
  */
-function flat_skill_shield(attacker, target, skill_name, shield_value) {
+function calculate_flat_shield(attacker, target, skill_name, shield_value) {
     if (shield_value <= 0) {
         shield_value = 0;
     }
@@ -419,12 +549,21 @@ function calculate_original_mastery(attacker) {
 }
 
 /**
- * 计算原始坚韧数值
+ * 计算原始坚韧数值（dot）
  * @param attacker
  * @return {number}
  */
-function calculate_original_resilient(attacker) {
+function calculate_original_resilient_dot(attacker) {
     return attacker.resilient_rate * resilient_coefficient / attacker.lvl;
+}
+
+/**
+ * 计算原始坚韧数值（暴击）
+ * @param attacker
+ * @return {number}
+ */
+function calculate_original_resilient_cri(attacker) {
+    return resilient_multiple * attacker.resilient_rate * resilient_coefficient / attacker.lvl;
 }
 
 /**
@@ -474,12 +613,12 @@ function skill_cast_result(damage_list, heal_list, shield_list) {
 /**
  * 计算dot伤害
  */
-function refresh_dots(role_whole) {
-    let dots = role_whole.dots;
+function refresh_dots(attacker, target) {
+    let dots = target.dots;
     if (dots != null && dots.length > 0) {
         for (let i = 0; i < dots.length; i++) {
             let dot = dots[i];
-            do_dot(role_whole, dot);
+            do_dot(attacker, dot, target);
             // 剩余回合-1
             let turn_left = dot.T;
             if (turn_left > 0) {
@@ -494,7 +633,7 @@ function refresh_dots(role_whole) {
         }
     }
     // 战败判定
-    if (is_death(role_whole)) {
+    if (is_death(target)) {
         if (in_test_mode) {
             if (role_battle_2.current_health_value <= 0) {
                 win_count_1++;
