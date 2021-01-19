@@ -47,3 +47,7 @@ function is_in_array(obj, array) {
 function is_in_local_mode() {
     return window.location.href.indexOf("C:/") > 0;
 }
+
+function random(percent) {
+    return Math.random() * 100 <= percent;
+}

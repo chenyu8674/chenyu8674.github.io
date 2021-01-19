@@ -20,7 +20,6 @@ function refresh_talent_view() {
     let job_index = current_character.job % 10 - 1;
     let talent_count = job_base === 50 ? 4 : 3;talent_count
     let item_width = Math.floor(1400 / talent_count) - 50;
-    console.log(item_width);
     for (let i = 0; i < talent_count; i++) {
         let current_job = job_base + (i + 1);
 

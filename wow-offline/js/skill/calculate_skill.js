@@ -493,7 +493,20 @@ function refresh_dots(role_whole) {
             }
         }
     }
-    return role_whole.current_health_value <= 0;
+    // 战败判定
+    if (is_death(role_whole)) {
+        if (in_test_mode) {
+            if (role_battle_2.current_health_value <= 0) {
+                win_count_1++;
+            } else {
+                win_count_2++;
+            }
+            check_arena_over();
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**

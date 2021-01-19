@@ -22,11 +22,19 @@ function new_player_skill() {
                 extra_hit = 999;
                 m_skill_states[attacker.flag] = null;
             }
+            let damage_list = [];
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, extra_hit);
+            damage_list.push(damage_obj);
             if (damage_obj.is_hit) {
                 target.debuffs.push(new_debuff().warrior_1());
+                let mastery_percent = calculate_original_mastery(attacker);
+                if (Math.random() * 100 < mastery_percent) {
+                    let skill = dictionary_player_skill.warrior_1_2();
+                    let damage_obj_2 = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
+                    damage_list.push(damage_obj_2);
+                }
             }
-            return skill_cast_result(damage_obj, [], []);
+            return skill_cast_result(damage_list, [], []);
         };
         return skill;
     }
@@ -53,12 +61,12 @@ function new_player_skill() {
                 return false;
             } else {
                 // 未命中则触发压制
-                battle_log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
                 return true;
             }
         };
         // 技能施放调用
         skill.cast = function (attacker, target) {
+            battle_log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
             return skill_cast_result(damage_obj, [], []);
         };
@@ -79,8 +87,10 @@ function new_player_skill() {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             let heal_obj = null;
             if (damage_obj.is_hit) {
-                let heal_value = Math.round(damage_obj.damage_value * 10 * attacker.taken_heal_percent / 100 / 100);
-                heal_obj = flat_skill_heal(attacker, target, skill.name, heal_value);
+                let heal_value = damage_obj.damage_value * 10 * attacker.taken_heal_percent / 100 / 100;
+                let mastery_percent = calculate_original_mastery(attacker);
+                heal_value *= (100 + mastery_percent) / 100;
+                heal_obj = flat_skill_heal(attacker, target, skill.name, Math.round(heal_value));
             }
             return skill_cast_result([damage_obj], [heal_obj], []);
         };
@@ -123,7 +133,13 @@ function new_player_skill() {
             if (damage_obj.is_hit) {
                 target.debuffs.push(new_debuff().warrior_3());
             }
-            return skill_cast_result(damage_obj, [], []);
+            let shield_obj = [];
+            if (has_equip_shield(attacker)) {
+                let mastery_percent = calculate_original_mastery(attacker);
+                let shield_value = Math.round(attacker.block_value * mastery_percent / 100);
+                shield_obj = [flat_skill_shield(attacker, target, skill.name, shield_value)];
+            }
+            return skill_cast_result([damage_obj], [], shield_obj);
         };
         return skill;
     }
@@ -166,7 +182,9 @@ function new_player_skill() {
         skill.detail = "在目标身上引发圣光爆发，对其造成" + skill.X + "%法术强度的神圣伤害，并使自己回复" + skill.Y + "%治疗强度的的生命。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_holy);
+            let mastery_percent = calculate_original_mastery(attacker);
+            let damage_percent = (attacker.magic_power * skill.X + attacker.heal_power * mastery_percent) / (attacker.magic_power * skill.X);
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * damage_percent, type_cast, element_holy);
             let heal_obj = normal_skill_heal(attacker, target, skill.name, skill.Y);
             return skill_cast_result([damage_obj], [heal_obj], []);
         };
@@ -218,12 +236,17 @@ function new_player_skill() {
                 damage_percent = 0.2;// 20%时到达最大伤害
             }
             damage_percent = (1 - damage_percent) / 0.8;
-            console.log(damage_percent);
+            let heal_list = [];
             if (damage_percent > 0) {
                 damage_obj = normal_skill_attack(attacker, target, skill.name, skill.Y * damage_percent, type_attack, element_holy);
                 damage_list.push(damage_obj);
+                if (damage_obj.is_hit) {
+                    let mastery_percent = calculate_original_mastery(attacker);
+                    let heal_value = damage_obj.damage_value * mastery_percent * attacker.taken_heal_percent / 100 / 100;
+                    heal_list = [flat_skill_heal(attacker, target, skill.name, Math.round(heal_value))];
+                }
             }
-            return skill_cast_result(damage_list, [], []);
+            return skill_cast_result(damage_list, heal_list, []);
         };
         return skill;
     }
@@ -274,7 +297,8 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj_1 = normal_skill_attack(attacker, target, skill.name_2, skill.X, type_attack, element_physical);
             let damage_list = [damage_obj_1];
-            if (Math.random() < skill.Y / 100) {
+            let mastery_percent = calculate_original_mastery(attacker);
+            if (Math.random() < (skill.Y + mastery_percent) / 100) {
                 let damage_obj_2 = normal_skill_attack(attacker, target, skill.name, skill.Z, type_attack, element_holy, 999);
                 damage_list.push(damage_obj_2);
             }
@@ -322,6 +346,10 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             let damage_list = [];
             let damage_count = Math.round(skill.Y + Math.random() * (skill.Z - skill.Y));
+            let mastery_percent = calculate_original_mastery(attacker);
+            if (Math.random() * 100 < mastery_percent) {
+                damage_count++;
+            }
             let hit_count = 0;
             for (let i = 0; i < damage_count; i++) {
                 let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
@@ -379,12 +407,22 @@ function new_player_skill() {
         let skill = {};
         skill.id = 321;// Id
         skill.name = "奥术射击";// 名称
-        skill.X = 120;
+        skill.X = 100;
         skill.icon = "ability_impalingbolt";
         skill.detail = "一次快速的射击，对目标造成" + skill.X + "%攻击强度的奥术伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_arcane);
+            if (damage_obj.is_hit) {
+                let mastery_percent = calculate_original_mastery(attacker);
+                if (random(mastery_percent)) {
+                    let skill = dictionary_player_skill.hunter_2_2();
+                    let skill_state = get_skill_state(attacker.flag, skill.id);
+                    if (skill_state != null) {
+                        skill_state.last_turn -= skill.cooldown;
+                    }
+                }
+            }
             return skill_cast_result(damage_obj, [], []);
         };
         return skill;
@@ -394,10 +432,9 @@ function new_player_skill() {
         let skill = {};
         skill.id = 322;// Id
         skill.name = "瞄准射击";// 名称
-        skill.cooldown = 4;// 冷却
-        skill.first_turn = 4;// 首次施放回合
+        skill.cooldown = 5;// 冷却
         skill.priority = 30;// 优先级
-        skill.X = 150;
+        skill.X = 120;
         skill.Y = 200;
         skill.icon = "inv_spear_07";
         skill.detail = "精确瞄准后进行一次强力的射击，对目标造成" + skill.X + "%攻击强度的物理伤害，该伤害根据战斗回合数最多提高" + skill.Y + "%。";
@@ -425,7 +462,9 @@ function new_player_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let dodge = calculate_original_dodge(attacker);
-            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + dodge / 100), type_attack, element_physical, dodge, dodge);
+            let mastery_percent = calculate_original_mastery(attacker);
+            dodge *= (skill.Y + mastery_percent) / skill.Y;
+            let damage_obj = normal_skill_attack(attacker, target, skill.name, skill.X * (1 + dodge * skill.Y / 100 / 100), type_attack, element_physical, dodge * skill.Y / 100, dodge * skill.Y / 100);
             return skill_cast_result(damage_obj, [], []);
         };
         return skill;

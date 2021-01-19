@@ -390,5 +390,15 @@ function clear_buffs_and_debuffs_and_dots(role_battle) {
             }
         }
     }
-    role_battle.dots = [];
+    let battle_dots = role_battle.dots;
+    if (battle_dots != null && battle_dots.length > 0) {
+        for (let i = 0; i < battle_dots.length; i++) {
+            let dot = battle_dots[i];
+            let turn_left = dot.T;
+            if (turn_left > 0) {
+                battle_dots.splice(i, 1);
+                i--;
+            }
+        }
+    }
 }

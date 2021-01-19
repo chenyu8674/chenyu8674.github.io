@@ -97,14 +97,14 @@ let mastery_per_lvl = 10;// 每级附加精通等级
 let mastery_coefficient = [];// 精通等级转化系数
 
 mastery_coefficient[11] = 1;
-mastery_coefficient[12] = 1;
-mastery_coefficient[13] = 1;
+mastery_coefficient[12] = 3;
+mastery_coefficient[13] = 2;
 mastery_coefficient[21] = 1;
-mastery_coefficient[22] = 1;
-mastery_coefficient[23] = 1;
-mastery_coefficient[31] = 1;
+mastery_coefficient[22] = 3;
+mastery_coefficient[23] = 2;
+mastery_coefficient[31] = 3;
 mastery_coefficient[32] = 1;
-mastery_coefficient[33] = 1;
+mastery_coefficient[33] = 3;
 
 /**
  * 阶级系数

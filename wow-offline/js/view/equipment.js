@@ -218,13 +218,39 @@ function refresh_current_status_1() {
     create_status_line("", "");
     create_status_line("精通等级：" + role_battle_1.mastery_rate,
         (role_battle_1.lvl * mastery_per_lvl) + "+" + (role_status_1.mastery_rate - role_battle_1.lvl * mastery_per_lvl) + " (" + role_status_1.mastery_rate_percent + "%)<br/>"
-        + "技能效果提高 " + calculate_original_mastery(role_battle_1).toFixed(2) + "%"
+        + get_mastery_html()
     );
     create_status_line("韧性等级：" + role_battle_1.resilient_rate,
         role_status_1.resilient_rate + " (" + role_status_1.resilient_rate_percent + "%)<br/>"
         + "受到的持续伤害减少 " + calculate_original_resilient(role_battle_1).toFixed(2) + "%<br/>"
         + "被暴击时受到的额外伤害减少 " + (resilient_multiple * calculate_original_resilient(role_battle_1)).toFixed(2) + "%<br/>"
     );
+}
+
+function get_mastery_html() {
+    let mastery_percent = calculate_original_mastery(role_battle_1);
+    switch (role_battle_1.job) {
+        case 11:
+            return "致死打击命中时， " + mastery_percent + "% 几率触发一次压制（不影响冷却时间）"
+        case 12:
+            return "嗜血的生命回复效果提高 " + mastery_percent + "%"
+        case 13:
+            return "施放破甲时，获得 " + mastery_percent + "% 格挡值的伤害护盾"
+        case 21:
+            return "神圣震击获得 " + mastery_percent + "% 治疗强度的伤害加成"
+        case 22:
+            return "清算命中时，造成神圣伤害的 " + mastery_percent + "% 转化为生命回复"
+        case 23:
+            return "命令圣印的触发几率提高 " + mastery_percent + "%"
+        case 31:
+            return "多重射击有 " + mastery_percent + "% 几率进行一次额外攻击"
+        case 32:
+            return "奥术射击命中时， " + mastery_percent + "% 几率重置瞄准射击的冷却时间"
+        case 33:
+            return "猛禽一击受到的躲闪率加成提高 " + mastery_percent + "%"
+        default:
+            return "（施工中）技能效果提高 " + mastery_percent + "%"
+    }
 }
 
 function refresh_current_status_2() {
@@ -411,6 +437,9 @@ function get_equipment_count_by_pos(pos) {
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
+        if (typeof equipment === "string") {
+            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        }
         if (equipment.pos === pos) {
             count++;
         }
@@ -430,6 +459,9 @@ function has_equip_shield(role) {
     let equipments = role.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
+        if (typeof equipment === "string") {
+            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        }
         if (equipment.type === 41) {
             return true;
         }
@@ -445,6 +477,9 @@ function has_equip_two_hand_weapon() {
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
+        if (typeof equipment === "string") {
+            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        }
         if (equipment.pos === 15 && is_in_array(equipment.type, [21, 22, 23, 24, 25, 31, 32, 33])) {
             return true;
         }
