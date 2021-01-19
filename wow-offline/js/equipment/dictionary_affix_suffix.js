@@ -25,7 +25,7 @@ function new_affix_suffix() {
     affix["精准"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     affix[6] = function(surely) {return surely || Math.random() <= 1 ? "灵巧" : null};
     affix["灵巧"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[28] = function(surely) {return surely || Math.random() <= 0 ? "工匠" : null};
+    affix[28] = function(surely) {return surely || Math.random() <= 1 ? "工匠" : null};
     affix["工匠"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     affix[29] = function(surely) {return surely || Math.random() <= 0 ? "坚韧" : null};
     affix["坚韧"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.4, lvl, rare, multiple)]}
