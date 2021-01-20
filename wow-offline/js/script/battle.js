@@ -95,6 +95,9 @@ function turn_loop() {
     }
     // 记录胜负
     let winner = 0;
+    // 判断敌我施放技能
+    let cast_skill_1 = get_cast_skill(role_battle_1, role_battle_2);
+    let cast_skill_2 = get_cast_skill(role_battle_2, role_battle_1);
     // 判断出手顺序
     let role_1_first = Math.random() < role_battle_1.agi / (role_battle_1.agi + role_battle_2.agi);
     // 计算dot伤害
@@ -114,9 +117,6 @@ function turn_loop() {
         }
     }
     if (winner === 0) {
-        // 判断敌我施放技能
-        let cast_skill_1 = get_cast_skill(role_battle_1, role_battle_2);
-        let cast_skill_2 = get_cast_skill(role_battle_2, role_battle_1);
         // 判断敌我装备触发技能
         let equipment_skill_1 = get_equipment_skill(role_battle_1, role_battle_2);
         let equipment_skill_2 = get_equipment_skill(role_battle_2, role_battle_1);
@@ -125,7 +125,7 @@ function turn_loop() {
             if (winner === 0 && do_attack(role_battle_1, cast_skill_1, role_battle_2)) {
                 winner = 1;
             }
-            if (winner === 0) {
+            if (winner === 0 && cast_skill_1.trigger) {
                 for (let i = 0; i < equipment_skill_1.length; i++) {
                     if (do_attack(role_battle_1, equipment_skill_1[i], role_battle_2)) {
                         winner = 1;
@@ -135,7 +135,7 @@ function turn_loop() {
             if (winner === 0 && do_attack(role_battle_2, cast_skill_2, role_battle_1)) {
                 winner = 2;
             }
-            if (winner === 0) {
+            if (winner === 0 && cast_skill_2.trigger) {
                 for (let i = 0; i < equipment_skill_2.length; i++) {
                     if (do_attack(role_battle_2, equipment_skill_2[i], role_battle_1)) {
                         winner = 2;
@@ -146,7 +146,7 @@ function turn_loop() {
             if (winner === 0 && do_attack(role_battle_2, cast_skill_2, role_battle_1)) {
                 winner = 2;
             }
-            if (winner === 0) {
+            if (winner === 0 && cast_skill_2.trigger) {
                 for (let i = 0; i < equipment_skill_2.length; i++) {
                     if (do_attack(role_battle_2, equipment_skill_2[i], role_battle_1)) {
                         winner = 2;
@@ -156,7 +156,7 @@ function turn_loop() {
             if (winner === 0 && do_attack(role_battle_1, cast_skill_1, role_battle_2)) {
                 winner = 1;
             }
-            if (winner === 0) {
+            if (winner === 0 && cast_skill_1.trigger) {
                 for (let i = 0; i < equipment_skill_1.length; i++) {
                     if (do_attack(role_battle_1, equipment_skill_1[i], role_battle_2)) {
                         winner = 1;
@@ -245,6 +245,12 @@ function get_cast_skill(attacker, target) {
             cast_skill = skill;
             break;
         }
+    }
+    if (cast_skill == null) {
+        cast_skill = new dictionary_monster_skill().physical_attack();
+    }
+    if (cast_skill.trigger == null) {
+        cast_skill.trigger = true;
     }
     return cast_skill;
 }

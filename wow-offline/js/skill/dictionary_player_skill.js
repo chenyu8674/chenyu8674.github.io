@@ -195,6 +195,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 212;// Id
         skill.name = "圣疗术";// 名称
+        skill.trigger = false;
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 99;// 优先级
         skill.X = 35;
@@ -255,6 +256,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 222;// Id
         skill.name = "圣盾术";// 名称
+        skill.trigger = false;
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 99;// 优先级
         skill.X = 35;
