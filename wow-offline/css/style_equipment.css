@@ -1,9 +1,9 @@
 #current_equipments {
     position: absolute;
-    width: 328px;
+    width: 368px;
     height: 634px;
     top: 80px;
-    left: 200px;
+    left: 180px;
     color: whitesmoke;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -48,7 +48,7 @@
     position: absolute;
     width: 104px;
     top: 80px;
-    left: 560px;
+    right: 916px;
     text-align: center;
     font-size: 15px;
     line-height: 30px;
@@ -64,7 +64,7 @@
     position: absolute;
     width: 104px;
     top: 80px;
-    left: 666px;
+    right: 810px;
     text-align: center;
     font-size: 15px;
     line-height: 30px;
@@ -91,7 +91,7 @@
     width: 185px;
     padding-left: 25px;
     top: 116px;
-    left: 560px;
+    right: 810px;
     font-size: 16px;
     color: whitesmoke;
     background-color: rgba(0, 0, 0, 0.8);
@@ -115,7 +115,7 @@
 
 #current_equipments_icon {
     position: absolute;
-    left: 64px;
+    left: 84px;
     top: 140px;
     width: 200px;
     height: 200px;
@@ -126,7 +126,7 @@
     width: 580px;
     height: 610px;
     top: 80px;
-    left: 800px;
+    right: 180px;
     padding: 12px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -136,7 +136,7 @@
 #current_pack_bag {
     position: absolute;
     top: 680px;
-    left: 818px;
+    left: 826px;
     width: 100px;
     height: 34px;
     border-radius: 5px;
@@ -260,11 +260,11 @@
 }
 
 #current_equipments_17 {
-    left: 105px;
+    left: 125px;
     top: 440px;
 }
 
 #current_equipments_18 {
-    right: 105px;
+    right: 125px;
     top: 440px;
 }

@@ -1,11 +1,11 @@
 let view_shop;
 let shop_view;
-let view_shop_items;
+let shop_items;
 
 $(document).ready(function () {
     view_shop = $("#view_shop");
     shop_view = $("#shop_view");
-    view_shop_items = $("#shop_items");
+    shop_items = $("#shop_items");
     hide_view_shop();
     let shop_pack_bag = $("#shop_pack_bag")
     shop_pack_bag.click(function () {
@@ -51,7 +51,7 @@ function create_shop_view() {
         let shop_item = $("<div></div>");
         shop_item.addClass("shop_item");
         shop_item.css("top", 20 + 86 * (i % 7) + "px");
-        shop_item.css("left", 20 + 266 * Math.floor(i / 7) + "px");
+        shop_item.css("left", 20 + 284 * Math.floor(i / 7) + "px");
         shop_view.append(shop_item);
         let cell = $("<div></div>");
         cell.addClass("shop_icon");
@@ -228,7 +228,7 @@ function buy_equipment(pos, price) {
  * 绘制物品栏
  */
 function refresh_shop_items() {
-    view_shop_items.empty();
+    shop_items.empty();
     let items = current_character.items;
     for (let i = 0; i < MAX_ITEMS; i++) {
         let item = items[i];
@@ -257,7 +257,7 @@ function refresh_shop_items() {
                 sell_equipment(i);
             });
         }
-        view_shop_items.append(cell);
+        shop_items.append(cell);
     }
     $("#shop_money").html(get_money_html(current_character.money, 20));
 }

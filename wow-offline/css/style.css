@@ -15,6 +15,7 @@ body {
     width: 1600px;
     height: 900px;
     background-color: rgba(0, 0, 0, 0.95);
+    z-index: 70;
     display: none;
 }
 
@@ -30,25 +31,8 @@ body {
     z-index: 50;
 }
 
-#view_battle {
-    z-index: 60;
-}
-
-#view_equipment {
-    z-index: 70;
-}
-
-#view_shop {
-    z-index: 70;
-}
-
-#view_talent {
-    z-index: 70;
-}
-
 #view_character {
     background-image: url("../img/job/warrior.jpg");
-    z-index: 80;
 }
 
 .info_window {
@@ -97,6 +81,10 @@ body {
 
 #bar_shop {
     background-image: url(../img/icon/coin.png);
+}
+
+#bar_bank {
+    background-image: url(../img/icon/inv_box_02.png);
 }
 
 #bar_talent {

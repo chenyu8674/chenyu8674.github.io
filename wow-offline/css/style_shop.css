@@ -1,9 +1,10 @@
 #shop_view {
     position: absolute;
-    width: 570px;
-    height: 634px;
+    width: 580px;
+    height: 610px;
+    padding: 12px;
     top: 80px;
-    left: 200px;
+    left: 180px;
     color: whitesmoke;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -12,7 +13,7 @@
 
 .shop_item {
     position: absolute;
-    width: 258px;
+    width: 276px;
     height: 78px;
     border-radius: 7px;
     border: 2px ridge slategray;
@@ -50,7 +51,7 @@
     width: 580px;
     height: 610px;
     top: 80px;
-    left: 800px;
+    right: 180px;
     padding: 12px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -60,7 +61,7 @@
 #shop_pack_bag {
     position: absolute;
     top: 680px;
-    left: 818px;
+    left: 826px;
     width: 100px;
     height: 34px;
     border-radius: 5px;
@@ -71,7 +72,7 @@
 #shop_clear_bag {
     position: absolute;
     top: 680px;
-    left: 930px;
+    left: 932px;
     width: 100px;
     height: 34px;
     border-radius: 5px;

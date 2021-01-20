@@ -8,6 +8,8 @@ let MAX_EXP = 0;
 let MAX_RES = 75;
 // 最大包裹数量
 let MAX_ITEMS = 100;
+// 最大银行空格数量
+let MAX_BANKS = 100;
 // 稀有怪刷新率
 let RARE_PERCENT = 5;
 // 战斗记录行数上限

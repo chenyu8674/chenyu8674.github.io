@@ -1,0 +1,56 @@
+#bank_view {
+    position: absolute;
+    width: 580px;
+    height: 610px;
+    padding: 12px;
+    top: 80px;
+    right: 810px;
+    color: whitesmoke;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 3px ridge slategray;
+}
+
+#bank_pack_bank {
+    position: absolute;
+    top: 680px;
+    left: 196px;
+    width: 100px;
+    height: 34px;
+    border-radius: 5px;
+    letter-spacing: 5px;
+    border-width: 3px;
+}
+
+#bank_items {
+    position: absolute;
+    width: 580px;
+    height: 610px;
+    padding: 12px;
+    top: 80px;
+    right: 180px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 3px ridge slategray;
+}
+
+#bank_pack_bag {
+    position: absolute;
+    top: 680px;
+    left: 826px;
+    width: 100px;
+    height: 34px;
+    border-radius: 5px;
+    letter-spacing: 5px;
+    border-width: 3px;
+}
+
+#bank_money {
+    position: absolute;
+    height: 30px;
+    top: 686px;
+    right: 210px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: right;
+}
