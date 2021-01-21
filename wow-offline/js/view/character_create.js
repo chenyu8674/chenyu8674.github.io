@@ -1,13 +1,16 @@
-/** 人物选择界面 **/
+/** 人物创建界面 **/
 let selected_job_1_name;
 let selected_job_1_index;
 let selected_job_2_index;
-let view_character;
+let view_character_create;
 
 $(document).ready(function () {
-    view_character = $("#view_character");
+    view_character_create = $("#view_character_create");
     init_skill_1_click();
     $("#icon_warrior").click();
+    $("#close_character_create_button").click(function () {
+        hide_view_character_create();
+    });
     $("#create_character").click(function () {
         let name = $("#view_name_input").val();
         if (name.length < 2) {
@@ -20,20 +23,26 @@ $(document).ready(function () {
         let job = selected_job_1_index + selected_job_2_index;
         create_character(job, 0, name);
         save_data();
-        hide_view_character();
+        hide_view_character_select();
+        hide_view_character_create();
         show_view_map();
         // show_view_test();
     });
-    show_view_character();
 });
 
-function show_view_character() {
-    view_character.show();
+function show_view_character_create(close_button) {
+    view_character_create.show();
+    let close_character_create_button = $("#close_character_create_button");
+    if (close_button) {
+        close_character_create_button.show();
+    } else {
+        close_character_create_button.hide();
+    }
     hide_view_bar();
 }
 
-function hide_view_character() {
-    view_character.hide();
+function hide_view_character_create() {
+    view_character_create.hide();
 }
 
 function init_skill_1_click() {
@@ -46,7 +55,7 @@ function init_skill_1_click() {
         selected_job_1_index = parseInt($(this).attr("index"));
         let job_1 = $(this).attr("id");
         selected_job_1_name = job_1.replace("icon_", "");
-        $("#view_character").css("background-image", "url('./img/job/" + selected_job_1_name + ".jpg')");
+        $("#view_character_create").css("background-image", "url('./img/job/" + selected_job_1_name + ".jpg')");
         init_skill_2();
     });
 }

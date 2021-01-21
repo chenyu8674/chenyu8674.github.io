@@ -92,6 +92,7 @@ function refresh_current_status_base() {
     $("#current_equipments_icon").attr("src", "img/job/" + job_flag + ".png");
     $("#current_status_name").text(current_character.name);
     $("#current_status_job").text("等级 " + current_character.lvl + " " + dictionary_job.job_name[current_character.job]);
+    $("#current_equipment_lvl").text("装备等级 " + get_equipment_lvl(current_character));
     $("#current_status_area_2").html(
         "承受伤害：" + role_battle_1.taken_damage_percent + "%<br/>" +
         "承受治疗：" + role_battle_1.taken_heal_percent + "%<br/>"
@@ -473,8 +474,11 @@ function has_equip_shield(role) {
  * 是否装备了双手武器
  * @return {boolean}
  */
-function has_equip_two_hand_weapon() {
-    let equipments = current_character.equipments;
+function has_equip_two_hand_weapon(role) {
+    if (role == null) {
+        role = current_character;
+    }
+    let equipments = role.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
         if (typeof equipment === "string") {

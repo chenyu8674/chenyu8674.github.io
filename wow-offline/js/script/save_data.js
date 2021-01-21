@@ -9,21 +9,64 @@ let current_index = 0;
 $(document).ready(function () {
     if (!window.localStorage) {
         alert("不支持存档，请更换浏览器访问");
-        return false;
+        return;
     }
     load_data();
-    if (current_character != null) {
-        // 有存档数据时，直接进入地图页
-        hide_view_character();
-        show_view_map();
+    if (character_list == null || character_list.length === 0) {
+        // 无存档
+        show_view_character_create();
+    // } else if(character_list.length === 1) {
+    //     // 唯一存档
+    //     load_character();
+    } else {
+        // 多个存档
+        show_view_character_select();
     }
 });
 
+/**
+ * 从localStorage读取存档
+ */
+function load_data() {
+    let save_data = JSON.parse(localStorage.getItem("save_data"));
+    if (save_data == null) {
+        save_data = {};
+        save_data.bank_item_list = [];
+        save_data.character_list = [];
+    }
+    bank_item_list = save_data.bank_item_list;
+    if (bank_item_list == null) {
+        bank_item_list = [];
+    }
+    character_list = save_data.character_list;
+}
+
+/**
+ * 清空localStorage存档
+ */
 function release_data() {
     if (confirm('警告！确认删除存档数据？')) {
         localStorage.clear();
         location.reload();
     }
+}
+
+/**
+ * 加载角色
+ */
+function load_character() {
+    let character_obj = character_list[current_index];
+    create_character(character_obj.job, character_obj.exp, character_obj.name);
+    current_character.equipments = character_obj.equipments;
+    current_character.items = character_obj.items;
+    current_character.money = character_obj.money;
+    // 刷新状态栏
+    calculate_role_1(current_character);
+    fill_role_1_health();
+    refresh_current_status();
+    // 进入地图页
+    hide_view_character_create();
+    show_view_map();
 }
 
 /**
@@ -43,32 +86,6 @@ function save_data() {
     save_data.character_list = character_list;
     let json = JSON.stringify(save_data);
     localStorage.setItem("save_data", json);
-}
-
-/**
- * 角色初始化（读档）
- * @return {*}
- */
-function load_data() {
-    let save_data = JSON.parse(localStorage.getItem("save_data"));
-    let character_list = save_data.character_list;
-    if (character_list == null || character_list.length === 0) {
-        // 无存档
-        return;
-    }
-    bank_item_list = save_data.bank_item_list;
-    if (bank_item_list == null) {
-        bank_item_list = [];
-    }
-    let character_obj = character_list[current_index];
-    create_character(character_obj.job, character_obj.exp, character_obj.name);
-    current_character.equipments = character_obj.equipments;
-    current_character.items = character_obj.items;
-    current_character.money = character_obj.money;
-    // 刷新状态栏
-    calculate_role_1(current_character);
-    fill_role_1_health();
-    refresh_current_status();
 }
 
 /**
@@ -155,7 +172,7 @@ function create_character(job, exp, name) {
  * 添加测试装备
  */
 function push_equipment() {
-    let model = create_random_equipment_model(current_character.lvl);
+    let model = create_random_equipment_model(MAX_LVL);
     current_character.items.push(model);
 }
 

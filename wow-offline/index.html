@@ -4,15 +4,16 @@
     <title>WOW</title>
     <link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon"/>
     <meta http-equiv=Content-Type content="text/html;charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_battle.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_character.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_equipment.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_shop.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_bank.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_talent.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_map.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style_test.css"/>
+    <link rel="stylesheet" type="text/css" href="css/all_style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/battle.css"/>
+    <link rel="stylesheet" type="text/css" href="css/character_select.css"/>
+    <link rel="stylesheet" type="text/css" href="css/character_create.css"/>
+    <link rel="stylesheet" type="text/css" href="css/equipment.css"/>
+    <link rel="stylesheet" type="text/css" href="css/shop.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bank.css"/>
+    <link rel="stylesheet" type="text/css" href="css/talent.css"/>
+    <link rel="stylesheet" type="text/css" href="css/map.css"/>
+    <link rel="stylesheet" type="text/css" href="css/test.css"/>
 
     <script type="text/javascript" src="js/script/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="js/script/util.js"></script>
@@ -47,7 +48,8 @@
     <script type="text/javascript" src="js/view/info.js"></script>
     <script type="text/javascript" src="js/view/bar.js"></script>
     <script type="text/javascript" src="js/view/battle.js"></script>
-    <script type="text/javascript" src="js/view/character.js"></script>
+    <script type="text/javascript" src="js/view/character_select.js"></script>
+    <script type="text/javascript" src="js/view/character_create.js"></script>
     <script type="text/javascript" src="js/view/equipment.js"></script>
     <script type="text/javascript" src="js/view/shop.js"></script>
     <script type="text/javascript" src="js/view/bank.js"></script>
@@ -65,8 +67,15 @@
 <!-- 存档选择 -->
 <div id="view_save" class="full_screen"></div>
 <!-- 人物选择 -->
-<div id="view_character" class="full_screen">
-    <p id="view_character_title">创建你的英雄</p>
+<div id="view_character_select" class="full_screen">
+    <button id="close_character_select_button">✖</button>
+    <p id="view_character_select_title">选择你的英雄</p>
+    <div id="view_character_select_list"></div>
+</div>
+<!-- 人物创建 -->
+<div id="view_character_create" class="full_screen">
+    <button id="close_character_create_button">✖</button>
+    <p id="view_character_create_title">创建你的英雄</p>
     <div id="view_job_1_choose">
         <div id="view_job_1_icon">
             <img index=10 id="icon_warrior" src="img/job/warrior.png" class="job_1_icon icon_1_select" alt=""/>
@@ -141,6 +150,7 @@
         <img id="current_equipments_icon" src="img/job/warrior.png" alt=""/>
         <div id="current_status_name"></div>
         <div id="current_status_job"></div>
+        <div id="current_equipment_lvl"></div>
         <div id="current_status_area_1"></div>
         <div id="current_status_area_2"></div>
         <div id="current_equipments_1" class="equipment"></div>

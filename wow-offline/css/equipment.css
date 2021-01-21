@@ -23,9 +23,17 @@
     position: absolute;
     width: 100%;
     text-align: center;
-    top: 58px;
+    top: 62px;
     font-size: 16px;
     color: goldenrod;
+}
+
+#current_equipment_lvl {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 88px;
+    font-size: 16px;
 }
 
 #current_status_area_1 {
@@ -115,10 +123,10 @@
 
 #current_equipments_icon {
     position: absolute;
-    left: 84px;
-    top: 140px;
-    width: 200px;
-    height: 200px;
+    left: 64px;
+    top: 150px;
+    width: 240px;
+    height: 240px;
 }
 
 #current_items {

@@ -703,3 +703,49 @@ function get_equipment_price(equipment) {
     base_price *= Math.pow(get_multiple_by_rare(equipment.rare), 4);
     return Math.round(base_price);
 }
+
+/**
+ * 计算全身装备等级
+ */
+function get_equipment_lvl(role) {
+    let equipment_lvl_list = [];
+    let equipments = role.equipments;
+    let ring_count = 0;
+    let trinket_count = 0;
+    let weapon_count = 0;
+    for (let i = 0; i < equipments.length; i++) {
+        let equipment = equipments[i];
+        let equipment_name;
+        if (typeof equipment === "string") {
+            equipment_name = equipment;
+            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        }
+        let pos_new = equipment.pos;
+        if (equipment.pos === 13) {
+            pos_new += ring_count;
+            ring_count++;
+        }
+        if (equipment.pos === 14) {
+            pos_new += 1 + trinket_count;
+            trinket_count++;
+        }
+        if (equipment.pos === 15) {
+            pos_new += 2 + weapon_count;
+            weapon_count++;
+        }
+        if (equipment.pos === 16) {
+            pos_new = 18;
+        }
+        equipment_lvl_list[pos_new] = equipment.e_lvl;
+    }
+    if (has_equip_two_hand_weapon(role)) {
+        equipment_lvl_list[18] = equipment_lvl_list[17];
+    }
+    let equipment_lvl = 0;
+    for (let i = 0; i < equipment_lvl_list.length; i++) {
+        if (equipment_lvl_list[i] != null) {
+            equipment_lvl += equipment_lvl_list[i];
+        }
+    }
+    return Math.ceil(equipment_lvl / 18);
+}

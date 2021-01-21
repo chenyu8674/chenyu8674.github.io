@@ -14,7 +14,7 @@ body {
     padding: 0;
     width: 1600px;
     height: 900px;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(0, 0, 0, 0.92);
     z-index: 70;
     display: none;
 }
@@ -28,18 +28,19 @@ body {
 
 #view_map {
     background-image: url(../img/map.jpg);
+    display: block;
     z-index: 50;
 }
 
-#view_character {
-    background-image: url("../img/job/warrior.jpg");
+#view_character_create {
+    background-image: url(../img/job/warrior.jpg);
 }
 
 .info_window {
     position: absolute;
     width: auto;
     height: auto;
-    padding: 5px 20px 5px 10px;
+    padding: 5px 20px 10px 10px;
     color: whitesmoke;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.95);
@@ -92,7 +93,7 @@ body {
 }
 
 #bar_character {
-    background-image: url(../img/icon/spell_shadow_shadowwordpain.png);
+    background-image: url(../img/icon/inv_misc_note_01.png);
 }
 
 #bar_test {
