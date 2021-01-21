@@ -254,6 +254,9 @@ function refresh_shop_items() {
             // 右键点击事件，卖出装备
             cell.contextmenu(function (e) {
                 e.preventDefault();
+                if (item.rare >= 5 && !confirm("确认出售该" + get_type_name_by_rare(item.rare) + "装备？")) {
+                    return;
+                }
                 sell_equipment(i);
             });
         }

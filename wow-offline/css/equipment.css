@@ -1,7 +1,7 @@
 #current_equipments {
     position: absolute;
     width: 368px;
-    height: 634px;
+    height: 639px;
     top: 80px;
     left: 180px;
     color: whitesmoke;
@@ -110,13 +110,13 @@
 }
 
 .current_status_1 {
-    height: 584px;
+    height: 589px;
     padding-top: 17px;
     line-height: 23px;
 }
 
 .current_status_2 {
-    height: 583px;
+    height: 588px;
     padding-top: 18px;
     line-height: 24px;
 }
@@ -132,7 +132,7 @@
 #current_items {
     position: absolute;
     width: 580px;
-    height: 610px;
+    height: 615px;
     top: 80px;
     right: 180px;
     padding: 12px;

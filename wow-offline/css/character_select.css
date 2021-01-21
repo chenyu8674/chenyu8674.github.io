@@ -2,7 +2,7 @@
     position: absolute;
     width: 100%;
     height: 60px;
-    top: 30px;
+    top: 15px;
     text-align: center;
     font-size: 60px;
     letter-spacing: 15px;
@@ -29,7 +29,7 @@
     width: 1200px;
     height: 600px;
     padding: 17px;
-    top: 180px;
+    top: 160px;
     left: 180px;
     color: whitesmoke;
     border-radius: 10px;
@@ -45,6 +45,7 @@
     border-radius: 5px;
     letter-spacing: 2px;
     font-size: 16px;
+    color: lightgray;
     border: 2px ridge slategray;
 }
 
@@ -69,7 +70,7 @@
     line-height: 25px;
     font-size: 15px;
     text-align: left;
-    color: whitesmoke;
+    color: lightgray;
 }
 
 .character_load {
