@@ -254,7 +254,7 @@ function get_mastery_html() {
         case 52:
             return "凶猛撕咬从每个连击点获得的伤害加成提高 " + mastery_percent + "%"
         case 53:
-            return "槌击产生的怒气值提高 " + mastery_percent + "%"
+            return "槌击造成伤害的 " + mastery_percent + "% 转化为伤害护盾"
         case 54:
             return "树人在场时，每回合回复 " + mastery_percent + "% 治疗强度的生命"
         default:

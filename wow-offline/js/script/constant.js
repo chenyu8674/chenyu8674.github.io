@@ -109,7 +109,7 @@ mastery_coefficient[32] = 1;
 mastery_coefficient[33] = 3;
 mastery_coefficient[51] = 2;
 mastery_coefficient[52] = 1;
-mastery_coefficient[53] = 2;
+mastery_coefficient[53] = 1;
 mastery_coefficient[54] = 2;
 
 /**

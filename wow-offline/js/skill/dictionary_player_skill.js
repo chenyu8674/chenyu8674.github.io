@@ -604,10 +604,9 @@ function new_player_skill() {
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            let shield_obj = [];
             if (damage_obj.damage_value > 0) {
-                let rage = 100 * damage_obj.damage_value / attacker.max_health_value;
-                let mastery_percent = calculate_original_mastery(attacker);
-                rage = Math.round(rage * (100 + mastery_percent) / 100);
+                let rage = Math.round(100 * damage_obj.damage_value / attacker.max_health_value);
                 if (rage > 0) {
                     add_skill_point(attacker, rage);
                     if (get_skill_point(attacker) > 100) {
@@ -615,8 +614,11 @@ function new_player_skill() {
                     }
                     damage_obj.skill_name += "(" + get_skill_point(attacker) + ")";
                 }
+                let mastery_percent = calculate_original_mastery(attacker);
+                let shield_value = Math.round(damage_obj.damage_value * mastery_percent / 100);
+                shield_obj = [calculate_flat_shield(attacker, target, skill.name, shield_value)];
             }
-            return skill_cast_result(damage_obj, [], []);
+            return skill_cast_result(damage_obj, [], shield_obj);
         };
         return skill;
     }
