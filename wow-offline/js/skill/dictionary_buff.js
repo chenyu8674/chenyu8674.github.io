@@ -76,9 +76,10 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 5;
         buff.icon = "spell_holy_sealofwisdom";
-        buff.detail = "智力+" + buff.X + "%";
+        buff.detail = "智力+" + buff.X + "%，暴击率+" + buff.Y + "%";
         buff.effect = [
-            "int_percent+=" + buff.X
+            "int_percent+=" + buff.X,
+            "critical_chance_final+=" + buff.Y
         ];
         return buff;
     }
@@ -93,14 +94,14 @@ function new_buff() {
         buff.X = 10;
         buff.Y = 5;
         buff.icon = "spell_magic_magearmor";
-        buff.detail = "所有属性+" + buff.X + "%，格挡率+" + buff.X + "%";
+        buff.detail = "所有属性+" + buff.X + "%，格挡率+" + buff.Y + "%";
         buff.effect = [
             "str_percent+=" + buff.X,
             "agi_percent+=" + buff.X,
             "sta_percent+=" + buff.X,
             "int_percent+=" + buff.X,
             "spr_percent+=" + buff.X,
-            "block_chance_final+=" + buff.X
+            "block_chance_final+=" + buff.Y
         ];
         return buff;
     }
@@ -129,9 +130,10 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 5;
         buff.icon = "spell_holy_fistofjustice";
-        buff.detail = "力量+" + buff.X + "%";
+        buff.detail = "力量+" + buff.X + "%，命中率+" + buff.Y + "%";
         buff.effect = [
-            "str_percent+=" + buff.X
+            "str_percent+=" + buff.X,
+            "hit_chance_final+=" + buff.Y
         ];
         return buff;
     }
@@ -145,7 +147,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 1;
         buff.icon = "spell_nature_protectionformnature";
-        buff.detail = "每次命中目标时，回复" + buff.X + "%最大生命值";
+        buff.detail = "猎人技能命中目标时，回复" + buff.X + "%最大生命值";
         buff.effect = [
         ];
         return buff;
