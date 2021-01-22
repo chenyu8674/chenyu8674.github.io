@@ -39,12 +39,14 @@ function refresh_talent_view() {
             $(".view_job_info").removeClass("view_job_info_select");
             $(this).addClass("view_job_info_select");
             current_character.job = current_job;
-            current_character.skills = dictionary_player_skill[current_job];
+            current_character.skills = new_player_skill()[current_job];
             current_character.buffs = [dictionary_buff[current_job]];
             calculate_role_1(current_character);
             save_data();
         });
         view_talent.append(view_job_info);
+
+        let player_skill = new_player_skill();
 
         let view_job_name = $("<div></div>");
         view_job_name.addClass("view_job_name");
@@ -74,27 +76,27 @@ function refresh_talent_view() {
 
         let icon_job_skill_2 = $("<div></div>");
         icon_job_skill_2.addClass("icon_job_skill_2");
-        icon_job_skill_2.css("background-image", "url('./img/icon/" + dictionary_player_skill[current_job][0].icon + ".jpg')");
+        icon_job_skill_2.css("background-image", "url('./img/icon/" + player_skill[current_job][0].icon + ".jpg')");
         view_job_info.append(icon_job_skill_2);
 
         let info_job_skill_2 = $("<div></div>");
         info_job_skill_2.addClass("info_job_skill_2");
         info_job_skill_2.css("width", item_width - 125 + "px");
-        let skill_name_1 = dictionary_player_skill[current_job][0].name;
-        let skill_detail_1 = dictionary_player_skill[current_job][0].detail;
+        let skill_name_1 = player_skill[current_job][0].name;
+        let skill_detail_1 = player_skill[current_job][0].detail;
         info_job_skill_2.html("<span style='color:goldenrod'>" + skill_name_1 + "：</span>" + skill_detail_1.replace("<br/>", ""));
         view_job_info.append(info_job_skill_2);
 
         let icon_job_skill_3 = $("<div></div>");
         icon_job_skill_3.addClass("icon_job_skill_3");
-        icon_job_skill_3.css("background-image", "url('./img/icon/" + dictionary_player_skill[current_job][1].icon + ".jpg')");
+        icon_job_skill_3.css("background-image", "url('./img/icon/" + player_skill[current_job][1].icon + ".jpg')");
         view_job_info.append(icon_job_skill_3);
 
         let info_job_skill_3 = $("<div></div>");
         info_job_skill_3.addClass("info_job_skill_3");
         info_job_skill_3.css("width", item_width - 125 + "px");
-        let skill_name_2 = dictionary_player_skill[current_job][1].name;
-        let skill_detail_2 = dictionary_player_skill[current_job][1].detail;
+        let skill_name_2 = player_skill[current_job][1].name;
+        let skill_detail_2 = player_skill[current_job][1].detail;
         info_job_skill_3.html("<span style='color:goldenrod'>" + skill_name_2 + "：</span>" + skill_detail_2.replace("<br/>", ""));
         view_job_info.append(info_job_skill_3);
     }

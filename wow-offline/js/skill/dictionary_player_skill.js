@@ -48,7 +48,7 @@ function new_player_skill() {
         skill.X = 120;
         skill.Y = 25;
         skill.icon = "ability_meleedamage";
-        skill.detail = "在目标躲闪之后立刻进行压制，对其造成" + skill.X + "%攻击强度的物理伤害。<br/>压制无法被躲闪或格挡，且暴击率提高" + skill.Y + "%。";
+        skill.detail = "在攻击被闪避后立刻对目标进行压制，造成" + skill.X + "%攻击强度的物理伤害。<br/>压制无法被闪避或格挡，且暴击率提高" + skill.Y + "%。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
@@ -66,7 +66,7 @@ function new_player_skill() {
         };
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            battle_log(target.name + " 躲闪了 " + attacker.name + " 的攻击");
+            battle_log(target.name + " 闪避了 " + attacker.name + " 的攻击");
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
             return skill_cast_result(damage_obj, [], []);
         };
@@ -318,7 +318,7 @@ function new_player_skill() {
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "spell_holy_sealofmight";
-        skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被躲闪。<br/>目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被闪避。<br/>目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         // 判断技能可用
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
@@ -460,7 +460,7 @@ function new_player_skill() {
         skill.X = 80;
         skill.Y = 100;
         skill.icon = "inv_sword_05";
-        skill.detail = "一次强力的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害。该次攻击的伤害、命中率和暴击率提高躲闪率的" + skill.Y + "%。";
+        skill.detail = "一次强力的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害。该次攻击的伤害、命中率和暴击率提高闪避率的" + skill.Y + "%。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let dodge = calculate_original_dodge(attacker);
@@ -510,6 +510,8 @@ function new_player_skill() {
             let damage_obj_x = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_arcane);
             if (damage_obj_x.is_hit) {
                 let dot_damage = calculate_dot_base_damage(attacker, target, skill.Y, type_cast);
+                let mastery_percent = calculate_original_mastery(attacker);
+                dot_damage *= (100 + mastery_percent) / 100;
                 target.dots.push(new_dot().druid_1_1(dot_damage));
             }
             return skill_cast_result(damage_obj_x, [], []);
@@ -533,6 +535,8 @@ function new_player_skill() {
             let damage_obj_x = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_natural);
             if (damage_obj_x.is_hit) {
                 let dot_damage = calculate_dot_base_damage(attacker, target, skill.Y, type_cast);
+                let mastery_percent = calculate_original_mastery(attacker);
+                dot_damage *= (100 + mastery_percent) / 100;
                 target.dots.push(new_dot().druid_1_2(dot_damage));
             }
             return skill_cast_result(damage_obj_x, [], []);
@@ -548,7 +552,7 @@ function new_player_skill() {
         skill.X = 40;
         skill.Y = 30;
         skill.icon = "ability_druid_disembowel";
-        skill.detail = "撕裂目标，造成" + skill.X + "%攻击强度的物理伤害，并使其每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.druid_2().T + "回合。命中时获得一个连击点数。";
+        skill.detail = "撕裂目标，造成" + skill.X + "%攻击强度的物理伤害，并使其每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.druid_2().T + "回合。命中时获得一个连击点。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj_x = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
@@ -573,12 +577,13 @@ function new_player_skill() {
         skill.X = 100;
         skill.Y = 30;
         skill.icon = "ability_druid_ferociousbite";
-        skill.detail = "终结技，撕咬目标造成" + skill.X + "%攻击强度的物理伤害。每个消耗的连击点数使总伤害提高" + skill.Y + "%。";
+        skill.detail = "终结技，撕咬目标造成" + skill.X + "%攻击强度的物理伤害。每个消耗的连击点使总伤害提高" + skill.Y + "%。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             // 计算连击加成
             let damage_count = get_skill_point(attacker);
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X + skill.Y * damage_count, type_attack, element_physical);
+            let mastery_percent = calculate_original_mastery(attacker);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X + (skill.Y + mastery_percent) * damage_count, type_attack, element_physical);
             if (damage_obj.is_hit) {
                 set_skill_point(attacker, 0);
             }
@@ -600,7 +605,9 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj.damage_value > 0) {
-                let rage = Math.round(100 * damage_obj.damage_value / attacker.max_health_value);
+                let rage = 100 * damage_obj.damage_value / attacker.max_health_value;
+                let mastery_percent = calculate_original_mastery(attacker);
+                rage = Math.round(rage * (100 + mastery_percent) / 100);
                 if (rage > 0) {
                     add_skill_point(attacker, rage);
                     if (get_skill_point(attacker) > 100) {
@@ -618,7 +625,9 @@ function new_player_skill() {
         let skill = {};
         skill.id = 532;// Id
         skill.name = "狂暴回复";// 名称
+        skill.trigger = false;
         skill.cooldown = 5;// 冷却
+        skill.first_turn = 3;// 首次施放回合
         skill.priority = 30;// 优先级
         skill.X = 70;
         skill.Y = 0.5;
@@ -662,9 +671,12 @@ function new_player_skill() {
                 set_skill_point(attacker, skill.X);
                 let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.Y, type_cast, element_physical, 999, -999, -999, true);
                 for (let i = 0; i < skill.X; i++) {
-                    target.dots.push(new_dot().druid_4_1(damage_obj.damage_value));
+                    target.dots.push(new_dot().druid_4_1_1(damage_obj.damage_value));
                 }
-                battle_log(attacker.name + "施放了 自然之力");
+                let mastery_percent = calculate_original_mastery(attacker);
+                let heal_obj = calculate_hot_base_heal(attacker, mastery_percent);
+                attacker.dots.push(new_dot().druid_4_1_2(heal_obj));
+                battle_log(attacker.name + " 施放 自然之力");
                 return skill_cast_result([], [], []);
             } else {
                 // 释放愤怒
@@ -677,12 +689,13 @@ function new_player_skill() {
 
     skill.druid_4_2 = function () {
         let skill = {};
-        skill.id = 512;// Id
+        skill.id = 542;// Id
         skill.name = "愈合";// 名称
+        skill.trigger = false;
         skill.cooldown = 6;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 70;
-        skill.Y = 30;
+        skill.Y = 50;
         skill.Z = 20;
         skill.icon = "spell_nature_resistnature";
         skill.detail = "使用自然力量愈合伤口，回复" + skill.Y + "%治疗强度的生命，之后每回合回复" + skill.Z + "%治疗强度的生命，持续" + dictionary_dot.druid_4_2().T + "回合。";

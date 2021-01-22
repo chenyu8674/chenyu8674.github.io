@@ -45,6 +45,19 @@ let random_pre_names = [
  */
 
 /**
+ * 生成随机装备模板(掉落)
+ */
+function get_random_equipment_model(max_count, lvl, rare, pos, inclination, type) {
+    let model = create_random_equipment_model(lvl, rare, pos, inclination, type);
+    let try_count = 0;
+    while (try_count < max_count && !check_can_equip(model)) {
+        try_count++;
+        model = create_random_equipment_model(lvl, rare, pos, inclination, type);
+    }
+    return model;
+}
+
+/**
  * 生成随机装备模板
  */
 function create_random_equipment_model(lvl, rare, pos, inclination, type) {
@@ -108,46 +121,14 @@ function create_random_equipment_model(lvl, rare, pos, inclination, type) {
         if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
             // 布皮锁板装备
             type = 100 * Math.random();
-            if (lvl < 10) {
-                if (type <= 40) {
-                    type = 1;
-                } else if (type <= 70) {
-                    type = 2;
-                } else if (type <= 90) {
-                    type = 3;
-                } else {
-                    type = 4;
-                }
-            } else if (lvl < 20) {
-                if (type <= 35) {
-                    type = 1;
-                } else if (type <= 60) {
-                    type = 2;
-                } else if (type <= 85) {
-                    type = 3;
-                } else {
-                    type = 4;
-                }
-            } else if (lvl < 30) {
-                if (type <= 30) {
-                    type = 1;
-                } else if (type <= 55) {
-                    type = 2;
-                } else if (type <= 80) {
-                    type = 3;
-                } else {
-                    type = 4;
-                }
+            if (type <= 25) {
+                type = 1;
+            } else if (type <= 50) {
+                type = 2;
+            } else if (type <= 75) {
+                type = 3;
             } else {
-                if (type <= 25) {
-                    type = 1;
-                } else if (type <= 50) {
-                    type = 2;
-                } else if (type <= 75) {
-                    type = 3;
-                } else {
-                    type = 4;
-                }
+                type = 4;
             }
             // type = 4;
         } else if (pos === 2 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
@@ -488,7 +469,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 16:
-            multiple = 1;
+            multiple = 0.6;
             switch (type) {
                 case 41:
                     name = random_in_array(["之盾", "护盾", "壁垒"]);
@@ -619,6 +600,12 @@ function check_can_equip(equipment) {
             return type <= 1;// 布甲职业
         }
     } else if (pos === 15 || pos === 16) {
+        /**
+         * 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
+         * 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
+         * 31-弓 32-弩 33-枪
+         * 41-盾牌 42-副手
+         */
         if (current_character.job < 20) {
             return is_in_array(type, [11, 12, 13, 14, 15, 21, 22, 23, 24, 25, 41]);
         } else if (current_character.job < 30) {

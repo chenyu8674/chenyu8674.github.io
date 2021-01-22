@@ -141,7 +141,7 @@ function refresh_current_status_1() {
     );
     create_status_line("敏捷：" + role_battle_1.agi,
         role_base_1.agi + "+" + (role_status_1.agi - role_base_1.agi) + " (" + role_status_1.agi_percent + "%)<br/>"
-        + "每点提高" + agi_to_attack_power + "攻击强度，" + agi_to_hit_rate + "命中等级，" + agi_to_critical_rate + "暴击等级，" + agi_to_dodge_rate + "躲闪等级"
+        + "每点提高" + agi_to_attack_power + "攻击强度，" + agi_to_hit_rate + "命中等级，" + agi_to_critical_rate + "暴击等级，" + agi_to_dodge_rate + "闪避等级"
     );
     create_status_line("耐力：" + role_battle_1.sta,
         role_base_1.sta + "+" + (role_status_1.sta - role_base_1.sta) + " (" + role_status_1.sta_percent + "%)<br/>"
@@ -248,7 +248,15 @@ function get_mastery_html() {
         case 32:
             return "奥术射击命中时， " + mastery_percent + "% 几率重置瞄准射击的冷却时间"
         case 33:
-            return "猛禽一击受到的躲闪率加成提高 " + mastery_percent + "%"
+            return "猛禽一击受到的闪避率加成提高 " + mastery_percent + "%"
+        case 51:
+            return "月火术和阳炎术造成的持续伤害提高 " + mastery_percent + "%"
+        case 52:
+            return "凶猛撕咬从每个连击点获得的伤害加成提高 " + mastery_percent + "%"
+        case 53:
+            return "槌击产生的怒气值提高 " + mastery_percent + "%"
+        case 54:
+            return "树人在场时，每回合回复 " + mastery_percent + "% 治疗强度的生命"
         default:
             return "（施工中）技能效果提高 " + mastery_percent + "%"
     }
@@ -536,7 +544,7 @@ function equip_equipment(index) {
         return;// 装备类型与职业不符
     }
     if (item.pos === 15 && is_in_array(item.type, [21, 22, 23, 24, 25, 31, 32, 33])
-        && get_equipment_count_by_pos(15) >= 1 && get_equipment_count_by_pos(16) >= 1
+        && get_equipment_count_by_pos(15) + get_equipment_count_by_pos(16) >= 2
         && get_item_empty_count() === 0) {
         return;// 双手武器替换主副手，背包无空格
     }

@@ -103,7 +103,8 @@ function new_affix() {
     // 副手法器
     affix[16142] = affix[16242] = function (lvl, rare, multiple) {
         return [
-            "magic_power+=" + get_effect_value(1, lvl, rare, multiple)
+            "magic_power+=" + (WEAPON_ATTACK_ + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple)),
+            "heal_power+=" + (WEAPON_ATTACK_ + get_effect_value(WEAPON_ATTACK_, lvl, rare, multiple))
         ]
     }
 

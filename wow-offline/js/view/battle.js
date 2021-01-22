@@ -99,7 +99,7 @@ function show_heal_icon() {
         return false;
     });
     self_heal.hover(function () {
-        show_text_info(self_heal, "<p style='color:goldenrod'>食用补给</p><p>每秒回复10%最大生命值</p><p>进食时必须保持坐姿</p><p style='color:goldenrod'>大吉大利，今晚吃鸡</p>");
+        show_text_info(self_heal, "<div style='color:goldenrod'>食用补给</div><div>每秒回复10%最大生命值</div><div>进食时必须保持坐姿</div><div style='color:goldenrod'>大吉大利，今晚吃鸡</div>");
     }, function () {
         hide_info();
     });
@@ -355,7 +355,7 @@ function show_attack_icon() {
         return false;
     });
     attack_next.hover(function () {
-        show_text_info(attack_next, "<p style='color:goldenrod'>前进！</p><p>向下个敌人发起攻击</p>");
+        show_text_info(attack_next, "<div style='color:goldenrod'>前进！</div><div>向下个敌人发起攻击</div>");
     }, function () {
         hide_info();
     });
@@ -523,7 +523,7 @@ function drop_random_equipment(monster) {
             break;
     }
     if (is_drop) {
-        let model = create_random_equipment_model(lvl);
+        let model = get_random_equipment_model(1, lvl);
         put_equipment_to_items(model);
     }
 }

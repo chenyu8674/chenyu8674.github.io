@@ -21,10 +21,10 @@ let ARMOR_ATTACK_1 = 2;
 let ARMOR_ATTACK_2 = 4;
 let ARMOR_ATTACK_3 = 6;
 let ARMOR_ATTACK_4 = 8;
-let ARMOR_MAGIC_1 = 8;
-let ARMOR_MAGIC_2 = 6;
-let ARMOR_MAGIC_3 = 4;
-let ARMOR_MAGIC_4 = 2;
+let ARMOR_MAGIC_1 = 4;
+let ARMOR_MAGIC_2 = 3;
+let ARMOR_MAGIC_3 = 2;
+let ARMOR_MAGIC_4 = 1;
 
 /** 武器参数 **/
 
@@ -107,10 +107,10 @@ mastery_coefficient[23] = 2;
 mastery_coefficient[31] = 3;
 mastery_coefficient[32] = 1;
 mastery_coefficient[33] = 3;
-mastery_coefficient[51] = 1;
+mastery_coefficient[51] = 2;
 mastery_coefficient[52] = 1;
-mastery_coefficient[53] = 1;
-mastery_coefficient[54] = 1;
+mastery_coefficient[53] = 2;
+mastery_coefficient[54] = 2;
 
 /**
  * 阶级系数

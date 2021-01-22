@@ -29,3 +29,7 @@ Object.defineProperty(element, 'id', {
     },
 })
 console.log(element);
+
+/**
+ 重构model计算（multiple
+ */

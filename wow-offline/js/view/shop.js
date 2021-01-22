@@ -212,7 +212,7 @@ function buy_equipment(pos, price) {
     } else {
         rare = 6;// 1%
     }
-    let model = create_random_equipment_model(current_character.lvl, rare, pos);
+    let model = get_random_equipment_model(3, current_character.lvl, rare, pos);
     let items = current_character.items;
     for (let k = 0; k < MAX_ITEMS; k++) {
         if (items[k] == null) {

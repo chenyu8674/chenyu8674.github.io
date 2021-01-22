@@ -245,7 +245,7 @@ function new_buff() {
         buff.X = 100;
         buff.Y = 25;
         buff.icon = "ability_druid_treeoflife";
-        buff.detail = "护甲+" + buff.X + "%，智力+" + buff.Y + "%";
+        buff.detail = "护甲+" + buff.X + "%，精神+" + buff.Y + "%";
         buff.effect = [
             "armor_attack_percent+=" + buff.X,
             "armor_magic_percent+=" + buff.X,

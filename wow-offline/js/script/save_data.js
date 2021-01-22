@@ -15,9 +15,9 @@ $(document).ready(function () {
     if (character_list == null || character_list.length === 0) {
         // 无存档
         show_view_character_create();
-    // } else if(character_list.length === 1) {
-    //     // 唯一存档
-    //     load_character();
+        // } else if(character_list.length === 1) {
+        //     // 唯一存档
+        //     load_character();
     } else {
         // 多个存档
         show_view_character_select();
@@ -182,7 +182,7 @@ function create_character(job, exp, name) {
  * 添加测试装备
  */
 function push_equipment() {
-    let model = create_random_equipment_model(MAX_LVL);
+    let model = get_random_equipment_model(Number.MAX_VALUE, 1);
     current_character.items.push(model);
 }
 

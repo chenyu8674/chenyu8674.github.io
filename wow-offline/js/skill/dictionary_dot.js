@@ -79,15 +79,26 @@ function new_dot() {
         return dot;
     }
 
-    dot.druid_4_1 = function (damage) {
+    dot.druid_4_1_1 = function (damage) {
         let dot = {};
-        dot.id = 541;// Id
-        dot.name = "树人";// 名称
+        dot.id = 5411;// Id
+        dot.name = "自然之力";// 名称
         dot.T = -1;
         dot.damage = damage;
         dot.type = element_physical;
         dot.icon = "ability_druid_forceofnature";
         dot.detail = "树人攻击目标，造成 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
+    dot.druid_4_1_2 = function (heal) {
+        let dot = {};
+        dot.id = 5412;// Id
+        dot.name = "自然之力";// 名称
+        dot.T = -1;
+        dot.heal = heal;
+        dot.icon = "ability_druid_forceofnature";
+        dot.detail = "树人攻击目标时，回复 " + dot.damage + " 点生命";
         return dot;
     }
 
