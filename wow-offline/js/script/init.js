@@ -20,16 +20,14 @@ function do_adapt() {
 }
 
 // 反调试
-let element = new Image()
-Object.defineProperty(element, 'id', {
-    get: function () {
-        if (!is_in_local_mode()) {
-            window.location.href = '../index2.html';
-        }
-    },
-})
-console.log(element);
-
-/**
- 重构model计算（multiple
- */
+if (!is_in_local_mode()) {
+    let element = new Image()
+    Object.defineProperty(element, 'id', {
+        get: function () {
+            if (!is_in_local_mode()) {
+                window.location.href = '../index2.html';
+            }
+        },
+    })
+    console.log(element);
+}

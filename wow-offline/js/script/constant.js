@@ -41,6 +41,7 @@ let in_test_mode = false;// 测试模式
 
 let type_attack = 1;// 攻击
 let type_cast = 2;// 施法
+let type_other = 3;// 其他
 
 /** 伤害属性类型 **/
 

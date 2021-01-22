@@ -103,12 +103,18 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    // if (current_character.exp === 0) {
-    //     add_experience(MAX_EXP);
-    // }
+    if (is_in_local_mode()) {
+        if (current_character.exp === 0) {
+            add_experience(1380);
+        }
+    }
+    if (current_character.name === "GHOST") {
+        if (current_character.exp === 0) {
+            add_experience(1380);
+        }
+    }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
-    // current_character.skills.push(dictionary_equipment_skill.fire_of_sulfuras());
     current_character.buffs = [dictionary_buff[job]];
     current_character.debuffs = [];
     current_character.dots = [];
@@ -165,11 +171,14 @@ function create_character(job, exp, name) {
         }
     }
 
-    // for (let i = 0; i < MAX_ITEMS - 1; i++) {
-    //     push_equipment();
+    // if (is_in_local_mode()) {
+    //     for (let i = 0; i < MAX_ITEMS - 10; i++) {
+    //         push_equipment();
+    //     }
     // }
-    let equipment = "萨弗拉斯，炎魔拉格纳罗斯之手";
-    current_character.items.push(equipment);
+    current_character.items.push("雷霆之怒，逐风者的祝福之剑");
+    current_character.items.push("萨弗拉斯，炎魔拉格纳罗斯之手");
+    current_character.items.push("埃提耶什，守护者的传说之杖");
 
     // 刷新状态栏
     calculate_role_1(current_character);
@@ -182,7 +191,7 @@ function create_character(job, exp, name) {
  * 添加测试装备
  */
 function push_equipment() {
-    let model = get_random_equipment_model(Number.MAX_VALUE, 1);
+    let model = get_random_equipment_model(1, 1);
     current_character.items.push(model);
 }
 

@@ -43,6 +43,7 @@ function refresh_talent_view() {
             current_character.buffs = [dictionary_buff[current_job]];
             calculate_role_1(current_character);
             save_data();
+            refresh_battle_status(true);
         });
         view_talent.append(view_job_info);
 

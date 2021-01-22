@@ -12,24 +12,26 @@
  * @return {string[]}
  */
 function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
+    let monster = new_role_base();
     if (multiple == null) {
         multiple = 1;
     }
     multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
-    if (effect == null) {
-        effect = [];
-    }
     if (buffs == null) {
         buffs = [];
     }
-    let monster = new_role_base();
+    if (effect != null && effect.length > 0) {
+        let equipment = {};
+        equipment.effect = effect;
+        monster.equipments = [equipment];
+    } else {
+        monster.equipments = [];
+    }
     monster.name = name;
     monster.lvl = lvl;
     monster.job = type * 10;
     monster = calculate_base_property(monster);
-    let equipment = {};
-    equipment.effect = effect;
-    monster.equipments = [equipment];
+
     monster.buffs = buffs;
     let buff = {};
     buff.T = -1;

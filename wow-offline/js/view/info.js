@@ -74,14 +74,14 @@ function show_monster_info(index) {
 /**
  * 显示装备介绍
  */
-function show_equipment_info(equipment, x, y) {
+function show_equipment_info(model, x, y) {
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
     info.css("left", x + "px");
     info.css("top", y + "px");
     info.css("max-width", "250px");
-    equipment = create_equipment_by_model(equipment);
+    let equipment = create_equipment_by_model(model);
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
     info.append("<div style='font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
@@ -123,7 +123,7 @@ function show_equipment_info(equipment, x, y) {
     if (equipment.skill != null) {
         // 附加技能
         let skill = equipment.skill;
-        info.append("<div style='color:" + color_rare_3 + ";margin-top:5px;margin-bottom:5px;line-height:16px;'>击中时可能：" + skill.detail + "</div>");
+        info.append("<div style='color:" + color_rare_3 + ";margin-top:5px;margin-bottom:5px;line-height:17px;'>攻击时可能：" + skill.detail + "</div>");
     }
     if (equipment.detail != null) {
         // 文字介绍
@@ -132,7 +132,7 @@ function show_equipment_info(equipment, x, y) {
     // 售价
     info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
     $("body").append(info);
-    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {
+    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() - 5) {
         info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
     }
 }
@@ -194,7 +194,7 @@ function show_text_info(view, html) {
     info.css("top", y + "px");
     info.append(html);
     $("body").append(info);
-    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() + 5) {
+    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() - 5) {
         info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
     }
 }

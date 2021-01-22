@@ -11,6 +11,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 111;// Id
         skill.name = "致死打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.icon = "ability_warrior_savageblow";
         skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
@@ -43,6 +44,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 112;// Id
         skill.name = "压制";// 名称
+        skill.type = type_attack;
         skill.cooldown = 3;// 冷却
         skill.priority = 30;// 优先级 0触发 10低 20中 30高 50特殊 99强制
         skill.X = 120;
@@ -78,6 +80,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 121;// Id
         skill.name = "嗜血";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.Y = 15;
         skill.icon = "spell_nature_bloodlust";
@@ -101,6 +104,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 122;// Id
         skill.name = "斩杀";// 名称
+        skill.type = type_attack;
         skill.priority = 99;// 优先级
         skill.X = 35;
         skill.Y = 150;
@@ -124,6 +128,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 131;// Id
         skill.name = "破甲";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.icon = "ability_warrior_sunder";
         skill.detail = "击碎目标的护甲，对其造成" + skill.X + "%攻击强度的物理伤害，并使目标的物理抗性-" + dictionary_debuff.warrior_3().X + "，持续" + dictionary_debuff.warrior_3().T + "回合。";
@@ -148,6 +153,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 132;// Id
         skill.name = "盾牌猛击";// 名称
+        skill.type = type_attack;
         skill.cooldown = 5;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 100;
@@ -176,6 +182,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 211;// Id
         skill.name = "神圣震击";// 名称
+        skill.type = type_cast;
         skill.X = 80;
         skill.Y = 50;
         skill.icon = "spell_holy_heal02";
@@ -195,7 +202,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 212;// Id
         skill.name = "圣疗术";// 名称
-        skill.trigger = false;
+        skill.type = type_cast;
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 99;// 优先级
         skill.X = 35;
@@ -223,6 +230,7 @@ function new_player_skill() {
         skill.id = 221;// Id
         skill.name = "清算";// 名称
         skill.name_2 = "攻击";// 名称
+        skill.type = type_attack;
         skill.X = 80;
         skill.Y = 80;
         skill.icon = "spell_holy_blessingofstrength";
@@ -256,6 +264,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 222;// Id
         skill.name = "圣盾术";// 名称
+        skill.type = type_other;
         skill.trigger = false;
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 99;// 优先级
@@ -290,6 +299,7 @@ function new_player_skill() {
         skill.id = 231;// Id
         skill.name = "命令圣印";// 名称
         skill.name_2 = "攻击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.Y = 40;
         skill.Z = 80;
@@ -313,6 +323,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 232;// Id
         skill.name = "愤怒之锤";// 名称
+        skill.type = type_attack;
         skill.cooldown = Number.MAX_VALUE;// 冷却
         skill.priority = 99;// 优先级
         skill.X = 35;
@@ -339,6 +350,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 311;// Id
         skill.name = "多重射击";// 名称
+        skill.type = type_attack;
         skill.X = 30;
         skill.Y = 2;
         skill.Z = 5;
@@ -369,6 +381,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 312;// Id
         skill.name = "狂野怒火";// 名称
+        skill.type = type_attack;
         skill.cooldown = 4;// 冷却
         skill.first_turn = 4;// 首次施放回合
         skill.priority = 30;// 优先级
@@ -409,6 +422,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 321;// Id
         skill.name = "奥术射击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.icon = "ability_impalingbolt";
         skill.detail = "一次快速的射击，对目标造成" + skill.X + "%攻击强度的奥术伤害。";
@@ -434,6 +448,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 322;// Id
         skill.name = "瞄准射击";// 名称
+        skill.type = type_attack;
         skill.cooldown = 5;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 120;
@@ -457,6 +472,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 331;// Id
         skill.name = "猛禽一击";// 名称
+        skill.type = type_attack;
         skill.X = 80;
         skill.Y = 100;
         skill.icon = "inv_sword_05";
@@ -476,6 +492,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 332;// Id
         skill.name = "爆炸陷阱";// 名称
+        skill.type = type_attack;
         skill.cooldown = 5;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 50;
@@ -499,6 +516,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 511;// Id
         skill.name = "月火术";// 名称
+        skill.type = type_cast;
         skill.cooldown = 2;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 40;
@@ -523,6 +541,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 512;// Id
         skill.name = "阳炎术";// 名称
+        skill.type = type_cast;
         skill.cooldown = 2;// 冷却
         skill.first_turn = 2;// 首次释放回合
         skill.priority = 30;// 优先级
@@ -549,6 +568,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 521;// Id
         skill.name = "扫击";// 名称
+        skill.type = type_attack;
         skill.X = 40;
         skill.Y = 30;
         skill.icon = "ability_druid_disembowel";
@@ -571,6 +591,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 522;// Id
         skill.name = "凶猛撕咬";// 名称
+        skill.type = type_attack;
         skill.cooldown = 4;// 冷却
         skill.first_turn = 4;// 首次释放回合
         skill.priority = 30;// 优先级
@@ -597,6 +618,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 531;// Id
         skill.name = "槌击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.Y = 50;
         skill.icon = "ability_druid_maul";
@@ -627,6 +649,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 532;// Id
         skill.name = "狂暴回复";// 名称
+        skill.type = type_other;
         skill.trigger = false;
         skill.cooldown = 5;// 冷却
         skill.first_turn = 3;// 首次施放回合
@@ -661,11 +684,12 @@ function new_player_skill() {
         skill.id = 541;// Id
         skill.name = "自然之力";// 名称
         skill.name_2 = "愤怒";// 名称
+        skill.type = type_cast;
         skill.X = 3;
         skill.Y = 10;
         skill.Z = 60;
         skill.icon = "ability_druid_forceofnature";
-        skill.detail = "召唤" + skill.X + "个树人，每回合造成" + skill.Y + "%法术强度的物理伤害。若已存在树人则释放愤怒，对目标造成" + skill.Z + "%法术强度的自然伤害。";
+        skill.detail = "战斗开始时召唤" + skill.X + "个树人，每回合造成" + skill.Y + "%法术强度的物理伤害。对目标释放愤怒，造成" + skill.Z + "%法术强度的自然伤害。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             if (get_skill_point(attacker) === 0) {
@@ -679,12 +703,10 @@ function new_player_skill() {
                 let heal_obj = calculate_hot_base_heal(attacker, mastery_percent);
                 attacker.dots.push(new_dot().druid_4_1_2(heal_obj));
                 battle_log(attacker.name + " 施放 自然之力");
-                return skill_cast_result([], [], []);
-            } else {
-                // 释放愤怒
-                let damage_obj = calculate_skill_attack(attacker, target, skill.name_2, skill.Z, type_cast, element_natural);
-                return skill_cast_result(damage_obj, [], []);
             }
+            // 释放愤怒
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name_2, skill.Z, type_cast, element_natural);
+            return skill_cast_result(damage_obj, [], []);
         };
         return skill;
     }
@@ -693,7 +715,7 @@ function new_player_skill() {
         let skill = {};
         skill.id = 542;// Id
         skill.name = "愈合";// 名称
-        skill.trigger = false;
+        skill.type = type_cast;
         skill.cooldown = 6;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 70;

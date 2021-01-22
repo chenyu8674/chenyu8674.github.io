@@ -389,9 +389,7 @@ function move_loop() {
     if (is_in_local_mode()) {
         move_distance = MOVE_DISTANCE * LOCAL_MULTIPLE;
     }
-    if (current_character.job === dictionary_job.druid_2) {
-        move_distance *= (1 + dictionary_buff.druid_2().X / 100);
-    }
+    move_distance *= role_battle_1.move_speed / 100;
     if (move_distance > move_step) {
         move_distance = move_step;
     }
@@ -559,12 +557,12 @@ function put_equipment_to_items(model) {
             items[i] = model;
             if (typeof model === "string") {
                 // 生成固定装备model
-                model = create_static_equipment_model(new_equipment()[model]);
+                model = create_static_equipment_model(model);
             }
-            model = create_equipment_by_model(model);
-            let rare_color = eval("color_rare_" + model.rare);
+            let equipment = create_equipment_by_model(model);
+            let rare_color = eval("color_rare_" + equipment.rare);
             let id = "item" + new Date().getTime();
-            battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + model.name + "]</span>");
+            battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + equipment.name + "]</span>");
             refresh_current_status();
             setTimeout(function () {
                 let view_label = $("#" + id);

@@ -50,7 +50,7 @@ let random_pre_names = [
 function get_random_equipment_model(max_count, lvl, rare, pos, inclination, type) {
     let model = create_random_equipment_model(lvl, rare, pos, inclination, type);
     let try_count = 0;
-    while (try_count < max_count && !check_can_equip(model)) {
+    while (try_count < max_count && !check_can_equip(create_equipment_by_model(model))) {
         try_count++;
         model = create_random_equipment_model(lvl, rare, pos, inclination, type);
     }
@@ -141,23 +141,13 @@ function create_random_equipment_model(lvl, rare, pos, inclination, type) {
             type = random_in_array([41, 42]);// 副手
         }
     }
-
-    model.pos = pos;
-    model.type = type;
-    model.icon = create_equipment_icon(model);
+    model.icon = create_equipment_icon(model, pos, type);
     let attribute = get_attribute_by_pos(pos, type, model.icon);
-    // 装备属性系数
-    let multiple = attribute[0];
     // 装备名称
-    let name = attribute[1];
-    // 装备类型
-    let type_name = attribute[2];
-    model.name = random_in_array(random_pre_names) + name;
-    model.type_name = type_name;
+    model.name = random_in_array(random_pre_names) + attribute[1];
     model.rare = rare;
     model.c_lvl = lvl;
     model.e_lvl = lvl;
-    model.effect = [];
     // 生成随机前缀
     let affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
     while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
@@ -169,14 +159,15 @@ function create_random_equipment_model(lvl, rare, pos, inclination, type) {
     while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {
         affix_suffix = Math.floor(Math.random() * affix_suffix_length);
     }
-    model.affix = [multiple, pos * 1000 + inclination * 100 + type, affix_prefix, affix_suffix];
+    model.affix = [pos * 1000 + inclination * 100 + type, affix_prefix, affix_suffix];
     return model;
 }
 
 /**
  * 生成固定装备模板
  */
-function create_static_equipment_model(base_model) {
+function create_static_equipment_model(name) {
+    let base_model = new_equipment()[name];
     let model = {};
     let affix = base_model.affix;
     if (affix == null) {
@@ -184,11 +175,11 @@ function create_static_equipment_model(base_model) {
         affix = [];
     }
     if (typeof affix === "number") {
-        affix = [0, affix];
+        affix = [affix];
     }
     if (base_model.pos == null || base_model.type == null) {
-        model.pos = Math.floor(affix[1] / 1000);
-        model.type = affix[1] % 100;
+        model.pos = Math.floor(affix[0] / 1000);
+        model.type = affix[0] % 100;
     } else {
         model.pos = base_model.pos;
         model.type = base_model.type;
@@ -200,12 +191,9 @@ function create_static_equipment_model(base_model) {
         model.c_lvl = base_model.c_lvl;
         model.e_lvl = base_model.e_lvl;
     }
-    let attribute = get_attribute_by_pos(model.pos, model.type);
-    if (affix[0] === 0) {
-        affix[0] = attribute[0];
-    }
+    let attribute = get_attribute_by_pos(model.pos, model.type, base_model.icon);
     model.type_name = attribute[2];
-    model.name = base_model.name;
+    model.name = name;
     model.rare = base_model.rare;
     model.effect = base_model.effect;
     model.icon = base_model.icon;
@@ -213,6 +201,67 @@ function create_static_equipment_model(base_model) {
     model.skill = base_model.skill;
     model.affix = affix;
     return model;
+}
+
+/**
+ * 生成装备
+ * @param model 装备模板
+ */
+function create_equipment_by_model(model) {
+    let equipment = {};
+    let equipment_name = [];
+    let affix = model.affix;
+    if (affix == null) {
+        if (model.effect != null) {
+            equipment.effect = model.effect;
+            return equipment;
+        } else {
+            alert("装备生成异常");
+            return equipment;
+        }
+    }
+    equipment.pos = Math.floor(affix[0] / 1000);
+    equipment.type = affix[0] % 100;
+    let attribute = get_attribute_by_pos(equipment.pos, equipment.type, model.icon);
+    // 装备属性系数
+    let multiple = attribute[0];
+    equipment.type_name = attribute[2];
+    equipment.icon = model.icon;
+    equipment.rare = model.rare;
+    equipment.c_lvl = model.c_lvl;
+    equipment.e_lvl = model.e_lvl;
+    equipment.detail = model.detail;
+    equipment.effect = model.effect == null ? [] : model.effect;
+    if (model.skill != null) {
+        equipment.skill = eval("dictionary_equipment_skill." + model.skill + "()");
+    }
+
+    // 装备固有属性
+    let affix_base_index = model.affix[0];
+    let affix_base_func = dictionary_affix_base[affix_base_index];
+    let affix_base_effect = affix_base_func(equipment.e_lvl, equipment.rare, multiple);
+    equipment.effect = affix_base_effect.concat(equipment.effect);
+    // 装备前缀属性
+    let affix_prefix_index = model.affix[1];
+    if (affix_prefix_index != null) {
+        let affix_prefix_name = dictionary_affix_prefix[affix_prefix_index](true);
+        equipment_name.push(affix_prefix_name + "之");
+        let affix_prefix_func = dictionary_affix_prefix[affix_prefix_name];
+        let affix_prefix_effect = affix_prefix_func(equipment.e_lvl, equipment.rare, multiple);
+        equipment.effect = equipment.effect.concat(affix_prefix_effect);
+    }
+    // 装备后缀属性
+    let affix_suffix_index = model.affix[2];
+    if (affix_suffix_index != null) {
+        let affix_suffix_name = dictionary_affix_suffix[affix_suffix_index](true);
+        equipment_name.push(affix_suffix_name + "的");
+        let affix_suffix_func = dictionary_affix_suffix[affix_suffix_name];
+        let affix_suffix_effect = affix_suffix_func(equipment.e_lvl, equipment.rare, multiple);
+        equipment.effect = equipment.effect.concat(affix_suffix_effect);
+    }
+    equipment_name.push(model.name);
+    equipment.name = equipment_name.join(" ");
+    return equipment;
 }
 
 /**
@@ -493,57 +542,6 @@ function get_attribute_by_pos(pos, type, icon) {
     return [multiple, name, type_name];
 }
 
-/**
- * 生成装备
- * @param model 装备模板
- */
-function create_equipment_by_model(model) {
-    let equipment = {};
-    let equipment_name = [];
-    equipment.icon = model.icon;
-    equipment.rare = model.rare;
-    equipment.pos = model.pos;
-    equipment.type = model.type;
-    equipment.type_name = model.type_name;
-    equipment.c_lvl = model.c_lvl;
-    equipment.e_lvl = model.e_lvl;
-    equipment.detail = model.detail;
-    equipment.effect = model.effect == null ? [] : model.effect;
-    if (model.skill != null) {
-        equipment.skill = eval("dictionary_equipment_skill." + model.skill + "()");
-    }
-    if (model.affix != null) {
-        // 装备属性系数
-        let multiple = model.affix[0];
-        // 装备固有属性
-        let affix_base_index = model.affix[1];
-        let affix_base_func = dictionary_affix_base[affix_base_index];
-        let affix_base_effect = affix_base_func(equipment.e_lvl, equipment.rare, multiple);
-        equipment.effect = affix_base_effect.concat(equipment.effect);
-        // 装备前缀属性
-        let affix_prefix_index = model.affix[2];
-        if (affix_prefix_index != null) {
-            let affix_prefix_name = dictionary_affix_prefix[affix_prefix_index](true);
-            equipment_name.push(affix_prefix_name + "之");
-            let affix_prefix_func = dictionary_affix_prefix[affix_prefix_name];
-            let affix_prefix_effect = affix_prefix_func(equipment.e_lvl, equipment.rare, multiple);
-            equipment.effect = equipment.effect.concat(affix_prefix_effect);
-        }
-        // 装备后缀属性
-        let affix_suffix_index = model.affix[3];
-        if (affix_suffix_index != null) {
-            let affix_suffix_name = dictionary_affix_suffix[affix_suffix_index](true);
-            equipment_name.push(affix_suffix_name + "的");
-            let affix_suffix_func = dictionary_affix_suffix[affix_suffix_name];
-            let affix_suffix_effect = affix_suffix_func(equipment.e_lvl, equipment.rare, multiple);
-            equipment.effect = equipment.effect.concat(affix_suffix_effect);
-        }
-    }
-    equipment_name.push(model.name);
-    equipment.name = equipment_name.join(" ");
-    return equipment;
-}
-
 function get_type_name(type) {
     switch (type) {
         case 1:
@@ -560,8 +558,8 @@ function get_type_name(type) {
 /**
  * 生成装备图标
  */
-function create_equipment_icon(model) {
-    let type = model.pos * 100 + model.type;
+function create_equipment_icon(model, pos, type) {
+    type = pos * 100 + type;
     let equipment_icon = dictionary_equipment_icon[type];
     let index = Math.floor(Math.random() * equipment_icon.length);
     return equipment_icon[index];
@@ -701,12 +699,11 @@ function get_equipment_lvl(role) {
     let trinket_count = 0;
     let weapon_count = 0;
     for (let i = 0; i < equipments.length; i++) {
-        let equipment = equipments[i];
-        let equipment_name;
-        if (typeof equipment === "string") {
-            equipment_name = equipment;
-            equipment = create_static_equipment_model(new_equipment()[equipment]);
+        let module = equipments[i];
+        if (typeof module === "string") {
+            module = create_static_equipment_model(module);
         }
+        let equipment = create_equipment_by_model(module);
         let pos_new = equipment.pos;
         if (equipment.pos === 13) {
             pos_new += ring_count;

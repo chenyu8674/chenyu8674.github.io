@@ -9,6 +9,7 @@ function new_attribute_name() {
 
     name.max_health_value = "最大生命值";
     name.health_percent = "%最大生命值";
+    name.move_speed = "%移动速度";
     name.str = "力量";
     name.str_percent = "%力量";
     name.agi = "敏捷";

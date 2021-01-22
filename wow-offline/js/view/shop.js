@@ -19,7 +19,7 @@ $(document).ready(function () {
         for (let i = 0; i < MAX_ITEMS; i++) {
             let item = items[i];
             if (typeof item === "string") {
-                item = create_static_equipment_model(new_equipment()[item]);
+                item = create_static_equipment_model(item);
             }
             if (item != null && item.rare < 4) {
                 sell_equipment(i, true);
@@ -239,7 +239,7 @@ function refresh_shop_items() {
         if (item != null) {
             if (typeof item === "string") {
                 // 生成固定装备model
-                item = create_static_equipment_model(new_equipment()[item]);
+                item = create_static_equipment_model(item);
             }
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
@@ -276,8 +276,9 @@ function sell_equipment(index, not_save) {
     let item = items[index];
     if (typeof item === "string") {
         // 生成固定装备model
-        item = create_static_equipment_model(new_equipment()[item]);
+        item = create_static_equipment_model(item);
     }
+    item = create_equipment_by_model(item);
     current_character.money += get_equipment_price(item);
     items[index] = null;
     refresh_shop_items();

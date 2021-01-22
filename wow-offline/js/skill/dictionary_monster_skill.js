@@ -11,6 +11,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10110;// Id
         skill.name = "攻击";// 名称，10极低 20低 30普通 40高 50极高 99强制
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的物理伤害";
         // 技能施放调用
@@ -25,6 +26,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10120;// Id
         skill.name = "火焰打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的火焰伤害";
         // 技能施放调用
@@ -39,6 +41,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10130;// Id
         skill.name = "寒冰打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的冰霜伤害";
         // 技能施放调用
@@ -53,6 +56,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10140;// Id
         skill.name = "闪电打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的自然伤害";
         // 技能施放调用
@@ -67,6 +71,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10150;// Id
         skill.name = "奥术打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的奥术伤害";
         // 技能施放调用
@@ -81,6 +86,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10160;// Id
         skill.name = "神圣打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的神圣伤害";
         // 技能施放调用
@@ -95,6 +101,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10170;// Id
         skill.name = "暗影打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的暗影伤害";
         // 技能施放调用
@@ -109,6 +116,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10220;// Id
         skill.name = "火球术";// 名称
+        skill.type = type_cast;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的火焰伤害";
         // 技能施放调用
@@ -123,6 +131,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10230;// Id
         skill.name = "寒冰箭";// 名称
+        skill.type = type_cast;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的冰霜伤害";
         // 技能施放调用
@@ -137,6 +146,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10240;// Id
         skill.name = "闪电箭";// 名称
+        skill.type = type_cast;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的自然伤害";
         // 技能施放调用
@@ -151,6 +161,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10250;// Id
         skill.name = "奥术冲击";// 名称
+        skill.type = type_cast;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害";
         // 技能施放调用
@@ -165,6 +176,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10260;// Id
         skill.name = "惩击";// 名称
+        skill.type = type_cast;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害";
         // 技能施放调用
@@ -179,6 +191,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10270;// Id
         skill.name = "暗影箭";// 名称
+        skill.type = type_cast;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的暗影伤害";
         // 技能施放调用
@@ -193,6 +206,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10340;// Id
         skill.name = "治疗波";// 名称
+        skill.type = type_cast;
         skill.cooldown = 3;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 100;
@@ -217,6 +231,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 11001;// Id
         skill.name = "致死打击";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.icon = "ability_warrior_savageblow";
         skill.detail = "一次邪恶的攻击，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其受到的治疗降低" + dictionary_debuff.warrior_1().X + "%，持续" + dictionary_debuff.warrior_1().T + "回合。";
@@ -235,6 +250,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 11002;// Id
         skill.name = "多重射击";// 名称
+        skill.type = type_attack;
         skill.X = 30;
         skill.Y = 2;
         skill.Z = 5;
@@ -257,6 +273,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 11003;// Id
         skill.name = "嗜血";// 名称
+        skill.type = type_attack;
         skill.X = 100;
         skill.Y = 15;
         skill.icon = "spell_nature_bloodlust";
@@ -278,6 +295,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 11004;// Id
         skill.name = "撕裂";// 名称
+        skill.type = type_attack;
         skill.X = 80;
         skill.Y = 30;
         skill.icon = "ability_druid_disembowel";
@@ -298,6 +316,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 11005;// Id
         skill.name = "猛击";// 名称
+        skill.type = type_attack;
         skill.cooldown = 4;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 200;

@@ -100,7 +100,7 @@ function refresh_attribute_equipments(role_status) {
         for (let i = 0; i < battle_equipments.length; i++) {
             let equipments = battle_equipments[i];
             if (typeof equipments === "string") {
-                equipments = create_static_equipment_model(new_equipment()[equipments]);
+                equipments = create_static_equipment_model(equipments);
             }
             equipments = create_equipment_by_model(equipments);
             equipments = equipments.effect;
@@ -174,6 +174,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.name = role_status.name;
     role_battle.lvl = role_status.lvl;
     role_battle.job = role_status.job;
+    role_battle.move_speed = role_status.move_speed;
     role_battle.buffs = role_status.buffs;
     role_battle.debuffs = role_status.debuffs;
     role_battle.dots = role_status.dots;

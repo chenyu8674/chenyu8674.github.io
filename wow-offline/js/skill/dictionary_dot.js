@@ -82,7 +82,7 @@ function new_dot() {
     dot.druid_4_1_1 = function (damage) {
         let dot = {};
         dot.id = 5411;// Id
-        dot.name = "自然之力";// 名称
+        dot.name = "树人攻击";// 名称
         dot.T = -1;
         dot.damage = damage;
         dot.type = element_physical;

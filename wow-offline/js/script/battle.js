@@ -246,8 +246,9 @@ function get_cast_skill(attacker, target) {
     sort_role_skills(attacker);
     let cast_skill = null;
     // 判断施放技能
-    for (let i = 0; i < attacker.skills.length; i++) {
-        let skill = attacker.skills[i];
+    let index;
+    for (index = 0; index < attacker.skills.length; index++) {
+        let skill = attacker.skills[index];
         if (skill.attempt != null) {
             if (skill.attempt(attacker, target)) {
                 cast_skill = skill;
@@ -258,8 +259,12 @@ function get_cast_skill(attacker, target) {
             break;
         }
     }
+    // 将施放的技能放在最前
+    attacker.skills.unshift(cast_skill);
+    attacker.skills.splice(index + 1, 1);
     if (cast_skill == null) {
         cast_skill = new dictionary_monster_skill().physical_attack();
+        cast_skill.trigger = false;
     }
     if (cast_skill.trigger == null) {
         cast_skill.trigger = true;
@@ -278,7 +283,7 @@ function get_equipment_skill(attacker, target) {
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
         if (typeof equipment === "string") {
-            equipment = create_static_equipment_model(new_equipment()[equipment]);
+            equipment = create_static_equipment_model(equipment);
         }
         if (equipment.skill != null) {
             let skill = eval("dictionary_equipment_skill." + equipment.skill + "()");
@@ -399,23 +404,15 @@ function clear_buffs_and_debuffs_and_dots(role_battle) {
     let battle_debuffs = role_battle.debuffs;
     if (battle_debuffs != null && battle_debuffs.length > 0) {
         for (let i = 0; i < battle_debuffs.length; i++) {
-            let debuffs = battle_debuffs[i];
-            let turn_left = debuffs.T;
-            if (turn_left > 0) {
-                battle_debuffs.splice(i, 1);
-                i--;
-            }
+            battle_debuffs.splice(i, 1);
+            i--;
         }
     }
     let battle_dots = role_battle.dots;
     if (battle_dots != null && battle_dots.length > 0) {
         for (let i = 0; i < battle_dots.length; i++) {
-            let dot = battle_dots[i];
-            let turn_left = dot.T;
-            if (turn_left > 0) {
-                battle_dots.splice(i, 1);
-                i--;
-            }
+            battle_dots.splice(i, 1);
+            i--;
         }
     }
 }

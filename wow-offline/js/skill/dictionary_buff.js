@@ -74,6 +74,7 @@ function new_buff() {
         buff.name = "智慧祝福";// 名称
         buff.T = -1;
         buff.X = 20;
+        buff.Y = 5;
         buff.icon = "spell_holy_sealofwisdom";
         buff.detail = "智力+" + buff.X + "%";
         buff.effect = [
@@ -90,14 +91,16 @@ function new_buff() {
         buff.name = "王者祝福";// 名称
         buff.T = -1;
         buff.X = 10;
+        buff.Y = 5;
         buff.icon = "spell_magic_magearmor";
-        buff.detail = "所有属性+" + buff.X + "%";
+        buff.detail = "所有属性+" + buff.X + "%，格挡率+" + buff.X + "%";
         buff.effect = [
             "str_percent+=" + buff.X,
             "agi_percent+=" + buff.X,
             "sta_percent+=" + buff.X,
             "int_percent+=" + buff.X,
-            "spr_percent+=" + buff.X
+            "spr_percent+=" + buff.X,
+            "block_chance_final+=" + buff.X
         ];
         return buff;
     }
@@ -124,6 +127,7 @@ function new_buff() {
         buff.name = "力量祝福";// 名称
         buff.T = -1;
         buff.X = 20;
+        buff.Y = 5;
         buff.icon = "spell_holy_fistofjustice";
         buff.detail = "力量+" + buff.X + "%";
         buff.effect = [
@@ -143,7 +147,6 @@ function new_buff() {
         buff.icon = "spell_nature_protectionformnature";
         buff.detail = "每次命中目标时，回复" + buff.X + "%最大生命值";
         buff.effect = [
-            "health_percent+=0"
         ];
         return buff;
     }
@@ -211,6 +214,7 @@ function new_buff() {
         buff.icon = "ability_druid_catform";
         buff.detail = "移动速度+" + buff.X + "%，敏捷+" + buff.Y + "%";
         buff.effect = [
+            "move_speed+=" + buff.X,
             "agi_percent+=" + buff.Y
         ];
         return buff;

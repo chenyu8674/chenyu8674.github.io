@@ -30,7 +30,7 @@ function new_monster() {
         monster["迪菲亚码头主管"] = {species: 1, type: 3, rare: 3}
         monster["母蜘蛛"] = {species: 2, type: 6, rare: 3}
 
-        monster["霍格"] = {species: 1, type: 1, rare: 4, x: 27, y: 90, effect:[]}
+        monster["霍格"] = {species: 1, type: 1, rare: 4, x: 27, y: 90}
     }// 艾尔文森林
     {
         monster["生锈的麦田魔像"] = {species: 7, type: 0, rare: 1, effect:["armor_attack_percent+=100"]}
@@ -66,7 +66,7 @@ function new_monster() {
         monster["黑暗萨满柯兰萨"] = {species: 1, type: 4, rare: 5, buffs: [new_buff().rage()], effect:["damage_shadow+=30"], skill: [dictionary_monster_skill.shadow_cast()],
             drop:["黑暗仪式斗篷|25", "破碎图腾之握|25", "黑色元素腕轮|25", "黑暗萨满卫衣|25"]}
 
-        monster["熔岩元素"] = {species: 5, type: 1, rare: 4, effect:["armor_attack_percent+=30"]}
+        monster["熔岩元素"] = {species: 5, type: 1, rare: 4, effect:["armor_attack_percent+=30"], skill: [dictionary_monster_skill.fire_attack()]}
         monster["怒焰穴居人"] = {species: 1, type: 6, rare: 4}
         monster["怒焰萨满祭司"] = {species: 1, type: 4, rare: 4, skill: [dictionary_monster_skill.natural_cast()]}
 

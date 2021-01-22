@@ -117,7 +117,6 @@ function new_job() {
     job.druid_3 = 53;
     job.druid_4 = 54;
 
-
     job.job_color[job.druid] = "#FF7C0A";
     job.job_name[job.druid] = "德鲁伊";
     job.job_flag[job.druid] = "druid";
@@ -132,23 +131,6 @@ function new_job() {
     job.job_info[job.druid_3] = "强大的巨熊形态，吸收伤害并保护盟友。";
     job.job_name[job.druid_4] = "恢复德鲁伊";
     job.job_info[job.druid_4] = "化身生命之树，使用自然魔法使盟友重焕活力。";
-
-    // 平衡
-    // 枭兽形态：护甲+X%，暴击率+Y%
-    // 星火术：造成X%攻击强度的奥术伤害
-    // 虫群：每隔X回合使用，每回合造成Y%攻击强度的自然伤害，持续Z回合
-    // 野性-熊
-    // 熊形态：护甲+X%，造成暴击时获得Y%攻击强度的伤害吸收护盾
-    // 重殴：造成X%攻击强度的物理伤害
-    // 猛击：每隔X回合使用，造成X%攻击强度的物理伤害，Y%的几率打断敌人下一次攻击
-    // 野性-豹
-    // 豹形态：敏捷+Y%，造成暴击时下一次凶猛撕咬的伤害提高Y%
-    // 爪击：造成X%攻击强度的物理伤害
-    // 凶猛撕咬：每隔X回合使用，造成Y%攻击强度的物理伤害
-    // 自然
-    // 生命之树形态：法术强度-X%，治疗强度+Y%
-    // 愤怒：造成X%攻击强度的自然伤害
-    // 回春术：每隔X回合使用，每回合回复Y%治疗强度的生命，持续Z回合
 
     // 职业：盗贼
     job.rogue = 60;
@@ -182,8 +164,8 @@ function new_job() {
 
     // 职业：术士
     job.warlock = 80;
-    job.base_property[job.warlock] = [4, 4, 14, 16, 12];
-    job.upgrade_property[job.warlock] = [0.8, 0.8, 2.8, 3.2, 2.4];
+    job.base_property[job.warlock] = [8, 4, 14, 14, 10];
+    job.upgrade_property[job.warlock] = [1.6, 0.8, 2.8, 2.8, 2];
     // 痛苦/暗影/法术/
     job.warlock_1 = 81;
     // 恶魔/物理/法术/
@@ -194,8 +176,8 @@ function new_job() {
 
     // 职业：法师
     job.mage = 90;
-    job.base_property[job.mage] = [4, 4, 10, 18, 14];
-    job.upgrade_property[job.mage] = [0.8, 0.8, 2, 3.6, 2.8];
+    job.base_property[job.mage] = [4, 6, 10, 18, 12];
+    job.upgrade_property[job.mage] = [0.8, 1.2, 2, 3.6, 2.4];
     // 奥术/奥术/法术/
     job.mage_1 = 91;
     // 火焰/火焰/法术/

@@ -35,5 +35,20 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.rage_of_thunder = function () {
+        let debuff = {};
+        debuff.id = 20003;// Id
+        debuff.name = "雷霆之怒";// 名称
+        debuff.T = 5;
+        debuff.X = 20;
+        debuff.icon = "spell_nature_cyclone";
+        debuff.detail = "造成的所有伤害降低" + debuff.X + "%";
+        debuff.effect = [
+            "attack_power_percent-=" + debuff.X,
+            "magic_power_percent-=" + debuff.X
+        ];
+        return debuff;
+    }
+
     return debuff;
 }

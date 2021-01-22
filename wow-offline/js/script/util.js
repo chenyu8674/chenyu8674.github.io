@@ -45,7 +45,12 @@ function is_in_array(obj, array) {
 }
 
 function is_in_local_mode() {
-    return window.location.href.indexOf("C:/") > 0;
+    if(window.location.href.indexOf("C:/") > 0) {
+        return true;
+    } else if(window.location.href.indexOf("localhost:63342") > 0) {
+        return true;
+    }
+    return false;
 }
 
 function random(percent) {

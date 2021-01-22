@@ -49,7 +49,7 @@ function refresh_bank_view() {
             if (typeof item === "string") {
                 // 生成固定装备model
                 item_name = item;
-                item = create_static_equipment_model(new_equipment()[item]);
+                item = create_static_equipment_model(item);
             }
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
@@ -101,7 +101,7 @@ function refresh_bank_items() {
             if (typeof item === "string") {
                 // 生成固定装备model
                 item_name = item;
-                item = create_static_equipment_model(new_equipment()[item]);
+                item = create_static_equipment_model(item);
             }
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
@@ -162,10 +162,10 @@ function pack_bank() {
             return -1;
         }
         if (typeof a === "string") {
-            a = create_static_equipment_model(new_equipment()[a]);
+            a = create_static_equipment_model(a);
         }
         if (typeof b === "string") {
-            b = create_static_equipment_model(new_equipment()[b]);
+            b = create_static_equipment_model(b);
         }
         if (a.pos !== b.pos) {
             return a.pos - b.pos;
