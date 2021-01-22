@@ -61,10 +61,45 @@ function init_skill_1_click() {
 }
 
 function init_skill_2() {
-    let icon_job_2_1 = $("#icon_job_2_1");
-    icon_job_2_1.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 1].icon + ".png')");
-    $("#icon_job_2_2").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 2].icon + ".png')");
-    $("#icon_job_2_3").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 3].icon + ".png')");
+    let view_job_2_choose = $("#view_job_2_choose");
+    view_job_2_choose.empty();
+
+    let icon_job_2_1 = $("<div></div>");
+    icon_job_2_1.attr("index", "1");
+    icon_job_2_1.attr("id", "icon_job_2_1");
+    icon_job_2_1.addClass("job_2_icon");
+    icon_job_2_1.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 1].icon + ".jpg')");
+    view_job_2_choose.append(icon_job_2_1);
+
+    let icon_job_2_2 = $("<div></div>");
+    icon_job_2_2.attr("index", "2");
+    icon_job_2_2.attr("id", "icon_job_2_2");
+    icon_job_2_2.addClass("job_2_icon");
+    icon_job_2_2.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 2].icon + ".jpg')");
+    view_job_2_choose.append(icon_job_2_2);
+
+    let icon_job_2_3 = $("<div></div>");
+    icon_job_2_3.attr("index", "3");
+    icon_job_2_3.attr("id", "icon_job_2_3");
+    icon_job_2_3.addClass("job_2_icon");
+    icon_job_2_3.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 3].icon + ".jpg')");
+    view_job_2_choose.append(icon_job_2_3);
+
+    if (selected_job_1_index === dictionary_job.druid) {
+        icon_job_2_1.addClass("druid");
+        icon_job_2_2.addClass("druid");
+        icon_job_2_3.addClass("druid");
+
+        let icon_job_2_4 = $("<div></div>");
+        icon_job_2_4.attr("index", "4");
+        icon_job_2_4.attr("id", "icon_job_2_4");
+        icon_job_2_4.addClass("job_2_icon");
+        icon_job_2_4.addClass("druid");
+        icon_job_2_4.css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + 4].icon + ".jpg')");
+        view_job_2_choose.append(icon_job_2_4);
+
+    }
+
     init_skill_2_click();
     icon_job_2_1.click();
 }
@@ -83,9 +118,9 @@ function init_skill_2_click() {
         // 专精介绍
         $("#view_job_info_1").text(dictionary_job.job_info[selected_job_1_index + selected_job_2_index]);
         // 技能图标
-        $("#icon_job_skill_1").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + selected_job_2_index].icon + ".png')");
-        $("#icon_job_skill_2").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].icon + ".png')");
-        $("#icon_job_skill_3").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].icon + ".png')");
+        $("#icon_job_skill_1").css("background-image", "url('./img/icon/" + dictionary_buff[selected_job_1_index + selected_job_2_index].icon + ".jpg')");
+        $("#icon_job_skill_2").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].icon + ".jpg')");
+        $("#icon_job_skill_3").css("background-image", "url('./img/icon/" + dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].icon + ".jpg')");
         // 技能介绍
         let buff_name = dictionary_buff[selected_job_1_index + selected_job_2_index].name;
         let buff_detail = dictionary_buff[selected_job_1_index + selected_job_2_index].detail;

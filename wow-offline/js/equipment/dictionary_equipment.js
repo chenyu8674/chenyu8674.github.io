@@ -41,6 +41,8 @@ function new_equipment() {
     equipment["训练单手锤"] = {name: "训练单手锤", icon: "inv_mace_06", rare: 2, affix: 15214};
     equipment["训练盾牌"] = {name: "训练盾牌", icon: "inv_shield_03", rare: 2, affix: 16141};
     equipment["训练之弓"] = {name: "训练之弓", icon: "inv_weapon_bow_02", rare: 2, affix: 15131};
+    equipment["训练长杖"] = {name: "训练长杖", icon: "inv_staff_09", rare: 2, affix: 15122};
+    equipment["训练法杖"] = {name: "训练法杖", icon: "inv_staff_08", rare: 2, affix: 15222};
 
     equipment["训练罩袍"] = {name: "训练罩袍", icon: "inv_chest_cloth_21", rare: 2, affix: 4101};
     equipment["训练皮衣"] = {name: "训练皮衣", icon: "inv_chest_leather_01", rare: 2, affix: 4102};

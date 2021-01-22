@@ -12,9 +12,9 @@ function new_affix_suffix() {
 
     affix[0] = function(surely) {return surely || Math.random() <= 1 ? "冲击" : null};
     affix["冲击"] = function (lvl, rare, multiple) {return ["attack_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
-    affix[1] = function(surely) {return surely || Math.random() <= 0.2 ? "能量" : null};
+    affix[1] = function(surely) {return surely || Math.random() <= 0.5 ? "能量" : null};
     affix["能量"] = function (lvl, rare, multiple) {return ["magic_power+=" + get_effect_value(0.3, lvl, rare, multiple)]}
-    affix[2] = function(surely) {return surely || Math.random() <= 0.2 ? "复苏" : null};
+    affix[2] = function(surely) {return surely || Math.random() <= 0.5 ? "复苏" : null};
     affix["复苏"] = function (lvl, rare, multiple) {return ["heal_power+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
     affix[3] = function(surely) {return surely || Math.random() <= 1 ? "致命" : null};

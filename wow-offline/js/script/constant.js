@@ -107,6 +107,10 @@ mastery_coefficient[23] = 2;
 mastery_coefficient[31] = 3;
 mastery_coefficient[32] = 1;
 mastery_coefficient[33] = 3;
+mastery_coefficient[51] = 1;
+mastery_coefficient[52] = 1;
+mastery_coefficient[53] = 1;
+mastery_coefficient[54] = 1;
 
 /**
  * 阶级系数

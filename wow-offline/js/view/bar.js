@@ -10,7 +10,7 @@ $(document).ready(function () {
     set_bar_info_hover($("#bar_shop"), "商店");
     set_bar_info_hover($("#bar_bank"), "银行");
     set_bar_info_hover($("#bar_talent"), "天赋");
-    set_bar_info_hover($("#bar_character"), "存档");
+    set_bar_info_hover($("#bar_character"), "角色");
     set_bar_info_hover($("#bar_test"), "测试");
     set_bar_info_hover($("#bar_setting"), "设置");
 });
@@ -24,10 +24,9 @@ function hide_view_bar() {
 }
 
 function hide_all_view() {
+    hide_front_view();
     hide_view_bar();
     hide_view_battle();
-    hide_view_equipment();
-    hide_view_shop();
     hide_view_character_create();
     hide_view_map();
     hide_view_test();
@@ -92,7 +91,8 @@ function init_view_icon_click() {
         if (is_in_battle()) {
             return;
         }
-        hide_front_view();
+        hide_all_view();
+        show_view_map();
         show_view_character_select(true);
     });
     $("#bar_test").click(function () {

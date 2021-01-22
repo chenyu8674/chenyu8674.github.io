@@ -18,15 +18,17 @@ function refresh_talent_view() {
     let job = current_character.job;
     let job_base = 10 * Math.floor(job / 10);
     let job_index = current_character.job % 10 - 1;
-    let talent_count = job_base === 50 ? 4 : 3;talent_count
-    let item_width = Math.floor(1400 / talent_count) - 50;
+    let talent_count = job_base === 50 ? 4 : 3;
+    let padding = talent_count === 4 ? 40 : 100;
+    let margin = talent_count === 4 ? 20 : 50;
+    let item_width = Math.floor((1600 - (padding + 10) * 2) / talent_count) - margin;
     for (let i = 0; i < talent_count; i++) {
         let current_job = job_base + (i + 1);
 
         let view_job_info = $("<div></div>");
         view_job_info.addClass("view_job_info");
         view_job_info.css("width", item_width + "px");
-        view_job_info.css("left", 100 + (item_width + 50) * i + "px");
+        view_job_info.css("left", padding + (item_width + margin) * i + "px");
         if (i === job_index) {
             view_job_info.addClass("view_job_info_select");
         }
@@ -59,7 +61,7 @@ function refresh_talent_view() {
 
         let icon_job_skill_1 = $("<div></div>");
         icon_job_skill_1.addClass("icon_job_skill_1");
-        icon_job_skill_1.css("background-image", "url('./img/icon/" + dictionary_buff[current_job].icon + ".png')");
+        icon_job_skill_1.css("background-image", "url('./img/icon/" + dictionary_buff[current_job].icon + ".jpg')");
         view_job_info.append(icon_job_skill_1);
 
         let info_job_skill_1 = $("<div></div>");
@@ -72,7 +74,7 @@ function refresh_talent_view() {
 
         let icon_job_skill_2 = $("<div></div>");
         icon_job_skill_2.addClass("icon_job_skill_2");
-        icon_job_skill_2.css("background-image", "url('./img/icon/" + dictionary_player_skill[current_job][0].icon + ".png')");
+        icon_job_skill_2.css("background-image", "url('./img/icon/" + dictionary_player_skill[current_job][0].icon + ".jpg')");
         view_job_info.append(icon_job_skill_2);
 
         let info_job_skill_2 = $("<div></div>");
@@ -85,7 +87,7 @@ function refresh_talent_view() {
 
         let icon_job_skill_3 = $("<div></div>");
         icon_job_skill_3.addClass("icon_job_skill_3");
-        icon_job_skill_3.css("background-image", "url('./img/icon/" + dictionary_player_skill[current_job][1].icon + ".png')");
+        icon_job_skill_3.css("background-image", "url('./img/icon/" + dictionary_player_skill[current_job][1].icon + ".jpg')");
         view_job_info.append(icon_job_skill_3);
 
         let info_job_skill_3 = $("<div></div>");

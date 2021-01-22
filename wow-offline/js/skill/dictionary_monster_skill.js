@@ -280,8 +280,8 @@ function new_monster_skill() {
         skill.name = "撕裂";// 名称
         skill.X = 80;
         skill.Y = 30;
-        skill.icon = "ability_druid_rake";
-        skill.detail = "撕裂敌人的肉体，造成" + skill.X + "%攻击强度的物理伤害，并使目标每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.hunter_3().T + "回合。";
+        skill.icon = "ability_druid_disembowel";
+        skill.detail = "撕裂敌人的肉体，造成" + skill.X + "%攻击强度的物理伤害，并使目标每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.rake().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj_x = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);

@@ -49,8 +49,9 @@
     position: absolute;
     width: 60px;
     height: 60px;
-    margin: -4px;
-    top: 184px;
+    margin: -6px;
+    border: 2px ridge slategray;
+    top: 180px;
     left: 24px;
     background-size: 102%;
     background-position: center;
@@ -61,8 +62,8 @@
     position: absolute;
     top: 170px;
     left: 102px;
-    line-height: 30px;
-    font-size: 17px;
+    line-height: 27px;
+    font-size: 16px;
     color: silver;
     text-shadow: 0 0 1px cornsilk;
 }
@@ -71,8 +72,9 @@
     position: absolute;
     width: 60px;
     height: 60px;
-    margin: -4px;
-    top: 304px;
+    margin: -6px;
+    border: 2px ridge slategray;
+    top: 290px;
     left: 24px;
     background-size: 102%;
     background-position: center;
@@ -81,10 +83,10 @@
 
 .info_job_skill_2 {
     position: absolute;
-    top: 290px;
+    top: 280px;
     left: 102px;
-    line-height: 30px;
-    font-size: 17px;
+    line-height: 27px;
+    font-size: 16px;
     color: silver;
     text-shadow: 0 0 1px cornsilk;
 }
@@ -93,8 +95,9 @@
     position: absolute;
     width: 60px;
     height: 60px;
-    margin: -4px;
-    top: 454px;
+    margin: -6px;
+    border: 2px ridge slategray;
+    top: 450px;
     left: 24px;
     background-size: 102%;
     background-position: center;
@@ -105,8 +108,8 @@
     position: absolute;
     top: 440px;
     left: 102px;
-    line-height: 30px;
-    font-size: 17px;
+    line-height: 27px;
+    font-size: 16px;
     color: silver;
     text-shadow: 0 0 1px cornsilk;
 }

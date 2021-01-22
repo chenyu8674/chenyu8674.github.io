@@ -42,6 +42,39 @@ function get_skill_state(flag, id) {
 }
 
 /**
+ * 增加技能资源点数
+ * @param attacker
+ * @param point
+ */
+function add_skill_point(attacker, point) {
+    if (m_skill_states[attacker.flag + "point"] == null) {
+        m_skill_states[attacker.flag + "point"] = point;
+    } else {
+        m_skill_states[attacker.flag + "point"] += point;
+    }
+}
+
+/**
+ * 设置技能资源点数
+ * @param attacker
+ * @param point
+ */
+function set_skill_point(attacker, point) {
+    m_skill_states[attacker.flag + "point"] = point;
+}
+
+/**
+ * 获取技能资源点数
+ * @param attacker
+ */
+function get_skill_point(attacker) {
+    if (m_skill_states[attacker.flag + "point"] == null) {
+        return 0;
+    }
+    return m_skill_states[attacker.flag + "point"];
+}
+
+/**
  * 计算常规攻击
  *
  * @param attacker 攻击者obj
@@ -356,7 +389,7 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
  */
 function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_critical) {
     /* 基础治疗 */
-    let heal_value = attacker.magic_power * heal_percent / 100;// 基础治疗
+    let heal_value = attacker.heal_power * heal_percent / 100;// 基础治疗
     if (heal_value < 0) {
         heal_value = 0;
     }
@@ -379,6 +412,46 @@ function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_
     // 生成结果
     let heal_obj = {};
     heal_obj.attacker_name = attacker.name;
+    heal_obj.target_name = target.name;
+    heal_obj.skill_name = skill_name;
+    heal_obj.heal_value = heal_value;
+    heal_obj.is_critical = is_critical;
+    return heal_obj;
+}
+
+/**
+ * 计算hot基础治疗
+ */
+function calculate_hot_base_heal(attacker, heal_percent) {
+    /* 基础治疗 */
+    let heal_value = attacker.heal_power * heal_percent / 100;// 基础治疗
+    if (heal_value < 0) {
+        heal_value = 0;
+    }
+    return heal_value;
+}
+
+/**
+ * 计算hot最终治疗
+ */
+function calculate_hot_final_heal(target, skill_name, heal_value) {
+    // 治疗随机浮动(0.9~1.1)
+    heal_value *= (0.9 + Math.random() * 0.2);
+    // 计算暴击
+    let is_critical = Math.random() < calculate_critical(target, target);
+    if (is_critical) {
+        // 计算暴击加成
+        heal_value *= target.critical_damage / 100;
+    }
+    // 计算全局治疗百分比
+    heal_value = heal_value * target.taken_heal_percent / 100;
+    if (heal_value < 0) {
+        heal_value = 0;
+    }
+    // 数值取整
+    heal_value = Math.round(heal_value);
+    // 生成结果
+    let heal_obj = {};
     heal_obj.target_name = target.name;
     heal_obj.skill_name = skill_name;
     heal_obj.heal_value = heal_value;

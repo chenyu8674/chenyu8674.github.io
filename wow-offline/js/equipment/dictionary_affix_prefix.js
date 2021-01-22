@@ -15,30 +15,30 @@ function new_affix_prefix() {
     affix["猫鼬"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     affix[2] = function(surely) {return surely || Math.random() <= 1 ? "庞大" : null};
     affix["庞大"] = function (lvl, rare, multiple) {return ["sta+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[3] = function(surely) {return surely || Math.random() <= 0.2 ? "专注" : null};
+    affix[3] = function(surely) {return surely || Math.random() <= 1 ? "专注" : null};
     affix["专注"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[4] = function(surely) {return surely || Math.random() <= 0.2 ? "启发" : null};
+    affix[4] = function(surely) {return surely || Math.random() <= 1 ? "启发" : null};
     affix["启发"] = function (lvl, rare, multiple) {return ["spr+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
     affix[5] = function(surely) {return surely || Math.random() <= 1 ? "猛虎" : null};
     affix["猛虎"] = function (lvl, rare, multiple) {return ["str+=" + get_effect_value(0.2, lvl, rare, multiple), "agi+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[6] = function(surely) {return surely || Math.random() <= 1 ? "野熊" : null};
     affix["野熊"] = function (lvl, rare, multiple) {return ["str+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[7] = function(surely) {return surely || Math.random() <= 0.1 ? "巨猿" : null};
+    affix[7] = function(surely) {return surely || Math.random() <= 0.2 ? "巨猿" : null};
     affix["巨猿"] = function (lvl, rare, multiple) {return ["str+=" + get_effect_value(0.2, lvl, rare, multiple), "int+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[8] = function(surely) {return surely || Math.random() <= 0.1 ? "野猪" : null};
+    affix[8] = function(surely) {return surely || Math.random() <= 0.2 ? "野猪" : null};
     affix["野猪"] = function (lvl, rare, multiple) {return ["str+=" + get_effect_value(0.2, lvl, rare, multiple), "spr+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[9] = function(surely) {return surely || Math.random() <= 1 ? "灵猴" : null};
     affix["灵猴"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[10] = function(surely) {return surely || Math.random() <= 0.1 ? "猎鹰" : null};
+    affix[10] = function(surely) {return surely || Math.random() <= 0.2 ? "猎鹰" : null};
     affix["猎鹰"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.2, lvl, rare, multiple), "int+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[11] = function(surely) {return surely || Math.random() <= 0.1 ? "孤狼" : null};
+    affix[11] = function(surely) {return surely || Math.random() <= 0.2 ? "孤狼" : null};
     affix["孤狼"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.2, lvl, rare, multiple), "spr+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[12] = function(surely) {return surely || Math.random() <= 0.2 ? "雄鹰" : null};
+    affix[12] = function(surely) {return surely || Math.random() <= 1 ? "雄鹰" : null};
     affix["雄鹰"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[13] = function(surely) {return surely || Math.random() <= 0.2 ? "夜枭" : null};
+    affix[13] = function(surely) {return surely || Math.random() <= 1 ? "夜枭" : null};
     affix["夜枭"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.2, lvl, rare, multiple), "spr+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[14] = function(surely) {return surely || Math.random() <= 0.2 ? "巨鲸" : null};
+    affix[14] = function(surely) {return surely || Math.random() <= 1 ? "巨鲸" : null};
     affix["巨鲸"] = function (lvl, rare, multiple) {return ["spr+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.2, lvl, rare, multiple)]}
 
     return affix;

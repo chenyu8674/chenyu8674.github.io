@@ -84,6 +84,18 @@ function dot_log(dot_obj) {
 }
 
 /**
+ * 输出hot日志
+ * @param hot_obj
+ */
+function hot_log(hot_obj) {
+    battle_log(hot_obj.target_name
+        + " 因 " + hot_obj.skill_name
+        + " 回复 " + hot_obj.heal_value + " 点生命"
+        + (hot_obj.is_critical ? " (暴击)" : "")
+    );
+}
+
+/**
  * 输出治疗日志
  * @param heal_obj
  */

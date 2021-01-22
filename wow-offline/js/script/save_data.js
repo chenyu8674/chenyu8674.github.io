@@ -152,6 +152,16 @@ function create_character(job, exp, name) {
                 current_character.equipments.push("训练之弓");
                 current_character.equipments.push("训练链甲");
                 break;
+            case 51:
+            case 54:
+                current_character.equipments.push("训练法杖");
+                current_character.equipments.push("训练皮衣");
+                break;
+            case 52:
+            case 53:
+                current_character.equipments.push("训练长杖");
+                current_character.equipments.push("训练皮衣");
+                break;
         }
     }
 

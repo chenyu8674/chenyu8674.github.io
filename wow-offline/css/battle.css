@@ -27,8 +27,8 @@
     bottom: 5px;
     left: 5px;
     border-radius: 5px;
-    background-image: url("../img/icon/inv_misc_food_15.png");
-    background-size: 100%;
+    background-image: url("../img/icon/inv_misc_food_15.jpg");
+    border: 2px ridge gray;
 }
 
 #self_heal:hover {
@@ -42,8 +42,8 @@
     bottom: 5px;
     right: 5px;
     border-radius: 5px;
-    background-image: url("../img/icon/ability_dualwield.png");
-    background-size: 100%;
+    background-image: url("../img/icon/ability_dualwield.jpg");
+    border: 2px ridge gray;
 }
 
 #attack_next:hover {

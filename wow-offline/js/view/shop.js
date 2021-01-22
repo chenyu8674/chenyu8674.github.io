@@ -163,7 +163,7 @@ function create_shop_view() {
                 pos = 16;
                 break;
         }
-        cell.css("background-image", "url(./img/icon/inv_misc_bag_" + icon + ".png)");
+        cell.css("background-image", "url(./img/icon/inv_misc_bag_" + icon + ".jpg)");
         shop_name.text(name);
         shop_item.append(shop_name);
         let shop_price = $("<div></div>");

@@ -112,29 +112,43 @@ function new_job() {
 
     // 职业：德鲁伊
     job.druid = 50;
+    job.druid_1 = 51;
+    job.druid_2 = 52;
+    job.druid_3 = 53;
+    job.druid_4 = 54;
+
+
+    job.job_color[job.druid] = "#FF7C0A";
+    job.job_name[job.druid] = "德鲁伊";
+    job.job_flag[job.druid] = "druid";
     job.base_property[job.druid] = [12, 12, 12, 12, 12];
     job.upgrade_property[job.druid] = [2.4, 2.4, 2.4, 2.4, 2.4];
+
+    job.job_name[job.druid_1] = "平衡德鲁伊";
+    job.job_info[job.druid_1] = "变形为强大的枭兽，释放奥术和自然的平衡之力。";
+    job.job_name[job.druid_2] = "野性德鲁伊";
+    job.job_info[job.druid_2] = "致命的猎豹形态，利用撕咬和流血造成大量伤害。";
+    job.job_name[job.druid_3] = "守护德鲁伊";
+    job.job_info[job.druid_3] = "强大的巨熊形态，吸收伤害并保护盟友。";
+    job.job_name[job.druid_4] = "恢复德鲁伊";
+    job.job_info[job.druid_4] = "化身生命之树，使用自然魔法使盟友重焕活力。";
+
     // 平衡
     // 枭兽形态：护甲+X%，暴击率+Y%
     // 星火术：造成X%攻击强度的奥术伤害
     // 虫群：每隔X回合使用，每回合造成Y%攻击强度的自然伤害，持续Z回合
-    job.druid_1 = 51;
     // 野性-熊
     // 熊形态：护甲+X%，造成暴击时获得Y%攻击强度的伤害吸收护盾
     // 重殴：造成X%攻击强度的物理伤害
     // 猛击：每隔X回合使用，造成X%攻击强度的物理伤害，Y%的几率打断敌人下一次攻击
-    job.druid_2 = 52;
     // 野性-豹
     // 豹形态：敏捷+Y%，造成暴击时下一次凶猛撕咬的伤害提高Y%
     // 爪击：造成X%攻击强度的物理伤害
     // 凶猛撕咬：每隔X回合使用，造成Y%攻击强度的物理伤害
-    job.druid_3 = 53;
     // 自然
     // 生命之树形态：法术强度-X%，治疗强度+Y%
     // 愤怒：造成X%攻击强度的自然伤害
     // 回春术：每隔X回合使用，每回合回复Y%治疗强度的生命，持续Z回合
-    job.druid_4 = 54;
-    job.job_name[job.druid] = "德鲁伊";
 
     // 职业：盗贼
     job.rogue = 60;

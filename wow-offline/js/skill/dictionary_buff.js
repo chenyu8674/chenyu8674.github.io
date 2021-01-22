@@ -181,6 +181,80 @@ function new_buff() {
     }
     buff[33] = buff.hunter_3();
 
+    // 平衡
+    buff.druid_1 = function () {
+        let buff = {};
+        buff.id = 51;// Id
+        buff.name = "枭兽形态";// 名称
+        buff.T = -1;
+        buff.X = 100;
+        buff.Y = 25;
+        buff.icon = "spell_nature_forceofnature";
+        buff.detail = "护甲+" + buff.X + "%，智力+" + buff.Y + "%";
+        buff.effect = [
+            "armor_attack_percent+=" + buff.X,
+            "armor_magic_percent+=" + buff.X,
+            "int_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[51] = buff.druid_1();
+
+    // 野性
+    buff.druid_2 = function () {
+        let buff = {};
+        buff.id = 52;// Id
+        buff.name = "猎豹形态";// 名称
+        buff.T = -1;
+        buff.X = 40;
+        buff.Y = 25;
+        buff.icon = "ability_druid_catform";
+        buff.detail = "移动速度+" + buff.X + "%，敏捷+" + buff.Y + "%";
+        buff.effect = [
+            "agi_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[52] = buff.druid_2();
+
+    // 守护
+    buff.druid_3 = function () {
+        let buff = {};
+        buff.id = 52;// Id
+        buff.name = "巨熊形态";// 名称
+        buff.T = -1;
+        buff.X = 200;
+        buff.Y = 25;
+        buff.icon = "ability_racial_bearform";
+        buff.detail = "护甲+" + buff.X + "%，耐力+" + buff.Y + "%";
+        buff.effect = [
+            "armor_attack_percent+=" + buff.X,
+            "armor_magic_percent+=" + buff.X,
+            "sta_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[53] = buff.druid_3();
+
+    // 恢复
+    buff.druid_4 = function () {
+        let buff = {};
+        buff.id = 52;// Id
+        buff.name = "生命之树形态";// 名称
+        buff.T = -1;
+        buff.X = 100;
+        buff.Y = 25;
+        buff.icon = "ability_druid_treeoflife";
+        buff.detail = "护甲+" + buff.X + "%，智力+" + buff.Y + "%";
+        buff.effect = [
+            "armor_attack_percent+=" + buff.X,
+            "armor_magic_percent+=" + buff.X,
+            "spr_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[54] = buff.druid_4();
+
     // 狂暴
     buff.mage_2 = function () {
         let buff = {};

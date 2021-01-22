@@ -213,14 +213,26 @@ function turn_loop() {
  * 执行dot伤害
  */
 function do_dot(attacker, dot, target) {
-    // 结算伤害
-    let dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
-    dot_obj.element_type = get_element_name(dot.type);
-    dot_log(dot_obj);
-    let damage_value = dot_obj.damage_value;
-    target.current_health_value -= damage_value;
-    if (target.current_health_value <= 0) {
-        target.current_health_value = 0;
+    if (dot.damage != null) {
+        // DOT，结算伤害
+        let dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
+        dot_obj.element_type = get_element_name(dot.type);
+        dot_log(dot_obj);
+        let damage_value = dot_obj.damage_value;
+        target.current_health_value -= damage_value;
+        if (target.current_health_value <= 0) {
+            target.current_health_value = 0;
+        }
+    } else if (dot.heal != null) {
+        // HOT，结算治疗
+        let hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
+        hot_log(hot_obj);
+        target.current_health_value += hot_obj.heal_value;
+        if (target.current_health_value >= target.max_health_value) {
+            target.current_health_value = target.max_health_value;
+        }
+    } else {
+        alert("dot结算异常");
     }
 }
 

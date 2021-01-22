@@ -62,7 +62,7 @@ body {
     height: 60px;
     margin: 4px;
     float: left;
-    background-size: 115%;
+    background-size: 101%;
     background-position: center;
     border-radius: 12px;
     border: 3px solid gray;
@@ -73,36 +73,36 @@ body {
 }
 
 #bar_map {
-    background-image: url(../img/icon/ability_spy.png);
+    background-image: url(../img/icon/inv_misc_map07.jpg);
 }
 
 #bar_equipment {
-    background-image: url(../img/icon/inv_misc_bag_19.png);
+    background-image: url(../img/icon/garrison_building_salvageyard.jpg);
 }
 
 #bar_shop {
-    background-image: url(../img/icon/coin.png);
+    background-image: url(../img/icon/trade_archaeology_chestoftinyglassanimals.jpg);
 }
 
 #bar_bank {
-    background-image: url(../img/icon/inv_box_02.png);
+    background-image: url(../img/icon/inv_misc_key_03.jpg);
 }
 
 #bar_talent {
-    background-image: url(../img/icon/inv_jewelry_amulet_01.png);
+    background-image: url(../img/icon/ability_marksmanship.jpg);
 }
 
 #bar_character {
-    background-image: url(../img/icon/inv_misc_note_01.png);
+    background-image: url(../img/icon/trade_archaeology_druidprieststatueset.jpg);
 }
 
 #bar_test {
-    background-image: url(../img/icon/inv_misc_bomb_04.png);
+    background-image: url(../img/icon/inv_misc_bomb_04.jpg);
     display: none;
 }
 
 #bar_setting {
-    background-image: url(../img/icon/inv_gizmo_02.png);
+    background-image: url(../img/icon/inv_gizmo_02.jpg);
     display: none;
 }
 

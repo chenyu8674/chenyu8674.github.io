@@ -42,36 +42,6 @@ function show_map_info(map_info) {
 }
 
 /**
- * 显示休息说明
- */
-function show_heal_info() {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.addClass("info_window");
-    info.css("left", "57px");
-    info.css("top", "610px");
-    info.append("<p style='color:goldenrod'>食用补给</p>");
-    info.append("<p>每秒回复10%最大生命值</p>");
-    info.append("<p>进食时必须保持坐姿</p>");
-    info.append("<p style='color:goldenrod'>大吉大利，今晚吃鸡</p>");
-    battle_map.append(info);
-}
-
-/**
- * 显示攻击说明
- */
-function show_attack_info() {
-    $(".info_window").remove();
-    let info = $("<div></div>");
-    info.addClass("info_window");
-    info.css("right", "57px");
-    info.css("top", "610px");
-    info.append("<p style='color:goldenrod'>前进！</p>");
-    info.append("<p>向下个敌人发起攻击</p>");
-    battle_map.append(info);
-}
-
-/**
  * 显示玩家介绍
  */
 function show_player_info() {
