@@ -475,6 +475,7 @@ function has_equip_shield(role) {
         if (typeof equipment === "string") {
             equipment = create_static_equipment_model(equipment);
         }
+        equipment = create_equipment_by_model(equipment);
         if (equipment.type === 41) {
             return true;
         }

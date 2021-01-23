@@ -29,7 +29,7 @@ function new_player_skill() {
             if (damage_obj.is_hit) {
                 target.debuffs.push(new_debuff().warrior_1());
                 let mastery_percent = calculate_original_mastery(attacker);
-                if (Math.random() * 100 < mastery_percent) {
+                if (random_percent(mastery_percent)) {
                     let skill = dictionary_player_skill.warrior_1_2();
                     let damage_obj_2 = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
                     damage_list.push(damage_obj_2);
@@ -56,7 +56,7 @@ function new_player_skill() {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
-            let is_hit = Math.random() < calculate_hit(attacker, target);
+            let is_hit = random_percent(calculate_hit(attacker, target));
             if (is_hit) {
                 // 提前判断致死打击的命中情况，命中则添加标记
                 m_skill_states[attacker.flag] = skill.id;
@@ -310,7 +310,7 @@ function new_player_skill() {
             let damage_obj_1 = calculate_skill_attack(attacker, target, skill.name_2, skill.X, type_attack, element_physical);
             let damage_list = [damage_obj_1];
             let mastery_percent = calculate_original_mastery(attacker);
-            if (Math.random() < (skill.Y + mastery_percent) / 100) {
+            if (random_percent(skill.Y + mastery_percent)) {
                 let damage_obj_2 = calculate_skill_attack(attacker, target, skill.name, skill.Z, type_attack, element_holy, 999);
                 damage_list.push(damage_obj_2);
             }
@@ -361,7 +361,7 @@ function new_player_skill() {
             let damage_list = [];
             let damage_count = Math.round(skill.Y + Math.random() * (skill.Z - skill.Y));
             let mastery_percent = calculate_original_mastery(attacker);
-            if (Math.random() * 100 < mastery_percent) {
+            if (random_percent(mastery_percent)) {
                 damage_count++;
             }
             let hit_count = 0;
@@ -431,7 +431,7 @@ function new_player_skill() {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_arcane);
             if (damage_obj.is_hit) {
                 let mastery_percent = calculate_original_mastery(attacker);
-                if (random(mastery_percent)) {
+                if (random_percent(mastery_percent)) {
                     let skill = dictionary_player_skill.hunter_2_2();
                     let skill_state = get_skill_state(attacker.flag, skill.id);
                     if (skill_state != null) {

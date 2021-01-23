@@ -1,5 +1,5 @@
 // 基础速度系数
-let ONLINE_MULTIPLE = 5;
+let ONLINE_MULTIPLE = 10;
 
 // 调试加速系数
 let LOCAL_MULTIPLE = 1;

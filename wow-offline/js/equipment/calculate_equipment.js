@@ -47,12 +47,18 @@ let random_pre_names = [
 /**
  * 生成随机装备模板(掉落)
  */
-function get_random_equipment_model(max_count, lvl, rare, pos, inclination, type) {
-    let model = create_random_equipment_model(lvl, rare, pos, inclination, type);
+function get_random_equipment_model(param, max_count) {
+    if (typeof param === "number") {
+        let c_lvl = param;
+        param = {};
+        param.c_lvl = c_lvl;
+    }
+    max_count = max_count ? max_count : 1;
+    let model = create_random_equipment_model(param);
     let try_count = 0;
     while (try_count < max_count && !check_can_equip(create_equipment_by_model(model))) {
         try_count++;
-        model = create_random_equipment_model(lvl, rare, pos, inclination, type);
+        model = create_random_equipment_model(param);
     }
     return model;
 }
@@ -60,9 +66,10 @@ function get_random_equipment_model(max_count, lvl, rare, pos, inclination, type
 /**
  * 生成随机装备模板
  */
-function create_random_equipment_model(lvl, rare, pos, inclination, type) {
+function create_random_equipment_model(param) {
     let model = {};
     // 稀有度
+    let rare = param.rare;
     if (rare == null) {
         rare = 100 * Math.random();
         if (rare <= 10) {
@@ -78,76 +85,72 @@ function create_random_equipment_model(lvl, rare, pos, inclination, type) {
         }
         // rare = 6;
     }
+    model.rare = rare;
     // 装备位置
+    let pos = param.pos;
     if (pos == null) {
         pos = 100 * Math.random();
-        if (pos <= 5) {
+        if (pos <= 6) {
             pos = 1;
-        } else if (pos <= 10) {
+        } else if (pos <= 12) {
             pos = 2;
-        } else if (pos <= 15) {
+        } else if (pos <= 18) {
             pos = 3;
-        } else if (pos <= 20) {
+        } else if (pos <= 24) {
             pos = 4;
-        } else if (pos <= 25) {
-            pos = 5;
         } else if (pos <= 30) {
+            pos = 5;
+        } else if (pos <= 36) {
             pos = 8;
-        } else if (pos <= 35) {
+        } else if (pos <= 42) {
             pos = 9;
-        } else if (pos <= 40) {
+        } else if (pos <= 48) {
             pos = 10;
-        } else if (pos <= 45) {
+        } else if (pos <= 54) {
             pos = 11;
-        } else if (pos <= 50) {
-            pos = 12;
         } else if (pos <= 60) {
+            pos = 12;
+        } else if (pos <= 68) {
             pos = 13;
-        } else if (pos <= 70) {
+        } else if (pos <= 76) {
             pos = 14;
-        } else if (pos <= 75) {
+        } else if (pos <= 80) {
             pos = 16;
         } else if (pos <= 100) {
             pos = 15;
         }
     }
     // 装备倾向
+    let inclination = param.inclination;
     if (inclination == null) {
-        inclination = Math.round(Math.random()) + 1;
+        inclination = random_list([1, 2]);
         // inclination = 1;
     }
     // 装备类型
+    let type = param.type;
     if (type == null) {
         if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
             // 布皮锁板装备
-            type = 100 * Math.random();
-            if (type <= 25) {
-                type = 1;
-            } else if (type <= 50) {
-                type = 2;
-            } else if (type <= 75) {
-                type = 3;
-            } else {
-                type = 4;
-            }
+            type = random_list([1, 2, 3, 4]);
             // type = 4;
         } else if (pos === 2 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
             type = 99;// 2项链 6衬衫 7战袍 13戒指 14饰品
         } else if (pos === 5) {
             type = 1;// 披风
         } else if (pos === 15) {
-            type = random_in_array([11, 12, 13, 14, 15, 21, 22, 23, 24, 25, 31, 32, 33]);// 武器
+            type = random_list([11, 12, 13, 14, 15, 21, 22, 23, 24, 25, 31, 32, 33]);// 武器
         } else if (pos === 16) {
-            type = random_in_array([41, 42]);// 副手
+            type = random_list([41, 42]);// 副手
         }
     }
+    // 装备图标
     model.icon = create_equipment_icon(model, pos, type);
-    let attribute = get_attribute_by_pos(pos, type, model.icon);
     // 装备名称
-    model.name = random_in_array(random_pre_names) + attribute[1];
-    model.rare = rare;
-    model.c_lvl = lvl;
-    model.e_lvl = lvl;
+    let attribute = get_attribute_by_pos(pos, type, model.icon);
+    model.name = random_list(random_pre_names) + attribute[1];
+    // 装备等级
+    model.c_lvl = param.c_lvl;
+    model.e_lvl = param.e_lvl ? param.e_lvl : param.c_lvl;
     // 生成随机前缀
     let affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
     while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
@@ -297,7 +300,7 @@ function get_attribute_by_pos(pos, type, icon) {
         case 2:
             multiple = 0.6;
             type_name = "颈部";
-            name = random_in_array(["项链", "挂坠"]);
+            name = random_list(["项链", "挂坠"]);
             break;
         case 3:
             multiple = 0.8;
@@ -338,7 +341,7 @@ function get_attribute_by_pos(pos, type, icon) {
         case 5:
             multiple = 0.6;
             type_name = "背部 " + get_type_name(type);
-            name = random_in_array(["斗篷", "披风"]);
+            name = random_list(["斗篷", "披风"]);
             break;
         case 6:
             multiple = 0;
@@ -441,78 +444,78 @@ function get_attribute_by_pos(pos, type, icon) {
         case 13:
             multiple = 0.6;
             type_name = "戒指";
-            name = random_in_array(["戒指", "指环"]);
+            name = random_list(["戒指", "指环"]);
             break;
         case 14:
             multiple = 0.6;
             type_name = "饰品";
-            name = random_in_array(["饰品", "饰物", "挂件"]);
+            name = random_list(["饰品", "饰物", "挂件"]);
             break;
         case 15:
             switch (type) {
                 case 11:
                     multiple = 0.6;
                     type_name = "匕首";
-                    name = random_in_array(["匕首", "短刀", "长匕"]);
+                    name = random_list(["匕首", "短刀", "长匕"]);
                     break;
                 case 12:
                     multiple = 0.6;
                     type_name = "拳套";
-                    name = random_in_array(["拳套", "指虎", "拳刃"]);
+                    name = random_list(["拳套", "指虎", "拳刃"]);
                     break;
                 case 13:
                     multiple = 0.6;
-                    name = random_in_array(["之斧", "轻斧", "短斧"]);
+                    name = random_list(["之斧", "轻斧", "短斧"]);
                     type_name = "单手斧";
                     break;
                 case 14:
                     multiple = 0.6;
-                    name = random_in_array(["之锤", "轻锤", "短锤"]);
+                    name = random_list(["之锤", "轻锤", "短锤"]);
                     type_name = "单手锤";
                     break;
                 case 15:
                     multiple = 0.6;
-                    name = random_in_array(["之剑", "轻剑", "刺剑"]);
+                    name = random_list(["之剑", "轻剑", "刺剑"]);
                     type_name = "单手剑";
                     break;
                 case 21:
                     multiple = 1.2;
-                    name = random_in_array(["之矛", "之戟", "长矛"]);
+                    name = random_list(["之矛", "之戟", "长矛"]);
                     type_name = "长柄武器";
                     break;
                 case 22:
                     multiple = 1.2;
                     type_name = "法杖";
-                    name = random_in_array(["之杖", "法杖", "长杖"]);
+                    name = random_list(["之杖", "法杖", "长杖"]);
                     break;
                 case 23:
                     multiple = 1.2;
-                    name = random_in_array(["之斧", "巨斧", "重斧"]);
+                    name = random_list(["之斧", "巨斧", "重斧"]);
                     type_name = "双手斧";
                     break;
                 case 24:
                     multiple = 1.2;
-                    name = random_in_array(["之锤", "巨锤", "重锤"]);
+                    name = random_list(["之锤", "巨锤", "重锤"]);
                     type_name = "双手锤";
                     break;
                 case 25:
                     multiple = 1.2;
-                    name = random_in_array(["之剑", "巨剑", "重剑"]);
+                    name = random_list(["之剑", "巨剑", "重剑"]);
                     type_name = "双手剑";
                     break;
                 case 31:
                     multiple = 1.2;
-                    name = random_in_array(["之弓", "强弓", "长弓"]);
+                    name = random_list(["之弓", "强弓", "长弓"]);
                     type_name = "远程武器";
                     break;
                 case 32:
                     multiple = 1.2;
-                    name = random_in_array(["之弩", "强弩", "巨弩"]);
+                    name = random_list(["之弩", "强弩", "巨弩"]);
                     type_name = "远程武器";
                     break;
                 case 33:
                     multiple = 1.2;
-                    name = random_in_array(["火枪", "步枪", "火炮"]);
+                    name = random_list(["火枪", "步枪", "火炮"]);
                     type_name = "远程武器";
                     break;
             }
@@ -521,16 +524,16 @@ function get_attribute_by_pos(pos, type, icon) {
             multiple = 0.6;
             switch (type) {
                 case 41:
-                    name = random_in_array(["之盾", "护盾", "壁垒"]);
+                    name = random_list(["之盾", "护盾", "壁垒"]);
                     type_name = "副手 盾牌";
                     break;
                 case 42:
                     if (icon.indexOf("book") > 0) {
-                        name = random_in_array(["之书", "法典", "魔典"]);
+                        name = random_list(["之书", "法典", "魔典"]);
                     } else if (icon.indexOf("orb") > 0) {
-                        name = random_in_array(["法球", "宝珠", "宝石"]);
+                        name = random_list(["法球", "宝珠", "宝石"]);
                     } else if (icon.indexOf("wand") > 0) {
-                        name = random_in_array(["短杖", "魔杖", "魔棒"]);
+                        name = random_list(["短杖", "魔杖", "魔棒"]);
                     } else if (icon.indexOf("lantern") > 0) {
                         name = "灯笼";
                     }
@@ -561,8 +564,7 @@ function get_type_name(type) {
 function create_equipment_icon(model, pos, type) {
     type = pos * 100 + type;
     let equipment_icon = dictionary_equipment_icon[type];
-    let index = Math.floor(Math.random() * equipment_icon.length);
-    return equipment_icon[index];
+    return random_list(equipment_icon);
 }
 
 /**

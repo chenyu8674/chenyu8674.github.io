@@ -31,10 +31,6 @@ function loadHandler(e) {
     }
 }
 
-function random_in_array(array) {
-    return array[Math.floor(Math.random() * array.length)];
-}
-
 function is_in_array(obj, array) {
     for (let i in array) {
         if (array[i] === obj) {
@@ -45,14 +41,21 @@ function is_in_array(obj, array) {
 }
 
 function is_in_local_mode() {
-    if(window.location.href.indexOf("C:/") > 0) {
+    if (window.location.href.indexOf("C:/") > 0) {
         return true;
-    } else if(window.location.href.indexOf("localhost:63342") > 0) {
+    } else if (window.location.href.indexOf("localhost:63342") > 0) {
         return true;
     }
     return false;
 }
 
-function random(percent) {
+function random_percent(percent) {
     return Math.random() * 100 <= percent;
+}
+
+function random_list(list) {
+    if (list == null || list.length === 0) {
+        return null;
+    }
+    return list[Math.floor(Math.random() * list.length)];
 }

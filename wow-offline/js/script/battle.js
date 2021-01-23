@@ -47,7 +47,7 @@ function start_battle(role_1, role_2, t_callback, b_callback) {
 function sort_role_skills(role) {
     // 随机打乱技能
     role.skills.sort(function () {
-        return (0.5 - Math.random());
+        return Math.random() - 0.5;
     });
     // 技能按优先级排序
     role.skills.sort(function (a, b) {
@@ -99,7 +99,7 @@ function turn_loop() {
     let cast_skill_1 = get_cast_skill(role_battle_1, role_battle_2);
     let cast_skill_2 = get_cast_skill(role_battle_2, role_battle_1);
     // 判断出手顺序
-    let role_1_first = Math.random() < role_battle_1.agi / (role_battle_1.agi + role_battle_2.agi);
+    let role_1_first = random_percent(100 * Math.pow(role_battle_1.agi, 2) / (Math.pow(role_battle_1.agi, 2) + Math.pow(role_battle_2.agi, 2)));
     // 计算dot伤害
     if (role_1_first) {
         if (winner === 0 && refresh_dots(role_battle_1, role_battle_2)) {
@@ -289,12 +289,12 @@ function get_equipment_skill(attacker, target) {
             let skill = eval("dictionary_equipment_skill." + equipment.skill + "()");
             if (skill.attempt != null) {
                 if (skill.attempt(attacker, target)) {
-                    if (Math.random() * 100 < skill.chance) {
+                    if (random_percent(skill.chance)) {
                         equipment_skills.push(skill);
                     }
                 }
             } else if (!skill_in_cd(attacker, skill)) {
-                if (Math.random() * 100 < skill.chance) {
+                if (random_percent(skill.chance)) {
                     equipment_skills.push(skill);
                 }
             }

@@ -12,7 +12,7 @@ function new_equipment_skill() {
         skill.id = 20001;// Id
         skill.name = "萨弗拉斯之怒";// 名称
         skill.type = type_attack;
-        skill.chance = 2;// 触发几率
+        skill.chance = 20;// 触发几率
         skill.cooldown = 5;// 冷却
         skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制
         skill.X = 100;
@@ -42,7 +42,7 @@ function new_equipment_skill() {
         skill.id = 20002;// Id
         skill.name = "麦迪文的回响";// 名称
         skill.type = type_cast;
-        skill.chance = 2;// 触发几率
+        skill.chance = 20;// 触发几率
         skill.cooldown = 5;// 冷却
         skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制
         skill.icon = "ability_mage_potentspirit";
@@ -67,7 +67,7 @@ function new_equipment_skill() {
         skill.id = 20003;// Id
         skill.name = "雷霆之怒";// 名称
         skill.type = type_attack;
-        skill.chance = 2;// 触发几率
+        skill.chance = 20;// 触发几率
         skill.cooldown = 5;// 冷却
         skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制
         skill.X = 100;

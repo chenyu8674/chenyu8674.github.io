@@ -191,7 +191,7 @@ function create_character(job, exp, name) {
  * 添加测试装备
  */
 function push_equipment() {
-    let model = get_random_equipment_model(1, 1);
+    let model = get_random_equipment_model(1);
     current_character.items.push(model);
 }
 

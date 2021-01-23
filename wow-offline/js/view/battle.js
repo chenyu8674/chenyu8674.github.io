@@ -220,18 +220,18 @@ function add_random_monster() {
         // if (get_monster_count_by_rare(4) === 0) {
         // 到达等级上限时，必然刷新精英怪
         monster_base_list = map_info.elite;
-    } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || (kill_count > 0 && Math.random() < RARE_PERCENT / 100))) {
+    } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || (kill_count > 0 && random_percent(RARE_PERCENT)))) {
         // 几率性刷新稀有怪（新角色100%）
         monster_base_list = map_info.rare;
     } else {
         // 刷新普通怪
         monster_base_list = map_info.monster;
     }
-    let random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
+    let random_monster_name = random_list(monster_base_list);
     let monster_obj = new_monster()[random_monster_name];
     while (get_monster_count_by_rare(1) >= 3 && monster_obj.rare === 1) {
         // 弱小怪物最多同时存在3个
-        random_monster_name = monster_base_list[Math.floor(Math.random() * monster_base_list.length)];
+        random_monster_name = random_list(monster_base_list);
         monster_obj = new_monster()[random_monster_name];
     }
     // 生成怪物对象
@@ -240,6 +240,7 @@ function add_random_monster() {
     monster.rare = monster_obj.rare;
     monster.lvl = lvl;
     monster.skills = monster_obj.skill;
+    monster.drop = monster_obj.drop;
     if (monster.skills == null || monster.skills.length === 0) {
         monster.skills = [dictionary_monster_skill.physical_attack()];
     }
@@ -279,16 +280,20 @@ function refresh_raid_monster() {
     $(".monster_point").remove();
     for (let i = 0; i < map_info.monster.length; i++) {
         let monster_raid = map_info.monster[i];
-        let lvl = monster_raid.lvl;
-        let monster_obj = new_monster()[monster_raid.name];
-        // 生成怪物对象
-        let monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
-        monster.species = monster_obj.species;
-        monster.rare = monster_obj.rare;
-        monster.lvl = lvl;
-        monster.skills = monster_obj.skill;
-        if (monster.skills == null || monster.skills.length === 0) {
-            monster.skills = [dictionary_monster_skill.physical_attack()];
+        let monster = {};
+        if (monster_raid.name != null) {
+            let lvl = monster_raid.lvl;
+            let monster_obj = new_monster()[monster_raid.name];
+            // 生成怪物对象
+            monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
+            monster.species = monster_obj.species;
+            monster.rare = monster_obj.rare;
+            monster.lvl = lvl;
+            monster.skills = monster_obj.skill;
+            monster.drop = monster_obj.drop;
+            if (monster.skills == null || monster.skills.length === 0) {
+                monster.skills = [dictionary_monster_skill.physical_attack()];
+            }
         }
         monster.x = monster_raid.x;
         monster.y = monster_raid.y;
@@ -305,31 +310,41 @@ function show_monster_point() {
         let monster = map_monster_list[i];
         let monster_point = $("<img/>");
         monster_point.addClass("monster_point");
-        monster_point.attr("src", "./img/monster/" + monster.species + ".jpg");
         monster_point.css("left", monster.x + "%");
         monster_point.css("top", monster.y + "%");
-        monster_point.css("border-color", eval("color_rare_" + monster.rare));
-        monster_point.hover(function () {
-            monster_point.css("border-color", "goldenrod");
-            show_monster_info(i);
-        }, function () {
-            monster_point.css("border-color", eval("color_rare_" + monster.rare));
-            hide_info();
-        });
-        monster_point.click(function (e) {
-            if ((is_in_local_mode() || map_info.type === 1) && !on_battle) {
-                clearTimeout(self_heal_timer);
-                target_x = monster.x;
-                target_y = monster.y;
-                target_monster = i;
-                calculate_role_2(map_monster_list[i]);
-                fill_role_2_health();
-                refresh_battle_status(false);
-                do_move();
+        if (monster.name == null) {
+            if (is_in_local_mode()) {
+                let color = "rgba(0,0,0,0.2)";
+                monster_point.css("background", color);
+                monster_point.css("border-color", color);
+            } else {
+                monster_point.css("display", "none");
             }
-            e.stopPropagation();
-            return false;
-        });
+        } else {
+            monster_point.attr("src", "./img/monster/" + monster.species + ".jpg");
+            monster_point.css("border-color", eval("color_rare_" + monster.rare));
+            monster_point.hover(function () {
+                monster_point.css("border-color", "goldenrod");
+                show_monster_info(i);
+            }, function () {
+                monster_point.css("border-color", eval("color_rare_" + monster.rare));
+                hide_info();
+            });
+            monster_point.click(function (e) {
+                if ((is_in_local_mode() || map_info.type === 1) && !on_battle) {
+                    clearTimeout(self_heal_timer);
+                    target_x = monster.x;
+                    target_y = monster.y;
+                    target_monster = i;
+                    calculate_role_2(map_monster_list[i]);
+                    fill_role_2_health();
+                    refresh_battle_status(false);
+                    do_move();
+                }
+                e.stopPropagation();
+                return false;
+            });
+        }
         battle_map.append(monster_point);
     }
 }
@@ -341,17 +356,8 @@ function show_attack_icon() {
     let attack_next = $("#attack_next");
     attack_next.unbind("click");
     attack_next.click(function (e) {
-        if (!on_battle) {
-            clearTimeout(self_heal_timer);
-            target_x = map_monster_list[0].x;
-            target_y = map_monster_list[0].y;
-            target_monster = 0;
-            calculate_role_2(map_monster_list[0]);
-            fill_role_2_health();
-            refresh_battle_status(false);
-            do_move();
-        }
         e.stopPropagation();
+        attack_next_monster();
         return false;
     });
     attack_next.hover(function () {
@@ -359,6 +365,22 @@ function show_attack_icon() {
     }, function () {
         hide_info();
     });
+}
+
+/**
+ * 进攻
+ */
+function attack_next_monster() {
+    if (!on_battle) {
+        clearTimeout(self_heal_timer);
+        target_x = map_monster_list[0].x;
+        target_y = map_monster_list[0].y;
+        target_monster = 0;
+        calculate_role_2(map_monster_list[0]);
+        fill_role_2_health();
+        refresh_battle_status(false);
+        do_move();
+    }
 }
 
 /**
@@ -398,11 +420,18 @@ function move_loop() {
     move_step -= move_distance;
     refresh_player_point();
     if (move_step <= 0) {
-        // 开始战斗
-        on_battle = true;
-        $(".player_point").addClass("on_battle");
-        battle_time = 1;
-        start_battle(current_character, map_monster_list[target_monster], on_turn_end, on_battle_end);
+        let monster = map_monster_list[target_monster];
+        if (monster.name == null) {
+            // 途经点
+            map_monster_list.splice(target_monster, 1);
+            attack_next_monster();
+        } else {
+            // 开始战斗
+            on_battle = true;
+            $(".player_point").addClass("on_battle");
+            battle_time = 1;
+            start_battle(current_character, monster, on_turn_end, on_battle_end);
+        }
     } else {
         clearTimeout(move_timer);
         move_timer = setTimeout(move_loop, 5);
@@ -504,25 +533,25 @@ function on_battle_end(index) {
 function drop_random_equipment(monster) {
     let lvl = monster.lvl;
     let rare = monster.rare;
-    let is_drop = false;
-    let multiple = monster.lvl <= 10 ? 1 + 0.3 * (11 - lvl) : 1;
-    switch (rare) {
-        case 1:
-            is_drop = 100 * Math.random() < 5 * multiple * DROP_MULTIPLE;
-            break;
-        case 2:
-            is_drop = 100 * Math.random() < 10 * multiple * DROP_MULTIPLE;
-            break;
-        case 3:
-            is_drop = 100 * Math.random() < 100 * multiple * DROP_MULTIPLE;
-            break;
-        case 4:
-            is_drop = 100 * Math.random() < 50 * multiple * DROP_MULTIPLE;
-            break;
-    }
+    let drop_list = [DROP_1, DROP_2, DROP_3, DROP_4];
+    let is_drop = random_percent(drop_list[rare - 1] * DROP_MULTIPLE);
     if (is_drop) {
-        let model = get_random_equipment_model(1, lvl);
-        put_equipment_to_items(model);
+        if (monster.drop != null && random_percent(DROP_MONSTER)) {
+            put_equipment_to_items(random_list(monster.drop));
+            return;
+        }
+        if (map_info.drop != null && random_percent(DROP_MAP)) {
+            put_equipment_to_items(random_list(map_info.drop));
+            return;
+        }
+        if (map_info.type === 1) {
+            let param = {};
+            param.c_lvl = map_info.min;
+            param.e_lvl = lvl;
+            put_equipment_to_items(get_random_equipment_model(param));
+        } else {
+            put_equipment_to_items(get_random_equipment_model(lvl));
+        }
     }
 }
 
@@ -532,7 +561,7 @@ function drop_random_equipment(monster) {
  */
 function drop_raid_equipment(monster) {
     let drop_list = dictionary_monster[monster.name].drop;
-    let drop_rate = Math.floor(Math.random() * 100);
+    let drop_rate = 100 * Math.random();
     for (let i = 0; i < drop_list.length; i++) {
         let drop = drop_list[i];
         drop = drop.split("|");
@@ -623,9 +652,14 @@ function refresh_battle_status(only_player) {
             $("#monster_shield_bar").css("width", "0px");
             $("#monster_shield_number").text("");
         } else {
+            let monster = map_monster_list[target_monster];
+            if (monster.name == null) {
+                // 途经点
+                return;
+            }
             let monster_portrait = $("#monster_portrait");
             monster_portrait.show();
-            monster_portrait.css("background-image", "url(\"./img/monster/" + map_monster_list[target_monster].species + ".jpg\")");
+            monster_portrait.css("background-image", "url(\"./img/monster/" + monster.species + ".jpg\")");
             $("#monster_name").text(role_battle_2.name);
             let max_health_value = role_battle_2.max_health_value;
             let health_value = role_battle_2.current_health_value;

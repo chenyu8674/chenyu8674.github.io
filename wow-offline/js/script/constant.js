@@ -15,6 +15,17 @@ let RARE_PERCENT = 5;
 // 战斗记录行数上限
 let MAX_LOG = 200;
 
+// 怪物专属装备掉率
+let DROP_MONSTER = 1;
+// 地图专属装备掉率
+let DROP_MAP = 1;
+// 普通怪物掉率
+let DROP_1 = 5;
+let DROP_2 = 10;
+let DROP_3 = 100;
+let DROP_4 = 50;
+
+
 /** 装备参数 **/
 
 let ARMOR_ATTACK_1 = 2;

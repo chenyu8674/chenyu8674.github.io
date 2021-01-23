@@ -99,11 +99,11 @@ function get_skill_point(attacker) {
 function calculate_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block, pierce_shield) {
     // 计算命中
     extra_hit = extra_hit == null ? 0 : extra_hit;
-    let hit_chance = calculate_hit(attacker, target) + extra_hit / 100;
+    let hit_chance = calculate_hit(attacker, target) + extra_hit;
     if (show_hit_percent_in_log) {
-        console.log(attacker.name + "->" + target.name + " " + skill_name + " 命中率：" + hit_chance * 100);
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 命中率：" + hit_chance);
     }
-    let is_hit = Math.random() < hit_chance;
+    let is_hit = random_percent(hit_chance);
     if (!is_hit) {
         let damage_obj = {};
         damage_obj.attacker_name = attacker.name;
@@ -182,11 +182,11 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     damage_value *= (100 + lvl_percent) / 100;
     // 计算暴击
     extra_critical = extra_critical == null ? 0 : extra_critical;
-    let critical_chance = calculate_critical(attacker, target) + extra_critical / 100;
+    let critical_chance = calculate_critical(attacker, target) + extra_critical;
     if (show_critical_percent_in_log) {
-        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance * 100);
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance);
     }
-    let is_critical = Math.random() < critical_chance;
+    let is_critical = random_percent(critical_chance);
     if (is_critical) {
         // 计算暴击加成
         let critical_damage = attacker.critical_damage;
@@ -202,11 +202,11 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     }
     // 计算格挡值
     extra_block = extra_block == null ? 0 : extra_block;
-    let block_chance = calculate_block(attacker, target) + extra_block / 100;
+    let block_chance = calculate_block(attacker, target) + extra_block;
     if (show_block_percent_in_log) {
-        console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance * 100);
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance);
     }
-    let is_block = Math.random() < block_chance;
+    let is_block = random_percent(block_chance);
     let block_value = target.block_value;
     if (is_block) {
         damage_value = damage_value - block_value;
@@ -328,9 +328,9 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
     // 计算暴击
     let critical_chance = calculate_critical(attacker, target);
     if (show_critical_percent_in_log) {
-        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance * 100);
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance);
     }
-    let is_critical = Math.random() < critical_chance;
+    let is_critical = random_percent(critical_chance);
     if (is_critical) {
         // 计算暴击加成
         let critical_damage = attacker.critical_damage;
@@ -397,7 +397,11 @@ function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_
     heal_value *= (0.9 + Math.random() * 0.2);
     // 计算暴击
     extra_critical = extra_critical == null ? 0 : extra_critical;
-    let is_critical = Math.random() < calculate_critical(attacker, target) + extra_critical / 100;
+    let critical_chance = calculate_critical(attacker, target) + extra_critical;
+    if (show_critical_percent_in_log) {
+        console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance);
+    }
+    let is_critical = random_percent(critical_chance);
     if (is_critical) {
         // 计算暴击加成
         heal_value *= attacker.critical_damage / 100;
@@ -438,7 +442,11 @@ function calculate_hot_final_heal(target, skill_name, heal_value) {
     // 治疗随机浮动(0.9~1.1)
     heal_value *= (0.9 + Math.random() * 0.2);
     // 计算暴击
-    let is_critical = Math.random() < calculate_critical(target, target);
+    let critical_chance = calculate_critical(target, target);
+    if (show_critical_percent_in_log) {
+        console.log(target.name + " " + skill_name + " 暴击率：" + critical_chance);
+    }
+    let is_critical = random_percent(critical_chance);
     if (is_critical) {
         // 计算暴击加成
         heal_value *= target.critical_damage / 100;
@@ -546,7 +554,7 @@ function calculate_hit(attacker, target) {
     if (lvl_chance > 30) {
         lvl_chance = 30;
     }
-    return (hit_chance - dodge_chance + lvl_chance) / 100;
+    return hit_chance - dodge_chance + lvl_chance;
 }
 
 /**
@@ -578,7 +586,7 @@ function calculate_critical(attacker, target) {
     if (lvl_chance > 30) {
         lvl_chance = 30;
     }
-    return (calculate_original_critical(attacker) + lvl_chance) / 100;
+    return calculate_original_critical(attacker) + lvl_chance;
 }
 
 /**
@@ -608,7 +616,7 @@ function calculate_block(attacker, target) {
         if (lvl_chance > 30) {
             lvl_chance = 30;
         }
-        return (calculate_original_block(target) + lvl_chance) / 100;
+        return calculate_original_block(target) + lvl_chance;
     }
 }
 
