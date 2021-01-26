@@ -53,10 +53,10 @@ function pack_bag() {
         if (b == null) {
             return -1;
         }
-        if (typeof a === "string") {
+        if (typeof a === "number") {
             a = create_static_equipment_model(a);
         }
-        if (typeof b === "string") {
+        if (typeof b === "number") {
             b = create_static_equipment_model(b);
         }
         a = create_equipment_by_model(a);
@@ -70,7 +70,10 @@ function pack_bag() {
         if (a.rare !== b.rare) {
             return a.rare - b.rare;
         }
-        return a.icon > b.icon ? 1 : -1;
+        if (a.icon !== b.icon) {
+            return a.icon > b.icon ? 1 : -1;
+        }
+        return a.name > b.name ? 1 : -1;
     });
 }
 
@@ -160,15 +163,15 @@ function refresh_current_status_1() {
     create_status_line("", "");
     create_status_line("攻击强度：" + role_battle_1.attack_power,
         (role_battle_1.str * str_to_attack_power + role_battle_1.agi * agi_to_attack_power) + "+" + role_status_1.attack_power + " (" + role_status_1.attack_power_percent + "%)<br/>"
-        + "影响攻击技能造成的效果"
+        + "影响技能造成的攻击效果"
     );
     create_status_line("法术强度：" + role_battle_1.magic_power,
         (role_battle_1.int * int_to_magic_power + role_battle_1.spr * spr_to_magic_power) + "+" + role_status_1.magic_power + " (" + role_status_1.magic_power_percent + "%)<br/>"
-        + "影响法术技能造成的效果"
+        + "影响技能造成的法术效果"
     );
     create_status_line("治疗强度：" + role_battle_1.heal_power,
         (role_battle_1.spr * spr_to_heal_power) + "+" + role_status_1.heal_power + " (" + role_status_1.heal_power_percent + "%)<br/>"
-        + "影响治疗技能造成的效果"
+        + "影响技能造成的治疗效果"
     );
     create_status_line("", "");
     create_status_line("攻击护甲：" + role_battle_1.armor_attack,
@@ -234,7 +237,7 @@ function get_mastery_html() {
     let mastery_percent = calculate_original_mastery(role_battle_1).toFixed(2);
     switch (role_battle_1.job) {
         case 11:
-            return "致死打击命中时， " + mastery_percent + "% 几率触发一次压制（不影响冷却时间）"
+            return "装备双手武器时，致死打击命中有 " + mastery_percent + "% 的几率触发一次压制"
         case 12:
             return "嗜血的生命回复效果提高 " + mastery_percent + "%"
         case 13:
@@ -352,7 +355,7 @@ function refresh_current_equipment() {
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
         let equipment_name;
-        if (typeof equipment === "string") {
+        if (typeof equipment === "number") {
             equipment_name = equipment;
             equipment = create_static_equipment_model(equipment);
         }
@@ -382,7 +385,7 @@ function refresh_current_equipment() {
         cell.css("background-image", "url(./img/equipment/" + icon + ".jpg)");
         cell.hover(function () {
             let view = $(this);
-            show_equipment_info(equipment, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+            show_equipment_info(view, equipment);
         }, function () {
             hide_info();
         });
@@ -414,7 +417,7 @@ function refresh_current_items() {
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
-            if (typeof item === "string") {
+            if (typeof item === "number") {
                 // 生成固定装备model
                 item = create_static_equipment_model(item);
             }
@@ -424,7 +427,7 @@ function refresh_current_items() {
             cell.css("background-image", "url(./img/equipment/" + item.icon + ".jpg)");
             cell.hover(function () {
                 let view = $(this);
-                show_equipment_info(item, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                show_equipment_info(view, item);
             }, function () {
                 hide_info();
             });
@@ -449,9 +452,6 @@ function get_equipment_count_by_pos(pos) {
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
-        if (typeof equipment === "string") {
-            equipment = create_static_equipment_model(equipment);
-        }
         equipment = create_equipment_by_model(equipment);
         if (equipment.pos === pos) {
             count++;
@@ -472,9 +472,6 @@ function has_equip_shield(role) {
     let equipments = role.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let equipment = equipments[j];
-        if (typeof equipment === "string") {
-            equipment = create_static_equipment_model(equipment);
-        }
         equipment = create_equipment_by_model(equipment);
         if (equipment.type === 41) {
             return true;
@@ -494,9 +491,6 @@ function has_equip_two_hand_weapon(role) {
     let equipments = role.equipments;
     for (let j = 0; j < equipments.length; j++) {
         let module = equipments[j];
-        if (typeof module === "string") {
-            module = create_static_equipment_model(module);
-        }
         let equipment = create_equipment_by_model(module);
         if (equipment.pos === 15 && is_in_array(equipment.type, [21, 22, 23, 24, 25, 31, 32, 33])) {
             return true;
@@ -539,7 +533,7 @@ function equip_equipment(index) {
     let items = current_character.items;
     let item = items[index];
     let item_name;
-    if (typeof item === "string") {
+    if (typeof item === "number") {
         item_name = item;
         item = create_static_equipment_model(item);
     }
@@ -568,7 +562,7 @@ function equip_equipment(index) {
             for (let j = 0; j < equipments.length; j++) {
                 let equipment = equipments[j];
                 let equipment_name;
-                if (typeof equipment === "string") {
+                if (typeof equipment === "number") {
                     equipment_name = equipment;
                     equipment = create_static_equipment_model(equipment);
                 }
@@ -589,7 +583,7 @@ function equip_equipment(index) {
         for (let j = equipments.length - 1; j >= 0; j--) {
             let equipment = equipments[j];
             let equipment_name;
-            if (typeof equipment === "string") {
+            if (typeof equipment === "number") {
                 equipment_name = equipment;
                 equipment = create_static_equipment_model(equipment);
             }
@@ -605,7 +599,7 @@ function equip_equipment(index) {
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
             let equipment_name;
-            if (typeof equipment === "string") {
+            if (typeof equipment === "number") {
                 equipment_name = equipment;
                 equipment = create_static_equipment_model(equipment);
             }
@@ -625,7 +619,7 @@ function equip_equipment(index) {
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
             let equipment_name;
-            if (typeof equipment === "string") {
+            if (typeof equipment === "number") {
                 equipment_name = equipment;
                 equipment = create_static_equipment_model(equipment);
             }
@@ -640,7 +634,7 @@ function equip_equipment(index) {
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
             let equipment_name;
-            if (typeof equipment === "string") {
+            if (typeof equipment === "number") {
                 equipment_name = equipment;
                 equipment = create_static_equipment_model(equipment);
             }
@@ -682,7 +676,7 @@ function take_off_equipment(equipment) {
     }
     hide_info();
     let equipment_name;
-    if (typeof equipment === "string") {
+    if (typeof equipment === "number") {
         equipment_name = equipment;
         equipment = create_static_equipment_model(equipment);
     }

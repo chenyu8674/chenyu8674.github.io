@@ -49,6 +49,9 @@ function new_attribute_name() {
     name.armor_attack_percent = "%攻击护甲";
     name.armor_magic = "法术护甲";
     name.armor_magic_percent = "%法术护甲";
+    name.armor_all = "所有护甲";
+    name.armor_all_percent = "%所有护甲";
+    name.damage_all = "%所有伤害";
     name.damage_physical = "%物理伤害";
     name.damage_fire = "%火焰伤害";
     name.damage_frost = "%冰霜伤害";
@@ -56,6 +59,7 @@ function new_attribute_name() {
     name.damage_arcane = "%奥术伤害";
     name.damage_holy = "%神圣伤害";
     name.damage_shadow = "%暗影伤害";
+    name.res_all = "所有抗性";
     name.res_physical = "物理抗性";
     name.res_fire = "火焰抗性";
     name.res_frost = "冰霜抗性";
@@ -63,6 +67,7 @@ function new_attribute_name() {
     name.res_arcane = "奥术抗性";
     name.res_holy = "神圣抗性";
     name.res_shadow = "暗影抗性";
+    name.pierce_all = "伤害穿透";
     name.pierce_physical = "物理穿透";
     name.pierce_fire = "火焰穿透";
     name.pierce_frost = "冰霜穿透";

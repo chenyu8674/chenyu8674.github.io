@@ -330,5 +330,24 @@ function new_monster_skill() {
         return skill;
     }
 
+    skill.sunder = function () {
+        let skill = {};
+        skill.id = 11006;// Id
+        skill.name = "破甲";// 名称
+        skill.type = type_attack;
+        skill.X = 100;
+        skill.icon = "ability_warrior_sunder";
+        skill.detail = "击碎目标的护甲，对其造成" + skill.X + "%攻击强度的物理伤害，并使目标的物理抗性-" + dictionary_debuff.warrior_3().X + "，持续" + dictionary_debuff.warrior_3().T + "回合。";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            if (damage_obj.is_hit) {
+                target.debuffs.push(new_debuff().warrior_3());
+            }
+            return skill_cast_result([damage_obj], [], []);
+        };
+        return skill;
+    }
+
     return skill;
 }

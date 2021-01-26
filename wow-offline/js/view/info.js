@@ -59,10 +59,15 @@ function show_player_info() {
  * 显示怪物介绍
  */
 function show_monster_info(index) {
+    let monster = map_monster_list[index];
+    if (monster.name == null) {
+        return;
+    }
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
-    let monster = map_monster_list[index];
+    monster.x = monster.x > 100 ? monster.x / 10 : monster.x;
+    monster.y = monster.y > 100 ? monster.y / 10 : monster.y;
     info.css("left", monster.x + 1.5 + "%");
     info.css("top", monster.y + 1.5 + "%");
     info.append("<div>" + monster.name + "</div>");
@@ -74,7 +79,9 @@ function show_monster_info(index) {
 /**
  * 显示装备介绍
  */
-function show_equipment_info(model, x, y) {
+function show_equipment_info(view, model) {
+    let x = view[0].offsetWidth + view.offset().left - window_margin_left;
+    let y = view[0].offsetHeight + view.offset().top - window_margin_top;
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
@@ -84,7 +91,7 @@ function show_equipment_info(model, x, y) {
     let equipment = create_equipment_by_model(model);
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
-    info.append("<div style='font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
+    info.append("<div style='height:25px;font-size:14px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
     // 物品等级
     info.append("<div style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</div>");
     let can_equip = check_can_equip(equipment);
@@ -125,13 +132,64 @@ function show_equipment_info(model, x, y) {
         let skill = equipment.skill;
         info.append("<div style='color:" + color_rare_3 + ";margin-top:5px;margin-bottom:5px;line-height:17px;'>攻击时可能：" + skill.detail + "</div>");
     }
+    if (equipment.sets != null) {
+        // 套装信息
+        let sets_name = equipment.sets;
+        let sets = dictionary_sets[sets_name];
+        let equipments = sets.equipments;
+        let effects = sets.effects;
+        let count_equip = 0;
+        let count_total = equipments.length;
+        for (let i = 0; i < equipments.length; i++) {
+            let equipment = equipments[i];
+            if (is_equip_equipment(current_character, equipment)) {
+                count_equip++;
+            }
+        }
+        info.append("<div style='height:10px'></div>");
+        info.append("<div style='color:goldenrod'>" + sets_name + "（" + count_equip + "/" + count_total + "）" + "</div>");
+        for (let i = 0; i < equipments.length; i++) {
+            let equipment = equipments[i];
+            let color = is_equip_equipment(current_character, equipment) ? color_rare_3 : color_rare_1;
+            equipment = create_equipment_by_model(equipment);
+            info.append("<div style='color:" + color + "'>" + equipment.name + "</div>");
+        }
+        info.append("<div style='height:10px'></div>");
+        for (let i = 0; i < effects.length; i++) {
+            let effect = effects[i];
+            if (effect == null) {
+                continue;
+            }
+            let color = count_equip > i ? color_rare_3 : color_rare_1;
+            let attr_string = "";
+            for (let j = 0; j < effect.length; j++) {
+                let attr = effect[j];
+                attr = get_main_effect(attr);
+                attr = attr.split("+=");
+                if (attr[1] === 0) {
+                    continue;
+                }
+                let text = attr[1] + " " + dictionary_attribute_name[attr[0]];
+                if (attr[1] > 0) {
+                    text = "+" + text;
+                }
+                text = text.replace(" %", "% ");
+                if (j > 0) {
+                    attr_string += "，";
+                }
+                attr_string += text;
+            }
+            info.append("<div style='color:" + color + "'>套装(" + (i + 1) + ")：" + attr_string + "</div>");
+        }
+        info.append("<div style='height:10px'></div>");
+    }
     if (equipment.detail != null) {
         // 文字介绍
         info.append("<div style='color:goldenrod'>" + equipment.detail + "</div>");
     }
     // 售价
     info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
-    $("body").append(info);
+    window_view.append(info);
     if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() - 5) {
         info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
     }
@@ -146,11 +204,11 @@ function set_bar_info_hover(view, html) {
 }
 
 /**
- * 显示文字介绍
+ * 显示菜单栏文字介绍
  */
 function show_bar_info(view, html) {
-    let x = view[0].offsetWidth + view.offset().left;
-    let y = view[0].offsetHeight + view.offset().top;
+    let x = view[0].offsetWidth + view.offset().left - window_margin_left;
+    let y = view[0].offsetHeight + view.offset().top - window_margin_top;
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
@@ -167,7 +225,7 @@ function show_bar_info(view, html) {
     info.css("border-radius", "6px");
     info.css("background-color", "rgba(0, 0, 0, 0.6)");
     info.append(html);
-    $("body").append(info);
+    window_view.append(info);
 }
 
 function set_info_hover(view, html, item) {
@@ -185,15 +243,15 @@ function set_info_hover(view, html, item) {
  * 显示文字介绍
  */
 function show_text_info(view, html) {
-    let x = view[0].offsetWidth + view.offset().left;
-    let y = view[0].offsetHeight + view.offset().top;
+    let x = view[0].offsetWidth + view.offset().left - window_margin_left;
+    let y = view[0].offsetHeight + view.offset().top - window_margin_top;
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
     info.css("left", x + "px");
     info.css("top", y + "px");
     info.append(html);
-    $("body").append(info);
+    window_view.append(info);
     if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() - 5) {
         info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
     }

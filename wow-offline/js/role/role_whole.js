@@ -46,6 +46,8 @@ function new_role_whole() {
     role_whole.armor_attack_percent = 100;// 攻击护甲百分比
     role_whole.armor_magic = 0;// 法术护甲
     role_whole.armor_magic_percent = 100;// 法术护甲百分比
+    role_whole.armor_all = 0;// 所有护甲
+    role_whole.armor_all_percent = 0;// 所有护甲百分比
 
     role_whole.hit_rate = 0;// 命中等级
     role_whole.hit_rate_percent = 100;// 命中等级百分比
@@ -73,6 +75,7 @@ function new_role_whole() {
     role_whole.block_value = 0;// 格挡值
     role_whole.block_value_percent = 100;// 格挡值百分比
 
+    role_whole.damage_all = 0;// 全部伤害百分比
     role_whole.damage_physical = 100;// 物理伤害百分比
     role_whole.damage_fire = 100;// 火焰伤害百分比
     role_whole.damage_frost = 100;// 冰霜伤害百分比
@@ -81,6 +84,7 @@ function new_role_whole() {
     role_whole.damage_holy = 100;// 神圣伤害百分比
     role_whole.damage_shadow = 100;// 暗影伤害百分比
 
+    role_whole.res_all = 0;// 全部减伤百分比
     role_whole.res_physical = 0;// 物理减伤百分比
     role_whole.res_fire = 0;// 火焰减伤百分比
     role_whole.res_frost = 0;// 冰霜减伤百分比
@@ -89,6 +93,7 @@ function new_role_whole() {
     role_whole.res_holy = 0;// 神圣减伤百分比
     role_whole.res_shadow = 0;// 暗影减伤百分比
 
+    role_whole.pierce_all = 0;// 全部穿透百分比
     role_whole.pierce_physical = 0;// 物理穿透百分比
     role_whole.pierce_fire = 0;// 火焰穿透百分比
     role_whole.pierce_frost = 0;// 冰霜穿透百分比

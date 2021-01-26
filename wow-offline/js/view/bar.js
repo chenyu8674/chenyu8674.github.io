@@ -51,6 +51,9 @@ function init_view_icon_click() {
             if (is_in_battle()) {
                 return;
             }
+            if (map_info != null && map_info.type !== 1 && map_monster_list.length > 0 && !confirm("确认退出副本？")) {
+                return;
+            }
             hide_all_view();
             show_view_map();
         }
@@ -91,8 +94,7 @@ function init_view_icon_click() {
         if (is_in_battle()) {
             return;
         }
-        hide_all_view();
-        show_view_map();
+        hide_front_view();
         show_view_character_select(true);
     });
     $("#bar_test").click(function () {

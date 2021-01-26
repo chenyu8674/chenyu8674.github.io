@@ -197,8 +197,7 @@ function new_buff() {
         buff.icon = "spell_nature_forceofnature";
         buff.detail = "护甲+" + buff.X + "%，智力+" + buff.Y + "%";
         buff.effect = [
-            "armor_attack_percent+=" + buff.X,
-            "armor_magic_percent+=" + buff.X,
+            "armor_all_percent+=" + buff.X,
             "int_percent+=" + buff.Y
         ];
         return buff;
@@ -232,10 +231,9 @@ function new_buff() {
         buff.X = 200;
         buff.Y = 25;
         buff.icon = "ability_racial_bearform";
-        buff.detail = "护甲+" + buff.X + "%，耐力+" + buff.Y + "%";
+        buff.detail = "所有护甲+" + buff.X + "%，耐力+" + buff.Y + "%";
         buff.effect = [
-            "armor_attack_percent+=" + buff.X,
-            "armor_magic_percent+=" + buff.X,
+            "armor_all_percent+=" + buff.X,
             "sta_percent+=" + buff.Y
         ];
         return buff;
@@ -248,13 +246,12 @@ function new_buff() {
         buff.id = 52;// Id
         buff.name = "生命之树形态";// 名称
         buff.T = -1;
-        buff.X = 100;
+        buff.X = 50;
         buff.Y = 25;
         buff.icon = "ability_druid_treeoflife";
         buff.detail = "护甲+" + buff.X + "%，精神+" + buff.Y + "%";
         buff.effect = [
-            "armor_attack_percent+=" + buff.X,
-            "armor_magic_percent+=" + buff.X,
+            "armor_all_percent+=" + buff.X,
             "spr_percent+=" + buff.Y
         ];
         return buff;

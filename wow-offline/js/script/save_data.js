@@ -105,12 +105,12 @@ function create_character(job, exp, name) {
     add_experience(exp);
     if (is_in_local_mode()) {
         if (current_character.exp === 0) {
-            add_experience(1380);
+            add_experience(20000);
         }
     }
     if (current_character.name === "GHOST") {
         if (current_character.exp === 0) {
-            add_experience(1380);
+            add_experience(20000);
         }
     }
     current_character = calculate_base_property(current_character);
@@ -129,44 +129,45 @@ function create_character(job, exp, name) {
     }
     if (exp === 0) {
         // 新手装备
-        current_character.equipments.push("新手衬衫");
+        current_character.equipments.push(31);
+        current_character.equipments.push(32);
         switch (job) {
             case 11:
             case 23:
-                current_character.equipments.push("训练双手剑");
-                current_character.equipments.push("训练胸铠");
+                current_character.equipments.push(11);
+                current_character.equipments.push(24);
                 break;
             case 12:
-                current_character.equipments.push("训练单手剑");
-                current_character.equipments.push("训练单手剑");
-                current_character.equipments.push("训练胸铠");
+                current_character.equipments.push(12);
+                current_character.equipments.push(12);
+                current_character.equipments.push(24);
                 break;
             case 13:
             case 22:
-                current_character.equipments.push("训练单手剑");
-                current_character.equipments.push("训练盾牌");
-                current_character.equipments.push("训练胸铠");
+                current_character.equipments.push(12);
+                current_character.equipments.push(14);
+                current_character.equipments.push(24);
                 break;
             case 21:
-                current_character.equipments.push("训练单手锤");
-                current_character.equipments.push("训练盾牌");
-                current_character.equipments.push("训练胸铠");
+                current_character.equipments.push(13);
+                current_character.equipments.push(14);
+                current_character.equipments.push(24);
                 break;
             case 31:
             case 32:
             case 33:
-                current_character.equipments.push("训练之弓");
-                current_character.equipments.push("训练链甲");
+                current_character.equipments.push(15);
+                current_character.equipments.push(23);
                 break;
             case 51:
             case 54:
-                current_character.equipments.push("训练法杖");
-                current_character.equipments.push("训练皮衣");
+                current_character.equipments.push(17);
+                current_character.equipments.push(22);
                 break;
             case 52:
             case 53:
-                current_character.equipments.push("训练长杖");
-                current_character.equipments.push("训练皮衣");
+                current_character.equipments.push(16);
+                current_character.equipments.push(22);
                 break;
         }
     }
@@ -176,9 +177,11 @@ function create_character(job, exp, name) {
     //         push_equipment();
     //     }
     // }
-    current_character.items.push("雷霆之怒，逐风者的祝福之剑");
-    current_character.items.push("萨弗拉斯，炎魔拉格纳罗斯之手");
-    current_character.items.push("埃提耶什，守护者的传说之杖");
+    current_character.items.push(19019);
+    current_character.items.push(17182);
+    current_character.items.push(22589);
+    current_character.items.push(12939);
+    current_character.items.push(12940);
 
     // 刷新状态栏
     calculate_role_1(current_character);

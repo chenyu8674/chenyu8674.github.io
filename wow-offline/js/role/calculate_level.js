@@ -1,5 +1,6 @@
 /** 经验、等级结算 **/
 
+let MAX_EXP = 0;// 经验上限
 let LVL_EXP = [];// 升级经验表
 let MONSTER_EXP = [];// 怪物经验表
 

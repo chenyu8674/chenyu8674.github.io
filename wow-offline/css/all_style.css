@@ -6,6 +6,15 @@ body {
     font-family: "微软雅黑", serif;
     overflow: hidden;
     color: whitesmoke;
+    background: black;
+}
+
+#window {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 1600px;
+    height: 900px;
 }
 
 .full_screen {
@@ -15,8 +24,8 @@ body {
     width: 1600px;
     height: 900px;
     background-color: rgba(0, 0, 0, 0.92);
-    z-index: 70;
     display: none;
+    z-index: 50;
 }
 
 #timestamp {
@@ -29,7 +38,6 @@ body {
 #view_map {
     background-image: url(../img/map.jpg);
     display: block;
-    z-index: 50;
 }
 
 #view_character_create {

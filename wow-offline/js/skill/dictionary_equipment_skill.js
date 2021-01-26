@@ -7,9 +7,8 @@ $(document).ready(function () {
 function new_equipment_skill() {
     let skill = {};
 
-    skill.fire_of_sulfuras = function () {
+    skill[21162] = function () {
         let skill = {};
-        skill.id = 20001;// Id
         skill.name = "萨弗拉斯之怒";// 名称
         skill.type = type_attack;
         skill.chance = 20;// 触发几率
@@ -37,9 +36,8 @@ function new_equipment_skill() {
         return skill;
     }
 
-    skill.echo_of_medivh = function () {
+    skill[28148] = function () {
         let skill = {};
-        skill.id = 20002;// Id
         skill.name = "麦迪文的回响";// 名称
         skill.type = type_cast;
         skill.chance = 20;// 触发几率
@@ -62,9 +60,8 @@ function new_equipment_skill() {
         return skill;
     }
 
-    skill.rage_of_thunder = function () {
+    skill[21992] = function () {
         let skill = {};
-        skill.id = 20003;// Id
         skill.name = "雷霆之怒";// 名称
         skill.type = type_attack;
         skill.chance = 20;// 触发几率
@@ -72,7 +69,7 @@ function new_equipment_skill() {
         skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制
         skill.X = 100;
         skill.icon = "spell_nature_cyclone";
-        skill.detail = "以雷霆之力冲击目标，造成" + skill.X + "%攻击强度的自然伤害，并使其造成的所有伤害降低" + dictionary_debuff.rage_of_thunder().X + "%，持续" + dictionary_debuff.rage_of_thunder().T + "回合。";
+        skill.detail = "以雷霆之力冲击目标，造成" + skill.X + "%攻击强度的自然伤害，并使其造成的所有伤害降低" + dictionary_debuff[21992]().X + "%，持续" + dictionary_debuff[21992]().T + "回合。";
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
@@ -83,9 +80,27 @@ function new_equipment_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, "<span style='color:" + color_rare_6 + "'>" + skill.name + "</span>", skill.X, type_attack, element_natural);
             if (damage_obj.is_hit) {
-                target.debuffs.push(new_debuff().rage_of_thunder());
+                target.debuffs.push(new_debuff()[21992]());
             }
             return skill_cast_result(damage_obj, [], []);
+        };
+        return skill;
+    }
+
+    skill[18381] = function () {
+        let skill = {};
+        skill.name = "残废术";// 名称
+        skill.type = type_cast;
+        skill.chance = 50;// 触发几率
+        skill.cooldown = 5;// 冷却
+        skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制
+        skill.icon = "spell_nature_cyclone";
+        skill.detail = "使目标的攻击强度降低" + dictionary_debuff[18381]().X + "点，持续" + dictionary_debuff[18381]().T + "回合。";
+        // 技能施放调用
+        skill.cast = function (attacker, target) {
+            target.debuffs.push(new_debuff()[18381]());
+            battle_log(attacker.name + "施放了 " + skill.name);
+            return skill_cast_result([], [], []);
         };
         return skill;
     }

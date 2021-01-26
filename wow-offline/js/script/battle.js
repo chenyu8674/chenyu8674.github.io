@@ -45,6 +45,13 @@ function start_battle(role_1, role_2, t_callback, b_callback) {
  * @param role
  */
 function sort_role_skills(role) {
+    // 删除空技能
+    for (let i = 0; i < role.skills.length; i++) {
+        if (role.skills[i] == null) {
+            role.skills.splice(i, 1);
+            i--;
+        }
+    }
     // 随机打乱技能
     role.skills.sort(function () {
         return Math.random() - 0.5;
@@ -263,7 +270,7 @@ function get_cast_skill(attacker, target) {
     attacker.skills.unshift(cast_skill);
     attacker.skills.splice(index + 1, 1);
     if (cast_skill == null) {
-        cast_skill = new dictionary_monster_skill().physical_attack();
+        cast_skill = new_monster_skill().physical_attack();
         cast_skill.trigger = false;
     }
     if (cast_skill.trigger == null) {
@@ -282,11 +289,11 @@ function get_equipment_skill(attacker, target) {
     let equipments = attacker.equipments;
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
-        if (typeof equipment === "string") {
+        if (typeof equipment === "number") {
             equipment = create_static_equipment_model(equipment);
         }
         if (equipment.skill != null) {
-            let skill = eval("dictionary_equipment_skill." + equipment.skill + "()");
+            let skill = dictionary_equipment_skill[equipment.skill]();
             if (skill.attempt != null) {
                 if (skill.attempt(attacker, target)) {
                     if (random_percent(skill.chance)) {

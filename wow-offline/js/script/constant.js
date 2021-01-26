@@ -1,45 +1,62 @@
 /** 常量定义 **/
 
 // 等级上限
-let MAX_LVL = 60;
-// 经验上限
-let MAX_EXP = 0;
+let MAX_LVL = 20;
 // 最大抗性
 let MAX_RES = 75;
 // 最大包裹数量
 let MAX_ITEMS = 100;
 // 最大银行空格数量
 let MAX_BANKS = 100;
-// 稀有怪刷新率
-let RARE_PERCENT = 5;
 // 战斗记录行数上限
 let MAX_LOG = 200;
-
+// 稀有怪刷新率
+let RARE_PERCENT = 5;
 // 怪物专属装备掉率
-let DROP_MONSTER = 1;
+let DROP_MONSTER = 5;
 // 地图专属装备掉率
-let DROP_MAP = 1;
+let DROP_MAP = 5;
 // 普通怪物掉率
 let DROP_1 = 5;
 let DROP_2 = 10;
 let DROP_3 = 100;
 let DROP_4 = 50;
+let DROP_5 = 100;
+let DROP_6 = 100;
 
 
 /** 装备参数 **/
 
-let ARMOR_ATTACK_1 = 2;
-let ARMOR_ATTACK_2 = 4;
-let ARMOR_ATTACK_3 = 6;
-let ARMOR_ATTACK_4 = 8;
-let ARMOR_MAGIC_1 = 4;
-let ARMOR_MAGIC_2 = 3;
-let ARMOR_MAGIC_3 = 2;
-let ARMOR_MAGIC_4 = 1;
+let ARMOR_ATTACK_1 = 1.5;// 布甲攻击护甲系数
+let ARMOR_ATTACK_2 = 3;// 皮甲攻击护甲系数
+let ARMOR_ATTACK_3 = 4.5;// 锁甲攻击护甲系数
+let ARMOR_ATTACK_4 = 6;// 板甲攻击护甲系数
+let ARMOR_ATTACK_5 = 6;// 盾牌攻击护甲系数
+let ARMOR_MAGIC_1 = 3;// 布甲法术护甲系数
+let ARMOR_MAGIC_2 = 2.25;// 皮甲法术护甲系数
+let ARMOR_MAGIC_3 = 1.5;// 锁甲法术护甲系数
+let ARMOR_MAGIC_4 = 0.75;// 板甲法术护甲系数
+let ARMOR_MAGIC_5 = 0.75;// 盾牌法术护甲系数
 
-/** 武器参数 **/
+let MULTIPLE_1 = 1;// 头盔属性系数
+let MULTIPLE_2 = 0.6;// 项链属性系数
+let MULTIPLE_3 = 0.75;// 护肩属性系数
+let MULTIPLE_4 = 1;// 胸甲属性系数
+let MULTIPLE_5 = 0.6;// 披风属性系数
+let MULTIPLE_8 = 0.6;// 护腕属性系数
+let MULTIPLE_9 = 0.75;// 手套属性系数
+let MULTIPLE_10 = 0.75;// 腰带属性系数
+let MULTIPLE_11 = 1;// 腿甲属性系数
+let MULTIPLE_12 = 0.75;// 靴子属性系数
+let MULTIPLE_13 = 0.6;// 戒指属性系数
+let MULTIPLE_14 = 0.6;// 饰物属性系数
+let MULTIPLE_15_1 = 0.45;// 单手属性系数
+let MULTIPLE_15_2 = 1;// 双手属性系数
+let MULTIPLE_16 = 0.6;// 副手属性系数
 
-let WEAPON_ATTACK_ = 8;
+let WEAPON_ATTACK_1 = 4;// 单手强度系数
+let WEAPON_ATTACK_2 = 6;// 双手强度系数
+let WEAPON_ATTACK_3 = 2;// 副手手强度系数
 
 /** 系统设置 **/
 
@@ -107,61 +124,21 @@ let block_coefficient = 2.5;// 格挡等级转化系数
 let resilient_coefficient = 4;// 韧性等级转化系数（dot）
 let resilient_multiple = 1.25;// 韧性等级转化系数（暴击）
 
-let mastery_per_lvl = 10;// 每级附加精通等级
-let mastery_coefficient = [];// 精通等级转化系数
+let mastery_per_lvl = 5;// 每级附加精通等级
 
-mastery_coefficient[11] = 1;
-mastery_coefficient[12] = 3;
-mastery_coefficient[13] = 2;
-mastery_coefficient[21] = 1;
-mastery_coefficient[22] = 3;
-mastery_coefficient[23] = 2;
-mastery_coefficient[31] = 3;
-mastery_coefficient[32] = 1;
-mastery_coefficient[33] = 3;
-mastery_coefficient[51] = 2;
-mastery_coefficient[52] = 1;
-mastery_coefficient[53] = 1;
-mastery_coefficient[54] = 2;
+/* 精通等级转化系数 */
 
-/**
- * 阶级系数
- * @param rare
- */
-function get_multiple_by_rare(rare) {
-    switch (rare) {
-        case 1:
-            return 0.5;
-        case 2:
-            return 0.8;
-        case 3:
-            return 1;
-        case 4:
-            return 1.2;
-        case 5:
-            return 1.4;
-        case 6:
-            return 2;
-    }
-}
-
-/**
- * 阶级名称
- * @param rare
- */
-function get_type_name_by_rare(rare) {
-    switch (rare) {
-        case 1:
-            return "劣质";
-        case 2:
-            return "普通";
-        case 3:
-            return "优秀";
-        case 4:
-            return "精良";
-        case 5:
-            return "史诗";
-        case 6:
-            return "传说";
-    }
-}
+let mastery_coefficient = [];
+mastery_coefficient[11] = 2;
+mastery_coefficient[12] = 6;
+mastery_coefficient[13] = 4;
+mastery_coefficient[21] = 2;
+mastery_coefficient[22] = 5;
+mastery_coefficient[23] = 4;
+mastery_coefficient[31] = 6;
+mastery_coefficient[32] = 2;
+mastery_coefficient[33] = 6;
+mastery_coefficient[51] = 4;
+mastery_coefficient[52] = 2;
+mastery_coefficient[53] = 2;
+mastery_coefficient[54] = 4;

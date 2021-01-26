@@ -15,6 +15,7 @@ function show_view_map() {
 
 function hide_view_map() {
     view_map.hide();
+    map_info = null;
 }
 
 
@@ -31,6 +32,8 @@ function draw_map() {
         if (map_info.min > current_lvl) {
             continue;
         }
+        map_info.x = map_info.x > 100 ? map_info.x / 10 : map_info.x;
+        map_info.y = map_info.y > 100 ? map_info.y / 10 : map_info.y;
         let dot = $("<div></div>");
         if (map_info.type === 1) {
             dot.addClass("map_dot normal");

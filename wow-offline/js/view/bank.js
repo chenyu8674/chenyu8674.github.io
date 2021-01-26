@@ -46,7 +46,7 @@ function refresh_bank_view() {
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
             let item_name;
-            if (typeof item === "string") {
+            if (typeof item === "number") {
                 // 生成固定装备model
                 item_name = item;
                 item = create_static_equipment_model(item);
@@ -57,7 +57,7 @@ function refresh_bank_view() {
             cell.css("background-image", "url(./img/equipment/" + item.icon + ".jpg)");
             cell.hover(function () {
                 let view = $(this);
-                show_equipment_info(item, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                show_equipment_info(view, item);
             }, function () {
                 hide_info();
             });
@@ -98,7 +98,7 @@ function refresh_bank_items() {
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
             let item_name;
-            if (typeof item === "string") {
+            if (typeof item === "number") {
                 // 生成固定装备model
                 item_name = item;
                 item = create_static_equipment_model(item);
@@ -109,7 +109,7 @@ function refresh_bank_items() {
             cell.css("background-image", "url(./img/equipment/" + item.icon + ".jpg)");
             cell.hover(function () {
                 let view = $(this);
-                show_equipment_info(item, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                show_equipment_info(view, item);
             }, function () {
                 hide_info();
             });
@@ -161,10 +161,10 @@ function pack_bank() {
         if (b == null) {
             return -1;
         }
-        if (typeof a === "string") {
+        if (typeof a === "number") {
             a = create_static_equipment_model(a);
         }
-        if (typeof b === "string") {
+        if (typeof b === "number") {
             b = create_static_equipment_model(b);
         }
         if (a.pos !== b.pos) {

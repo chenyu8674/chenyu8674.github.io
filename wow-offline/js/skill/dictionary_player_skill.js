@@ -29,9 +29,9 @@ function new_player_skill() {
             if (damage_obj.is_hit) {
                 target.debuffs.push(new_debuff().warrior_1());
                 let mastery_percent = calculate_original_mastery(attacker);
-                if (random_percent(mastery_percent)) {
+                if (has_equip_two_hand_weapon(attacker) && random_percent(mastery_percent)) {
                     let skill = dictionary_player_skill.warrior_1_2();
-                    let damage_obj_2 = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999, skill.Y, -999);
+                    let damage_obj_2 = calculate_skill_attack(attacker, target, skill.name + "（精通）", skill.X, type_attack, element_physical, 999, skill.Y, -999);
                     damage_list.push(damage_obj_2);
                 }
             }

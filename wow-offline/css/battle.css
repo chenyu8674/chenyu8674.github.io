@@ -15,22 +15,22 @@
     position: absolute;
     width: 927px;
     height: 3px;
-    top: 722px;
+    top: 724px;
     left: 104px;
     background-color: rebeccapurple;
 }
 
 #self_heal {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     bottom: 5px;
-    left: 5px;
+    right: 5px;
     border-radius: 5px;
     background-size: 100%;
     background-position: center;
     background-image: url("../img/icon/inv_misc_food_15.jpg");
-    border: 2px ridge gray;
+    border: 2px solid gray;
 }
 
 #self_heal:hover {
@@ -39,15 +39,15 @@
 
 #attack_next {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     bottom: 5px;
-    right: 5px;
+    right: 55px;
     border-radius: 5px;
     background-size: 100%;
     background-position: center;
     background-image: url("../img/icon/ability_dualwield.jpg");
-    border: 2px ridge gray;
+    border: 2px solid gray;
 }
 
 #attack_next:hover {

@@ -35,9 +35,8 @@ function new_debuff() {
         return debuff;
     }
 
-    debuff.rage_of_thunder = function () {
+    debuff[21992] = function () {
         let debuff = {};
-        debuff.id = 20003;// Id
         debuff.name = "雷霆之怒";// 名称
         debuff.T = 5;
         debuff.X = 20;
@@ -46,6 +45,19 @@ function new_debuff() {
         debuff.effect = [
             "attack_power_percent-=" + debuff.X,
             "magic_power_percent-=" + debuff.X
+        ];
+        return debuff;
+    }
+
+    debuff[18381] = function () {
+        let debuff = {};
+        debuff.name = "残废术";// 名称
+        debuff.T = 3;
+        debuff.X = 15;
+        debuff.icon = "spell_nature_cyclone";
+        debuff.detail = "攻击强度降低" + debuff.X;
+        debuff.effect = [
+            "attack_power-=" + debuff.X
         ];
         return debuff;
     }

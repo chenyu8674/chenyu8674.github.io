@@ -18,7 +18,7 @@ function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
     }
     multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
     if (buffs == null) {
-        buffs = [];
+        buffs = rare >= 5 ? [new_buff().rage()] : [];
     }
     if (effect != null && effect.length > 0) {
         let equipment = {};
@@ -35,11 +35,42 @@ function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
     monster.buffs = buffs;
     let buff = {};
     buff.T = -1;
+    let armor_attack = 0;
+    let armor_magic = 0;
+    switch (type) {
+        case 1:
+        case 2:
+            armor_attack = 40;
+            armor_magic = 10;
+            break;
+        case 3:
+        case 4:
+            armor_attack = 30;
+            armor_magic = 20;
+            break;
+        case 5:
+        case 6:
+            armor_attack = 20;
+            armor_magic = 30;
+            break;
+        case 7:
+        case 8:
+        case 9:
+            armor_attack = 10;
+            armor_magic = 40;
+            break;
+    }
+    // 初始护甲
     buff.effect = [
-        "armor_attack+=" + Math.ceil(lvl * 20 * get_multiple_by_rare(rare) * multiple),
-        "armor_magic+=" + Math.ceil(lvl * 20 * get_multiple_by_rare(rare) * multiple),
+        "armor_attack+=" + Math.ceil(lvl * armor_attack * get_multiple_by_rare(rare) * multiple),
+        "armor_magic+=" + Math.ceil(lvl * armor_magic * get_multiple_by_rare(rare) * multiple),
         "health_percent+=20"
     ];
+    if (rare >= 5) {
+        // 首领怪物增加血量，降低伤害
+        buff.effect.push("health_percent+=100");
+        buff.effect.push("damage_all-=50");
+    }
     monster.buffs.push(buff);
     monster.str = Math.ceil(monster.str * get_multiple_by_rare(rare) * multiple);
     monster.agi = Math.ceil(monster.agi * get_multiple_by_rare(rare) * multiple);

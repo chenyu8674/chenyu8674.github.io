@@ -157,7 +157,7 @@ function create_random_equipment_model(param) {
         affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
     }
     // 生成随机后缀，双手/远程武器不会有格挡词缀
-    let affix_suffix_length = (model.type > 20 && model.type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
+    let affix_suffix_length = (type > 20 && type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
     let affix_suffix = Math.floor(Math.random() * affix_suffix_length);
     while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {
         affix_suffix = Math.floor(Math.random() * affix_suffix_length);
@@ -171,10 +171,13 @@ function create_random_equipment_model(param) {
  */
 function create_static_equipment_model(name) {
     let base_model = new_equipment()[name];
+    if (base_model == null) {
+        return;
+    }
     let model = {};
     let affix = base_model.affix;
     if (affix == null) {
-        alert(base_model.name + " 数据异常");
+        alert("装备数据异常：" + name);
         affix = [];
     }
     if (typeof affix === "number") {
@@ -196,12 +199,13 @@ function create_static_equipment_model(name) {
     }
     let attribute = get_attribute_by_pos(model.pos, model.type, base_model.icon);
     model.type_name = attribute[2];
-    model.name = name;
+    model.name = base_model.name;
     model.rare = base_model.rare;
     model.effect = base_model.effect;
     model.icon = base_model.icon;
     model.detail = base_model.detail;
     model.skill = base_model.skill;
+    model.sets = base_model.sets;
     model.affix = affix;
     return model;
 }
@@ -211,17 +215,21 @@ function create_static_equipment_model(name) {
  * @param model 装备模板
  */
 function create_equipment_by_model(model) {
+    if (typeof model === "number") {
+        model = create_static_equipment_model(model);
+    }
+    if (model == null) {
+        return;
+    }
     let equipment = {};
     let equipment_name = [];
     let affix = model.affix;
     if (affix == null) {
-        if (model.effect != null) {
-            equipment.effect = model.effect;
-            return equipment;
-        } else {
-            alert("装备生成异常");
-            return equipment;
+        if (model.effect == null) {
+            return;
         }
+        equipment.effect = model.effect;
+        return equipment;
     }
     equipment.pos = Math.floor(affix[0] / 1000);
     equipment.type = affix[0] % 100;
@@ -234,15 +242,19 @@ function create_equipment_by_model(model) {
     equipment.c_lvl = model.c_lvl;
     equipment.e_lvl = model.e_lvl;
     equipment.detail = model.detail;
+    equipment.sets = model.sets;
     equipment.effect = model.effect == null ? [] : model.effect;
-    if (model.skill != null) {
-        equipment.skill = eval("dictionary_equipment_skill." + model.skill + "()");
+    let effects = equipment.effect;
+    for (let i = 0; i < effects.length; i++) {
+        effects[i] = get_main_effect(effects[i], equipment);
     }
-
+    if (model.skill != null) {
+        equipment.skill = dictionary_equipment_skill[model.skill]();
+    }
     // 装备固有属性
     let affix_base_index = model.affix[0];
     let affix_base_func = dictionary_affix_base[affix_base_index];
-    let affix_base_effect = affix_base_func(equipment.e_lvl, equipment.rare, multiple);
+    let affix_base_effect = affix_base_func(equipment.e_lvl, equipment.rare);
     equipment.effect = affix_base_effect.concat(equipment.effect);
     // 装备前缀属性
     let affix_prefix_index = model.affix[1];
@@ -267,6 +279,26 @@ function create_equipment_by_model(model) {
     return equipment;
 }
 
+function get_main_effect(effect, equipment) {
+    if (effect.startsWith("main")) {
+        let main = current_character == null ? "str" : dictionary_job.job_main[current_character.job];
+        if (equipment != null) {
+            if (equipment.type === 1 && equipment.pos !== 5 && (main === "str" || main === "agi")) {
+                main = "int";
+            } else if (equipment.type === 3 && main === "str") {
+                main = "agi";
+            } else if (equipment.type === 4 && main === "agi") {
+                main = "str";
+            } else if (equipment.type === 4 && main === "spr") {
+                main = "int";
+            }
+        }
+        return effect.replace("main", main);
+    } else {
+        return effect;
+    }
+}
+
 /**
  * 获取装备的属性系数和名称
  * @param pos
@@ -280,7 +312,7 @@ function get_attribute_by_pos(pos, type, icon) {
     let type_name = "";
     switch (pos) {
         case 1:
-            multiple = 0.8;
+            multiple = MULTIPLE_1;
             type_name = "头部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -298,12 +330,12 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 2:
-            multiple = 0.6;
+            multiple = MULTIPLE_2;
             type_name = "颈部";
             name = random_list(["项链", "挂坠"]);
             break;
         case 3:
-            multiple = 0.8;
+            multiple = MULTIPLE_3;
             type_name = "肩部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -321,7 +353,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 4:
-            multiple = 1;
+            multiple = MULTIPLE_4;
             type_name = "胸部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -339,7 +371,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 5:
-            multiple = 0.6;
+            multiple = MULTIPLE_5;
             type_name = "背部 " + get_type_name(type);
             name = random_list(["斗篷", "披风"]);
             break;
@@ -352,7 +384,7 @@ function get_attribute_by_pos(pos, type, icon) {
             type_name = name = "战袍";
             break;
         case 8:
-            multiple = 0.6;
+            multiple = MULTIPLE_8;
             type_name = "手腕 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -370,7 +402,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 9:
-            multiple = 0.8;
+            multiple = MULTIPLE_9;
             type_name = "手部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -388,7 +420,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 10:
-            multiple = 0.6;
+            multiple = MULTIPLE_10;
             type_name = "腰部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -406,7 +438,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 11:
-            multiple = 1;
+            multiple = MULTIPLE_11;
             type_name = "腿部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -424,7 +456,7 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 12:
-            multiple = 0.8;
+            multiple = MULTIPLE_12;
             type_name = "脚部 " + get_type_name(type);
             switch (type) {
                 case 1:
@@ -442,86 +474,86 @@ function get_attribute_by_pos(pos, type, icon) {
             }
             break;
         case 13:
-            multiple = 0.6;
+            multiple = MULTIPLE_13;
             type_name = "戒指";
             name = random_list(["戒指", "指环"]);
             break;
         case 14:
-            multiple = 0.6;
+            multiple = MULTIPLE_14;
             type_name = "饰品";
             name = random_list(["饰品", "饰物", "挂件"]);
             break;
         case 15:
             switch (type) {
                 case 11:
-                    multiple = 0.6;
+                    multiple = MULTIPLE_15_1;
                     type_name = "匕首";
                     name = random_list(["匕首", "短刀", "长匕"]);
                     break;
                 case 12:
-                    multiple = 0.6;
+                    multiple = MULTIPLE_15_1;
                     type_name = "拳套";
                     name = random_list(["拳套", "指虎", "拳刃"]);
                     break;
                 case 13:
-                    multiple = 0.6;
+                    multiple = MULTIPLE_15_1;
                     name = random_list(["之斧", "轻斧", "短斧"]);
                     type_name = "单手斧";
                     break;
                 case 14:
-                    multiple = 0.6;
+                    multiple = MULTIPLE_15_1;
                     name = random_list(["之锤", "轻锤", "短锤"]);
                     type_name = "单手锤";
                     break;
                 case 15:
-                    multiple = 0.6;
+                    multiple = MULTIPLE_15_1;
                     name = random_list(["之剑", "轻剑", "刺剑"]);
                     type_name = "单手剑";
                     break;
                 case 21:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["之矛", "之戟", "长矛"]);
                     type_name = "长柄武器";
                     break;
                 case 22:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     type_name = "法杖";
                     name = random_list(["之杖", "法杖", "长杖"]);
                     break;
                 case 23:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["之斧", "巨斧", "重斧"]);
                     type_name = "双手斧";
                     break;
                 case 24:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["之锤", "巨锤", "重锤"]);
                     type_name = "双手锤";
                     break;
                 case 25:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["之剑", "巨剑", "重剑"]);
                     type_name = "双手剑";
                     break;
                 case 31:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["之弓", "强弓", "长弓"]);
                     type_name = "远程武器";
                     break;
                 case 32:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["之弩", "强弩", "巨弩"]);
                     type_name = "远程武器";
                     break;
                 case 33:
-                    multiple = 1.2;
+                    multiple = MULTIPLE_15_2;
                     name = random_list(["火枪", "步枪", "火炮"]);
                     type_name = "远程武器";
                     break;
             }
             break;
         case 16:
-            multiple = 0.6;
+            multiple = MULTIPLE_16;
             switch (type) {
                 case 41:
                     name = random_list(["之盾", "护盾", "壁垒"]);
@@ -545,6 +577,53 @@ function get_attribute_by_pos(pos, type, icon) {
     return [multiple, name, type_name];
 }
 
+/**
+ * 阶级系数
+ * @param rare
+ */
+function get_multiple_by_rare(rare) {
+    switch (rare) {
+        case 1:
+            return 0.5;
+        case 2:
+            return 0.8;
+        case 3:
+            return 1;
+        case 4:
+            return 1.2;
+        case 5:
+            return 1.4;
+        case 6:
+            return 2;
+    }
+}
+
+/**
+ * 阶级名称
+ * @param rare
+ */
+function get_type_name_by_rare(rare) {
+    switch (rare) {
+        case 1:
+            return "劣质";
+        case 2:
+            return "普通";
+        case 3:
+            return "优秀";
+        case 4:
+            return "精良";
+        case 5:
+            return "史诗";
+        case 6:
+            return "传说";
+    }
+}
+
+/**
+ * 装备类型
+ * @param type
+ * @return {string}
+ */
 function get_type_name(type) {
     switch (type) {
         case 1:
@@ -590,13 +669,13 @@ function check_can_equip(equipment) {
     if (pos === 2 || pos === 5 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
         return true;// 2项链 5披风 6衬衫 7战袍 13戒指 14饰品
     } else if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
-        if (current_character.job < 30) {
+        if (is_in_array(current_character.job, [10, 11, 12, 13, 20, 21, 22, 23])) {
             return type <= 4;// 板甲职业
-        } else if (current_character.job < 50) {
+        } else if (is_in_array(current_character.job, [30, 31, 32, 33, 40, 41, 42, 43])) {
             return type <= 3;// 锁甲职业
-        } else if (current_character.job < 70) {
+        } else if (is_in_array(current_character.job, [50, 51, 52, 53, 54, 60, 61, 62, 63])) {
             return type <= 2;// 皮甲职业
-        } else {
+        } else if (is_in_array(current_character.job, [70, 71, 72, 73, 80, 81, 82, 83, 90, 91, 92, 93])) {
             return type <= 1;// 布甲职业
         }
     } else if (pos === 15 || pos === 16) {
@@ -606,23 +685,23 @@ function check_can_equip(equipment) {
          * 31-弓 32-弩 33-枪
          * 41-盾牌 42-副手
          */
-        if (current_character.job < 20) {
+        if (is_in_array(current_character.job, [10, 11, 12, 13])) {
             return is_in_array(type, [11, 12, 13, 14, 15, 21, 22, 23, 24, 25, 41]);
-        } else if (current_character.job < 30) {
+        } else if (is_in_array(current_character.job, [20, 21, 22, 23])) {
             return is_in_array(type, [13, 14, 15, 21, 23, 24, 25, 41]);
-        } else if (current_character.job < 40) {
+        } else if (is_in_array(current_character.job, [30, 31, 32, 33])) {
             return is_in_array(type, [31, 32, 33]);
-        } else if (current_character.job < 50) {
+        } else if (is_in_array(current_character.job, [40, 41, 42, 43])) {
             return is_in_array(type, [11, 12, 13, 14, 22, 23, 24, 41, 42]);
-        } else if (current_character.job < 60) {
+        } else if (is_in_array(current_character.job, [50, 51, 52, 53, 54])) {
             return is_in_array(type, [11, 12, 14, 21, 22, 24, 42]);
-        } else if (current_character.job < 70) {
+        } else if (is_in_array(current_character.job, [60, 61, 62, 63])) {
             return is_in_array(type, [11, 12, 13, 14, 15]);
-        } else if (current_character.job < 80) {
+        } else if (is_in_array(current_character.job, [70, 71, 72, 73])) {
             return is_in_array(type, [11, 14, 22, 42]);
-        } else if (current_character.job < 90) {
+        } else if (is_in_array(current_character.job, [80, 81, 82, 83])) {
             return is_in_array(type, [11, 15, 22, 42]);
-        } else {
+        } else if (is_in_array(current_character.job, [90, 91, 92, 93])) {
             return is_in_array(type, [11, 15, 22, 42]);
         }
     }
@@ -702,10 +781,10 @@ function get_equipment_lvl(role) {
     let weapon_count = 0;
     for (let i = 0; i < equipments.length; i++) {
         let module = equipments[i];
-        if (typeof module === "string") {
-            module = create_static_equipment_model(module);
-        }
         let equipment = create_equipment_by_model(module);
+        if (equipment.pos === 6 || equipment.pos === 7) {
+            continue;
+        }
         let pos_new = equipment.pos;
         if (equipment.pos === 13) {
             pos_new += ring_count;
@@ -733,5 +812,61 @@ function get_equipment_lvl(role) {
             equipment_lvl += equipment_lvl_list[i];
         }
     }
-    return Math.ceil(equipment_lvl / 18);
+    return Math.ceil(equipment_lvl / 16);
+}
+
+/**
+ * 判断当前是否装备了某件装备
+ * @param role
+ * @param name
+ */
+function is_equip_equipment(role, name) {
+    let equipments = role.equipments;
+    for (let i = 0; i < equipments.length; i++) {
+        let module = equipments[i];
+        if (module === name) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function get_set_effects(role) {
+    let calculated_sets = [];
+    let result_effects = [];
+    let equipments = role.equipments;
+    for (let i = 0; i < equipments.length; i++) {
+        let model = equipments[i];
+        let equipment = create_equipment_by_model(model);
+        if (equipment.sets == null) {
+            continue;
+        }
+        let sets_name = equipment.sets;
+        if (is_in_array(sets_name, calculated_sets)) {
+            continue;
+        }
+        calculated_sets.push(sets_name);
+        let sets = dictionary_sets[sets_name];
+        let set_equipments = sets.equipments;
+        let effects = sets.effects;
+        let count_equip = 0;
+        for (let j = 0; j < set_equipments.length; j++) {
+            let equipment = set_equipments[j];
+            if (is_equip_equipment(role, equipment)) {
+                count_equip++;
+            }
+        }
+        for (let j = 0; j < effects.length; j++) {
+            let effect = effects[j];
+            if (effect == null) {
+                continue;
+            }
+            if (count_equip > j) {
+                for (let k = 0; k < effect.length; k++) {
+                    result_effects.push(effect[k]);
+                }
+            }
+        }
+    }
+    return result_effects;
 }

@@ -18,6 +18,7 @@ function calculate_role_1(role_base) {
     role_battle_1 = new_role_whole();
     refresh_base_attribute(role_base_1, role_status_1);
     refresh_attribute_equipments(role_status_1);
+    refresh_attribute_sets(role_status_1);
     refresh_attribute_buffs(role_status_1);
     refresh_attribute_debuffs(role_status_1);
     refresh_battle_attribute(role_status_1, role_battle_1)
@@ -40,6 +41,7 @@ function calculate_role_2(role_base) {
     role_battle_2 = new_role_whole();
     refresh_base_attribute(role_base_2, role_status_2);
     refresh_attribute_equipments(role_status_2);
+    refresh_attribute_sets(role_status_1);
     refresh_attribute_buffs(role_status_2);
     refresh_attribute_debuffs(role_status_2);
     refresh_battle_attribute(role_status_2, role_battle_2);
@@ -98,17 +100,25 @@ function refresh_attribute_equipments(role_status) {
     let battle_equipments = role_status.equipments;
     if (battle_equipments != null && battle_equipments.length > 0) {
         for (let i = 0; i < battle_equipments.length; i++) {
-            let equipments = battle_equipments[i];
-            if (typeof equipments === "string") {
-                equipments = create_static_equipment_model(equipments);
-            }
-            equipments = create_equipment_by_model(equipments);
-            equipments = equipments.effect;
-            for (let j = 0; j < equipments.length; j++) {
-                let equipment = equipments[j];
-                eval("role_status." + equipment);
+            let equipment = battle_equipments[i];
+            equipment = create_equipment_by_model(equipment);
+            let effects = equipment.effect;
+            for (let j = 0; j < effects.length; j++) {
+                let effect = effects[j];
+                eval("role_status." + effect);
             }
         }
+    }
+}
+
+/**
+ * 计算套装属性
+ */
+function refresh_attribute_sets(role_status) {
+    let effects = get_set_effects(role_status);
+    for (let j = 0; j < effects.length; j++) {
+        let effect = effects[j];
+        eval("role_status." + effect);
     }
 }
 
@@ -206,10 +216,12 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.heal_power = Math.round((role_status.heal_power + role_battle.spr * spr_to_heal_power) * role_status.heal_power_percent / 100);// 治疗强度
     role_battle.heal_power_percent = 100;
 
-    role_battle.armor_attack = Math.round((role_status.armor_attack + role_battle.sta * sta_to_armor_attack) * role_status.armor_attack_percent / 100);// 攻击护甲
+    role_battle.armor_attack = Math.round((role_status.armor_attack + role_status.armor_all + role_battle.sta * sta_to_armor_attack) * (role_status.armor_attack_percent + role_status.armor_all_percent) / 100);// 攻击护甲
     role_battle.armor_attack_percent = 100;
-    role_battle.armor_magic = Math.round((role_status.armor_magic + role_battle.spr * spr_to_armor_magic) * role_status.armor_magic_percent / 100);// 法术护甲
+    role_battle.armor_magic = Math.round((role_status.armor_magic + role_status.armor_all + role_battle.spr * spr_to_armor_magic) * (role_status.armor_magic_percent+ role_status.armor_all_percent) / 100);// 法术护甲
     role_battle.armor_magic_percent = 100;
+    role_battle.armor_all = 0;
+    role_battle.armor_all_percent = 0;
 
     role_battle.hit_rate = Math.round((role_status.hit_rate + role_battle.agi * agi_to_hit_rate) * role_status.hit_rate_percent / 100);// 命中等级
     role_battle.hit_chance_final = Math.round(role_status.hit_chance_final);// 最终命中率百分比
@@ -238,29 +250,29 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.block_value = Math.round((role_status.block_value + role_battle.str * str_to_block_value) * role_status.block_value_percent / 100);// 格挡值
     role_battle.block_value_percent = 100;
 
-    role_battle.damage_physical = role_status.damage_physical;
-    role_battle.damage_fire = role_status.damage_fire;
-    role_battle.damage_frost = role_status.damage_frost;
-    role_battle.damage_natural = role_status.damage_natural;
-    role_battle.damage_arcane = role_status.damage_arcane;
-    role_battle.damage_holy = role_status.damage_holy;
-    role_battle.damage_shadow = role_status.damage_shadow;
+    role_battle.damage_physical = role_status.damage_physical + role_status.damage_all;
+    role_battle.damage_fire = role_status.damage_fire + role_status.damage_all;
+    role_battle.damage_frost = role_status.damage_frost + role_status.damage_all;
+    role_battle.damage_natural = role_status.damage_natural + role_status.damage_all;
+    role_battle.damage_arcane = role_status.damage_arcane + role_status.damage_all;
+    role_battle.damage_holy = role_status.damage_holy + role_status.damage_all;
+    role_battle.damage_shadow = role_status.damage_shadow + role_status.damage_all;
 
-    role_battle.res_physical = role_status.res_physical;
-    role_battle.res_fire = role_status.res_fire;
-    role_battle.res_frost = role_status.res_frost;
-    role_battle.res_natural = role_status.res_natural;
-    role_battle.res_arcane = role_status.res_arcane;
-    role_battle.res_holy = role_status.res_holy;
-    role_battle.res_shadow = role_status.res_shadow;
+    role_battle.res_physical = role_status.res_physical + role_status.res_all;
+    role_battle.res_fire = role_status.res_fire + role_status.res_all;
+    role_battle.res_frost = role_status.res_frost + role_status.res_all;
+    role_battle.res_natural = role_status.res_natural + role_status.res_all;
+    role_battle.res_arcane = role_status.res_arcane + role_status.res_all;
+    role_battle.res_holy = role_status.res_holy + role_status.res_all;
+    role_battle.res_shadow = role_status.res_shadow + role_status.res_all;
 
-    role_battle.pierce_physical = role_status.pierce_physical;
-    role_battle.pierce_fire = role_status.pierce_fire;
-    role_battle.pierce_frost = role_status.pierce_frost;
-    role_battle.pierce_natural = role_status.pierce_natural;
-    role_battle.pierce_arcane = role_status.pierce_arcane;
-    role_battle.pierce_holy = role_status.pierce_holy;
-    role_battle.pierce_shadow = role_status.pierce_shadow;
+    role_battle.pierce_physical = role_status.pierce_physical + role_status.pierce_all;
+    role_battle.pierce_fire = role_status.pierce_fire + role_status.pierce_all;
+    role_battle.pierce_frost = role_status.pierce_frost + role_status.pierce_all;
+    role_battle.pierce_natural = role_status.pierce_natural + role_status.pierce_all;
+    role_battle.pierce_arcane = role_status.pierce_arcane + role_status.pierce_all;
+    role_battle.pierce_holy = role_status.pierce_holy + role_status.pierce_all;
+    role_battle.pierce_shadow = role_status.pierce_shadow + role_status.pierce_all;
 
     role_battle.taken_damage_percent = role_status.taken_damage_percent;
     role_battle.taken_heal_percent = role_status.taken_heal_percent;

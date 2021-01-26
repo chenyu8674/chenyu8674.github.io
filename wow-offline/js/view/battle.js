@@ -13,6 +13,7 @@ $(document).ready(function () {
 function show_view_battle() {
     kill_count = 0;
     view_battle.show();
+    $("#attack_next").show();
     refresh_battle_status(false);
 }
 
@@ -37,6 +38,7 @@ let move_step = 0;
 let move_timer = 0;
 let on_battle = false;
 let self_heal_timer = 0;
+let map_index = 0;
 
 /**
  * 绘制地图
@@ -44,6 +46,8 @@ let self_heal_timer = 0;
 function show_battle_view(info) {
     // 初始化
     map_info = info;
+    map_info.start_x = map_info.start_x > 100 ? map_info.start_x / 10 : map_info.start_x;
+    map_info.start_y = map_info.start_y > 100 ? map_info.start_y / 10 : map_info.start_y;
     map_monster_list = [];
     target_x = 0;
     target_y = 0;
@@ -57,7 +61,8 @@ function show_battle_view(info) {
     if (map == null || map.length === 0) {
         map = map_info.name;
     } else {
-        map = map[0];
+        map_index = 0;
+        map = map[map_index];
     }
     battle_map.css("background-image", "url(\"./img/map/" + map + ".jpg\")");
     $("#self_heal").show();
@@ -66,7 +71,6 @@ function show_battle_view(info) {
         if (is_in_local_mode()) {
             show_monster_area(map_info);
         }
-        $("#attack_next").hide();
         player_x = (map_info.start_x + map_info.end_x) / 2;
         player_y = (map_info.start_y + map_info.end_y) / 2;
         refresh_random_monster();
@@ -74,10 +78,9 @@ function show_battle_view(info) {
         $("#monster_area").hide();
         player_x = map_info.start_x;
         player_y = map_info.start_y;
-        $("#attack_next").show();
         refresh_raid_monster();
-        show_attack_icon();
     }
+    show_attack_icon();
     show_player_point();
 }
 
@@ -91,7 +94,7 @@ function show_heal_icon() {
         if (!on_battle) {
             clearTimeout(move_timer);
             battle_log("");
-            battle_log(current_character.name + " 开始食用补给");
+            battle_log(current_character.name + " 开始休息");
             clearTimeout(self_heal_timer);
             self_heal_timer = setTimeout(heal_loop, 100);
         }
@@ -99,7 +102,7 @@ function show_heal_icon() {
         return false;
     });
     self_heal.hover(function () {
-        show_text_info(self_heal, "<div style='color:goldenrod'>食用补给</div><div>每秒回复10%最大生命值</div><div>进食时必须保持坐姿</div><div style='color:goldenrod'>大吉大利，今晚吃鸡</div>");
+        show_text_info(self_heal, "<div style='color:goldenrod;letter-spacing:1px;'>休息</div><div>每秒回复10%最大生命值</div><div>进食时必须保持坐姿</div><div style='color:goldenrod'>大吉大利，今晚吃鸡</div>");
     }, function () {
         hide_info();
     });
@@ -119,7 +122,7 @@ function heal_loop() {
         battle_log(current_character.name + " 恢复了全部生命");
     } else {
         clearTimeout(self_heal_timer);
-        self_heal_timer = setTimeout(heal_loop, TURN_TIME);
+        self_heal_timer = setTimeout(heal_loop, heal_time);
     }
     role_battle_1.current_health_value = role_health_1;
     refresh_battle_status(true);
@@ -245,8 +248,8 @@ function add_random_monster() {
         monster.skills = [dictionary_monster_skill.physical_attack()];
     }
     if (monster.rare === 4) {
-        monster.x = monster_obj.x;
-        monster.y = monster_obj.y;
+        monster.x = monster_obj.x > 100 ? monster_obj.x / 10 : monster_obj.x;
+        monster.y = monster_obj.y > 100 ? monster_obj.y / 10 : monster_obj.y;
     } else {
         // 随机放置怪物坐标
         monster.x = map_info.start_x + (map_info.end_x - map_info.start_x) * Math.random();
@@ -264,13 +267,12 @@ function add_random_monster() {
  * 刷新练级地图怪物点
  */
 function refresh_random_monster() {
-    $(".monster_point").remove();
     let try_count = 0;
     while (try_count < 100 && map_monster_list.length < 15) {
         try_count++;
         add_random_monster(map_info);
     }
-    show_monster_point();
+    refresh_monster_point();
 }
 
 /**
@@ -282,7 +284,13 @@ function refresh_raid_monster() {
         let monster_raid = map_info.monster[i];
         let monster = {};
         if (monster_raid.name != null) {
-            let lvl = monster_raid.lvl;
+            let lvl;
+            monster = dictionary_monster[monster_raid.name];
+            if (monster_raid.lvl == null) {
+                lvl = monster.rare >= 5 ? map_info.max : map_info.min;
+            } else {
+                lvl = monster_raid.lvl
+            }
             let monster_obj = new_monster()[monster_raid.name];
             // 生成怪物对象
             monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
@@ -295,17 +303,19 @@ function refresh_raid_monster() {
                 monster.skills = [dictionary_monster_skill.physical_attack()];
             }
         }
-        monster.x = monster_raid.x;
-        monster.y = monster_raid.y;
+        monster.x = monster_raid.x > 100 ? monster_raid.x / 10 : monster_raid.x;
+        monster.y = monster_raid.y > 100 ? monster_raid.y / 10 : monster_raid.y;
+        monster.next = monster_raid.next;
         map_monster_list.push(monster);
     }
-    show_monster_point();
+    refresh_monster_point();
 }
 
 /**
  * 生成怪物图标
  */
-function show_monster_point() {
+function refresh_monster_point() {
+    $(".monster_point").remove();
     for (let i = 0; i < map_monster_list.length; i++) {
         let monster = map_monster_list[i];
         let monster_point = $("<img/>");
@@ -346,6 +356,9 @@ function show_monster_point() {
             });
         }
         battle_map.append(monster_point);
+        if (monster.next) {
+            break;
+        }
     }
 }
 
@@ -361,7 +374,7 @@ function show_attack_icon() {
         return false;
     });
     attack_next.hover(function () {
-        show_text_info(attack_next, "<div style='color:goldenrod'>前进！</div><div>向下个敌人发起攻击</div>");
+        show_text_info(attack_next, "<div style='color:goldenrod;letter-spacing:1px;'>" + (map_info.type === 1 ? "进攻" : "前进") + " !</div><div>向" + (map_info.type === 1 ? "最近的" : "下一个") + "敌人发起攻击</div>");
     }, function () {
         hide_info();
     });
@@ -371,16 +384,29 @@ function show_attack_icon() {
  * 进攻
  */
 function attack_next_monster() {
-    if (!on_battle) {
-        clearTimeout(self_heal_timer);
-        target_x = map_monster_list[0].x;
-        target_y = map_monster_list[0].y;
-        target_monster = 0;
-        calculate_role_2(map_monster_list[0]);
-        fill_role_2_health();
-        refresh_battle_status(false);
-        do_move();
+    if (on_battle) {
+        return;
     }
+    clearTimeout(self_heal_timer);
+    if (map_info.type !== 1) {
+        target_monster = 0;
+    } else {
+        let nearly_distance = Number.MAX_VALUE;
+        for (let i = 0; i < map_monster_list.length; i++) {
+            let monster = map_monster_list[i];
+            let distance = Math.pow(monster.x - player_x, 2) + Math.pow(monster.y - player_y, 2);
+            if (distance < nearly_distance) {
+                nearly_distance = distance;
+                target_monster = i;
+            }
+        }
+    }
+    target_x = map_monster_list[target_monster].x;
+    target_y = map_monster_list[target_monster].y;
+    calculate_role_2(map_monster_list[target_monster]);
+    fill_role_2_health();
+    refresh_battle_status(false);
+    do_move();
 }
 
 /**
@@ -421,6 +447,18 @@ function move_loop() {
     refresh_player_point();
     if (move_step <= 0) {
         let monster = map_monster_list[target_monster];
+        if (monster.next) {
+            map_index++;
+            battle_map.css("background-image", "url(\"./img/map/" + map_info.map[map_index] + ".jpg\")");
+            map_monster_list.splice(0, 1);
+            let monster = map_monster_list[0];
+            player_x = monster.x;
+            player_y = monster.y;
+            refresh_player_point();
+            map_monster_list.splice(0, 1);
+            refresh_monster_point();
+            return;
+        }
         if (monster.name == null) {
             // 途经点
             map_monster_list.splice(target_monster, 1);
@@ -469,12 +507,33 @@ function on_battle_end(index) {
         }
         // 计算经验/金钱
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
+        let money = exp;
+        switch (monster.rare) {
+            case 1:
+                money *= 0.5;
+                break;
+            case 2:
+                money *= 1;
+                break;
+            case 3:
+                money *= 3;
+                break;
+            case 4:
+                money *= 3;
+                break;
+            case 5:
+                money *= 10;
+                break;
+            case 6:
+                money *= 100;
+                break;
+        }
+        money *= 0.5 + 0.5 * Math.random();
         // 等级经验惩戒，相差超出3级，每级-10%
         let exp_multiple = Math.abs(current_character.lvl - monster.lvl) - 3;
         exp_multiple = exp_multiple < 0 ? 0 : exp_multiple;
         exp_multiple = 10 - exp_multiple < 0 ? 0 : 10 - exp_multiple;
         exp *= exp_multiple / 10;
-        let money = exp * get_multiple_by_rare(monster.rare) * (0.5 + 0.5 * Math.random());
         exp = Math.round(exp * EXP_MULTIPLE);
         money = Math.ceil(money * MONEY_MULTIPLE);
         // 输出金钱拾取
@@ -511,11 +570,10 @@ function on_battle_end(index) {
             if (map_monster_list.length === 0) {
                 // 完成副本
                 battle_log("<br/><span style='color:goldenrod'>副本完成</span>");
-                $("#self_heal").hide();
                 $("#attack_next").hide();
             }
             $(".monster_point").remove();
-            show_monster_point();
+            refresh_monster_point();
         }
     } else {
         player_x += 3;
@@ -533,7 +591,7 @@ function on_battle_end(index) {
 function drop_random_equipment(monster) {
     let lvl = monster.lvl;
     let rare = monster.rare;
-    let drop_list = [DROP_1, DROP_2, DROP_3, DROP_4];
+    let drop_list = [DROP_1, DROP_2, DROP_3, DROP_4, DROP_5, DROP_6];
     let is_drop = random_percent(drop_list[rare - 1] * DROP_MULTIPLE);
     if (is_drop) {
         if (monster.drop != null && random_percent(DROP_MONSTER)) {
@@ -544,10 +602,10 @@ function drop_random_equipment(monster) {
             put_equipment_to_items(random_list(map_info.drop));
             return;
         }
-        if (map_info.type === 1) {
+        if (map_info.type !== 1) {
             let param = {};
             param.c_lvl = map_info.min;
-            param.e_lvl = lvl;
+            param.e_lvl = map_info.max;
             put_equipment_to_items(get_random_equipment_model(param));
         } else {
             put_equipment_to_items(get_random_equipment_model(lvl));
@@ -560,19 +618,41 @@ function drop_random_equipment(monster) {
  * @param monster
  */
 function drop_raid_equipment(monster) {
+    let test_mode = is_in_local_mode();
+    test_mode = false;
     let drop_list = dictionary_monster[monster.name].drop;
-    let drop_rate = 100 * Math.random();
-    for (let i = 0; i < drop_list.length; i++) {
-        let drop = drop_list[i];
-        drop = drop.split("|");
-        drop_rate -= Number(drop[1]);
-        if (drop_rate <= 0) {
-            let equipment = drop[0];
-            put_equipment_to_items(equipment);
-            return;
+    if (drop_list != null) {
+        let drop_rate = 100 * Math.random();
+        if (test_mode) {
+            drop_rate = 100;
+        }
+        for (let i = 0; i < drop_list.length; i++) {
+            let drop = drop_list[i];
+            if (typeof drop === "number") {
+                drop_rate -= 100 / drop_list.length;
+                if (drop_rate <= 0 || test_mode) {
+                    let equipment = Number(drop);
+                    put_equipment_to_items(equipment);
+                    if (!test_mode) {
+                        return;
+                    }
+                }
+            } else {
+                drop = drop.split("+");
+                drop_rate -= Number(drop[1]);
+                if (drop_rate <= 0 || test_mode) {
+                    let equipment = Number(drop[0]);
+                    put_equipment_to_items(equipment);
+                    if (!test_mode) {
+                        return;
+                    }
+                }
+            }
         }
     }
-    alert("掉落计算异常：" + monster.name);
+    if (!test_mode) {
+        drop_random_equipment(monster);
+    }
 }
 
 /**
@@ -584,11 +664,11 @@ function put_equipment_to_items(model) {
     for (let i = 0; i < MAX_ITEMS; i++) {
         if (items[i] == null) {
             items[i] = model;
-            if (typeof model === "string") {
-                // 生成固定装备model
-                model = create_static_equipment_model(model);
-            }
             let equipment = create_equipment_by_model(model);
+            if (equipment == null) {
+                alert("装备数据异常：" + model);
+                return;
+            }
             let rare_color = eval("color_rare_" + equipment.rare);
             let id = "item" + new Date().getTime();
             battle_log(current_character.name + " 拾取了 <span id='" + id + "' style='font-weight:bold;color:" + rare_color + "'>[" + equipment.name + "]</span>");
@@ -597,14 +677,15 @@ function put_equipment_to_items(model) {
                 let view_label = $("#" + id);
                 view_label.hover(function () {
                     let view = $(this);
-                    show_equipment_info(model, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                    show_equipment_info(view, model);
                 }, function () {
                     hide_info();
                 });
             }, 0);
-            break;
+            return;
         }
     }
+    battle_log("<span style='color:red'>背包已满</span>");
 }
 
 /**

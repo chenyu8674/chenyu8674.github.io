@@ -31,6 +31,7 @@
     <script type="text/javascript" src="js/equipment/dictionary_affix_suffix.js"></script>
     <script type="text/javascript" src="js/equipment/dictionary_equipment.js"></script>
     <script type="text/javascript" src="js/equipment/dictionary_equipment_icon.js"></script>
+    <script type="text/javascript" src="js/equipment/dictionary_sets.js"></script>
     <script type="text/javascript" src="js/equipment/calculate_equipment.js"></script>
 
     <script type="text/javascript" src="js/skill/dictionary_buff.js"></script>
@@ -64,186 +65,186 @@
     <script type="text/javascript" src="js/script/battle_log.js"></script>
 </head>
 <body>
-<!-- 存档选择 -->
-<div id="view_save" class="full_screen"></div>
-<!-- 人物选择 -->
-<div id="view_character_select" class="full_screen">
-    <button id="close_character_select_button">✖</button>
-    <p id="view_character_select_title">选择你的英雄</p>
-    <div id="view_character_select_list"></div>
-</div>
-<!-- 人物创建 -->
-<div id="view_character_create" class="full_screen">
-    <button id="close_character_create_button">✖</button>
-    <p id="view_character_create_title">创建你的英雄</p>
-    <div id="view_job_1_choose">
-        <div id="view_job_1_icon">
-            <div index=10 id="icon_warrior" class="job_1_icon icon_1_select"></div>
-            <div index=20 id="icon_paladin" class="job_1_icon"></div>
-            <div index=30 id="icon_hunter" class="job_1_icon"></div>
-            <div index=40 id="icon_shaman" class="job_1_icon gray"></div>
-            <div index=50 id="icon_druid" class="job_1_icon"></div>
-            <div index=60 id="icon_rogue" class="job_1_icon gray"></div>
-            <div index=70 id="icon_priest" class="job_1_icon gray"></div>
-            <div index=80 id="icon_warlock" class="job_1_icon gray"></div>
-            <div index=90 id="icon_mage" class="job_1_icon gray"></div>
+<div id="window">
+    <!-- 地图 -->
+    <div id="view_map" class="full_screen">
+        <div id="timestamp"></div>
+    </div>
+    <!-- 战斗画面 -->
+    <div id="view_battle" class="full_screen">
+        <div id="battle_map">
+            <div id="self_heal"></div>
+            <div id="attack_next"></div>
+        </div>
+        <div id="exp_bar"></div>
+        <div id="battle_status">
+            <div id="player_portrait" class="portrait"></div>
+            <div id="player_name"></div>
+            <div id="player_health_bar"></div>
+            <div id="player_health_number"></div>
+            <div id="player_shield_bar"></div>
+            <div id="player_shield_number"></div>
+            <div id="monster_portrait" class="portrait"></div>
+            <div id="monster_name"></div>
+            <div id="monster_health_bar"></div>
+            <div id="monster_health_number"></div>
+            <div id="monster_shield_bar"></div>
+            <div id="monster_shield_number"></div>
+        </div>
+        <div id="battle_log"></div>
+    </div>
+    <!-- 装备属性 -->
+    <div id="view_equipment" class="full_screen">
+        <div id="current_equipments">
+            <img id="current_equipments_icon" src="img/job/warrior.png" alt=""/>
+            <div id="current_status_name"></div>
+            <div id="current_status_job"></div>
+            <div id="current_equipment_lvl"></div>
+            <div id="current_status_area_1"></div>
+            <div id="current_status_area_2"></div>
+            <div id="current_equipments_1" class="equipment"></div>
+            <div id="current_equipments_2" class="equipment"></div>
+            <div id="current_equipments_3" class="equipment"></div>
+            <div id="current_equipments_4" class="equipment"></div>
+            <div id="current_equipments_5" class="equipment"></div>
+            <div id="current_equipments_6" class="equipment"></div>
+            <div id="current_equipments_7" class="equipment"></div>
+            <div id="current_equipments_8" class="equipment"></div>
+            <div id="current_equipments_9" class="equipment"></div>
+            <div id="current_equipments_10" class="equipment"></div>
+            <div id="current_equipments_11" class="equipment"></div>
+            <div id="current_equipments_12" class="equipment"></div>
+            <div id="current_equipments_13" class="equipment"></div>
+            <div id="current_equipments_14" class="equipment"></div>
+            <div id="current_equipments_15" class="equipment"></div>
+            <div id="current_equipments_16" class="equipment"></div>
+            <div id="current_equipments_17" class="equipment"></div>
+            <div id="current_equipments_18" class="equipment"></div>
+        </div>
+        <div id="current_status_tab_1">基础</div>
+        <div id="current_status_tab_2">其他</div>
+        <div id="current_status"></div>
+        <div id="current_items"></div>
+        <div id="current_money"></div>
+        <button id="current_pack_bag">整理</button>
+    </div>
+    <!-- 商店 -->
+    <div id="view_shop" class="full_screen">
+        <div id="shop_view"></div>
+        <div id="shop_items"></div>
+        <div id="shop_money"></div>
+        <button id="shop_pack_bag">整理</button>
+        <button id="shop_clear_bag">清理</button>
+    </div>
+    <!-- 银行 -->
+    <div id="view_bank" class="full_screen">
+        <div id="bank_view"></div>
+        <button id="bank_pack_bank">整理</button>
+        <div id="bank_items"></div>
+        <div id="bank_money"></div>
+        <button id="bank_pack_bag">整理</button>
+    </div>
+    <!-- 天赋 -->
+    <div id="view_talent" class="full_screen">
+    </div>
+    <!-- 测试 -->
+    <div id="view_test" class="full_screen">
+        <div id="test_control">
+            战斗测试&nbsp;
+            <label for="member_1"></label>
+            <select id="member_1">
+                <option value="warrior_1">武器战士</option>
+                <option value="warrior_2">狂暴战士</option>
+                <option value="warrior_3">防御战士</option>
+                <option value="paladin_1">神圣圣骑士</option>
+                <option value="paladin_2">防护圣骑士</option>
+                <option value="paladin_3">惩戒圣骑士</option>
+                <option value="hunter_1">兽王猎人</option>
+                <option value="hunter_2">射击猎人</option>
+                <option value="hunter_3">生存猎人</option>
+                <option value="mage_2">火焰法师</option>
+                <!--            <option value="test_monster">测试怪物</option>-->
+            </select>
+            <label for="member_2"></label>
+            <select id="member_2">
+                <option value="warrior_1" selected>武器战士</option>
+                <option value="warrior_2">狂暴战士</option>
+                <option value="warrior_3">防御战士</option>
+                <option value="paladin_1">神圣圣骑士</option>
+                <option value="paladin_2">防护圣骑士</option>
+                <option value="paladin_3">惩戒圣骑士</option>
+                <option value="hunter_1">兽王猎人</option>
+                <option value="hunter_2">射击猎人</option>
+                <option value="hunter_3">生存猎人</option>
+                <option value="mage_2">火焰法师</option>
+                <!--            <option value="test_monster">测试怪物</option>-->
+            </select>
+            &nbsp;
+            <label for="battle_time"></label>
+            <input id="battle_time" size="1" value="1"/>次
+            &nbsp;
+            <button id="arena" onclick="start_arena()">GO</button>
+        </div>
+        <div id="test_log"></div>
+    </div>
+    <!-- 人物选择 -->
+    <div id="view_character_select" class="full_screen">
+        <button id="close_character_select_button">✖</button>
+        <p id="view_character_select_title">选择你的英雄</p>
+        <div id="view_character_select_list"></div>
+    </div>
+    <!-- 人物创建 -->
+    <div id="view_character_create" class="full_screen">
+        <button id="close_character_create_button">✖</button>
+        <p id="view_character_create_title">创建你的英雄</p>
+        <div id="view_job_1_choose">
+            <div id="view_job_1_icon">
+                <div index=10 id="icon_warrior" class="job_1_icon icon_1_select"></div>
+                <div index=20 id="icon_paladin" class="job_1_icon"></div>
+                <div index=30 id="icon_hunter" class="job_1_icon"></div>
+                <div index=40 id="icon_shaman" class="job_1_icon gray"></div>
+                <div index=50 id="icon_druid" class="job_1_icon"></div>
+                <div index=60 id="icon_rogue" class="job_1_icon gray"></div>
+                <div index=70 id="icon_priest" class="job_1_icon gray"></div>
+                <div index=80 id="icon_warlock" class="job_1_icon gray"></div>
+                <div index=90 id="icon_mage" class="job_1_icon gray"></div>
+            </div>
+        </div>
+        <div id="view_job_2_choose"></div>
+        <div id="view_job_info">
+            <div id="view_job_name"></div>
+            <div id="view_job_info_1"></div>
+            <div id="view_job_skill_1">
+                <div index=2 id="icon_job_skill_1" class="job_2_skill_icon"></div>
+                <div id="info_job_skill_1"></div>
+            </div>
+            <div id="view_job_skill_2">
+                <div index=2 id="icon_job_skill_2" class="job_2_skill_icon"></div>
+                <div id="info_job_skill_2"></div>
+            </div>
+            <div id="view_job_skill_3">
+                <div index=2 id="icon_job_skill_3" class="job_2_skill_icon"></div>
+                <div id="info_job_skill_3"></div>
+            </div>
+        </div>
+        <div id="view_name_info">
+            <div id="view_name_input_title">角色名称：</div>
+            <label for="view_name_input"></label>
+            <input id="view_name_input" maxlength="6"/>
+            <button id="create_character">开始游戏</button>
         </div>
     </div>
-    <div id="view_job_2_choose"></div>
-    <div id="view_job_info">
-        <div id="view_job_name"></div>
-        <div id="view_job_info_1"></div>
-        <div id="view_job_skill_1">
-            <div index=2 id="icon_job_skill_1" class="job_2_skill_icon"></div>
-            <div id="info_job_skill_1"></div>
-        </div>
-        <div id="view_job_skill_2">
-            <div index=2 id="icon_job_skill_2" class="job_2_skill_icon"></div>
-            <div id="info_job_skill_2"></div>
-        </div>
-        <div id="view_job_skill_3">
-            <div index=2 id="icon_job_skill_3" class="job_2_skill_icon"></div>
-            <div id="info_job_skill_3"></div>
-        </div>
+    <!-- 菜单栏 -->
+    <div id="view_bar">
+        <div id="bar_map" class="bar_icon"></div>
+        <div id="bar_equipment" class="bar_icon"></div>
+        <div id="bar_shop" class="bar_icon"></div>
+        <div id="bar_bank" class="bar_icon"></div>
+        <div id="bar_talent" class="bar_icon"></div>
+        <div id="bar_character" class="bar_icon"></div>
+        <div id="bar_test" class="bar_icon"></div>
+        <div id="bar_setting" class="bar_icon"></div>
     </div>
-    <div id="view_name_info">
-        <div id="view_name_input_title">角色名称：</div>
-        <label for="view_name_input"></label>
-        <input id="view_name_input" maxlength="6"/>
-        <button id="create_character">开始游戏</button>
-    </div>
-</div>
-<!-- 地图 -->
-<div id="view_map" class="full_screen">
-    <div id="timestamp"></div>
-</div>
-<!-- 战斗画面 -->
-<div id="view_battle" class="full_screen">
-    <div id="battle_map">
-        <div id="self_heal"></div>
-        <div id="attack_next"></div>
-    </div>
-    <div id="exp_bar"></div>
-    <div id="battle_status">
-        <div id="player_portrait" class="portrait"></div>
-        <div id="player_name"></div>
-        <div id="player_health_bar"></div>
-        <div id="player_health_number"></div>
-        <div id="player_shield_bar"></div>
-        <div id="player_shield_number"></div>
-        <div id="monster_portrait" class="portrait"></div>
-        <div id="monster_name"></div>
-        <div id="monster_health_bar"></div>
-        <div id="monster_health_number"></div>
-        <div id="monster_shield_bar"></div>
-        <div id="monster_shield_number"></div>
-    </div>
-    <div id="battle_log"></div>
-</div>
-<!-- 装备属性 -->
-<div id="view_equipment" class="full_screen">
-    <div id="current_equipments">
-        <img id="current_equipments_icon" src="img/job/warrior.png" alt=""/>
-        <div id="current_status_name"></div>
-        <div id="current_status_job"></div>
-        <div id="current_equipment_lvl"></div>
-        <div id="current_status_area_1"></div>
-        <div id="current_status_area_2"></div>
-        <div id="current_equipments_1" class="equipment"></div>
-        <div id="current_equipments_2" class="equipment"></div>
-        <div id="current_equipments_3" class="equipment"></div>
-        <div id="current_equipments_4" class="equipment"></div>
-        <div id="current_equipments_5" class="equipment"></div>
-        <div id="current_equipments_6" class="equipment"></div>
-        <div id="current_equipments_7" class="equipment"></div>
-        <div id="current_equipments_8" class="equipment"></div>
-        <div id="current_equipments_9" class="equipment"></div>
-        <div id="current_equipments_10" class="equipment"></div>
-        <div id="current_equipments_11" class="equipment"></div>
-        <div id="current_equipments_12" class="equipment"></div>
-        <div id="current_equipments_13" class="equipment"></div>
-        <div id="current_equipments_14" class="equipment"></div>
-        <div id="current_equipments_15" class="equipment"></div>
-        <div id="current_equipments_16" class="equipment"></div>
-        <div id="current_equipments_17" class="equipment"></div>
-        <div id="current_equipments_18" class="equipment"></div>
-    </div>
-    <div id="current_status_tab_1">基础</div>
-    <div id="current_status_tab_2">其他</div>
-    <div id="current_status"></div>
-    <div id="current_items"></div>
-    <div id="current_money"></div>
-    <button id="current_pack_bag">整理</button>
-</div>
-<!-- 商店 -->
-<div id="view_shop" class="full_screen">
-    <div id="shop_view"></div>
-    <div id="shop_items"></div>
-    <div id="shop_money"></div>
-    <button id="shop_pack_bag">整理</button>
-    <button id="shop_clear_bag">清理</button>
-</div>
-<!-- 银行 -->
-<div id="view_bank" class="full_screen">
-    <div id="bank_view"></div>
-    <button id="bank_pack_bank">整理</button>
-    <div id="bank_items"></div>
-    <div id="bank_money"></div>
-    <button id="bank_pack_bag">整理</button>
-</div>
-<!-- 天赋 -->
-<div id="view_talent" class="full_screen">
-</div>
-<!-- 测试 -->
-<div id="view_test" class="full_screen">
-    <div id="test_control">
-        战斗测试&nbsp;
-        <label for="member_1"></label>
-        <select id="member_1">
-            <option value="warrior_1">武器战士</option>
-            <option value="warrior_2">狂暴战士</option>
-            <option value="warrior_3">防御战士</option>
-            <option value="paladin_1">神圣圣骑士</option>
-            <option value="paladin_2">防护圣骑士</option>
-            <option value="paladin_3">惩戒圣骑士</option>
-            <option value="hunter_1">兽王猎人</option>
-            <option value="hunter_2">射击猎人</option>
-            <option value="hunter_3">生存猎人</option>
-            <option value="mage_2">火焰法师</option>
-            <!--            <option value="test_monster">测试怪物</option>-->
-        </select>
-        <label for="member_2"></label>
-        <select id="member_2">
-            <option value="warrior_1" selected>武器战士</option>
-            <option value="warrior_2">狂暴战士</option>
-            <option value="warrior_3">防御战士</option>
-            <option value="paladin_1">神圣圣骑士</option>
-            <option value="paladin_2">防护圣骑士</option>
-            <option value="paladin_3">惩戒圣骑士</option>
-            <option value="hunter_1">兽王猎人</option>
-            <option value="hunter_2">射击猎人</option>
-            <option value="hunter_3">生存猎人</option>
-            <option value="mage_2">火焰法师</option>
-            <!--            <option value="test_monster">测试怪物</option>-->
-        </select>
-        &nbsp;
-        <label for="battle_time"></label>
-        <input id="battle_time" size="1" value="1"/>次
-        &nbsp;
-        <button id="arena" onclick="start_arena()">GO</button>
-    </div>
-    <div id="test_log"></div>
-</div>
-<!-- 菜单栏 -->
-<div id="view_bar">
-    <div id="bar_map" class="bar_icon"></div>
-    <div id="bar_equipment" class="bar_icon"></div>
-    <div id="bar_shop" class="bar_icon"></div>
-    <div id="bar_bank" class="bar_icon"></div>
-    <div id="bar_talent" class="bar_icon"></div>
-    <div id="bar_character" class="bar_icon"></div>
-    <div id="bar_test" class="bar_icon"></div>
-    <div id="bar_setting" class="bar_icon"></div>
 </div>
 </body>
 </html>

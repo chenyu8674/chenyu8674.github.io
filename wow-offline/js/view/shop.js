@@ -18,10 +18,11 @@ $(document).ready(function () {
         let items = current_character.items;
         for (let i = 0; i < MAX_ITEMS; i++) {
             let item = items[i];
-            if (typeof item === "string") {
+            if (typeof item === "number") {
                 item = create_static_equipment_model(item);
             }
-            if (item != null && item.rare < 4) {
+            let rare = is_in_local_mode() ? 5 : 4;
+            if (item != null && item.rare < rare) {
                 sell_equipment(i, true);
             }
         }
@@ -241,7 +242,7 @@ function refresh_shop_items() {
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
-            if (typeof item === "string") {
+            if (typeof item === "number") {
                 // 生成固定装备model
                 item = create_static_equipment_model(item);
             }
@@ -251,7 +252,7 @@ function refresh_shop_items() {
             cell.css("background-image", "url(./img/equipment/" + item.icon + ".jpg)");
             cell.hover(function () {
                 let view = $(this);
-                show_equipment_info(item, view[0].offsetWidth + view.offset().left, view[0].offsetHeight + view.offset().top);
+                show_equipment_info(view, item);
             }, function () {
                 hide_info();
             });
@@ -278,10 +279,6 @@ function sell_equipment(index, not_save) {
     hide_info();
     let items = current_character.items;
     let item = items[index];
-    if (typeof item === "string") {
-        // 生成固定装备model
-        item = create_static_equipment_model(item);
-    }
     item = create_equipment_by_model(item);
     current_character.money += get_equipment_price(item);
     items[index] = null;

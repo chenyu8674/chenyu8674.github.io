@@ -2,7 +2,7 @@
 let ONLINE_MULTIPLE = 10;
 
 // 调试加速系数
-let LOCAL_MULTIPLE = 1;
+let LOCAL_MULTIPLE = 10;
 
 // 回合时间
 let TURN_TIME = 1000 / ONLINE_MULTIPLE;

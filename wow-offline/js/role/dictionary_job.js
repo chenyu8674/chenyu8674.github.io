@@ -24,6 +24,7 @@ function new_job() {
     job.job_name = [];// 职业名称
     job.job_flag = [];// 职业标识
     job.job_info = [];// 职业简介
+    job.job_main = [];// 职业主属性
     job.base_property = [];// 初始属性
     job.upgrade_property = [];// 属性成长
 
@@ -46,10 +47,13 @@ function new_job() {
 
     job.job_name[job.warrior_1] = "武器战士";
     job.job_info[job.warrior_1] = "久经沙场的武器大师，移动灵活，攻击充满压制性。";
+    job.job_main[job.warrior_1] = "str";
     job.job_name[job.warrior_2] = "狂暴战士";
     job.job_info[job.warrior_2] = "暴怒的狂战士，掀起的暴力飓风能够将敌人切碎。";
+    job.job_main[job.warrior_2] = "str";
     job.job_name[job.warrior_3] = "防御战士";
     job.job_info[job.warrior_3] = "坚毅的保护者，使用盾牌为团队构筑可靠的防御。";
+    job.job_main[job.warrior_3] = "str";
 
     // 职业：圣骑士
     job.paladin = 20;
@@ -65,10 +69,13 @@ function new_job() {
 
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
+    job.job_main[job.paladin_1] = "int";
     job.job_name[job.paladin_2] = "防护圣骑士";
     job.job_info[job.paladin_2] = "使用神圣的魔法为自己和盟友提供信仰防护。";
+    job.job_main[job.paladin_2] = "str";
     job.job_name[job.paladin_3] = "惩戒圣骑士";
     job.job_info[job.paladin_3] = "正义的十字军，用神圣魔法和武器审判并制裁敌人。";
+    job.job_main[job.paladin_3] = "str";
 
     // 职业：猎人
     job.hunter = 30;
@@ -84,10 +91,13 @@ function new_job() {
 
     job.job_name[job.hunter_1] = "兽王猎人";
     job.job_info[job.hunter_1] = "对荒野了如指掌，驯服多种多样的野兽来协助作战。";
+    job.job_main[job.hunter_1] = "agi";
     job.job_name[job.hunter_2] = "射击猎人";
     job.job_info[job.hunter_2] = "百步穿杨的神射手，擅长远距离夺走敌人的性命。";
+    job.job_main[job.hunter_2] = "agi";
     job.job_name[job.hunter_3] = "生存猎人";
     job.job_info[job.hunter_3] = "机敏的游侠，擅长剧毒、炸药和动物协同攻击。";
+    job.job_main[job.hunter_3] = "agi";
 
     // 职业：萨满
     job.shaman = 40;
@@ -125,12 +135,16 @@ function new_job() {
 
     job.job_name[job.druid_1] = "平衡德鲁伊";
     job.job_info[job.druid_1] = "变形为强大的枭兽，释放奥术和自然的平衡之力。";
+    job.job_main[job.druid_1] = "int";
     job.job_name[job.druid_2] = "野性德鲁伊";
     job.job_info[job.druid_2] = "致命的猎豹形态，利用撕咬和流血造成大量伤害。";
+    job.job_main[job.druid_2] = "agi";
     job.job_name[job.druid_3] = "守护德鲁伊";
     job.job_info[job.druid_3] = "强大的巨熊形态，吸收伤害并保护盟友。";
+    job.job_main[job.druid_3] = "str";
     job.job_name[job.druid_4] = "恢复德鲁伊";
     job.job_info[job.druid_4] = "化身生命之树，使用自然魔法使盟友重焕活力。";
+    job.job_main[job.druid_4] = "spr";
 
     // 职业：盗贼
     job.rogue = 60;
