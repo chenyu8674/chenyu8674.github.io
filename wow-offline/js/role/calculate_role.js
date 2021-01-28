@@ -102,6 +102,9 @@ function refresh_attribute_equipments(role_status) {
         for (let i = 0; i < battle_equipments.length; i++) {
             let equipment = battle_equipments[i];
             equipment = create_equipment_by_model(equipment);
+            if (!check_can_equip(role_status, equipment)) {
+                continue;
+            }
             let effects = equipment.effect;
             for (let j = 0; j < effects.length; j++) {
                 let effect = effects[j];
@@ -193,16 +196,19 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.skills = role_status.skills;
     role_battle.money = role_status.money;
 
-    role_battle.str = Math.round(role_status.str * role_status.str_percent / 100);// 力量
+    role_battle.str = Math.round((role_status.str + role_status.attr) * (role_status.str_percent + role_status.attr_percent) / 100);// 力量
     role_battle.str_percent = 100;
-    role_battle.agi = Math.round(role_status.agi * role_status.agi_percent / 100);// 敏捷
+    role_battle.agi = Math.round((role_status.agi + role_status.attr) * (role_status.agi_percent + role_status.attr_percent) / 100);// 敏捷
     role_battle.agi_percent = 100;
-    role_battle.sta = Math.round(role_status.sta * role_status.sta_percent / 100);// 耐力
+    role_battle.sta = Math.round((role_status.sta + role_status.attr) * (role_status.sta_percent + role_status.attr_percent) / 100);// 耐力
     role_battle.sta_percent = 100;
-    role_battle.int = Math.round(role_status.int * role_status.int_percent / 100);// 智力
+    role_battle.int = Math.round((role_status.int + role_status.attr) * (role_status.int_percent + role_status.attr_percent) / 100);// 智力
     role_battle.int_percent = 100;
-    role_battle.spr = Math.round(role_status.spr * role_status.spr_percent / 100);// 精神
+    role_battle.spr = Math.round((role_status.spr + role_status.attr) * (role_status.spr_percent + role_status.attr_percent) / 100);// 精神
     role_battle.spr_percent = 100;
+
+    role_battle.attr = 0;
+    role_battle.attr_percent = 0;
 
     role_battle.max_health_value = Math.round((role_status.max_health_value + role_battle.sta * sta_to_health_max) * role_status.health_percent / 100);// 最大生命值
     role_battle.health_percent = 100;
@@ -218,23 +224,23 @@ function refresh_battle_attribute(role_status, role_battle) {
 
     role_battle.armor_attack = Math.round((role_status.armor_attack + role_status.armor_all + role_battle.sta * sta_to_armor_attack) * (role_status.armor_attack_percent + role_status.armor_all_percent) / 100);// 攻击护甲
     role_battle.armor_attack_percent = 100;
-    role_battle.armor_magic = Math.round((role_status.armor_magic + role_status.armor_all + role_battle.spr * spr_to_armor_magic) * (role_status.armor_magic_percent+ role_status.armor_all_percent) / 100);// 法术护甲
+    role_battle.armor_magic = Math.round((role_status.armor_magic + role_status.armor_all + role_battle.spr * spr_to_armor_magic) * (role_status.armor_magic_percent + role_status.armor_all_percent) / 100);// 法术护甲
     role_battle.armor_magic_percent = 100;
     role_battle.armor_all = 0;
     role_battle.armor_all_percent = 0;
 
-    role_battle.hit_rate = Math.round((role_status.hit_rate + role_battle.agi * agi_to_hit_rate) * role_status.hit_rate_percent / 100);// 命中等级
-    role_battle.hit_chance_final = Math.round(role_status.hit_chance_final);// 最终命中率百分比
+    role_battle.hit_rate = Math.round((role_status.hit_rate + role_battle.agi * agi_to_hit_rate + role_battle.int * int_to_hit_rate) * role_status.hit_rate_percent / 100);// 命中等级
+    role_battle.hit_chance_final = role_status.hit_chance_final;// 最终命中率百分比
     role_battle.hit_rate_percent = 100;
 
     role_battle.critical_rate = Math.round((role_status.critical_rate + role_battle.agi * agi_to_critical_rate) * role_status.critical_rate_percent / 100);// 暴击等级
-    role_battle.critical_chance_final = Math.round(role_status.critical_chance_final);// 最终暴击率百分比
+    role_battle.critical_chance_final = role_status.critical_chance_final;// 最终暴击率百分比
     role_battle.critical_rate_percent = 100;
 
-    role_battle.critical_damage = Math.round(role_status.critical_damage + role_battle.int * int_to_critical_damage);// 暴击伤害系数
+    role_battle.critical_damage = (role_status.critical_damage + role_battle.int * int_to_critical_damage).toFixed(2);// 暴击伤害系数
 
     role_battle.dodge_rate = Math.round((role_status.dodge_rate + role_battle.agi * agi_to_dodge_rate) * role_status.dodge_rate_percent / 100);// 闪避等级
-    role_battle.dodge_chance_final = Math.round(role_status.dodge_chance_final);// 最终闪避率百分比
+    role_battle.dodge_chance_final = role_status.dodge_chance_final;// 最终闪避率百分比
     role_battle.dodge_rate_percent = 100;
 
     role_battle.mastery_rate = Math.round(role_status.mastery_rate * role_status.mastery_rate_percent / 100);// 精通等级
@@ -244,7 +250,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.resilient_rate_percent = 100;
 
     role_battle.block_rate = Math.round(role_status.block_rate * role_status.block_rate_percent / 100);// 格挡等级
-    role_battle.block_chance_final = Math.round(role_status.block_chance_final);// 最终格挡率百分比
+    role_battle.block_chance_final = role_status.block_chance_final;// 最终格挡率百分比
     role_battle.block_rate_percent = 100;
 
     role_battle.block_value = Math.round((role_status.block_value + role_battle.str * str_to_block_value) * role_status.block_value_percent / 100);// 格挡值
@@ -274,6 +280,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.pierce_holy = role_status.pierce_holy + role_status.pierce_all;
     role_battle.pierce_shadow = role_status.pierce_shadow + role_status.pierce_all;
 
+    role_battle.cause_damage_percent = role_status.cause_damage_percent;
     role_battle.taken_damage_percent = role_status.taken_damage_percent;
     role_battle.taken_heal_percent = role_status.taken_heal_percent;
 }

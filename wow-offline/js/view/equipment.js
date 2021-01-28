@@ -81,6 +81,7 @@ function pack_bag() {
  * 刷新人物状态显示
  */
 function refresh_current_status() {
+    calculate_role_1(role_base_1);
     refresh_current_status_base();
     refresh_current_status_exp();
     refresh_current_equipment();
@@ -141,23 +142,23 @@ function refresh_current_status_1() {
     current_status.empty();
     current_status.attr("class", "current_status_1");
     create_status_line("力量：" + role_battle_1.str,
-        role_base_1.str + "+" + (role_status_1.str - role_base_1.str) + " (" + role_status_1.str_percent + "%)<br/>"
+        role_base_1.str + "+" + (role_status_1.str + role_status_1.attr - role_base_1.str) + " (" + (role_status_1.str_percent + role_status_1.attr_percent) + "%)<br/>"
         + "每点提高" + str_to_attack_power + "攻击强度，" + str_to_block_value + "格挡值"
     );
     create_status_line("敏捷：" + role_battle_1.agi,
-        role_base_1.agi + "+" + (role_status_1.agi - role_base_1.agi) + " (" + role_status_1.agi_percent + "%)<br/>"
+        role_base_1.agi + "+" + (role_status_1.agi + role_status_1.attr - role_base_1.agi) + " (" + (role_status_1.agi_percent + role_status_1.attr_percent) + "%)<br/>"
         + "每点提高" + agi_to_attack_power + "攻击强度，" + agi_to_hit_rate + "命中等级，" + agi_to_critical_rate + "暴击等级，" + agi_to_dodge_rate + "闪避等级"
     );
     create_status_line("耐力：" + role_battle_1.sta,
-        role_base_1.sta + "+" + (role_status_1.sta - role_base_1.sta) + " (" + role_status_1.sta_percent + "%)<br/>"
+        role_base_1.sta + "+" + (role_status_1.sta + role_status_1.attr - role_base_1.sta) + " (" + (role_status_1.sta_percent + role_status_1.attr_percent) + "%)<br/>"
         + "每点提高" + sta_to_health_max + "最大生命值，" + sta_to_armor_attack + "攻击护甲"
     );
     create_status_line("智力：" + role_battle_1.int,
-        role_base_1.int + "+" + (role_status_1.int - role_base_1.int) + " (" + role_status_1.int_percent + "%)<br/>"
-        + "每点提高" + int_to_magic_power + "法术强度，" + int_to_critical_damage + "%暴击伤害"
+        role_base_1.int + "+" + (role_status_1.int + role_status_1.attr - role_base_1.int) + " (" + (role_status_1.int_percent + role_status_1.attr_percent) + "%)<br/>"
+        + "每点提高" + int_to_magic_power + "法术强度，" + int_to_hit_rate + "命中等级，" + int_to_critical_damage + "%暴击伤害"
     );
     create_status_line("精神：" + role_battle_1.spr,
-        role_base_1.spr + "+" + (role_status_1.spr - role_base_1.spr) + " (" + role_status_1.spr_percent + "%)<br/>"
+        role_base_1.spr + "+" + (role_status_1.spr + role_status_1.attr - role_base_1.spr) + " (" + (role_status_1.spr_percent + role_status_1.attr_percent) + "%)<br/>"
         + "每点提高" + spr_to_heal_power + "治疗强度，" + spr_to_magic_power + "法术强度，" + spr_to_armor_magic + "法术护甲"
     );
     create_status_line("", "");
@@ -175,16 +176,16 @@ function refresh_current_status_1() {
     );
     create_status_line("", "");
     create_status_line("攻击护甲：" + role_battle_1.armor_attack,
-        (role_battle_1.sta * sta_to_armor_attack) + "+" + role_status_1.armor_attack + " (" + role_status_1.armor_attack_percent + "%)<br/>"
+        (role_battle_1.sta * sta_to_armor_attack) + "+" + (role_status_1.armor_attack + role_status_1.armor_all) + " (" + (role_status_1.armor_attack_percent + role_status_1.armor_all_percent) + "%)<br/>"
         + "受到的攻击伤害减少 " + (calculate_armor_attack(role_battle_1) * 100).toFixed(2) + "%"
     );
     create_status_line("法术护甲：" + role_battle_1.armor_magic,
-        (role_battle_1.spr * spr_to_armor_magic) + "+" + role_status_1.armor_magic + " (" + role_status_1.armor_attack_percent + "%)<br/>"
+        (role_battle_1.spr * spr_to_armor_magic) + "+" + (role_status_1.armor_magic + role_status_1.armor_all) + " (" + (role_status_1.armor_attack_percent + role_status_1.armor_all_percent) + "%)<br/>"
         + "受到的法术伤害减少 " + (calculate_armor_magic(role_battle_1) * 100).toFixed(2) + "%"
     );
     create_status_line("", "");
     create_status_line("命中等级：" + role_battle_1.hit_rate,
-        role_battle_1.agi * agi_to_hit_rate + "+" + role_status_1.hit_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
+        (role_battle_1.agi * agi_to_hit_rate + role_battle_1.int * int_to_hit_rate) + "+" + role_status_1.hit_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
         + "命中几率提高 " + (calculate_original_hit(role_battle_1) - role_battle_1.hit_chance_final).toFixed(2) + "%"
     );
     create_status_line("命中几率：" + calculate_original_hit(role_battle_1).toFixed(2) + "%",
@@ -237,33 +238,39 @@ function get_mastery_html() {
     let mastery_percent = calculate_original_mastery(role_battle_1).toFixed(2);
     switch (role_battle_1.job) {
         case 11:
-            return "装备双手武器时，致死打击命中有 " + mastery_percent + "% 的几率触发一次压制"
+            return "装备双手武器且致死打击命中时，" + mastery_percent + "%几率触发一次压制"
         case 12:
-            return "嗜血的生命回复效果提高 " + mastery_percent + "%"
+            return "嗜血的生命回复效果提高" + mastery_percent + "%"
         case 13:
-            return "施放破甲时，获得 " + mastery_percent + "% 格挡值的伤害护盾"
+            return "施放破甲时，获得" + mastery_percent + "%格挡值的伤害护盾"
         case 21:
-            return "神圣震击获得 " + mastery_percent + "% 治疗强度的伤害加成"
+            return "神圣震击获得" + mastery_percent + "%治疗强度的伤害加成"
         case 22:
-            return "清算命中时，造成神圣伤害的 " + mastery_percent + "% 转化为生命回复"
+            return "清算造成的神圣伤害的" + mastery_percent + "%转化为生命回复"
         case 23:
-            return "命令圣印的触发几率提高 " + mastery_percent + "%"
+            return "命令圣印的触发几率提高" + mastery_percent + "%"
         case 31:
-            return "多重射击有 " + mastery_percent + "% 几率进行一次额外攻击"
+            return "施放多重射击和狂野怒火时，" + mastery_percent + "%几率进行一次额外攻击"
         case 32:
-            return "奥术射击命中时， " + mastery_percent + "% 几率重置瞄准射击的冷却时间"
+            return "奥术射击命中时，" + mastery_percent + "%几率重置瞄准射击的冷却时间"
         case 33:
-            return "猛禽一击受到的闪避率加成提高 " + mastery_percent + "%"
+            return "猛禽一击受到的闪避率加成提高" + mastery_percent + "%"
         case 51:
-            return "月火术和阳炎术造成的持续伤害提高 " + mastery_percent + "%"
+            return "月火术和阳炎术造成的持续伤害提高" + mastery_percent + "%"
         case 52:
-            return "凶猛撕咬从每个连击点获得的伤害加成提高 " + mastery_percent + "%"
+            return "凶猛撕咬从每个连击点获得的伤害加成提高" + mastery_percent + "%"
         case 53:
-            return "槌击造成伤害的 " + mastery_percent + "% 转化为伤害护盾"
+            return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾"
         case 54:
-            return "树人在场时，每回合回复 " + mastery_percent + "% 治疗强度的生命"
+            return "战斗开始时召唤3个树人，每个树人每回合从敌方吸取" + mastery_percent + "%治疗强度的生命"
+        case 91:
+            return "施放唤醒时，" + mastery_percent + "%几率使效果提高50%"
+        case 92:
+            return "未暴击的火焰法术使暴击率提高" + mastery_percent + "%，叠加至造成暴击为止"
+        case 93:
+            return "每层寒冰箭的附加效果使目标的所有伤害额外降低" + mastery_percent + "%"
         default:
-            return "（施工中）技能效果提高 " + mastery_percent + "%"
+            return "（施工中）技能效果提高" + mastery_percent + "%"
     }
 }
 
@@ -518,8 +525,7 @@ function get_item_empty_count() {
  * 判断是否为双持职业
  */
 function can_equip_two_weapons() {
-    let job = 10 * Math.floor(current_character.job / 10);
-    return is_in_array(job, [10, 40, 60]);
+    return is_in_array(current_character.job, [10, 11, 12, 13, 33, 42, 60, 61, 62, 63]);
 }
 
 /**
@@ -541,7 +547,7 @@ function equip_equipment(index) {
         return;// 等级不够
     }
     let check_equipment = create_equipment_by_model(item);
-    if (!check_can_equip(check_equipment)) {
+    if (!check_can_equip(current_character, check_equipment)) {
         return;// 装备类型与职业不符
     }
     if (check_equipment.pos === 15 && is_in_array(check_equipment.type, [21, 22, 23, 24, 25, 31, 32, 33])

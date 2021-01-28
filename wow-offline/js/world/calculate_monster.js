@@ -69,7 +69,7 @@ function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
     if (rare >= 5) {
         // 首领怪物增加血量，降低伤害
         buff.effect.push("health_percent+=100");
-        buff.effect.push("damage_all-=50");
+        buff.effect.push("cause_damage_percent-=50");
     }
     monster.buffs.push(buff);
     monster.str = Math.ceil(monster.str * get_multiple_by_rare(rare) * multiple);

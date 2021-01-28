@@ -56,7 +56,7 @@ function get_random_equipment_model(param, max_count) {
     max_count = max_count ? max_count : 1;
     let model = create_random_equipment_model(param);
     let try_count = 0;
-    while (try_count < max_count && !check_can_equip(create_equipment_by_model(model))) {
+    while (try_count < max_count && !check_can_equip(current_character, create_equipment_by_model(model))) {
         try_count++;
         model = create_random_equipment_model(param);
     }
@@ -112,7 +112,7 @@ function create_random_equipment_model(param) {
             pos = 12;
         } else if (pos <= 68) {
             pos = 13;
-        } else if (pos <= 76) {
+        } else if (pos <= 75) {
             pos = 14;
         } else if (pos <= 80) {
             pos = 16;
@@ -138,7 +138,7 @@ function create_random_equipment_model(param) {
         } else if (pos === 5) {
             type = 1;// 披风
         } else if (pos === 15) {
-            type = random_list([11, 12, 13, 14, 15, 21, 22, 23, 24, 25, 31, 32, 33]);// 武器
+            type = random_list([11, 12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 31, 32, 33]);// 武器
         } else if (pos === 16) {
             type = random_list([41, 42]);// 副手
         }
@@ -151,16 +151,24 @@ function create_random_equipment_model(param) {
     // 装备等级
     model.c_lvl = param.c_lvl;
     model.e_lvl = param.e_lvl ? param.e_lvl : param.c_lvl;
-    // 生成随机前缀
-    let affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
-    while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
-        affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
-    }
     // 生成随机后缀，双手/远程武器不会有格挡词缀
     let affix_suffix_length = (type > 20 && type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
     let affix_suffix = Math.floor(Math.random() * affix_suffix_length);
     while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {
         affix_suffix = Math.floor(Math.random() * affix_suffix_length);
+    }
+    // 生成随机前缀
+    let affix_prefix;
+    if (pos !== 14) {
+        affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
+        while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
+            affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
+        }
+    } else {
+        affix_prefix = Math.floor(Math.random() * affix_suffix_length);
+        while (dictionary_affix_suffix[affix_prefix] == null || dictionary_affix_suffix[affix_prefix]() == null) {
+            affix_prefix = Math.floor(Math.random() * affix_suffix_length);
+        }
     }
     model.affix = [pos * 1000 + inclination * 100 + type, affix_prefix, affix_suffix];
     return model;
@@ -259,9 +267,10 @@ function create_equipment_by_model(model) {
     // 装备前缀属性
     let affix_prefix_index = model.affix[1];
     if (affix_prefix_index != null) {
-        let affix_prefix_name = dictionary_affix_prefix[affix_prefix_index](true);
+        let dictionary_affix = equipment.pos === 14 ? dictionary_affix_suffix : dictionary_affix_prefix;
+        let affix_prefix_name = dictionary_affix[affix_prefix_index](true);
         equipment_name.push(affix_prefix_name + "之");
-        let affix_prefix_func = dictionary_affix_prefix[affix_prefix_name];
+        let affix_prefix_func = dictionary_affix[affix_prefix_name];
         let affix_prefix_effect = affix_prefix_func(equipment.e_lvl, equipment.rare, multiple);
         equipment.effect = equipment.effect.concat(affix_prefix_effect);
     }
@@ -510,6 +519,11 @@ function get_attribute_by_pos(pos, type, icon) {
                     name = random_list(["之剑", "轻剑", "刺剑"]);
                     type_name = "单手剑";
                     break;
+                case 16:
+                    multiple = MULTIPLE_15_1;
+                    name = random_list(["魔杖", "魔棒", "节杖"]);
+                    type_name = "魔杖";
+                    break;
                 case 21:
                     multiple = MULTIPLE_15_2;
                     name = random_list(["之矛", "之戟", "长矛"]);
@@ -663,46 +677,50 @@ function get_effect_value(X, lvl, rare, multiple) {
  * 判断是否可装备
  * @param equipment
  */
-function check_can_equip(equipment) {
+function check_can_equip(role, equipment) {
     let pos = equipment.pos;
     let type = equipment.type;
     if (pos === 2 || pos === 5 || pos === 6 || pos === 7 || pos === 13 || pos === 14) {
         return true;// 2项链 5披风 6衬衫 7战袍 13戒指 14饰品
     } else if (pos === 1 || pos === 3 || pos === 4 || pos === 8 || pos === 9 || pos === 10 || pos === 11 || pos === 12) {
-        if (is_in_array(current_character.job, [10, 11, 12, 13, 20, 21, 22, 23])) {
+        if (is_in_array(role.job, [10, 11, 12, 13, 20, 21, 22, 23])) {
             return type <= 4;// 板甲职业
-        } else if (is_in_array(current_character.job, [30, 31, 32, 33, 40, 41, 42, 43])) {
+        } else if (is_in_array(role.job, [30, 31, 32, 33, 40, 41, 42, 43])) {
             return type <= 3;// 锁甲职业
-        } else if (is_in_array(current_character.job, [50, 51, 52, 53, 54, 60, 61, 62, 63])) {
+        } else if (is_in_array(role.job, [50, 51, 52, 53, 54, 60, 61, 62, 63])) {
             return type <= 2;// 皮甲职业
-        } else if (is_in_array(current_character.job, [70, 71, 72, 73, 80, 81, 82, 83, 90, 91, 92, 93])) {
+        } else if (is_in_array(role.job, [70, 71, 72, 73, 80, 81, 82, 83, 90, 91, 92, 93])) {
             return type <= 1;// 布甲职业
         }
     } else if (pos === 15 || pos === 16) {
         /**
-         * 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
+         * 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑 16-魔杖
          * 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
          * 31-弓 32-弩 33-枪
          * 41-盾牌 42-副手
          */
-        if (is_in_array(current_character.job, [10, 11, 12, 13])) {
+        if (is_in_array(role.job, [10, 11, 12, 13])) {
             return is_in_array(type, [11, 12, 13, 14, 15, 21, 22, 23, 24, 25, 41]);
-        } else if (is_in_array(current_character.job, [20, 21, 22, 23])) {
+        } else if (is_in_array(role.job, [20, 21, 22, 23])) {
             return is_in_array(type, [13, 14, 15, 21, 23, 24, 25, 41]);
-        } else if (is_in_array(current_character.job, [30, 31, 32, 33])) {
+        } else if (is_in_array(role.job, [30, 31, 32])) {
             return is_in_array(type, [31, 32, 33]);
-        } else if (is_in_array(current_character.job, [40, 41, 42, 43])) {
-            return is_in_array(type, [11, 12, 13, 14, 22, 23, 24, 41, 42]);
-        } else if (is_in_array(current_character.job, [50, 51, 52, 53, 54])) {
+        } else if (is_in_array(role.job, [33])) {
+            return is_in_array(type, [11, 12, 13, 15, 21, 22, 23, 25, 31, 32, 33]);// 生存猎人
+        } else if (is_in_array(role.job, [40, 41, 43])) {
+            return is_in_array(type, [11, 12, 13, 14, 22, 41, 42]);
+        } else if (is_in_array(role.job, [42])) {
+            return is_in_array(type, [11, 12, 13, 14, 22, 23, 24, 41, 42]);// 增强萨满
+        } else if (is_in_array(role.job, [50, 51, 52, 53, 54])) {
             return is_in_array(type, [11, 12, 14, 21, 22, 24, 42]);
-        } else if (is_in_array(current_character.job, [60, 61, 62, 63])) {
+        } else if (is_in_array(role.job, [60, 61, 62, 63])) {
             return is_in_array(type, [11, 12, 13, 14, 15]);
-        } else if (is_in_array(current_character.job, [70, 71, 72, 73])) {
-            return is_in_array(type, [11, 14, 22, 42]);
-        } else if (is_in_array(current_character.job, [80, 81, 82, 83])) {
-            return is_in_array(type, [11, 15, 22, 42]);
-        } else if (is_in_array(current_character.job, [90, 91, 92, 93])) {
-            return is_in_array(type, [11, 15, 22, 42]);
+        } else if (is_in_array(role.job, [70, 71, 72, 73])) {
+            return is_in_array(type, [11, 14, 16, 22, 42]);
+        } else if (is_in_array(role.job, [80, 81, 82, 83])) {
+            return is_in_array(type, [11, 15, 16, 22, 42]);
+        } else if (is_in_array(role.job, [90, 91, 92, 93])) {
+            return is_in_array(type, [11, 15, 16, 22, 42]);
         }
     }
     return false;

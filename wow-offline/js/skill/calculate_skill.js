@@ -165,11 +165,16 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     if (attack_type === type_attack) {
         damage_value = attacker.attack_power * dmg * damage_percent / 100 / 100;// 基础攻击伤害
         damage_value *= (1 - calculate_armor_attack(target));// 计算攻击护甲减伤
-    } else {
+    } else if (attack_type === type_magic) {
         damage_value = attacker.magic_power * dmg * damage_percent / 100 / 100;// 基础法术伤害
         damage_value *= (1 - calculate_armor_magic(target));// 计算法术护甲减伤
+    } else if (attack_type === type_heal) {
+        damage_value = attacker.heal_power * dmg * damage_percent / 100 / 100;// 基础治疗伤害
+        damage_value *= (1 - calculate_armor_magic(target));// 计算法术护甲减伤
     }
-    // 伤害随机浮动(0.9~1.1)
+    // 整体伤害（仅NPC）
+    damage_value *= attacker.cause_damage_percent / 100;
+        // 伤害随机浮动(0.9~1.1)
     damage_value *= (0.9 + Math.random() * 0.2);
     // 每差1级，伤害浮动5%，范围50~200%
     let lvl_percent = (attacker.lvl - target.lvl) * 5;
@@ -261,8 +266,11 @@ function calculate_dot_base_damage(attacker, target, damage_percent, attack_type
     if (attack_type === type_attack) {
         damage_value = attacker.attack_power * damage_percent / 100;// 基础攻击伤害
         damage_value *= (1 - calculate_armor_attack(target));// 计算攻击护甲减伤
-    } else {
+    } else if (attack_type === type_magic) {
         damage_value = attacker.magic_power * damage_percent / 100;// 基础法术伤害
+        damage_value *= (1 - calculate_armor_magic(target));// 计算法术护甲减伤
+    } else if (attack_type === type_heal) {
+        damage_value = attacker.heal_power * damage_percent / 100;// 基础治疗伤害
         damage_value *= (1 - calculate_armor_magic(target));// 计算法术护甲减伤
     }
     return damage_value;
@@ -314,6 +322,8 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
             break;
     }
     res = res > MAX_RES ? MAX_RES : res;
+    // 整体伤害（仅NPC）
+    damage_value *= attacker.cause_damage_percent / 100;
     // 伤害随机浮动(0.9~1.1)
     damage_value *= (0.9 + Math.random() * 0.2);
     // 每差1级，伤害浮动5%，范围50~200%

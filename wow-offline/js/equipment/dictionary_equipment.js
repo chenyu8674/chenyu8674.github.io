@@ -117,7 +117,7 @@ function new_equipment() {
         // “船长”曲奇
         equipment[5202] = {name: "海盗的罩衫", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_shirt_08", affix: 4101, effect: ["int+=5", "sta+=5", "critical_rate+=3", "dodge_rate+=4"]};
         equipment[5197] = {name: "曲奇的吹火棍", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_misc_flute_01", affix: 15114, effect: ["str+=2", "sta+=3", "critical_rate+=2", "dodge_rate+=1"]};
-        equipment[5198] = {name: "曲奇的搅汤棒", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_staff_02", affix: 16242, effect: ["int+=11", "sta+=3", "critical_rate+=2", "dodge_rate+=1"]};
+        equipment[5198] = {name: "曲奇的搅汤棒", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_staff_02", affix: 15216, effect: ["int+=11", "sta+=3", "critical_rate+=2", "dodge_rate+=1"]};
         equipment[5192] = {name: "盗贼之刃", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_sword_24", affix: 15115, effect: ["agi+=2", "sta+=3", "critical_rate+=1", "dodge_rate+=2"]};
         equipment[5193] = {name: "兄弟会斗篷", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_helmet_48", affix: 5101, effect: ["main+=3", "sta+=3", "hit_rate+=2", "dodge_rate+=2"]};
         // 梵妮莎·范克里夫

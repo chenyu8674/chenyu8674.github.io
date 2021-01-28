@@ -9,15 +9,15 @@ $(document).ready(function () {
 function new_affix_prefix() {
     let affix = [];
 
-    affix[0] = function(surely) {return surely || Math.random() <= 1 ? "巨人" : null};
+    affix[0] = function(surely) {return surely || Math.random() <= 0.8 ? "巨人" : null};
     affix["巨人"] = function (lvl, rare, multiple) {return ["str+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[1] = function(surely) {return surely || Math.random() <= 1 ? "猫鼬" : null};
+    affix[1] = function(surely) {return surely || Math.random() <= 0.8 ? "猫鼬" : null};
     affix["猫鼬"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[2] = function(surely) {return surely || Math.random() <= 1 ? "庞大" : null};
+    affix[2] = function(surely) {return surely || Math.random() <= 0.8 ? "庞大" : null};
     affix["庞大"] = function (lvl, rare, multiple) {return ["sta+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[3] = function(surely) {return surely || Math.random() <= 1 ? "专注" : null};
+    affix[3] = function(surely) {return surely || Math.random() <= 0.8 ? "专注" : null};
     affix["专注"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.4, lvl, rare, multiple)]}
-    affix[4] = function(surely) {return surely || Math.random() <= 1 ? "启发" : null};
+    affix[4] = function(surely) {return surely || Math.random() <= 0.8 ? "启发" : null};
     affix["启发"] = function (lvl, rare, multiple) {return ["spr+=" + get_effect_value(0.4, lvl, rare, multiple)]}
 
     affix[5] = function(surely) {return surely || Math.random() <= 1 ? "猛虎" : null};
@@ -34,11 +34,11 @@ function new_affix_prefix() {
     affix["猎鹰"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.2, lvl, rare, multiple), "int+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[11] = function(surely) {return surely || Math.random() <= 0.2 ? "孤狼" : null};
     affix["孤狼"] = function (lvl, rare, multiple) {return ["agi+=" + get_effect_value(0.2, lvl, rare, multiple), "spr+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[12] = function(surely) {return surely || Math.random() <= 1 ? "雄鹰" : null};
+    affix[12] = function(surely) {return surely || Math.random() <= 0.8 ? "雄鹰" : null};
     affix["雄鹰"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[13] = function(surely) {return surely || Math.random() <= 1 ? "夜枭" : null};
+    affix[13] = function(surely) {return surely || Math.random() <= 0.8 ? "夜枭" : null};
     affix["夜枭"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.2, lvl, rare, multiple), "spr+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[14] = function(surely) {return surely || Math.random() <= 1 ? "巨鲸" : null};
+    affix[14] = function(surely) {return surely || Math.random() <= 0.8 ? "巨鲸" : null};
     affix["巨鲸"] = function (lvl, rare, multiple) {return ["spr+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.2, lvl, rare, multiple)]}
 
     return affix;

@@ -148,8 +148,7 @@ function new_buff() {
         buff.X = 1;
         buff.icon = "spell_nature_protectionformnature";
         buff.detail = "猎人技能命中目标时，回复" + buff.X + "%最大生命值";
-        buff.effect = [
-        ];
+        buff.effect = [];
         return buff;
     }
     buff[31] = buff.hunter_1();
@@ -178,13 +177,29 @@ function new_buff() {
         buff.T = -1;
         buff.X = 15;
         buff.icon = "ability_hunter_aspectofthemonkey";
-        buff.detail = "闪避等级+" + buff.X + "%";
+        buff.detail = "闪避等级+" + buff.X + "%，可以双持和使用部分双手武器";
         buff.effect = [
             "dodge_rate_percent+=" + buff.X
         ];
         return buff;
     }
     buff[33] = buff.hunter_3();
+
+    // 元素
+    // buff.shaman_1 = function () {
+    //     let buff = {};
+    //     buff.id = 41;// Id
+    //     buff.name = "火舌武器";// 名称
+    //     buff.T = -1;
+    //     buff.X = 10;
+    //     buff.icon = "spell_nature_forceofnature";
+    //     buff.detail = "伤害穿透+" + buff.X;
+    //     buff.effect = [
+    //         "pierce_all+=" + buff.X
+    //     ];
+    //     return buff;
+    // }
+    // buff[41] = buff.shaman_1();
 
     // 平衡
     buff.druid_1 = function () {
@@ -258,25 +273,73 @@ function new_buff() {
     }
     buff[54] = buff.druid_4();
 
-    // 狂暴
+    // 奥法
+    buff.mage_1 = function () {
+        let buff = {};
+        buff.id = 91;// Id
+        buff.name = "魔甲术";// 名称
+        buff.T = -1;
+        buff.X = 20;
+        buff.Y = 10;
+        buff.icon = "spell_magearmor";
+        buff.detail = "所有抗性+" + buff.X + "%，最大生命+" + buff.Y + "%";
+        buff.effect = [
+            "res_all+=" + buff.X,
+            "health_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[91] = buff.mage_1();
+
+    // 火法
     buff.mage_2 = function () {
         let buff = {};
-        buff.id = 12;// Id
-        buff.name = "狂暴姿态";// 名称
+        buff.id = 92;// Id
+        buff.name = "火甲术";// 名称
         buff.T = -1;
-        buff.X = 5;
-        buff.Y = 50;
-        buff.Z = 5;
-        buff.icon = "ability_racial_avatar";
-        buff.detail = "暴击率+" + buff.X + "%，暴击伤害+" + buff.Y + "%，受到伤害+" + buff.Z + "%";
+        buff.X = 20;
+        buff.Y = 10;
+        buff.icon = "ability_mage_moltenarmor";
+        buff.detail = "闪避率+" + buff.X + "%，暴击率+" + buff.Y + "%";
         buff.effect = [
-            "critical_chance_final+=" + buff.X,
-            "critical_damage+=" + buff.Y,
-            "taken_damage_percent+=" + buff.Z
+            "dodge_chance_final+=" + buff.X,
+            "critical_chance_final+=" + buff.Y
         ];
         return buff;
     }
     buff[92] = buff.mage_2();
+
+    buff.mage_2_2 = function (X) {
+        let buff = {};
+        buff.id = 922;// Id
+        buff.name = "火焰精通";// 名称
+        buff.T = Number.MAX_VALUE;
+        buff.X = X;
+        buff.icon = "spell_fire_incinerate";
+        buff.detail = "暴击率+" + buff.X + "%";
+        buff.effect = [
+            "critical_chance_final+=" + buff.X
+        ];
+        return buff;
+    }
+
+    // 冰法
+    buff.mage_3 = function () {
+        let buff = {};
+        buff.id = 93;// Id
+        buff.name = "冰甲术";// 名称
+        buff.T = -1;
+        buff.X = 100;
+        buff.Y = 10;
+        buff.icon = "spell_frost_frostarmor02";
+        buff.detail = "所有护甲+" + buff.X + "%，精通等级+" + buff.Y + "%";
+        buff.effect = [
+            "armor_all_percent+=" + buff.X,
+            "mastery_rate_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[93] = buff.mage_3();
 
     buff.rage = function () {
         let buff = {};
@@ -287,8 +350,7 @@ function new_buff() {
         buff.icon = "ability_racial_bloodrage";
         buff.detail = "伤害每回合提升" + buff.X + "%";
         buff.effect = [
-            "attack_power_percent+=battle_turn*" + buff.X,
-            "magic_power_percent+=battle_turn*" + buff.X,
+            "damage_all+=battle_turn*" + buff.X
         ];
         return buff;
     }

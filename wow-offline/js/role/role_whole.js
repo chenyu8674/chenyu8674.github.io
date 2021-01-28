@@ -33,6 +33,9 @@ function new_role_whole() {
     role_whole.spr = 0;// 精神
     role_whole.spr_percent = 100;// 精神百分比
 
+    role_whole.attr = 0;// 所有属性
+    role_whole.attr_percent = 0;// 所有属性百分比
+
     role_whole.attack_power = 0;// 攻击强度
     role_whole.attack_power_percent = 100;// 攻击强度百分比
 
@@ -84,14 +87,14 @@ function new_role_whole() {
     role_whole.damage_holy = 100;// 神圣伤害百分比
     role_whole.damage_shadow = 100;// 暗影伤害百分比
 
-    role_whole.res_all = 0;// 全部减伤百分比
-    role_whole.res_physical = 0;// 物理减伤百分比
-    role_whole.res_fire = 0;// 火焰减伤百分比
-    role_whole.res_frost = 0;// 冰霜减伤百分比
-    role_whole.res_natural = 0;// 自然减伤百分比
-    role_whole.res_arcane = 0;// 奥术减伤百分比
-    role_whole.res_holy = 0;// 神圣减伤百分比
-    role_whole.res_shadow = 0;// 暗影减伤百分比
+    role_whole.res_all = 0;// 全部抗性百分比
+    role_whole.res_physical = 0;// 物理抗性百分比
+    role_whole.res_fire = 0;// 火焰抗性百分比
+    role_whole.res_frost = 0;// 冰霜抗性百分比
+    role_whole.res_natural = 0;// 自然抗性百分比
+    role_whole.res_arcane = 0;// 奥术抗性百分比
+    role_whole.res_holy = 0;// 神圣抗性百分比
+    role_whole.res_shadow = 0;// 暗影抗性百分比
 
     role_whole.pierce_all = 0;// 全部穿透百分比
     role_whole.pierce_physical = 0;// 物理穿透百分比
@@ -102,6 +105,7 @@ function new_role_whole() {
     role_whole.pierce_holy = 0;// 神圣穿透百分比
     role_whole.pierce_shadow = 0;// 暗影穿透百分比
 
+    role_whole.cause_damage_percent = 100;// 全局伤害百分比
     role_whole.taken_damage_percent = 100;// 全局受伤百分比
     role_whole.taken_heal_percent = 100;// 全局受治疗百分比
 

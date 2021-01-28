@@ -15,6 +15,7 @@ function show_view_battle() {
     view_battle.show();
     $("#attack_next").show();
     refresh_battle_status(false);
+    setKeyListener(true);
 }
 
 function hide_view_battle() {
@@ -22,8 +23,33 @@ function hide_view_battle() {
     clearTimeout(move_timer);
     clearTimeout(battle_timer);
     $("#battle_log").html("");
+    map_info = null;
     role_battle_2 = null;
     view_battle.hide();
+    setKeyListener(false);
+}
+
+function setKeyListener(is_on) {
+    if (is_on) {
+        $(window).keydown(function (event) {
+            switch (event.which) {
+                case 49:
+                    if (!is_front_view_show()) {
+                        $("#attack_next").click();
+                    }
+                    break;
+                case 50:
+                    if (!is_front_view_show()) {
+                        $("#self_heal").click();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    } else {
+        $(window).keydown(null);
+    }
 }
 
 let player_x;
@@ -91,7 +117,7 @@ function show_heal_icon() {
     let self_heal = $("#self_heal");
     self_heal.unbind("click");
     self_heal.click(function (e) {
-        if (!on_battle) {
+        if (!on_battle && role_health_1 < role_battle_1.max_health_value) {
             clearTimeout(move_timer);
             battle_log("");
             battle_log(current_character.name + " 开始休息");
@@ -112,17 +138,13 @@ function show_heal_icon() {
  * 休息循环执行
  */
 function heal_loop() {
-    let heal_time = HEAL_TIME;
-    if (is_in_local_mode()) {
-        heal_time = HEAL_TIME / LOCAL_MULTIPLE;
-    }
-    role_health_1 += Math.round(role_battle_1.max_health_value * TURN_TIME / HEAL_TIME / 1000);
+    role_health_1 += Math.round(role_battle_1.max_health_value * TURN_TIME / HEAL_TIME);
     if (role_health_1 >= role_battle_1.max_health_value) {
         role_health_1 = role_battle_1.max_health_value;
         battle_log(current_character.name + " 恢复了全部生命");
     } else {
         clearTimeout(self_heal_timer);
-        self_heal_timer = setTimeout(heal_loop, heal_time);
+        self_heal_timer = setTimeout(heal_loop, TURN_TIME);
     }
     role_battle_1.current_health_value = role_health_1;
     refresh_battle_status(true);
@@ -434,9 +456,6 @@ function do_move() {
  */
 function move_loop() {
     let move_distance = MOVE_DISTANCE;
-    if (is_in_local_mode()) {
-        move_distance = MOVE_DISTANCE * LOCAL_MULTIPLE;
-    }
     move_distance *= role_battle_1.move_speed / 100;
     if (move_distance > move_step) {
         move_distance = move_step;
@@ -489,10 +508,6 @@ function on_turn_end() {
  * @param index 0-平手，1-胜利，2-失败
  */
 function on_battle_end(index) {
-    role_shield_1 = 0;
-    role_battle_1.current_shield_value = 0;
-    current_character.debuffs = [];
-    current_character.dots = [];
     on_battle = false;
     refresh_current_status();
     $(".player_point").removeClass("on_battle");
@@ -619,7 +634,7 @@ function drop_random_equipment(monster) {
  */
 function drop_raid_equipment(monster) {
     let test_mode = is_in_local_mode();
-    test_mode = false;
+    // test_mode = false;
     let drop_list = dictionary_monster[monster.name].drop;
     if (drop_list != null) {
         let drop_rate = 100 * Math.random();

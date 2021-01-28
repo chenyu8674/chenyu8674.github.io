@@ -7,30 +7,6 @@ $(document).ready(function () {
 function new_dot() {
     let dot = {};
 
-    dot.fire_of_sulfuras = function (damage) {
-        let dot = {};
-        dot.id = 20001;// Id
-        dot.name = "萨弗拉斯之怒";// 名称
-        dot.T = 5;
-        dot.damage = damage;
-        dot.type = element_fire;
-        dot.icon = "Spell_Fire_SelfDestruct";
-        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
-        return dot;
-    }
-
-    dot.rake = function (damage) {
-        let dot = {};
-        dot.id = 11004;// Id
-        dot.name = "撕裂";// 名称
-        dot.T = 3;
-        dot.damage = damage;
-        dot.type = element_physical;
-        dot.icon = "ability_druid_disembowel";
-        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
-        return dot;
-    }
-
     dot.hunter_3 = function (damage) {
         let dot = {};
         dot.id = 33;// Id
@@ -79,26 +55,16 @@ function new_dot() {
         return dot;
     }
 
-    dot.druid_4_1_1 = function (damage) {
+    dot.druid_4_1 = function (damage) {
         let dot = {};
         dot.id = 5411;// Id
-        dot.name = "树人攻击";// 名称
+        dot.name = "树人";// 名称
         dot.T = -1;
         dot.damage = damage;
-        dot.type = element_physical;
+        dot.heal = -1;
+        dot.type = element_natural;
         dot.icon = "ability_druid_forceofnature";
-        dot.detail = "树人攻击目标，造成 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
-        return dot;
-    }
-
-    dot.druid_4_1_2 = function (heal) {
-        let dot = {};
-        dot.id = 5412;// Id
-        dot.name = "自然之力";// 名称
-        dot.T = -1;
-        dot.heal = heal;
-        dot.icon = "ability_druid_forceofnature";
-        dot.detail = "树人攻击目标时，回复 " + dot.damage + " 点生命";
+        dot.detail = "回合开始时，吸取 " + dot.damage + " 点 " + get_element_name(dot.type) + " 生命";
         return dot;
     }
 
@@ -110,6 +76,42 @@ function new_dot() {
         dot.heal = heal;
         dot.icon = "spell_nature_resistnature";
         dot.detail = "回合开始时，回复 " + dot.heal + " 点生命";
+        return dot;
+    }
+
+    dot.mage_2 = function (damage) {
+        let dot = {};
+        dot.id = 92;// Id
+        dot.name = "点燃";// 名称
+        dot.T = 2;
+        dot.damage = damage;
+        dot.type = element_fire;
+        dot.icon = "spell_fire_incinerate";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
+    dot.rake = function (damage) {
+        let dot = {};
+        dot.id = 11004;// Id
+        dot.name = "撕裂";// 名称
+        dot.T = 3;
+        dot.damage = damage;
+        dot.type = element_physical;
+        dot.icon = "ability_druid_disembowel";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
+    dot.fire_of_sulfuras = function (damage) {
+        let dot = {};
+        dot.id = 20001;// Id
+        dot.name = "萨弗拉斯之怒";// 名称
+        dot.T = 5;
+        dot.damage = damage;
+        dot.type = element_fire;
+        dot.icon = "Spell_Fire_SelfDestruct";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
         return dot;
     }
 

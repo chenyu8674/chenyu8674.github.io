@@ -94,7 +94,7 @@ function show_equipment_info(view, model) {
     info.append("<div style='height:25px;font-size:14px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
     // 物品等级
     info.append("<div style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</div>");
-    let can_equip = check_can_equip(equipment);
+    let can_equip = check_can_equip(current_character, equipment);
     let can_not = can_equip ? "" : " style='color:red'";
     // 装备品质+类型
     info.append("<div" + can_not + ">" + get_type_name_by_rare(equipment.rare) + "的 " + equipment.type_name + "</div>");

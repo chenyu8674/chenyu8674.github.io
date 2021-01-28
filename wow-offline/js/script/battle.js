@@ -2,9 +2,6 @@
 
 let battle_timer = -1;// 回合标识
 let turn_time = TURN_TIME;// 回合时间
-if (is_in_local_mode()) {
-    turn_time = TURN_TIME / LOCAL_MULTIPLE;
-}
 
 let battle_time = 1;// 战斗进行次数
 let battle_turn = 1;// 当前回合数
@@ -106,7 +103,12 @@ function turn_loop() {
     let cast_skill_1 = get_cast_skill(role_battle_1, role_battle_2);
     let cast_skill_2 = get_cast_skill(role_battle_2, role_battle_1);
     // 判断出手顺序
-    let role_1_first = random_percent(100 * Math.pow(role_battle_1.agi, 2) / (Math.pow(role_battle_1.agi, 2) + Math.pow(role_battle_2.agi, 2)));
+    let role_1_first;
+    if (cast_skill_1.speed !== cast_skill_2.speed) {
+        role_1_first = cast_skill_1.speed > cast_skill_2.speed;
+    } else {
+        role_1_first = random_percent(100 * Math.pow(role_battle_1.agi, 2) / (Math.pow(role_battle_1.agi, 2) + Math.pow(role_battle_2.agi, 2)));
+    }
     // 计算dot伤害
     if (role_1_first) {
         if (winner === 0 && refresh_dots(role_battle_1, role_battle_2)) {
@@ -180,6 +182,8 @@ function turn_loop() {
         clear_buffs_and_debuffs_and_dots(role_battle_1);
         clear_buffs_and_debuffs_and_dots(role_battle_2);
         if (battle_callback != null) {
+            role_shield_1 = 0;
+            role_battle_1.current_shield_value = 0;
             battle_callback(winner);
             battle_callback = null;
         }
@@ -201,6 +205,8 @@ function turn_loop() {
             check_arena_over();
         }
         if (battle_callback != null) {
+            role_shield_1 = 0;
+            role_battle_1.current_shield_value = 0;
             battle_callback(0);
             battle_callback = null;
         }
@@ -220,26 +226,40 @@ function turn_loop() {
  * 执行dot伤害
  */
 function do_dot(attacker, dot, target) {
+    let damage_value;
     if (dot.damage != null) {
         // DOT，结算伤害
         let dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
         dot_obj.element_type = get_element_name(dot.type);
         dot_log(dot_obj);
-        let damage_value = dot_obj.damage_value;
+        damage_value = dot_obj.damage_value;
         target.current_health_value -= damage_value;
         if (target.current_health_value <= 0) {
             target.current_health_value = 0;
         }
-    } else if (dot.heal != null) {
-        // HOT，结算治疗
-        let hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
-        hot_log(hot_obj);
-        target.current_health_value += hot_obj.heal_value;
-        if (target.current_health_value >= target.max_health_value) {
-            target.current_health_value = target.max_health_value;
+    }
+    if (dot.heal != null) {
+        if (dot.heal < 0) {
+            // 根据造成伤害吸血
+            let hot_obj = {};
+            hot_obj.target_name = attacker.name;
+            hot_obj.skill_name = dot.name;
+            hot_obj.heal_value = -damage_value * dot.heal;
+            hot_obj.is_critical = false;
+            hot_log(hot_obj);
+            attacker.current_health_value += hot_obj.heal_value;
+            if (attacker.current_health_value >= attacker.max_health_value) {
+                attacker.current_health_value = attacker.max_health_value;
+            }
+        } else {
+            // HOT，结算治疗
+            let hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
+            hot_log(hot_obj);
+            target.current_health_value += hot_obj.heal_value;
+            if (target.current_health_value >= target.max_health_value) {
+                target.current_health_value = target.max_health_value;
+            }
         }
-    } else {
-        alert("dot结算异常");
     }
 }
 
@@ -256,6 +276,9 @@ function get_cast_skill(attacker, target) {
     let index;
     for (index = 0; index < attacker.skills.length; index++) {
         let skill = attacker.skills[index];
+        if (skill.speed == null) {
+            skill.speed = 0;
+        }
         if (skill.attempt != null) {
             if (skill.attempt(attacker, target)) {
                 cast_skill = skill;

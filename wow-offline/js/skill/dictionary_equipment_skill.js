@@ -39,7 +39,7 @@ function new_equipment_skill() {
     skill[28148] = function () {
         let skill = {};
         skill.name = "麦迪文的回响";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.chance = 20;// 触发几率
         skill.cooldown = 5;// 冷却
         skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制
@@ -49,7 +49,7 @@ function new_equipment_skill() {
             if (skill_in_cd(attacker, skill)) {
                 return false;// 冷却中
             }
-            return attacker.skills[0].type === type_cast;
+            return attacker.skills[0].type === type_magic;
         }
         // 技能施放调用
         skill.cast = function (attacker, target) {
@@ -90,7 +90,7 @@ function new_equipment_skill() {
     skill[18381] = function () {
         let skill = {};
         skill.name = "残废术";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.chance = 50;// 触发几率
         skill.cooldown = 5;// 冷却
         skill.priority = 0;// 优先级 0触发 10低 20中 30高 50特殊 99强制

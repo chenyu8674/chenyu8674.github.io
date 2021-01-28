@@ -69,7 +69,7 @@ function new_job() {
 
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
-    job.job_main[job.paladin_1] = "int";
+    job.job_main[job.paladin_1] = "spr";
     job.job_name[job.paladin_2] = "防护圣骑士";
     job.job_info[job.paladin_2] = "使用神圣的魔法为自己和盟友提供信仰防护。";
     job.job_main[job.paladin_2] = "str";
@@ -101,24 +101,25 @@ function new_job() {
 
     // 职业：萨满
     job.shaman = 40;
+    job.shaman_1 = 41;
+    job.shaman_2 = 42;
+    job.shaman_3 = 43;
+
+    job.job_color[job.shaman] = "#2359FF";
+    job.job_name[job.shaman] = "萨满";
+    job.job_flag[job.shaman] = "shaman";
     job.base_property[job.shaman] = [14, 6, 10, 14, 14];
     job.upgrade_property[job.shaman] = [2.8, 1.2, 2, 2.8, 2.8];
-    // 元素
-    // 灼热图腾：每回合造成X%法术强度的火焰伤害
-    // 地震术：造成X%法术强度的自然伤害，并使敌人下一次攻击的伤害降低Y%
-    // 冰霜震击：造成X%法术强度的冰霜伤害，并使敌人的敏捷降低Y%，持续Z回合
-    job.shaman_1 = 41;
-    // 增强
-    // 风怒图腾：有Y%的几率再次攻击
-    // 风怒打击：造成X%攻击强度的物理伤害
-    // 风暴打击：造成2次Y%攻击强度的物理伤害
-    job.shaman_2 = 42;
-    // 恢复
-    // 治疗之泉图腾：每回合回复X%治疗强度的生命
-    // 闪电箭：造成X%法术强度的自然伤害
-    // 治疗波：每隔X回合使用，回复X%治疗强度的生命
-    job.shaman_3 = 43;
-    job.job_name[job.shaman] = "萨满";
+
+    job.job_name[job.shaman_1] = "元素萨满";
+    job.job_info[job.shaman_1] = "驾驭元素的施法者，使用自然的毁灭之力打击敌人。";
+    job.job_main[job.shaman_1] = "int";
+    job.job_name[job.shaman_2] = "增强萨满";
+    job.job_info[job.shaman_2] = "信仰图腾之力，使用灌注元素能量的武器攻击敌人。";
+    job.job_main[job.shaman_2] = "str";
+    job.job_name[job.shaman_3] = "恢复萨满";
+    job.job_info[job.shaman_3] = "召唤先祖之魂和水之净化能量来治愈盟友的创伤。";
+    job.job_main[job.shaman_3] = "spr";
 
     // 职业：德鲁伊
     job.druid = 50;
@@ -148,60 +149,91 @@ function new_job() {
 
     // 职业：盗贼
     job.rogue = 60;
+    job.rogue_1 = 61;
+    job.rogue_2 = 62;
+    job.rogue_3 = 63;
+
+    job.job_color[job.rogue] = "#FFF468";
+    job.job_name[job.rogue] = "盗贼";
+    job.job_flag[job.rogue] = "rogue";
     job.base_property[job.rogue] = [16, 16, 10, 4, 4];
     job.upgrade_property[job.rogue] = [3.2, 3.2, 2, 0.8, 0.8];
-    // 刺杀
-    // 背刺
-    // 伏击
-    job.rogue_1 = 61;
-    // 战斗
-    // 邪恶攻击
-    // 剔骨
-    job.rogue_2 = 62;
-    // 敏锐
-    // 出血
-    // 消失
-    job.rogue_3 = 63;
-    job.job_name[job.rogue] = "盗贼";
+
+    job.job_name[job.rogue_1] = "刺杀盗贼";
+    job.job_info[job.rogue_1] = "致命的使毒高手，能用匕首迅速而冷酷地除掉敌人。";
+    job.job_main[job.rogue_1] = "agi";
+    job.job_name[job.rogue_2] = "战斗盗贼";
+    job.job_info[job.rogue_2] = "无情的游荡剑客，擅长与敌人短兵相接。";
+    job.job_main[job.rogue_2] = "agi";
+    job.job_name[job.rogue_3] = "敏锐盗贼";
+    job.job_info[job.rogue_3] = "阴影中的追猎者，擅长对猎物发起致命的伏击。";
+    job.job_main[job.rogue_3] = "agi";
 
     // 职业：牧师
     job.priest = 70;
+    job.priest_1 = 71;
+    job.priest_2 = 72;
+    job.priest_3 = 73;
+
+    job.job_color[job.priest] = "#F0EBE0";
+    job.job_name[job.priest] = "牧师";
+    job.job_flag[job.priest] = "priest";
     job.base_property[job.priest] = [4, 4, 10, 16, 18];
     job.upgrade_property[job.priest] = [0.8, 0.8, 2, 3.2, 3.6];
-    // 戒律/神圣/法术/
-    job.priest_1 = 71;
-    // 神圣/神圣/法术/
-    job.priest_2 = 72;
-    // 暗影/暗影/法术/
-    job.priest_3 = 73;
-    job.job_name[job.priest] = "牧师";
+
+    job.job_name[job.priest_1] = "戒律牧师";
+    job.job_info[job.priest_1] = "使用魔法护盾保护盟友，也能治愈他们的伤口。";
+    job.job_main[job.priest_1] = "spr";
+    job.job_name[job.priest_2] = "神圣牧师";
+    job.job_info[job.priest_2] = "多才多艺，能照顾单体和团队，死后也能继续治疗。";
+    job.job_main[job.priest_2] = "spr";
+    job.job_name[job.priest_3] = "暗影牧师";
+    job.job_info[job.priest_3] = "使用邪恶的暗影魔法和可怕的虚空魔法来根除敌人。";
+    job.job_main[job.priest_3] = "int";
 
     // 职业：术士
     job.warlock = 80;
+    job.warlock_1 = 81;
+    job.warlock_2 = 82;
+    job.warlock_3 = 83;
+
+    job.job_color[job.warlock] = "#9382C9";
+    job.job_name[job.warlock] = "术士";
+    job.job_flag[job.warlock] = "warlock";
     job.base_property[job.warlock] = [8, 4, 14, 14, 10];
     job.upgrade_property[job.warlock] = [1.6, 0.8, 2.8, 2.8, 2];
-    // 痛苦/暗影/法术/
-    job.warlock_1 = 81;
-    // 恶魔/物理/法术/
-    job.warlock_2 = 82;
-    // 毁灭/火焰/法术/
-    job.warlock_3 = 83;
-    job.job_name[job.warlock] = "术士";
+
+    job.job_name[job.warlock_1] = "痛苦术士";
+    job.job_info[job.warlock_1] = "暗影魔法大师，擅长吸取能量和持续伤害法术。";
+    job.job_main[job.warlock_1] = "int";
+    job.job_name[job.warlock_2] = "恶魔术士";
+    job.job_info[job.warlock_2] = "恶魔指挥官，扭曲恶魔之魂来施展破坏之力。";
+    job.job_main[job.warlock_2] = "int";
+    job.job_name[job.warlock_3] = "术士";
+    job.job_info[job.warlock_3] = "毁灭";
+    job.job_main[job.warlock_3] = "混乱魔法的大师，能用灾厄的烈焰将敌人焚烧殆尽。";
 
     // 职业：法师
     job.mage = 90;
+    job.mage_1 = 91;
+    job.mage_2 = 92;
+    job.mage_3 = 93;
+
+    job.job_color[job.mage] = "#68CCEF";
+    job.job_name[job.mage] = "法师";
+    job.job_flag[job.mage] = "mage";
     job.base_property[job.mage] = [4, 6, 10, 18, 12];
     job.upgrade_property[job.mage] = [0.8, 1.2, 2, 3.6, 2.4];
-    // 奥术/奥术/法术/
-    job.mage_1 = 91;
-    // 火焰/火焰/法术/
-    job.mage_2 = 92;
-    // 冰霜/冰霜/法术/
-    job.mage_3 = 93;
-    job.job_name[job.mage] = "法师";
+
     job.job_name[job.mage_1] = "奥术法师";
+    job.job_info[job.mage_1] = "操纵奥术之力，以压倒性的能量毁灭敌人。";
+    job.job_main[job.mage_1] = "int";
     job.job_name[job.mage_2] = "火焰法师";
+    job.job_info[job.mage_2] = "使用灼热的火球和燃烧的烈焰烧尽敌人。";
+    job.job_main[job.mage_2] = "int";
     job.job_name[job.mage_3] = "冰霜法师";
+    job.job_info[job.mage_3] = "使用冰霜魔法冻结敌人，再彻底粉碎他们的身体。";
+    job.job_main[job.mage_3] = "int";
 
     return job;
 }

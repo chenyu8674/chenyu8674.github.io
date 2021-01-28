@@ -61,6 +61,7 @@ function refresh_character_select_view() {
         character_load.click(function () {
             current_index = i;
             load_character();
+            hide_view_battle();
             hide_view_character_select();
         });
         character_item.append(character_load);

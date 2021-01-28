@@ -49,7 +49,7 @@ let MULTIPLE_10 = 0.75;// 腰带属性系数
 let MULTIPLE_11 = 1;// 腿甲属性系数
 let MULTIPLE_12 = 0.75;// 靴子属性系数
 let MULTIPLE_13 = 0.6;// 戒指属性系数
-let MULTIPLE_14 = 0.6;// 饰物属性系数
+let MULTIPLE_14 = 1;// 饰物属性系数
 let MULTIPLE_15_1 = 0.45;// 单手属性系数
 let MULTIPLE_15_2 = 1;// 双手属性系数
 let MULTIPLE_16 = 0.6;// 副手属性系数
@@ -68,8 +68,9 @@ let in_test_mode = false;// 测试模式
 /** 攻击类型 **/
 
 let type_attack = 1;// 攻击
-let type_cast = 2;// 施法
-let type_other = 3;// 其他
+let type_magic = 2;// 法术
+let type_heal = 3;// 治疗
+let type_other = 4;// 其他
 
 /** 伤害属性类型 **/
 
@@ -106,6 +107,7 @@ let sta_to_health_max = 10;
 let sta_to_armor_attack = 2;
 
 let int_to_magic_power = 2;
+let int_to_hit_rate = 1;
 let int_to_critical_damage = 0.2;
 
 let spr_to_heal_power = 3;
@@ -122,7 +124,7 @@ let critical_coefficient = 2.5;// 暴击等级转化系数
 let block_coefficient = 2.5;// 格挡等级转化系数
 
 let resilient_coefficient = 4;// 韧性等级转化系数（dot）
-let resilient_multiple = 1.25;// 韧性等级转化系数（暴击）
+let resilient_multiple = 2;// 韧性等级转化系数（暴击）
 
 let mastery_per_lvl = 5;// 每级附加精通等级
 
@@ -136,9 +138,12 @@ mastery_coefficient[21] = 2;
 mastery_coefficient[22] = 5;
 mastery_coefficient[23] = 4;
 mastery_coefficient[31] = 6;
-mastery_coefficient[32] = 2;
+mastery_coefficient[32] = 4;
 mastery_coefficient[33] = 6;
 mastery_coefficient[51] = 4;
 mastery_coefficient[52] = 2;
 mastery_coefficient[53] = 2;
-mastery_coefficient[54] = 4;
+mastery_coefficient[54] = 0.8;
+mastery_coefficient[91] = 4;
+mastery_coefficient[92] = 4;
+mastery_coefficient[93] = 1;

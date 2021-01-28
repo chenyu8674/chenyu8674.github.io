@@ -15,22 +15,26 @@ $(document).ready(function () {
     });
     let shop_clear_bag = $("#shop_clear_bag");
     shop_clear_bag.click(function () {
-        let items = current_character.items;
-        for (let i = 0; i < MAX_ITEMS; i++) {
-            let item = items[i];
-            if (typeof item === "number") {
-                item = create_static_equipment_model(item);
+        let rare = $("input[name='rare']:checked").val();
+        rare = Number(rare);
+        let rare_name = get_type_name_by_rare(rare);
+        if (confirm("确认售出所有" + rare_name + "或更低品质的装备？")) {
+            let items = current_character.items;
+            for (let i = 0; i < MAX_ITEMS; i++) {
+                let item = items[i];
+                if (typeof item === "number") {
+                    item = create_static_equipment_model(item);
+                }
+                if (item != null && item.rare <= rare) {
+                    sell_equipment(i, true);
+                }
             }
-            let rare = is_in_local_mode() ? 5 : 4;
-            if (item != null && item.rare < rare) {
-                sell_equipment(i, true);
-            }
+            refresh_shop_items();
+            save_data();
         }
-        refresh_shop_items();
-        save_data();
     });
     set_info_hover(shop_pack_bag, "为背包物品排序");
-    set_info_hover(shop_clear_bag, "售出所有精良以下的装备");
+    set_info_hover(shop_clear_bag, "售出所有指定或更低品质的装备");
 });
 
 function show_view_shop() {
@@ -69,42 +73,42 @@ function create_shop_view() {
                 name += "头盔";
                 type = "头部装备";
                 icon = 16;
-                price = 8;
+                price = MULTIPLE_1 * 10;
                 pos = 1;
                 break;
             case 1:
                 name += "肩甲";
                 type = "肩部装备";
                 icon = 16;
-                price = 8;
+                price = MULTIPLE_3 * 10;
                 pos = 3;
                 break;
             case 2:
                 name += "衣服";
                 type = "胸部装备";
                 icon = 16;
-                price = 10;
+                price = MULTIPLE_4 * 10;
                 pos = 4;
                 break;
             case 3:
                 name += "护腕";
                 type = "腕部装备";
                 icon = 16;
-                price = 6;
+                price = MULTIPLE_8 * 10;
                 pos = 8;
                 break;
             case 4:
                 name += "项链";
                 type = "项链";
                 icon = 17;
-                price = 6;
+                price = MULTIPLE_2 * 10;
                 pos = 2;
                 break;
             case 5:
                 name += "戒指";
                 type = "戒指";
                 icon = 17;
-                price = 6;
+                price = MULTIPLE_13 * 10;
                 pos = 13;
                 break;
             case 6:
@@ -118,49 +122,49 @@ function create_shop_view() {
                 name += "手套";
                 type = "手部装备";
                 icon = 16;
-                price = 8;
+                price = MULTIPLE_9 * 10;
                 pos = 9;
                 break;
             case 8:
                 name += "腰带";
                 type = "腰部装备";
                 icon = 16;
-                price = 6;
+                price = MULTIPLE_10 * 10;
                 pos = 10;
                 break;
             case 9:
                 name += "裤子";
                 type = "腿部装备";
                 icon = 16;
-                price = 10;
+                price = MULTIPLE_11 * 10;
                 pos = 11;
                 break;
             case 10:
                 name += "靴子";
                 type = "脚部装备";
                 icon = 16;
-                price = 8;
+                price = MULTIPLE_12 * 10;
                 pos = 12;
                 break;
             case 11:
                 name += "披风";
                 type = "披风";
                 icon = 17;
-                price = 6;
+                price = MULTIPLE_5 * 10;
                 pos = 5;
                 break;
             case 12:
                 name += "饰品";
                 type = "饰品";
                 icon = 17;
-                price = 6;
+                price = 10;
                 pos = 14;
                 break;
             case 13:
                 name += "副手";
                 type = "副手装备";
                 icon = 15;
-                price = 15;
+                price = 20;
                 pos = 16;
                 break;
         }
@@ -217,7 +221,7 @@ function buy_equipment(pos, price) {
     param.c_lvl = current_character.lvl;
     param.rare = rare;
     param.pos = pos;
-    let model = get_random_equipment_model(param, 3);
+    let model = get_random_equipment_model(param, 2);
     let items = current_character.items;
     for (let k = 0; k < MAX_ITEMS; k++) {
         if (items[k] == null) {

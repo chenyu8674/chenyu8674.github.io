@@ -33,13 +33,13 @@ function new_affix() {
         return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare), "armor_magic+=" + get_effect_value(ARMOR_ATTACK_1, lvl, rare)];
     }
     // 单手攻击武器
-    // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
+    // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑 16-魔杖
     affix[15111] = affix[15112] = affix[15113] = affix[15114] = affix[15115] = function (lvl, rare) {
         return ["attack_power+=" + (WEAPON_ATTACK_1 + get_effect_value(WEAPON_ATTACK_1, lvl, rare))];
     }
     // 单手法术武器
-    // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑
-    affix[15211] = affix[15212] = affix[15213] = affix[15214] = affix[15215] = function (lvl, rare) {
+    // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑 16-魔杖
+    affix[15211] = affix[15212] = affix[15213] = affix[15214] = affix[15215] = affix[15116] = affix[15216] = function (lvl, rare) {
         return ["magic_power+=" + (WEAPON_ATTACK_1 + get_effect_value(WEAPON_ATTACK_1, lvl, rare)), "heal_power+=" + (WEAPON_ATTACK_1 + get_effect_value(WEAPON_ATTACK_1, lvl, rare))];
     }
     // 双手攻击武器

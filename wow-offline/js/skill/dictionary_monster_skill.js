@@ -116,12 +116,12 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10220;// Id
         skill.name = "火球术";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的火焰伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_fire);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_fire);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -131,12 +131,12 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10230;// Id
         skill.name = "寒冰箭";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的冰霜伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_frost);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_frost);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -146,12 +146,12 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10240;// Id
         skill.name = "闪电箭";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的自然伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_natural);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_natural);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -161,12 +161,12 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10250;// Id
         skill.name = "奥术冲击";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_arcane);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_arcane);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -176,12 +176,12 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10260;// Id
         skill.name = "惩击";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_holy);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_holy);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -191,12 +191,12 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10270;// Id
         skill.name = "暗影箭";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的暗影伤害";
         // 技能施放调用
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_cast, element_shadow);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_shadow);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -206,7 +206,7 @@ function new_monster_skill() {
         let skill = {};
         skill.id = 10340;// Id
         skill.name = "治疗波";// 名称
-        skill.type = type_cast;
+        skill.type = type_magic;
         skill.cooldown = 3;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 100;
@@ -296,8 +296,8 @@ function new_monster_skill() {
         skill.id = 11004;// Id
         skill.name = "撕裂";// 名称
         skill.type = type_attack;
-        skill.X = 80;
-        skill.Y = 30;
+        skill.X = 60;
+        skill.Y = 20;
         skill.icon = "ability_druid_disembowel";
         skill.detail = "撕裂敌人的肉体，造成" + skill.X + "%攻击强度的物理伤害，并使目标每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.rake().T + "回合。";
         // 技能施放调用
@@ -317,7 +317,7 @@ function new_monster_skill() {
         skill.id = 11005;// Id
         skill.name = "猛击";// 名称
         skill.type = type_attack;
-        skill.cooldown = 4;// 冷却
+        skill.cooldown = 5;// 冷却
         skill.priority = 30;// 优先级
         skill.X = 200;
         skill.icon = "ability_warrior_decisivestrike";
@@ -335,14 +335,14 @@ function new_monster_skill() {
         skill.id = 11006;// Id
         skill.name = "破甲";// 名称
         skill.type = type_attack;
-        skill.X = 100;
+        skill.X = 60;
         skill.icon = "ability_warrior_sunder";
         skill.detail = "击碎目标的护甲，对其造成" + skill.X + "%攻击强度的物理伤害，并使目标的物理抗性-" + dictionary_debuff.warrior_3().X + "，持续" + dictionary_debuff.warrior_3().T + "回合。";
         // 技能施放调用
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj.is_hit) {
-                target.debuffs.push(new_debuff().warrior_3());
+                target.debuffs.push(new_debuff().sunder());
             }
             return skill_cast_result([damage_obj], [], []);
         };

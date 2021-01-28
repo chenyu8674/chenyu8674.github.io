@@ -14,7 +14,7 @@ function new_sets() {
 
     sets["黑暗迪菲亚护甲"] = {
         equipments: [10399, 10403, 10402, 10401, 10400],
-        effects: [null, ["armor_attack+=50","armor_magic+=50"], ["main+=5"], ["res_all+=5"], ["damage_all+=5"]],
+        effects: [null, ["armor_all_percent+=5"], ["attr_percent+=5"], ["res_all+=5"], ["pierce_all+=5"]],
     };
 
     return sets;

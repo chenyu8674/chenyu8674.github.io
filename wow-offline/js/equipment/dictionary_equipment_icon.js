@@ -69,6 +69,8 @@ function new_equipment_icon() {
     equipment_icon[1514] = ["inv_hammer_03", "inv_hammer_04", "inv_hammer_05", "inv_hammer_06", "inv_hammer_07", "inv_hammer_08", "inv_hammer_11", "inv_hammer_12", "inv_hammer_18", "inv_hammer_19"]
     // 单手剑
     equipment_icon[1515] = ["inv_sword_01", "inv_sword_04", "inv_sword_05", "inv_sword_10", "inv_sword_12", "inv_sword_20", "inv_sword_24", "inv_sword_30", "inv_sword_36", "inv_sword_40"]
+    // 魔杖
+    equipment_icon[1516] = ["inv_wand_01", "inv_wand_02", "inv_wand_03", "inv_wand_04", "inv_wand_05", "inv_wand_06", "inv_wand_07", "inv_wand_08", "inv_wand_09", "inv_wand_10", "inv_wand_11", "inv_wand_12"]
     // 长柄
     equipment_icon[1521] = ["inv_spear_01", "inv_spear_02", "inv_spear_03", "inv_spear_04", "inv_spear_05", "inv_spear_06", "inv_spear_07", "inv_spear_08", "inv_weapon_halberd_02", "inv_weapon_halberd_03"]
     // 法杖
