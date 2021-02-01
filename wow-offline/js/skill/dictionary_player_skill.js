@@ -907,7 +907,7 @@ function new_player_skill() {
                 let battle_buffs = attacker.buffs;
                 if (battle_buffs != null && battle_buffs.length > 0) {
                     for (let i = 0; i < battle_buffs.length; i++) {
-                        if (battle_buffs[i].id === dictionary_buff.mage_2_2().id) {
+                        if (battle_buffs[i].name === dictionary_buff.mage_2_2().name) {
                             battle_buffs.splice(i, 1);
                             i--;
                         }
@@ -944,7 +944,7 @@ function new_player_skill() {
                 let battle_buffs = attacker.buffs;
                 if (battle_buffs != null && battle_buffs.length > 0) {
                     for (let i = 0; i < battle_buffs.length; i++) {
-                        if (battle_buffs[i].id === dictionary_buff.mage_2_2().id) {
+                        if (battle_buffs[i].name === dictionary_buff.mage_2_2().name) {
                             battle_buffs.splice(i, 1);
                             i--;
                         }

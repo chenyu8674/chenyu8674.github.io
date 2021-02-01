@@ -53,7 +53,7 @@ function new_equipment_skill() {
         }
         skill.cast = function (attacker, target) {
             let cast_skill = attacker.skills[0];
-            battle_log("<span style='color:" + color_rare_6 + "'>麦迪文的回响萦绕耳旁……</span>");
+            battle_log("<span style='color:" + color_rare_6 + "'>麦迪文的低语萦绕耳边……</span>");
             return cast_skill.cast(attacker, target);
         };
         return skill;
