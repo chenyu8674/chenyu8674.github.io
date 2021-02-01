@@ -50,8 +50,6 @@ function get_exp_percent(lvl, exp) {
 
 /**
  * 计算经验对应的等级
- * @param exp
- * @return {number}
  */
 function get_level(exp) {
     let lvl = 1;

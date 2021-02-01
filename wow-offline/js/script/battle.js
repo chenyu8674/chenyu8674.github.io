@@ -71,6 +71,8 @@ function turn_loop() {
     // 更新角色属性状态
     calculate_role_1(role_base_1);
     calculate_role_2(role_base_2);
+    reduce_role_buffs_and_debuffs(role_base_1);
+    reduce_role_buffs_and_debuffs(role_base_2);
     // 更新生命/护盾值
     role_battle_1.current_health_value = role_health_1;
     role_battle_1.current_shield_value = role_shield_1;
@@ -86,13 +88,14 @@ function turn_loop() {
         role_battle_2.current_shield_value = role_shield_2;
     }
     // 首回合输出双方战斗状态
-    if (is_in_local_mode() && battle_turn === 1) {
-        if (in_test_mode) {
+    if (is_in_local_mode()) {
+        if (in_test_mode && battle_turn === 1) {
             if (win_count_1 + win_count_2 === 0) {
                 console.log(role_battle_1);
                 console.log(role_battle_2);
             }
         } else {
+            console.log("===== " + battle_turn)
             console.log(role_battle_1);
             console.log(role_battle_2);
         }
@@ -227,11 +230,12 @@ function turn_loop() {
  */
 function do_dot(attacker, dot, target) {
     let damage_value;
+    let dot_obj;
+    let drain_obj;
+    let hot_obj;
     if (dot.damage != null) {
         // DOT，结算伤害
-        let dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
-        dot_obj.element_type = get_element_name(dot.type);
-        dot_log(dot_obj);
+        dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
         damage_value = dot_obj.damage_value;
         target.current_health_value -= damage_value;
         if (target.current_health_value <= 0) {
@@ -241,25 +245,32 @@ function do_dot(attacker, dot, target) {
     if (dot.heal != null) {
         if (dot.heal < 0) {
             // 根据造成伤害吸血
-            let hot_obj = {};
-            hot_obj.target_name = attacker.name;
-            hot_obj.skill_name = dot.name;
-            hot_obj.heal_value = -damage_value * dot.heal;
-            hot_obj.is_critical = false;
-            hot_log(hot_obj);
-            attacker.current_health_value += hot_obj.heal_value;
+            drain_obj = {};
+            drain_obj.attack_name = attacker.name;
+            drain_obj.target_name = target.name;
+            drain_obj.skill_name = dot.name;
+            drain_obj.drain_value = -damage_value * dot.heal;
+            drain_obj.is_critical = dot_obj.is_critical;
+            attacker.current_health_value += drain_obj.drain_value;
             if (attacker.current_health_value >= attacker.max_health_value) {
                 attacker.current_health_value = attacker.max_health_value;
             }
         } else {
             // HOT，结算治疗
-            let hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
-            hot_log(hot_obj);
+            hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
             target.current_health_value += hot_obj.heal_value;
             if (target.current_health_value >= target.max_health_value) {
                 target.current_health_value = target.max_health_value;
             }
         }
+    }
+    if (drain_obj != null) {
+        drain_log(drain_obj);
+    } else if (dot_obj != null) {
+        dot_log(dot_obj);
+    }
+    if (hot_obj != null) {
+        hot_log(hot_obj);
     }
 }
 
@@ -293,7 +304,7 @@ function get_cast_skill(attacker, target) {
     attacker.skills.unshift(cast_skill);
     attacker.skills.splice(index + 1, 1);
     if (cast_skill == null) {
-        cast_skill = new_monster_skill().physical_attack();
+        cast_skill = dictionary_monster_skill.physical_attack();
         cast_skill.trigger = false;
     }
     if (cast_skill.trigger == null) {
@@ -337,7 +348,7 @@ function get_equipment_skill(attacker, target) {
  * 执行攻击动作
  */
 function do_attack(attacker, skill, target) {
-    regist_skill_state(skill_state(attacker.flag, skill.id));
+    regist_skill_state(skill_state(attacker.flag, skill.name));
     // 技能施放
     let skill_cast_result = skill.cast(attacker, target);
     // 结算伤害
@@ -413,6 +424,44 @@ function is_death(role) {
         return true;
     } else {
         return false;
+    }
+}
+
+/**
+ * 增减益剩余回合-1
+ */
+function reduce_role_buffs_and_debuffs(role_battle) {
+    let battle_buffs = role_battle.buffs;
+    if (battle_buffs != null && battle_buffs.length > 0) {
+        for (let i = 0; i < battle_buffs.length; i++) {
+            let buffs = battle_buffs[i];
+            let turn_left = buffs.T;
+            if (turn_left > 0) {
+                turn_left--;
+                if (turn_left === 0) {
+                    battle_buffs.splice(i, 1);
+                    i--;
+                } else {
+                    buffs.T = turn_left;
+                }
+            }
+        }
+    }
+    let battle_debuffs = role_battle.debuffs;
+    if (battle_debuffs != null && battle_debuffs.length > 0) {
+        for (let i = 0; i < battle_debuffs.length; i++) {
+            let debuffs = battle_debuffs[i];
+            let turn_left = debuffs.T;
+            if (turn_left > 0) {
+                turn_left--;
+                if (turn_left === 0) {
+                    battle_debuffs.splice(i, 1);
+                    i--;
+                } else {
+                    debuffs.T = turn_left;
+                }
+            }
+        }
     }
 }
 

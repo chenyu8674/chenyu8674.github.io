@@ -25,7 +25,7 @@ function new_affix() {
         return ["armor_attack+=" + get_effect_value(ARMOR_ATTACK_4, lvl, rare), "armor_magic+=" + get_effect_value(ARMOR_MAGIC_4, lvl, rare)];
     }
     // 项链/衬衫/战袍/戒指/饰品
-    affix[2199] = affix[2299] = affix[6199] = affix[6299] = affix[7199] = affix[7299] = affix[13199] = affix[13299] = affix[14199] = affix[14299] = function (lvl, rare) {
+    affix[2199] = affix[2299] = affix[6199] = affix[6299] = affix[7199] = affix[7299] = affix[13199] = affix[13299] = affix[14199] = affix[14299] = function () {
         return [];
     }
     // 披风

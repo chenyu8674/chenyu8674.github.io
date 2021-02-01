@@ -11,34 +11,27 @@ function init_skill_states() {
 
 /**
  * 新建技能状态对象
- * @param flag 施放者标记
- * @param id 技能id
- * @return {{}}
  */
-function skill_state(flag, id) {
+function skill_state(flag, name) {
     let skill_state = {};
     skill_state.flag = flag;
-    skill_state.id = id;
+    skill_state.name = name;
     skill_state.last_turn = battle_turn;
     return skill_state;
 }
 
 /**
  * 注册技能状态
- * @param state
  */
 function regist_skill_state(state) {
-    m_skill_states[state.flag + state.id] = state;
+    m_skill_states[state.flag + state.name] = state;
 }
 
 /**
  * 获取技能状态
- * @param flag
- * @param id
- * @return {*}
  */
-function get_skill_state(flag, id) {
-    return m_skill_states[flag + id];
+function get_skill_state(flag, name) {
+    return m_skill_states[flag + name];
 }
 
 /**
@@ -174,8 +167,9 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     }
     // 整体伤害（仅NPC）
     damage_value *= attacker.cause_damage_percent / 100;
-        // 伤害随机浮动(0.9~1.1)
-    damage_value *= (0.9 + Math.random() * 0.2);
+    // 伤害随机浮动(0.9~1.1)
+    damage_value *= 1 + Math.random() * 0.1;
+    damage_value *= 1 - Math.random() * 0.1;
     // 每差1级，伤害浮动5%，范围50~200%
     let lvl_percent = (attacker.lvl - target.lvl) * 5;
     if (lvl_percent > 100) {
@@ -325,7 +319,8 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
     // 整体伤害（仅NPC）
     damage_value *= attacker.cause_damage_percent / 100;
     // 伤害随机浮动(0.9~1.1)
-    damage_value *= (0.9 + Math.random() * 0.2);
+    damage_value *= 1 + Math.random() * 0.1;
+    damage_value *= 1 - Math.random() * 0.1;
     // 每差1级，伤害浮动5%，范围50~200%
     let lvl_percent = (attacker.lvl - target.lvl) * 5;
     if (lvl_percent > 100) {
@@ -381,7 +376,7 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
     damage_obj.skill_name = skill_name;
     damage_obj.damage_value = damage_value;
     damage_obj.attack_type = 0;
-    damage_obj.element_type = element_type;
+    damage_obj.element_type = get_element_name(element_type);
     damage_obj.is_hit = true;
     damage_obj.is_critical = is_critical;
     damage_obj.block_value = 0;
@@ -666,7 +661,7 @@ function skill_in_cd(attacker, skill) {
     if (skill.first_turn != null && battle_turn < skill.first_turn) {
         return true;// 未到首次施放回合
     }
-    let skill_state = get_skill_state(attacker.flag, skill.id);
+    let skill_state = get_skill_state(attacker.flag, skill.name);
     let cooldown = skill.cooldown != null ? skill.cooldown : 1;
     return (skill_state != null && battle_turn - skill_state.last_turn < cooldown);
 }
@@ -678,20 +673,23 @@ function skill_in_cd(attacker, skill) {
  * @param shield_list 护盾对象列表
  * @return {{}}
  */
-function skill_cast_result(damage_list, heal_list, shield_list) {
+function skill_cast_result(damage_list = [], heal_list = [], shield_list = []) {
     if (damage_list == null) {
         damage_list = [];
-    } else if (typeof (damage_list.length) == "undefined") {
-        damage_list = [damage_list];
     }
     if (heal_list == null) {
         heal_list = [];
-    } else if (typeof (heal_list.length) == "undefined") {
-        heal_list = [heal_list];
     }
     if (shield_list == null) {
         shield_list = [];
-    } else if (typeof (shield_list.length) == "undefined") {
+    }
+    if (typeof (damage_list.length) == "undefined") {
+        damage_list = [damage_list];
+    }
+    if (typeof (heal_list.length) == "undefined") {
+        heal_list = [heal_list];
+    }
+    if (typeof (shield_list.length) == "undefined") {
         shield_list = [shield_list];
     }
     let skill_cast_result = {};

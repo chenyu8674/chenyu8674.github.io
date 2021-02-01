@@ -15,7 +15,7 @@ function show_map_info(map_info) {
     info.css("left", 1600 * map_info.x / 100 + 25 + "px");
     info.css("top", 900 * map_info.y / 100 + 25 + "px");
     if (map_info.type === 1) {
-        info.append("<div style='color:" + color_rare_3 + "'>练级地图</div>");
+        info.append("<div style='color:" + color_rare_3 + "'>探索地图</div>");
         info.append("<div>" + map_info.name + "</div>");// 地图名称
         info.append("<div>怪物等级：" + map_info.min + "~" + map_info.max + "</div>");// 怪物等级
     }
@@ -58,7 +58,7 @@ function show_player_info() {
 /**
  * 显示怪物介绍
  */
-function show_monster_info(index) {
+function show_monster_info(view, index) {
     let monster = map_monster_list[index];
     if (monster.name == null) {
         return;
@@ -66,14 +66,19 @@ function show_monster_info(index) {
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");
-    monster.x = monster.x > 100 ? monster.x / 10 : monster.x;
-    monster.y = monster.y > 100 ? monster.y / 10 : monster.y;
-    info.css("left", monster.x + 1.5 + "%");
-    info.css("top", monster.y + 1.5 + "%");
-    info.append("<div>" + monster.name + "</div>");
+    let x = view[0].offsetWidth + view.offset().left - window_margin_left;
+    let y = view[0].offsetHeight + view.offset().top - window_margin_top;
+    info.css("left", x - 5 + "px");
+    info.css("top", y - 5 + "px");
+    info.css("max-width", "220px");
+    info.css("padding-right", "10px");
+    info.append("<div style='height:25px;font-size:13px;font-weight:bold;'>" + monster.name + "</div>");
     info.append("<div style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare) + "</div>");
     info.append("<div style='color:goldenrod'>lv " + monster.lvl + " " + get_monster_species_name(monster.species) + "</div>");
-    battle_map.append(info);
+    if (monster.detail != null) {
+        info.append("<div style='color:lightgray;margin-top:5px;line-height:17px;'>" + monster.detail + "</div>");
+    }
+    window_view.append(info);
 }
 
 /**
@@ -91,7 +96,7 @@ function show_equipment_info(view, model) {
     let equipment = create_equipment_by_model(model);
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
-    info.append("<div style='height:25px;font-size:14px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
+    info.append("<div style='height:25px;font-size:13px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
     // 物品等级
     info.append("<div style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</div>");
     let can_equip = check_can_equip(current_character, equipment);

@@ -72,7 +72,6 @@ function damage_log(damage_obj) {
 
 /**
  * 输出dot日志
- * @param dot_obj
  */
 function dot_log(dot_obj) {
     battle_log(dot_obj.target_name
@@ -85,13 +84,24 @@ function dot_log(dot_obj) {
 
 /**
  * 输出hot日志
- * @param hot_obj
  */
 function hot_log(hot_obj) {
     battle_log(hot_obj.target_name
         + " 因 " + hot_obj.skill_name
         + " 回复 " + hot_obj.heal_value + " 点生命"
         + (hot_obj.is_critical ? " (暴击)" : "")
+    );
+}
+
+/**
+ * 输出drain日志
+ */
+function drain_log(drain_obj) {
+    battle_log(drain_obj.attack_name
+        + " 的 " + drain_obj.skill_name
+        + " 从 " + drain_obj.target_name
+        + " 吸取 " + drain_obj.drain_value + " 点生命"
+        + (drain_obj.is_critical ? " (暴击)" : "")
     );
 }
 

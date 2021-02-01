@@ -61,7 +61,7 @@ let WEAPON_ATTACK_3 = 2;// 副手手强度系数
 /** 系统设置 **/
 
 let show_hit_percent_in_log = false;// 输出命中几率
-let show_critical_percent_in_log = false;// 输出暴击几率
+let show_critical_percent_in_log = true;// 输出暴击几率
 let show_block_percent_in_log = false;// 输出格挡几率
 let in_test_mode = false;// 测试模式
 
@@ -144,6 +144,9 @@ mastery_coefficient[51] = 4;
 mastery_coefficient[52] = 2;
 mastery_coefficient[53] = 2;
 mastery_coefficient[54] = 0.8;
+mastery_coefficient[61] = 10;
+mastery_coefficient[62] = 2;
+mastery_coefficient[63] = 1;
 mastery_coefficient[91] = 4;
 mastery_coefficient[92] = 4;
 mastery_coefficient[93] = 1;

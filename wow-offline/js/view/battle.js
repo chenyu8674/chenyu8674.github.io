@@ -8,6 +8,7 @@ let kill_count;
 $(document).ready(function () {
     view_battle = $("#view_battle");
     battle_map = $("#battle_map");
+    set_key_listener();
 });
 
 function show_view_battle() {
@@ -15,7 +16,6 @@ function show_view_battle() {
     view_battle.show();
     $("#attack_next").show();
     refresh_battle_status(false);
-    setKeyListener(true);
 }
 
 function hide_view_battle() {
@@ -26,30 +26,25 @@ function hide_view_battle() {
     map_info = null;
     role_battle_2 = null;
     view_battle.hide();
-    setKeyListener(false);
 }
 
-function setKeyListener(is_on) {
-    if (is_on) {
-        $(window).keydown(function (event) {
-            switch (event.which) {
-                case 49:
-                    if (!is_front_view_show()) {
-                        $("#attack_next").click();
-                    }
-                    break;
-                case 50:
-                    if (!is_front_view_show()) {
-                        $("#self_heal").click();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        });
-    } else {
-        $(window).keydown(null);
-    }
+function set_key_listener() {
+    $(window).keydown(function (event) {
+        switch (event.which) {
+            case 49:
+                if (view_battle.is(":visible") && !is_front_view_show()) {
+                    $("#attack_next").click();
+                }
+                break;
+            case 50:
+                if (view_battle.is(":visible") && !is_front_view_show()) {
+                    $("#self_heal").click();
+                }
+                break;
+            default:
+                break;
+        }
+    });
 }
 
 let player_x;
@@ -217,8 +212,9 @@ function get_monster_count_by_rare(rare) {
  * 判断刷新点是否过近
  */
 function has_nearly_monster(x, y) {
-    let min_distance_x = 6.18;
-    let min_distance_y = 9.26;
+    let zoom = 1;
+    let min_distance_x = 6.18 / zoom;
+    let min_distance_y = 9.26 / zoom;
     if (Math.abs(player_x - x) <= min_distance_x && Math.abs(player_y - y) <= min_distance_y) {
         return true;
     }
@@ -260,15 +256,7 @@ function add_random_monster() {
         monster_obj = new_monster()[random_monster_name];
     }
     // 生成怪物对象
-    let monster = get_new_monster(random_monster_name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
-    monster.species = monster_obj.species;
-    monster.rare = monster_obj.rare;
-    monster.lvl = lvl;
-    monster.skills = monster_obj.skill;
-    monster.drop = monster_obj.drop;
-    if (monster.skills == null || monster.skills.length === 0) {
-        monster.skills = [dictionary_monster_skill.physical_attack()];
-    }
+    let monster = create_monster_by_model(random_monster_name, lvl);
     if (monster.rare === 4) {
         monster.x = monster_obj.x > 100 ? monster_obj.x / 10 : monster_obj.x;
         monster.y = monster_obj.y > 100 ? monster_obj.y / 10 : monster_obj.y;
@@ -313,17 +301,7 @@ function refresh_raid_monster() {
             } else {
                 lvl = monster_raid.lvl
             }
-            let monster_obj = new_monster()[monster_raid.name];
-            // 生成怪物对象
-            monster = get_new_monster(monster_raid.name, lvl, monster_obj.type, monster_obj.rare, monster_obj.multiple, monster_obj.effect, monster_obj.buffs);
-            monster.species = monster_obj.species;
-            monster.rare = monster_obj.rare;
-            monster.lvl = lvl;
-            monster.skills = monster_obj.skill;
-            monster.drop = monster_obj.drop;
-            if (monster.skills == null || monster.skills.length === 0) {
-                monster.skills = [dictionary_monster_skill.physical_attack()];
-            }
+            monster = create_monster_by_model(monster_raid.name, lvl)
         }
         monster.x = monster_raid.x > 100 ? monster_raid.x / 10 : monster_raid.x;
         monster.y = monster_raid.y > 100 ? monster_raid.y / 10 : monster_raid.y;
@@ -357,7 +335,7 @@ function refresh_monster_point() {
             monster_point.css("border-color", eval("color_rare_" + monster.rare));
             monster_point.hover(function () {
                 monster_point.css("border-color", "goldenrod");
-                show_monster_info(i);
+                show_monster_info(monster_point, i);
             }, function () {
                 monster_point.css("border-color", eval("color_rare_" + monster.rare));
                 hide_info();
@@ -725,7 +703,7 @@ function refresh_battle_status(only_player) {
     player_health_number.css("left", health_width + 100 + "px");
     player_health_number.text(health_value + "/" + max_health_value);
     if (shield_value > 0) {
-        let shield_width = 1000 * shield_value / max_health_value;
+        let shield_width = 400 * shield_value / max_health_value;
         if (shield_width > 200) {
             shield_width = 200;
         }

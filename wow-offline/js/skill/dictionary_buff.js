@@ -10,8 +10,7 @@ function new_buff() {
     // 武器
     buff.warrior_1 = function () {
         let buff = {};
-        buff.id = 11;// Id
-        buff.name = "战斗姿态";// 名称
+        buff.name = "战斗姿态";
         buff.T = -1;
         buff.X = 5;
         buff.Y = 5;
@@ -30,8 +29,7 @@ function new_buff() {
     // 狂暴
     buff.warrior_2 = function () {
         let buff = {};
-        buff.id = 12;// Id
-        buff.name = "狂暴姿态";// 名称
+        buff.name = "狂暴姿态";
         buff.T = -1;
         buff.X = 5;
         buff.Y = 50;
@@ -50,8 +48,7 @@ function new_buff() {
     // 防御
     buff.warrior_3 = function () {
         let buff = {};
-        buff.id = 13;// Id
-        buff.name = "防御姿态";// 名称
+        buff.name = "防御姿态";
         buff.T = -1;
         buff.X = 5;
         buff.Y = 10;
@@ -70,8 +67,7 @@ function new_buff() {
     // 神圣
     buff.paladin_1 = function () {
         let buff = {};
-        buff.id = 21;// Id
-        buff.name = "智慧祝福";// 名称
+        buff.name = "智慧祝福";
         buff.T = -1;
         buff.X = 20;
         buff.Y = 5;
@@ -88,8 +84,7 @@ function new_buff() {
     // 防护
     buff.paladin_2 = function () {
         let buff = {};
-        buff.id = 22;// Id
-        buff.name = "王者祝福";// 名称
+        buff.name = "王者祝福";
         buff.T = -1;
         buff.X = 10;
         buff.Y = 5;
@@ -109,8 +104,7 @@ function new_buff() {
 
     buff.paladin_2_2 = function () {
         let buff = {};
-        buff.id = 222;// Id
-        buff.name = "圣盾术";// 名称
+        buff.name = "圣盾术";
         buff.T = 2;
         buff.X = 999;
         buff.icon = "Spell_Holy_DivineIntervention";
@@ -124,8 +118,7 @@ function new_buff() {
     // 惩戒
     buff.paladin_3 = function () {
         let buff = {};
-        buff.id = 23;// Id
-        buff.name = "力量祝福";// 名称
+        buff.name = "力量祝福";
         buff.T = -1;
         buff.X = 20;
         buff.Y = 5;
@@ -142,8 +135,7 @@ function new_buff() {
     // 兽王
     buff.hunter_1 = function () {
         let buff = {};
-        buff.id = 31;// Id
-        buff.name = "野性守护";// 名称
+        buff.name = "野性守护";
         buff.T = -1;
         buff.X = 1;
         buff.icon = "spell_nature_protectionformnature";
@@ -156,8 +148,7 @@ function new_buff() {
     // 射击
     buff.hunter_2 = function () {
         let buff = {};
-        buff.id = 32;// Id
-        buff.name = "雄鹰守护";// 名称
+        buff.name = "雄鹰守护";
         buff.T = -1;
         buff.X = 15;
         buff.icon = "spell_nature_ravenform";
@@ -172,8 +163,7 @@ function new_buff() {
     // 生存
     buff.hunter_3 = function () {
         let buff = {};
-        buff.id = 32;// Id
-        buff.name = "灵猴守护";// 名称
+        buff.name = "灵猴守护";
         buff.T = -1;
         buff.X = 15;
         buff.icon = "ability_hunter_aspectofthemonkey";
@@ -188,8 +178,7 @@ function new_buff() {
     // 元素
     // buff.shaman_1 = function () {
     //     let buff = {};
-    //     buff.id = 41;// Id
-    //     buff.name = "火舌武器";// 名称
+    //     buff.name = "火舌武器";
     //     buff.T = -1;
     //     buff.X = 10;
     //     buff.icon = "spell_nature_forceofnature";
@@ -204,8 +193,7 @@ function new_buff() {
     // 平衡
     buff.druid_1 = function () {
         let buff = {};
-        buff.id = 51;// Id
-        buff.name = "枭兽形态";// 名称
+        buff.name = "枭兽形态";
         buff.T = -1;
         buff.X = 100;
         buff.Y = 25;
@@ -222,8 +210,7 @@ function new_buff() {
     // 野性
     buff.druid_2 = function () {
         let buff = {};
-        buff.id = 52;// Id
-        buff.name = "猎豹形态";// 名称
+        buff.name = "猎豹形态";
         buff.T = -1;
         buff.X = 40;
         buff.Y = 25;
@@ -240,8 +227,7 @@ function new_buff() {
     // 守护
     buff.druid_3 = function () {
         let buff = {};
-        buff.id = 52;// Id
-        buff.name = "巨熊形态";// 名称
+        buff.name = "巨熊形态";
         buff.T = -1;
         buff.X = 200;
         buff.Y = 25;
@@ -258,8 +244,7 @@ function new_buff() {
     // 恢复
     buff.druid_4 = function () {
         let buff = {};
-        buff.id = 52;// Id
-        buff.name = "生命之树形态";// 名称
+        buff.name = "生命之树形态";
         buff.T = -1;
         buff.X = 50;
         buff.Y = 25;
@@ -273,11 +258,55 @@ function new_buff() {
     }
     buff[54] = buff.druid_4();
 
+    // 刺杀
+    buff.rogue_1 = function () {
+        let buff = {};
+        buff.name = "冷血";
+        buff.T = 1;
+        buff.X = 50;
+        buff.icon = "spell_ice_lament";
+        buff.detail = "进入战斗或施放终结技后，暴击率提高" + buff.X + "%，持续" + buff.T + "回合";
+        buff.effect = [
+            "critical_chance_final+=" + buff.X
+        ];
+        return buff;
+    }
+    buff[61] = buff.rogue_1();
+
+    // 战斗
+    buff.rogue_2 = function () {
+        let buff = {};
+        buff.name = "冲动";
+        buff.T = 1;
+        buff.X = 50;
+        buff.icon = "spell_shadow_shadowworddominate";
+        buff.detail = "进入战斗或施放终结技后，攻击强度提高" + buff.X + "%，持续" + buff.T + "回合";
+        buff.effect = [
+            "attack_power_percent+=" + buff.X
+        ];
+        return buff;
+    }
+    buff[62] = buff.rogue_2();
+
+    // 敏锐
+    buff.rogue_3 = function () {
+        let buff = {};
+        buff.name = "消失";
+        buff.T = 1;
+        buff.X = 50;
+        buff.icon = "ability_vanish";
+        buff.detail = "进入战斗或施放终结技后，闪避率提高" + buff.X + "%，持续" + buff.T + "回合";
+        buff.effect = [
+            "dodge_chance_final+=" + buff.X
+        ];
+        return buff;
+    }
+    buff[63] = buff.rogue_3();
+
     // 奥法
     buff.mage_1 = function () {
         let buff = {};
-        buff.id = 91;// Id
-        buff.name = "魔甲术";// 名称
+        buff.name = "魔甲术";
         buff.T = -1;
         buff.X = 20;
         buff.Y = 10;
@@ -294,8 +323,7 @@ function new_buff() {
     // 火法
     buff.mage_2 = function () {
         let buff = {};
-        buff.id = 92;// Id
-        buff.name = "火甲术";// 名称
+        buff.name = "火甲术";
         buff.T = -1;
         buff.X = 20;
         buff.Y = 10;
@@ -311,8 +339,7 @@ function new_buff() {
 
     buff.mage_2_2 = function (X) {
         let buff = {};
-        buff.id = 922;// Id
-        buff.name = "火焰精通";// 名称
+        buff.name = "火焰精通";
         buff.T = Number.MAX_VALUE;
         buff.X = X;
         buff.icon = "spell_fire_incinerate";
@@ -326,8 +353,7 @@ function new_buff() {
     // 冰法
     buff.mage_3 = function () {
         let buff = {};
-        buff.id = 93;// Id
-        buff.name = "冰甲术";// 名称
+        buff.name = "冰甲术";
         buff.T = -1;
         buff.X = 100;
         buff.Y = 10;
@@ -343,8 +369,7 @@ function new_buff() {
 
     buff.rage = function () {
         let buff = {};
-        buff.id = 10001;// Id
-        buff.name = "首领狂暴";// 名称
+        buff.name = "首领狂暴";
         buff.T = -1;
         buff.X = 5;
         buff.icon = "ability_racial_bloodrage";
@@ -353,6 +378,32 @@ function new_buff() {
             "damage_all+=battle_turn*" + buff.X
         ];
         return buff;
+    }
+
+    buff.attack_power_percent_increase = function (X, T, icon = "ability_warrior_battleshout") {
+        let debuff = {};
+        debuff.name = "强攻";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = icon;
+        debuff.detail = "攻击强度+" + X + "%";
+        debuff.effect = [
+            "attack_power_percent+=" + X
+        ];
+        return debuff;
+    }
+
+    buff.dodge_chance_final_increase = function (X, T, icon = "ability_warrior_battleshout") {
+        let debuff = {};
+        debuff.name = "闪避";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = icon;
+        debuff.detail = "闪避率+" + X + "%";
+        debuff.effect = [
+            "dodge_chance_final+=" + X
+        ];
+        return debuff;
     }
 
     return buff;

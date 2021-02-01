@@ -138,16 +138,6 @@ function refresh_attribute_buffs(role_status) {
                 let effect = effects[j];
                 eval("role_status." + effect);
             }
-            let turn_left = buffs.T;
-            if (turn_left > 0) {
-                turn_left--;
-                if (turn_left === 0) {
-                    battle_buffs.splice(i, 1);
-                    i--;
-                } else {
-                    buffs.T = turn_left;
-                }
-            }
         }
     }
 }
@@ -164,17 +154,6 @@ function refresh_attribute_debuffs(role_status) {
             for (let j = 0; j < effects.length; j++) {
                 let effect = effects[j];
                 eval("role_status." + effect);
-            }
-            // 剩余回合-1
-            let turn_left = debuffs.T;
-            if (turn_left > 0) {
-                turn_left--;
-                if (turn_left === 0) {
-                    battle_debuffs.splice(i, 1);
-                    i--;
-                } else {
-                    debuffs.T = turn_left;
-                }
             }
         }
     }
@@ -237,7 +216,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.critical_chance_final = role_status.critical_chance_final;// 最终暴击率百分比
     role_battle.critical_rate_percent = 100;
 
-    role_battle.critical_damage = (role_status.critical_damage + role_battle.int * int_to_critical_damage).toFixed(2);// 暴击伤害系数
+    role_battle.critical_damage = Math.round(role_status.critical_damage + role_battle.int * int_to_critical_damage);// 暴击伤害系数
 
     role_battle.dodge_rate = Math.round((role_status.dodge_rate + role_battle.agi * agi_to_dodge_rate) * role_status.dodge_rate_percent / 100);// 闪避等级
     role_battle.dodge_chance_final = role_status.dodge_chance_final;// 最终闪避率百分比

@@ -2,42 +2,19 @@
 
 /**
  * 生成怪物对象
- * @param name 名称
- * @param lvl 等级
- * @param type 类型 0-均衡型 1-力量型 2-敏捷型 3-耐力型 4-智力型 5-精神型
- * @param rare 怪物阶级 1-爪牙 2-怪物 3-稀有 4-精英 5-首领 6-团队首领
- * @param multiple
- * @param effect
- * @param buffs
- * @return {string[]}
  */
-function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
-    let monster = new_role_base();
-    if (multiple == null) {
-        multiple = 1;
+function create_monster_by_model(name, lvl) {
+    let model = new_monster()[name];
+    if (model.multiple == null) {
+        model.multiple = 1;
     }
-    multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
-    if (buffs == null) {
-        buffs = rare >= 5 ? [new_buff().rage()] : [];
+    model.multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
+    if (model.buffs == null) {
+        model.buffs = model.rare >= 5 ? [new_buff().rage()] : [];
     }
-    if (effect != null && effect.length > 0) {
-        let equipment = {};
-        equipment.effect = effect;
-        monster.equipments = [equipment];
-    } else {
-        monster.equipments = [];
-    }
-    monster.name = name;
-    monster.lvl = lvl;
-    monster.job = type * 10;
-    monster = calculate_base_property(monster);
-
-    monster.buffs = buffs;
-    let buff = {};
-    buff.T = -1;
     let armor_attack = 0;
     let armor_magic = 0;
-    switch (type) {
+    switch (model.type) {
         case 1:
         case 2:
             armor_attack = 40;
@@ -60,23 +37,67 @@ function get_new_monster(name, lvl, type, rare, multiple, effect, buffs) {
             armor_magic = 40;
             break;
     }
-    // 初始护甲
+    let buff = {};
+    buff.T = -1;
     buff.effect = [
-        "armor_attack+=" + Math.ceil(lvl * armor_attack * get_multiple_by_rare(rare) * multiple),
-        "armor_magic+=" + Math.ceil(lvl * armor_magic * get_multiple_by_rare(rare) * multiple),
+        "armor_attack+=" + Math.ceil(lvl * armor_attack * get_multiple_by_rare(model.rare) * model.multiple),
+        "armor_magic+=" + Math.ceil(lvl * armor_magic * get_multiple_by_rare(model.rare) * model.multiple),
         "health_percent+=20"
     ];
-    if (rare >= 5) {
+    if (model.rare === 5) {
         // 首领怪物增加血量，降低伤害
         buff.effect.push("health_percent+=100");
         buff.effect.push("cause_damage_percent-=50");
     }
+    if (model.rare === 6) {
+        // 团队首领怪物增加血量，降低伤害
+        buff.effect.push("health_percent+=200");
+        buff.effect.push("cause_damage_percent-=70");
+    }
+    if (model.effect != null && model.effect.length > 0) {
+        for (let i = 0; i < model.effect.length; i++) {
+            buff.effect.push(model.effect[i]);
+        }
+    }
+
+    let monster = new_role_base();
+    monster.equipments = [];
+    monster.name = name;
+    monster.lvl = lvl;
+    monster.job = model.type * 10;
+    monster = calculate_base_property(monster);
+    monster.buffs = model.buffs;
     monster.buffs.push(buff);
-    monster.str = Math.ceil(monster.str * get_multiple_by_rare(rare) * multiple);
-    monster.agi = Math.ceil(monster.agi * get_multiple_by_rare(rare) * multiple);
-    monster.sta = Math.ceil(monster.sta * get_multiple_by_rare(rare) * multiple);
-    monster.int = Math.ceil(monster.int * get_multiple_by_rare(rare) * multiple);
-    monster.spr = Math.ceil(monster.spr * get_multiple_by_rare(rare) * multiple);
+    monster.str = Math.ceil(monster.str * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.agi = Math.ceil(monster.agi * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.sta = Math.ceil(monster.sta * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.int = Math.ceil(monster.int * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.spr = Math.ceil(monster.spr * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.detail = model.detail;
+    monster.species = model.species;
+    monster.rare = model.rare;
+    monster.lvl = lvl;
+    monster.drop = model.drop;
+    monster.skills = [];
+    if (model.skills == null) {
+        monster.skills = [dictionary_monster_skill.physical_attack()];
+    } else {
+        if (typeof model.skills === "string" || typeof model.skills.length === "undefined") {
+            model.skills = [model.skills];
+        }
+        for (let i = 0; i < model.skills.length; i++) {
+            let skill = model.skills[i];
+            if (typeof skill === "string") {
+                monster.skills.push(dictionary_monster_skill[skill]());
+            } else {
+                monster.skills.push(skill);
+            }
+        }
+        if (model.skills.length === 0) {
+            monster.skills = [dictionary_monster_skill.physical_attack()];
+        }
+    }
+
     return monster;
 }
 
@@ -112,11 +133,11 @@ function get_monster_species_name(species) {
 function get_monster_rare_name(rare) {
     switch (rare) {
         case 1:
-            return "弱小敌人";
+            return "弱小";
         case 2:
-            return "普通敌人";
+            return "普通";
         case 3:
-            return "稀有敌人";
+            return "稀有";
         case 4:
             return "精英";
         case 5:

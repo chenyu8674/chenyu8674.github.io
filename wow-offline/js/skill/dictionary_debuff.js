@@ -9,11 +9,10 @@ function new_debuff() {
 
     debuff.warrior_1 = function () {
         let debuff = {};
-        debuff.id = 11;// Id
-        debuff.name = "致死打击";// 名称
+        debuff.name = "致死打击";
         debuff.T = 3;
         debuff.X = 30;
-        debuff.icon = "Ability_Warrior_SavageBlow";
+        debuff.icon = "ability_warrior_savageblow";
         debuff.detail = "受到治疗-" + debuff.X + "%";
         debuff.effect = [
             "taken_heal_percent-=" + debuff.X
@@ -23,11 +22,10 @@ function new_debuff() {
 
     debuff.warrior_3 = function () {
         let debuff = {};
-        debuff.id = 13;// Id
-        debuff.name = "破甲";// 名称
+        debuff.name = "破甲";
         debuff.T = 6;
         debuff.X = 3;
-        debuff.icon = "Ability_Warrior_Sunder";
+        debuff.icon = "ability_warrior_sunder";
         debuff.detail = "物理抗性-" + debuff.X;
         debuff.effect = [
             "res_physical-=" + debuff.X
@@ -35,10 +33,22 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.rogue_1 = function (X, T) {
+        let debuff = {};
+        debuff.name = "肾击";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "ability_rogue_kidneyshot";
+        debuff.detail = "所有伤害-" + X + "%";
+        debuff.effect = [
+            "damage_all-=" + X
+        ];
+        return debuff;
+    }
+
     debuff.mage_3 = function (X) {
         let debuff = {};
-        debuff.id = 93;// Id
-        debuff.name = "刺骨";// 名称
+        debuff.name = "刺骨";
         debuff.T = 3;
         debuff.X = 5;
         debuff.Y = X == null ? debuff.X : X;
@@ -50,10 +60,87 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.damage_all_decrease = function (X, T) {
+        let debuff = {};
+        debuff.name = "伤害降低";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_frost_frostnova";
+        debuff.detail = "所有伤害-" + debuff.X + "%";
+        debuff.effect = [
+            "damage_all-=" + debuff.X
+        ];
+        return debuff;
+    }
+
+    debuff.hit_chance_percent_decrease = function (X, T) {
+        let debuff = {};
+        debuff.name = "致盲";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_shadow_mindsteal";
+        debuff.detail = "命中率-" + debuff.X + "%";
+        debuff.effect = [
+            "hit_chance_percent-=" + debuff.X
+        ];
+        return debuff;
+    }
+
+    debuff.attack_power_decrease = function (X, T) {
+        let debuff = {};
+        debuff.name = "残废";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_nature_cyclone";
+        debuff.detail = "攻击强度-" + X;
+        debuff.effect = [
+            "attack_power-=" + X
+        ];
+        return debuff;
+    }
+
+    debuff.taken_damage_percent_increase = function (X, T) {
+        let debuff = {};
+        debuff.name = "易伤";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_frost_stun";
+        debuff.detail = "受到的伤害+" + X + "%";
+        debuff.effect = [
+            "taken_damage_percent+=" + X
+        ];
+        return debuff;
+    }
+
+    debuff.taken_heal_percent_decrease = function (X, T) {
+        let debuff = {};
+        debuff.name = "治疗降低";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "ability_warrior_savageblow";
+        debuff.detail = "受到治疗-" + X + "%";
+        debuff.effect = [
+            "taken_heal_percent-=" + X
+        ];
+        return debuff;
+    }
+
+    debuff.armor_all_decrease = function (X, T) {
+        let debuff = {};
+        debuff.name = "护甲降低";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_shadow_vampiricaura";
+        debuff.detail = "所有护甲-" + X + "%";
+        debuff.effect = [
+            "armor_all_percent-=" + X
+        ];
+        return debuff;
+    }
+
     debuff.sunder = function () {
         let debuff = {};
-        debuff.id = 11006;// Id
-        debuff.name = "破甲";// 名称
+        debuff.name = "物理抗性降低";
         debuff.T = 6;
         debuff.X = 3;
         debuff.icon = "Ability_Warrior_Sunder";
@@ -66,26 +153,13 @@ function new_debuff() {
 
     debuff[21992] = function () {
         let debuff = {};
-        debuff.name = "雷霆之怒";// 名称
+        debuff.name = "雷霆之怒";
         debuff.T = 5;
         debuff.X = 20;
         debuff.icon = "spell_nature_cyclone";
         debuff.detail = "所有伤害-" + debuff.X + "%";
         debuff.effect = [
             "damage_all-=" + debuff.X
-        ];
-        return debuff;
-    }
-
-    debuff[18381] = function () {
-        let debuff = {};
-        debuff.name = "残废术";// 名称
-        debuff.T = 3;
-        debuff.X = 15;
-        debuff.icon = "spell_nature_cyclone";
-        debuff.detail = "攻击强度-" + debuff.X;
-        debuff.effect = [
-            "attack_power-=" + debuff.X
         ];
         return debuff;
     }

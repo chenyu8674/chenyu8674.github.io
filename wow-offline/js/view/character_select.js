@@ -2,11 +2,26 @@
 let view_character_select;
 let view_character_select_list;
 
+let release_data_timeout;
+
 $(document).ready(function () {
     view_character_select = $("#view_character_select");
     view_character_select_list = $("#view_character_select_list");
     $("#close_character_select_button").click(function () {
         hide_view_character_select();
+    });
+
+    let view_character_select_title = $("#view_character_select_title");
+    view_character_select_title.mousedown(function () {
+        release_data_timeout = setTimeout(function () {
+            release_data();
+        }, 3000);
+    });
+    view_character_select_title.mouseup(function () {
+        clearTimeout(release_data_timeout);
+    });
+    view_character_select_title.mouseout(function () {
+        clearTimeout(release_data_timeout);
     });
 });
 

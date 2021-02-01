@@ -167,6 +167,8 @@ function pack_bank() {
         if (typeof b === "number") {
             b = create_static_equipment_model(b);
         }
+        a = create_equipment_by_model(a);
+        b = create_equipment_by_model(b);
         if (a.pos !== b.pos) {
             return a.pos - b.pos;
         }
@@ -176,6 +178,9 @@ function pack_bank() {
         if (a.rare !== b.rare) {
             return a.rare - b.rare;
         }
-        return a.icon > b.icon ? 1 : -1;
+        if (a.icon !== b.icon) {
+            return a.icon > b.icon ? 1 : -1;
+        }
+        return a.name > b.name ? 1 : -1;
     });
 }

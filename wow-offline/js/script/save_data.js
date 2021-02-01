@@ -13,13 +13,8 @@ $(document).ready(function () {
     }
     load_data();
     if (character_list == null || character_list.length === 0) {
-        // 无存档
         show_view_character_create();
-        // } else if(character_list.length === 1) {
-        //     // 唯一存档
-        //     load_character();
     } else {
-        // 多个存档
         show_view_character_select();
     }
 });
@@ -90,9 +85,6 @@ function save_data() {
 
 /**
  * 角色初始化（新建）
- * @param job
- * @param exp
- * @param name
  */
 function create_character(job, exp, name) {
     current_character = new_role_base();
@@ -103,16 +95,16 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    if (is_in_local_mode()) {
-        if (current_character.exp === 0) {
-            add_experience(20000);
-        }
-    }
-    if (current_character.name === "GHOST") {
-        if (current_character.exp === 0) {
-            add_experience(20000);
-        }
-    }
+    // if (is_in_local_mode()) {
+    //     if (current_character.exp === 0) {
+    //         add_experience(20000);
+    //     }
+    // }
+    // if (current_character.name === "GHOST") {
+    //     if (current_character.exp === 0) {
+    //         add_experience(20000);
+    //     }
+    // }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
     current_character.buffs = [dictionary_buff[job]];
@@ -121,12 +113,12 @@ function create_character(job, exp, name) {
     current_character.equipments = [];
     current_character.items = [];
     current_character.money = 0;
-    if (is_in_local_mode()) {
-        current_character.money = 99999999;
-    }
-    if (current_character.name === "GHOST") {
-        current_character.money = 1000000;
-    }
+    // if (is_in_local_mode()) {
+    //     current_character.money = 99999999;
+    // }
+    // if (current_character.name === "GHOST") {
+    //     current_character.money = 1000000;
+    // }
     if (exp === 0) {
         // 新手装备
         current_character.equipments.push(31);
@@ -172,11 +164,12 @@ function create_character(job, exp, name) {
         }
     }
 
-    // if (is_in_local_mode()) {
-    //     for (let i = 0; i < MAX_ITEMS - 10; i++) {
-    //         push_equipment();
-    //     }
-    // }
+    // 添加测试装备
+    if (is_in_local_mode()) {
+        for (let i = 0; i < MAX_ITEMS - 10; i++) {
+            push_equipment();
+        }
+    }
     current_character.items.push(19019);
     current_character.items.push(17182);
     current_character.items.push(22589);
@@ -200,8 +193,6 @@ function push_equipment() {
 
 /**
  * 获得经验
- * @param exp
- * @return {*}
  */
 function add_experience(exp) {
     current_character.exp += exp;

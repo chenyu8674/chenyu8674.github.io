@@ -24,7 +24,7 @@ $(document).ready(function () {
     pre_load_img.src = pre_load_img_list[pre_load_img_count];
 });
 
-function loadHandler(e) {
+function loadHandler() {
     pre_load_img_count++;
     if (pre_load_img_count < pre_load_img_list.length) {
         pre_load_img.src = pre_load_img_list[pre_load_img_count];

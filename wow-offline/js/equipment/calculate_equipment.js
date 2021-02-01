@@ -121,11 +121,8 @@ function create_random_equipment_model(param) {
         }
     }
     // 装备倾向
-    let inclination = param.inclination;
-    if (inclination == null) {
-        inclination = random_list([1, 2]);
-        // inclination = 1;
-    }
+    let inclination = random_list([1, 2]);
+    // inclination = 1;
     // 装备类型
     let type = param.type;
     if (type == null) {
@@ -288,6 +285,7 @@ function create_equipment_by_model(model) {
     return equipment;
 }
 
+/** 获取当前职业的主属性 **/
 function get_main_effect(effect, equipment) {
     if (effect.startsWith("main")) {
         let main = current_character == null ? "str" : dictionary_job.job_main[current_character.job];
@@ -675,7 +673,6 @@ function get_effect_value(X, lvl, rare, multiple) {
 
 /**
  * 判断是否可装备
- * @param equipment
  */
 function check_can_equip(role, equipment) {
     let pos = equipment.pos;

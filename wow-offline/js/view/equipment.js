@@ -261,6 +261,12 @@ function get_mastery_html() {
             return "凶猛撕咬从每个连击点获得的伤害加成提高" + mastery_percent + "%"
         case 53:
             return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾"
+        case 61:
+            return "冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%"
+        case 62:
+            return "邪恶攻击命中时，" + mastery_percent + "%几率获得一个额外的连击点"
+        case 63:
+            return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾"
         case 54:
             return "战斗开始时召唤3个树人，每个树人每回合从敌方吸取" + mastery_percent + "%治疗强度的生命"
         case 91:
