@@ -2,7 +2,7 @@
 let ONLINE_MULTIPLE = 1;
 
 // 调试加速系数
-let LOCAL_MULTIPLE = is_in_local_mode() ? 100 : 1;
+let LOCAL_MULTIPLE = is_in_local_mode() ? 100 : 10;
 
 // 回合时间
 let TURN_TIME = 1000 / ONLINE_MULTIPLE / LOCAL_MULTIPLE;
