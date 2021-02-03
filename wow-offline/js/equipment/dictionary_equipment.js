@@ -42,6 +42,7 @@ function new_equipment() {
         equipment[15] = {name: "训练之弓", icon: "inv_weapon_bow_02", rare: 2, affix: 15131};
         equipment[16] = {name: "训练长杖", icon: "inv_staff_09", rare: 2, affix: 15122};
         equipment[17] = {name: "训练法杖", icon: "inv_staff_08", rare: 2, affix: 15222};
+        equipment[18] = {name: "训练匕首", icon: "inv_weapon_shortblade_01", rare: 2, affix: 15111};
 
         equipment[31] = {name: "新兵衬衫", icon: "inv_shirt_01", rare: 2, affix: 6199};
         equipment[32] = {name: "新兵战袍", icon: "inv_shirt_guildtabard_01", rare: 2, affix: 7199};

@@ -51,7 +51,7 @@ function new_player_skill() {
         skill.X = 120;
         skill.Y = 25;
         skill.icon = "ability_meleedamage";
-        skill.detail = "在攻击被闪避后立刻对目标进行压制，造成" + skill.X + "%攻击强度的物理伤害。<br/>压制无法被闪避或格挡，且暴击率提高" + skill.Y + "%。";
+        skill.detail = "在攻击被闪避后立刻对目标进行压制，造成" + skill.X + "%攻击强度的物理伤害。压制无法被闪避或格挡，且暴击率提高" + skill.Y + "%。";
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
                 return false;
@@ -106,7 +106,7 @@ function new_player_skill() {
         skill.Y = 150;
         skill.Z = 50;
         skill.icon = "inv_sword_48";
-        skill.detail = "尝试终结受伤的目标，对其造成" + skill.Y + "%攻击强度的物理伤害，且暴击率提高" + skill.Z + "%。<br/>仅能在目标生命值低于" + skill.X + "%时使用。";
+        skill.detail = "尝试终结受伤的目标，对其造成" + skill.Y + "%攻击强度的物理伤害，且暴击率提高" + skill.Z + "%。仅能在目标生命值低于" + skill.X + "%时使用。";
         skill.attempt = function (attacker, target) {
             return target.current_health_value * 100 / target.max_health_value <= skill.X;
         }
@@ -150,7 +150,7 @@ function new_player_skill() {
         skill.X = 100;
         skill.Y = 150;
         skill.icon = "inv_shield_05";
-        skill.detail = "持盾猛击目标，造成" + skill.X + "%攻击强度的物理伤害，并获得" + skill.Y + "%格挡值的伤害护盾。<br/>必须装备盾牌才可使用。";
+        skill.detail = "持盾猛击目标，造成" + skill.X + "%攻击强度的物理伤害，并获得" + skill.Y + "%格挡值的伤害护盾。必须装备盾牌才可使用。";
         skill.attempt = function (attacker) {
             if (!has_equip_shield(attacker)) {
                 return false;
@@ -194,7 +194,7 @@ function new_player_skill() {
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "spell_holy_layonhands";
-        skill.detail = "使用神圣力量使自己脱离濒死状态，回复" + skill.Y + "%治疗强度的生命。<br/>生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量使自己脱离濒死状态，回复" + skill.Y + "%治疗强度的生命。生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         skill.attempt = function (attacker) {
             if (skill_in_cd(attacker, skill)) {
                 return false;
@@ -252,7 +252,7 @@ function new_player_skill() {
         skill.speed = 5;
         skill.X = 35;
         skill.icon = "spell_holy_divineintervention";
-        skill.detail = "使用神圣力量使自己免疫所有伤害，持续" + dictionary_buff.paladin_2_2().T + "回合。<br/>生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量使自己免疫所有伤害，持续" + dictionary_buff.paladin_2_2().T + "回合。生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         skill.attempt = function (attacker) {
             if (skill_in_cd(attacker, skill)) {
                 return false;
@@ -301,7 +301,7 @@ function new_player_skill() {
         skill.X = 35;
         skill.Y = 300;
         skill.icon = "ability_thunderclap";
-        skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被闪避。<br/>目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
+        skill.detail = "使用神圣力量制裁受伤的目标，造成" + skill.Y + "%攻击强度的神圣伤害，无法被闪避。目标生命值低于" + skill.X + "%时可用，每场战斗限一次。";
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
                 return false;
@@ -712,9 +712,9 @@ function new_player_skill() {
             let damage_obj;
             if (battle_turn === 1 || damage_count >= 100) {
                 // 伏击
+                set_skill_point(attacker, 0);
                 let mastery_percent = calculate_original_mastery(attacker);
                 damage_obj = calculate_skill_attack(attacker, target, skill.name_1, skill.X * (100 + mastery_percent) / 100, type_attack, element_physical, 999);
-                set_skill_point(attacker, 0);
             } else {
                 damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical, 999);
             }
@@ -760,6 +760,11 @@ function new_player_skill() {
         skill.icon = "spell_shadow_ritualofsacrifice";
         skill.detail = "凶狠地攻击目标，造成" + skill.X + "%攻击强度的物理伤害。命中时获得一个连击点。";
         skill.cast = function (attacker, target) {
+            let damage_count = get_skill_point(attacker);
+            if (battle_turn === 1 || damage_count >= 100) {
+                attacker.attack_power_percent += 50;
+                set_skill_point(attacker, 0);
+            }
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj.is_hit) {
                 let mastery_percent = calculate_original_mastery(attacker);
@@ -779,7 +784,7 @@ function new_player_skill() {
         skill.first_turn = 4;
         skill.priority = 30;
         skill.X = 100;
-        skill.Y = 30;
+        skill.Y = 50;
         skill.icon = "ability_rogue_eviscerate";
         skill.detail = "终结技，攻击目标的要害，造成" + skill.X + "%攻击强度的物理伤害。每个消耗的连击点使总伤害提高" + skill.Y + "%。";
         skill.cast = function (attacker, target) {
@@ -787,52 +792,67 @@ function new_player_skill() {
             let damage_count = get_skill_point(attacker);
             let damage_obj = calculate_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X + skill.Y * damage_count, type_attack, element_physical);
             attacker.buffs.push(new_buff().rogue_2());
-            set_skill_point(attacker, 0);
+            set_skill_point(attacker, 100);
             return skill_cast_result(damage_obj);
         };
         return skill;
     };
     skill[62] = [skill.rogue_2_1(), skill.rogue_2_2()];
 
-    // skill.rogue_3_1 = function () {
-    //     let skill = {};
-    //     skill.name = "出血";
-    //     skill.type = type_attack;
-    //     skill.X = 10;
-    //     skill.Y = 30;
-    //     skill.icon = "spell_shadow_lifedrain";
-    //     skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，并使其每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + dictionary_dot.rogue_3_1().T + "回合。命中时获得一个连击点。";
-    //     skill.cast = function (attacker, target) {
-    //         let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
-    //         if (damage_obj.is_hit) {
-    //             let dot_damage = calculate_dot_base_damage(attacker, target, skill.Y, type_attack);
-    //             target.dots.push(new_dot().druid_2(dot_damage));
-    //             add_skill_point(attacker, 1);
-    //             damage_obj.skill_name += "(" + get_skill_point(attacker) + ")";
-    //         }
-    //         return skill_cast_result(damage_obj);
-    //     };
-    //     return skill;
-    // };
-    //
-    // skill.rogue_3_2 = function () {
-    //     let skill = {};
-    //     skill.name = "割裂";
-    //     skill.type = type_attack;
-    //     skill.X = 30;
-    //     skill.Y = 30;
-    //     skill.icon = "ability_rogue_rupture";
-    //     skill.detail = "终结技，在目标身上撕出伤口，使其每回合受到" + skill.X + "%攻击强度的物理伤害，持续" + dictionary_dot.rogue_3_2().T + "回合。每个消耗的连击点使总伤害提高" + skill.Y + "%。";
-    //     skill.cast = function (attacker, target) {
-    //         let dot_damage = calculate_dot_base_damage(attacker, target, skill.Y, type_attack);
-    //         target.dots.push(new_dot().druid_2(dot_damage));
-    //         add_skill_point(attacker, 1);
-    //         battle_log(attacker.name + " 施放了 " + skill.name + "(" + get_skill_point(attacker) + ")");
-    //         return skill_cast_result();
-    //     };
-    //     return skill;
-    // };
-    // skill[63] = [skill.rogue_3_1(), skill.rogue_3_2()];
+    skill.rogue_3_1 = function () {
+        let skill = {};
+        skill.name = "出血";
+        skill.type = type_attack;
+        skill.X = 100;
+        skill.Y = 1;
+        skill.icon = "spell_shadow_lifedrain";
+        skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，且韧性等级降低" + (4 + (current_character == null ? 1 : +current_character.lvl) * skill.Y) + "点（受人物等级影响），持续" + dictionary_debuff.rogue_3().T + "回合。命中时获得一个连击点。";
+        skill.attempt = function (attacker, target) {
+            let damage_count = get_skill_point(attacker);
+            if (battle_turn === 1 || damage_count >= 100) {
+                attacker.dodge_chance_final += 50;
+                set_skill_point(attacker, 0);
+            }
+            return !skill_in_cd(attacker, skill);
+        }
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
+            if (damage_obj.is_hit) {
+                let resilient_rate = 4 + attacker.lvl * skill.Y;
+                target.debuffs.push(new_debuff().rogue_3(resilient_rate));
+                add_skill_point(attacker, 1);
+                damage_obj.skill_name += "(" + get_skill_point(attacker) + ")";
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+
+    skill.rogue_3_2 = function () {
+        let skill = {};
+        skill.name = "割裂";
+        skill.type = type_attack;
+        skill.cooldown = 4;
+        skill.first_turn = 4;
+        skill.priority = 30;
+        skill.X = 50;
+        skill.Y = 30;
+        skill.icon = "ability_rogue_rupture";
+        skill.detail = "终结技，在目标身上撕出伤口，使其每回合受到" + skill.X + "%攻击强度的物理伤害，持续" + dictionary_dot.rogue_3().T + "回合。每个消耗的连击点使总伤害提高" + skill.Y + "%。";
+        skill.cast = function (attacker, target) {
+            // 计算连击加成
+            let damage_count = get_skill_point(attacker);
+            let dot_damage = calculate_dot_base_damage(attacker, target, skill.Y, type_attack);
+            dot_damage *= (100 + damage_count * skill.Y) / 100;
+            let mastery_percent = calculate_original_mastery(attacker);
+            target.dots.push(new_dot().rogue_3(dot_damage, mastery_percent / 100));
+            battle_log(attacker.name + " 施放了 " + skill.name + "(" + get_skill_point(attacker) + ")");
+            set_skill_point(attacker, 100);
+            return skill_cast_result();
+        };
+        return skill;
+    };
+    skill[63] = [skill.rogue_3_1(), skill.rogue_3_2()];
 
     skill.mage_1_1 = function () {
         let skill = {};
@@ -876,7 +896,7 @@ function new_player_skill() {
         skill.X = 10;
         skill.Y = 5;
         skill.icon = "spell_nature_purge";
-        skill.detail = "聚集奥术能量，获得" + skill.X + "层奥术强化并回复" + (skill.X * 2) + "%最大生命值。战斗开始时自动施放一次。";
+        skill.detail = "聚集奥术能量，获得" + skill.X + "层奥术强化并回复" + (skill.X * 2) + "%最大生命值。战斗开始时自动施放一次（不会回复生命值）。";
         skill.cast = function (attacker, target) {
             let point = skill.X;
             let mastery_percent = calculate_original_mastery(attacker);

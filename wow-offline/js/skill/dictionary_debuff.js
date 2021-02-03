@@ -46,6 +46,19 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.rogue_3 = function (X) {
+        let debuff = {};
+        debuff.name = "出血";
+        debuff.T = 3;
+        debuff.X = X;
+        debuff.icon = "spell_shadow_lifedrain";
+        debuff.detail = "韧性等级-" + X;
+        debuff.effect = [
+            "resilient_rate-=" + X
+        ];
+        return debuff;
+    }
+
     debuff.mage_3 = function (X) {
         let debuff = {};
         debuff.name = "刺骨";

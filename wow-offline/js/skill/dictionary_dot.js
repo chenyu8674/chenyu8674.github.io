@@ -73,22 +73,12 @@ function new_dot() {
         return dot;
     }
 
-    dot.rogue_3_1 = function (damage) {
-        let dot = {};
-        dot.name = "出血";
-        dot.damage = damage;
-        dot.T = 4;
-        dot.type = element_physical;
-        dot.icon = "spell_shadow_lifedrain";
-        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
-        return dot;
-    }
-
-    dot.rogue_3_2 = function (damage) {
+    dot.rogue_3 = function (damage, heal) {
         let dot = {};
         dot.name = "割裂";
         dot.damage = damage;
-        dot.T = 4;
+        dot.heal = -heal;
+        dot.T = 3;
         dot.type = element_physical;
         dot.icon = "ability_rogue_rupture";
         dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";

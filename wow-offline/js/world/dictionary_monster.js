@@ -102,7 +102,7 @@ function new_monster() {
         monster["雷霆蜥蜴"] = {species: 2, type: 4, rare: 2, skills: "电法", effect: ["health_percent+=50"]}
 
         monster["科卡尼斯"] = {species: 1, type: 2, rare: 3, skills: "雷霆一击"}
-        monster["吉欧洛德·杂斑"] = {species: 1, type: 4, rare: 3, skills: ["雷法", "治疗波"]}
+        monster["吉欧洛德·杂斑"] = {species: 1, type: 4, rare: 3, skills: ["电法", "治疗波"]}
         monster["死亡毒蝎"] = {species: 2, type: 6, rare: 3, effect: ["毒药", "撕咬"]}
 
         monster["斯考恩"] = {species: 1, type: 8, rare: 4, x: 545, y: 9.8, skills: "暗法"}

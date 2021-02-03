@@ -227,10 +227,12 @@ function refresh_current_status_1() {
         (role_battle_1.lvl * mastery_per_lvl) + "+" + (role_status_1.mastery_rate - role_battle_1.lvl * mastery_per_lvl) + " (" + role_status_1.mastery_rate_percent + "%)<br/>"
         + get_mastery_html()
     );
+    let resilient_dot = calculate_original_resilient_dot(role_battle_1).toFixed(2);
+    let resilient_cri = calculate_original_resilient_cri(role_battle_1).toFixed(2);
     create_status_line("韧性等级：" + role_battle_1.resilient_rate,
         role_status_1.resilient_rate + " (" + role_status_1.resilient_rate_percent + "%)<br/>"
-        + "受到的持续伤害减少 " + calculate_original_resilient_dot(role_battle_1).toFixed(2) + "%<br/>"
-        + "被暴击时受到的额外伤害减少 " + calculate_original_resilient_cri(role_battle_1).toFixed(2) + "%<br/>"
+        + "受到的持续伤害" + (resilient_dot >= 0 ? "减少" : "增加") + " " + (resilient_dot >= 0 ? resilient_dot : -resilient_dot) + "%<br/>"
+        + "被暴击时受到的额外伤害" + (resilient_cri >= 0 ? "减少" : "增加") + " " + (resilient_cri >= 0 ? resilient_cri : -resilient_cri) + "%<br/>"
     );
 }
 
@@ -266,7 +268,7 @@ function get_mastery_html() {
         case 62:
             return "邪恶攻击命中时，" + mastery_percent + "%几率获得一个额外的连击点"
         case 63:
-            return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾"
+            return "割裂造成伤害的" + mastery_percent + "%转化为生命回复"
         case 54:
             return "战斗开始时召唤3个树人，每个树人每回合从敌方吸取" + mastery_percent + "%治疗强度的生命"
         case 91:

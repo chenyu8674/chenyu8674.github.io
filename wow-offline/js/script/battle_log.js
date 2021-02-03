@@ -74,11 +74,22 @@ function damage_log(damage_obj) {
  * 输出dot日志
  */
 function dot_log(dot_obj) {
+    let element_name = get_element_name(dot_obj.element_type);
     battle_log(dot_obj.target_name
         + " 因 " + dot_obj.skill_name
-        + " 受到 " + dot_obj.damage_value + " 点 " + dot_obj.element_type + " 伤害"
+        + " 受到 " + dot_obj.damage_value + " 点 " + element_name + " 伤害"
         + (dot_obj.is_critical ? " (暴击)" : "")
         + (dot_obj.absorb_value > 0 ? " (" + dot_obj.absorb_value + "点被吸收)" : "")
+    );
+}
+
+/**
+ * 输出drain日志
+ */
+function drain_log(drain_obj) {
+    battle_log(drain_obj.attack_name
+        + " 因 " + drain_obj.skill_name
+        + " 回复 " + drain_obj.drain_value + " 点生命"
     );
 }
 
@@ -90,18 +101,6 @@ function hot_log(hot_obj) {
         + " 因 " + hot_obj.skill_name
         + " 回复 " + hot_obj.heal_value + " 点生命"
         + (hot_obj.is_critical ? " (暴击)" : "")
-    );
-}
-
-/**
- * 输出drain日志
- */
-function drain_log(drain_obj) {
-    battle_log(drain_obj.attack_name
-        + " 的 " + drain_obj.skill_name
-        + " 从 " + drain_obj.target_name
-        + " 吸取 " + drain_obj.drain_value + " 点生命"
-        + (drain_obj.is_critical ? " (暴击)" : "")
     );
 }
 

@@ -198,7 +198,7 @@ function new_buff() {
         buff.X = 100;
         buff.Y = 25;
         buff.icon = "spell_nature_forceofnature";
-        buff.detail = "护甲+" + buff.X + "%，智力+" + buff.Y + "%";
+        buff.detail = "所有护甲+" + buff.X + "%，智力+" + buff.Y + "%";
         buff.effect = [
             "armor_all_percent+=" + buff.X,
             "int_percent+=" + buff.Y
@@ -249,7 +249,7 @@ function new_buff() {
         buff.X = 50;
         buff.Y = 25;
         buff.icon = "ability_druid_treeoflife";
-        buff.detail = "护甲+" + buff.X + "%，精神+" + buff.Y + "%";
+        buff.detail = "所有护甲+" + buff.X + "%，精神+" + buff.Y + "%";
         buff.effect = [
             "armor_all_percent+=" + buff.X,
             "spr_percent+=" + buff.Y

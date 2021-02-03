@@ -376,7 +376,7 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
     damage_obj.skill_name = skill_name;
     damage_obj.damage_value = damage_value;
     damage_obj.attack_type = 0;
-    damage_obj.element_type = get_element_name(element_type);
+    damage_obj.element_type = element_type;
     damage_obj.is_hit = true;
     damage_obj.is_critical = is_critical;
     damage_obj.block_value = 0;

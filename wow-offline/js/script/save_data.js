@@ -95,11 +95,11 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    // if (is_in_local_mode()) {
-    //     if (current_character.exp === 0) {
-    //         add_experience(20000);
-    //     }
-    // }
+    if (is_in_local_mode()) {
+        if (current_character.exp === 0) {
+            add_experience(20000);
+        }
+    }
     // if (current_character.name === "GHOST") {
     //     if (current_character.exp === 0) {
     //         add_experience(20000);
@@ -113,11 +113,11 @@ function create_character(job, exp, name) {
     current_character.equipments = [];
     current_character.items = [];
     current_character.money = 0;
-    // if (is_in_local_mode()) {
-    //     current_character.money = 99999999;
-    // }
+    if (is_in_local_mode()) {
+        current_character.money = 99999999;
+    }
     if (current_character.name === "GHOST") {
-        current_character.money = 1000000;
+        current_character.money = 99999999;
     }
     if (exp === 0) {
         // 新手装备
@@ -161,6 +161,13 @@ function create_character(job, exp, name) {
                 current_character.equipments.push(16);
                 current_character.equipments.push(22);
                 break;
+            case 61:
+            case 62:
+            case 63:
+                current_character.equipments.push(18);
+                current_character.equipments.push(18);
+                current_character.equipments.push(22);
+                break;
             case 91:
             case 92:
             case 93:
@@ -171,11 +178,11 @@ function create_character(job, exp, name) {
     }
 
     // 添加测试装备
-    if (is_in_local_mode()) {
-        for (let i = 0; i < MAX_ITEMS - 10; i++) {
-            push_equipment();
-        }
-    }
+    // if (is_in_local_mode()) {
+    //     for (let i = 0; i < MAX_ITEMS - 10; i++) {
+    //         push_equipment();
+    //     }
+    // }
     current_character.items.push(19019);
     current_character.items.push(17182);
     current_character.items.push(22589);

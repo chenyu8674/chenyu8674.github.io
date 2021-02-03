@@ -94,8 +94,10 @@ function turn_loop() {
                 console.log(role_battle_1);
                 console.log(role_battle_2);
             }
-        } else {
-            console.log("===== " + battle_turn)
+        } else if (battle_turn === 1) {
+            //     console.log(role_battle_1);
+            //     console.log(role_battle_2);
+            // } else {
             console.log(role_battle_1);
             console.log(role_battle_2);
         }
@@ -230,13 +232,11 @@ function turn_loop() {
  */
 function do_dot(attacker, dot, target) {
     let damage_value;
-    let dot_obj;
-    let drain_obj;
-    let hot_obj;
     if (dot.damage != null) {
         // DOT，结算伤害
-        dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
+        let dot_obj = calculate_dot_final_damage(attacker, target, dot.name, dot.damage, dot.type);
         damage_value = dot_obj.damage_value;
+        dot_log(dot_obj);
         target.current_health_value -= damage_value;
         if (target.current_health_value <= 0) {
             target.current_health_value = 0;
@@ -245,32 +245,27 @@ function do_dot(attacker, dot, target) {
     if (dot.heal != null) {
         if (dot.heal < 0) {
             // 根据造成伤害吸血
-            drain_obj = {};
+            let drain_obj = {};
+            let drain_value = -Math.round(damage_value * dot.heal);
             drain_obj.attack_name = attacker.name;
             drain_obj.target_name = target.name;
             drain_obj.skill_name = dot.name;
-            drain_obj.drain_value = -damage_value * dot.heal;
-            drain_obj.is_critical = dot_obj.is_critical;
+            drain_obj.drain_value = drain_value;
+            drain_obj.is_critical = false;
             attacker.current_health_value += drain_obj.drain_value;
             if (attacker.current_health_value >= attacker.max_health_value) {
                 attacker.current_health_value = attacker.max_health_value;
             }
+            drain_log(drain_obj);
         } else {
             // HOT，结算治疗
-            hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
+            let hot_obj = calculate_hot_final_heal(target, dot.name, dot.heal);
             target.current_health_value += hot_obj.heal_value;
             if (target.current_health_value >= target.max_health_value) {
                 target.current_health_value = target.max_health_value;
             }
+            hot_log(hot_obj);
         }
-    }
-    if (drain_obj != null) {
-        drain_log(drain_obj);
-    } else if (dot_obj != null) {
-        dot_log(dot_obj);
-    }
-    if (hot_obj != null) {
-        hot_log(hot_obj);
     }
 }
 
