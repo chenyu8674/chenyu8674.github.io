@@ -804,9 +804,9 @@ function new_player_skill() {
         skill.name = "出血";
         skill.type = type_attack;
         skill.X = 100;
-        skill.Y = 1;
+        skill.Y = 0.93;
         skill.icon = "spell_shadow_lifedrain";
-        skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，且韧性等级降低" + (4 + (current_character == null ? 1 : +current_character.lvl) * skill.Y) + "点（受人物等级影响），持续" + dictionary_debuff.rogue_3().T + "回合。命中时获得一个连击点。";
+        skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，且韧性等级降低" + Math.round(4 + (current_character == null ? 1 : +current_character.lvl) * skill.Y) + "点（受人物等级影响），持续" + dictionary_debuff.rogue_3().T + "回合。命中时获得一个连击点。";
         skill.attempt = function (attacker, target) {
             let damage_count = get_skill_point(attacker);
             if (battle_turn === 1 || damage_count >= 100) {
@@ -818,7 +818,7 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             if (damage_obj.is_hit) {
-                let resilient_rate = 4 + attacker.lvl * skill.Y;
+                let resilient_rate = Math.round(4 + attacker.lvl * skill.Y);
                 target.debuffs.push(new_debuff().rogue_3(resilient_rate));
                 add_skill_point(attacker, 1);
                 damage_obj.skill_name += "(" + get_skill_point(attacker) + ")";
