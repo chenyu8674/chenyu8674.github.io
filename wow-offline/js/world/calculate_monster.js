@@ -44,6 +44,11 @@ function create_monster_by_model(name, lvl) {
         "armor_magic+=" + Math.ceil(lvl * armor_magic * get_multiple_by_rare(model.rare) * model.multiple),
         "health_percent+=20"
     ];
+    if (model.rare === 4) {
+        // 精英怪物增加血量，降低伤害
+        buff.effect.push("health_percent+=50");
+        buff.effect.push("cause_damage_percent-=30");
+    }
     if (model.rare === 5) {
         // 首领怪物增加血量，降低伤害
         buff.effect.push("health_percent+=100");

@@ -33,6 +33,32 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.shaman_1_1 = function (X) {
+        let debuff = {};
+        debuff.name = "地震术";
+        debuff.T = 3;
+        debuff.X = X;
+        debuff.icon = "spell_nature_earthshock";
+        debuff.detail = "所有抗性-" + X + "%";
+        debuff.effect = [
+            "res_all-=" + X
+        ];
+        return debuff;
+    }
+
+    debuff.shaman_1_2 = function (X) {
+        let debuff = {};
+        debuff.name = "冰霜震击";
+        debuff.T = 3;
+        debuff.X = X;
+        debuff.icon = "spell_frost_frostshock";
+        debuff.detail = "所有伤害-" + X + "%";
+        debuff.effect = [
+            "damage_all-=" + X
+        ];
+        return debuff;
+    }
+
     debuff.rogue_1 = function (X, T) {
         let debuff = {};
         debuff.name = "肾击";

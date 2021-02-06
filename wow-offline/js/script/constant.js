@@ -110,8 +110,8 @@ let int_to_magic_power = 2;
 let int_to_hit_rate = 1;
 let int_to_critical_damage = 0.2;
 
-let spr_to_heal_power = 3;
-let spr_to_magic_power = 1;
+let spr_to_heal_power = 2;
+let spr_to_magic_power = 0.5;
 let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/
@@ -140,10 +140,13 @@ mastery_coefficient[23] = 4;
 mastery_coefficient[31] = 6;
 mastery_coefficient[32] = 4;
 mastery_coefficient[33] = 6;
+mastery_coefficient[41] = 5;
+mastery_coefficient[42] = 1;
+mastery_coefficient[43] = 4;
 mastery_coefficient[51] = 4;
 mastery_coefficient[52] = 2;
 mastery_coefficient[53] = 2;
-mastery_coefficient[54] = 0.8;
+mastery_coefficient[54] = 2;
 mastery_coefficient[61] = 20;
 mastery_coefficient[62] = 4;
 mastery_coefficient[63] = 4;

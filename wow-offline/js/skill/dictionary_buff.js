@@ -176,20 +176,56 @@ function new_buff() {
     buff[33] = buff.hunter_3();
 
     // 元素
-    // buff.shaman_1 = function () {
-    //     let buff = {};
-    //     buff.name = "火舌武器";
-    //     buff.T = -1;
-    //     buff.X = 10;
-    //     buff.icon = "spell_nature_forceofnature";
-    //     buff.detail = "伤害穿透+" + buff.X;
-    //     buff.effect = [
-    //         "pierce_all+=" + buff.X
-    //     ];
-    //     return buff;
-    // }
-    // buff[41] = buff.shaman_1();
+    buff.shaman_1 = function () {
+        let buff = {};
+        buff.name = "灼热图腾";
+        buff.T = -1;
+        buff.X = 20;
+        buff.icon = "spell_fire_searingtotem";
+        buff.detail = "回合开始时，造成" + buff.X + "%法术强度的火焰伤害";
+        buff.effect = [];
+        return buff;
+    }
+    buff[41] = buff.shaman_1();
 
+    // 增强
+    buff.shaman_2 = function () {
+        let buff = {};
+        buff.name = "风怒图腾";
+        buff.T = -1;
+        buff.X = 20;
+        buff.icon = "spell_nature_windfury";
+        buff.detail = "攻击命中时，" + buff.X + "%几率进行一次额外攻击，可以双持和使用部分双手武器";
+        buff.effect = [];
+        return buff;
+    }
+    buff[42] = buff.shaman_2();
+
+    // 恢复
+    buff.shaman_3 = function () {
+        let buff = {};
+        buff.name = "治疗之泉图腾";
+        buff.T = -1;
+        buff.X = 20;
+        buff.icon = "inv_spear_04";
+        buff.detail = "回合开始时，回复" + buff.X + "%治疗强度的生命";
+        buff.effect = [];
+        return buff;
+    }
+    buff[43] = buff.shaman_3();
+
+    buff.shaman_3_2 = function (X) {
+        let buff = {};
+        buff.name = "先祖治疗";
+        buff.T = 5;
+        buff.X = X;
+        buff.icon = "spell_nature_magicimmunity";
+        buff.detail = "所有护甲+" + buff.X + "%";
+        buff.effect = [
+            "armor_all_percent+=" + buff.X
+        ];
+        return buff;
+    }
     // 平衡
     buff.druid_1 = function () {
         let buff = {};

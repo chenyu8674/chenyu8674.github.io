@@ -257,6 +257,12 @@ function get_mastery_html() {
             return "奥术射击命中时，" + mastery_percent + "%几率重置瞄准射击的冷却时间"
         case 33:
             return "猛禽一击受到的闪避率加成提高" + mastery_percent + "%"
+        case 41:
+            return "施放元素掌握时，额外获得" + mastery_percent + "%伤害穿透"
+        case 42:
+            return "风怒武器的触发几率提高" + mastery_percent + "%"
+        case 43:
+            return "施放治疗波可使所有护甲提高" + mastery_percent + "%，持续5回合"
         case 51:
             return "月火术和阳炎术造成的持续伤害提高" + mastery_percent + "%"
         case 52:
@@ -270,7 +276,7 @@ function get_mastery_html() {
         case 63:
             return "割裂造成伤害的" + mastery_percent + "%转化为生命回复"
         case 54:
-            return "战斗开始时召唤3个树人，每个树人每回合从敌方吸取" + mastery_percent + "%治疗强度的生命"
+            return "战斗开始时召唤树人作战，每回合从敌方吸取" + mastery_percent + "%治疗强度的生命"
         case 91:
             return "施放唤醒时，" + mastery_percent + "%几率使效果提高50%"
         case 92:

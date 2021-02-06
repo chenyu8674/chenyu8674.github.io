@@ -108,15 +108,15 @@ function new_job() {
     job.job_color[job.shaman] = "#2359FF";
     job.job_name[job.shaman] = "萨满";
     job.job_flag[job.shaman] = "shaman";
-    job.base_property[job.shaman] = [14, 6, 10, 14, 14];
-    job.upgrade_property[job.shaman] = [2.8, 1.2, 2, 2.8, 2.8];
+    job.base_property[job.shaman] = [10, 14, 10, 14, 10];
+    job.upgrade_property[job.shaman] = [2, 2.8, 2, 2.8, 2];
 
     job.job_name[job.shaman_1] = "元素萨满";
     job.job_info[job.shaman_1] = "驾驭元素的施法者，使用自然的毁灭之力打击敌人。";
     job.job_main[job.shaman_1] = "int";
     job.job_name[job.shaman_2] = "增强萨满";
     job.job_info[job.shaman_2] = "信仰图腾之力，使用灌注元素能量的武器攻击敌人。";
-    job.job_main[job.shaman_2] = "str";
+    job.job_main[job.shaman_2] = "agi";
     job.job_name[job.shaman_3] = "恢复萨满";
     job.job_info[job.shaman_3] = "召唤先祖之魂和水之净化能量来治愈盟友的创伤。";
     job.job_main[job.shaman_3] = "spr";

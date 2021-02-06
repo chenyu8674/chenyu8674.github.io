@@ -94,6 +94,7 @@ function init_view_icon_click() {
         if (is_in_battle()) {
             return;
         }
+        hide_info();
         hide_front_view();
         show_view_character_select(true);
     });

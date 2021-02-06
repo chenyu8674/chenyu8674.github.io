@@ -12,7 +12,7 @@ function new_monster_skill() {
         skill.name = "攻击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的物理伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的物理伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_physical);
             return skill_cast_result(damage_obj);
@@ -25,7 +25,7 @@ function new_monster_skill() {
         skill.name = "火焰打击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的火焰伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的火焰伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_fire);
             return skill_cast_result(damage_obj);
@@ -38,7 +38,7 @@ function new_monster_skill() {
         skill.name = "寒冰打击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的冰霜伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的冰霜伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_frost);
             return skill_cast_result(damage_obj);
@@ -51,7 +51,7 @@ function new_monster_skill() {
         skill.name = "闪电打击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的自然伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的自然伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_natural);
             return skill_cast_result(damage_obj);
@@ -64,7 +64,7 @@ function new_monster_skill() {
         skill.name = "奥术打击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的奥术伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的奥术伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_arcane);
             return skill_cast_result(damage_obj);
@@ -77,7 +77,7 @@ function new_monster_skill() {
         skill.name = "神圣打击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的神圣伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的神圣伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_holy);
             return skill_cast_result(damage_obj);
@@ -90,7 +90,7 @@ function new_monster_skill() {
         skill.name = "暗影打击";
         skill.type = type_attack;
         skill.X = 100;
-        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的暗影伤害";
+        skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的暗影伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_shadow);
             return skill_cast_result(damage_obj);
@@ -103,7 +103,7 @@ function new_monster_skill() {
         skill.name = "火球术";
         skill.type = type_magic;
         skill.X = 100;
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的火焰伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的火焰伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_fire);
             return skill_cast_result(damage_obj);
@@ -116,7 +116,7 @@ function new_monster_skill() {
         skill.name = "寒冰箭";
         skill.type = type_magic;
         skill.X = 100;
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的冰霜伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的冰霜伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_frost);
             return skill_cast_result(damage_obj);
@@ -129,7 +129,7 @@ function new_monster_skill() {
         skill.name = "闪电箭";
         skill.type = type_magic;
         skill.X = 100;
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的自然伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的自然伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_natural);
             return skill_cast_result(damage_obj);
@@ -142,7 +142,7 @@ function new_monster_skill() {
         skill.name = "奥术冲击";
         skill.type = type_magic;
         skill.X = 100;
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_arcane);
             return skill_cast_result(damage_obj);
@@ -155,7 +155,7 @@ function new_monster_skill() {
         skill.name = "惩击";
         skill.type = type_magic;
         skill.X = 100;
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_holy);
             return skill_cast_result(damage_obj);
@@ -168,7 +168,7 @@ function new_monster_skill() {
         skill.name = "暗影箭";
         skill.type = type_magic;
         skill.X = 100;
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的暗影伤害";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的暗影伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_magic, element_shadow);
             return skill_cast_result(damage_obj);

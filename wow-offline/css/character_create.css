@@ -74,45 +74,44 @@
 }
 
 #icon_shaman {
-    top: 215px;
+    top: 213px;
     left: 10px;
     background-image: url(../img/job/shaman.png);
 }
 
 #icon_druid {
-    top: 215px;
+    top: 213px;
     left: 215px;
     background-image: url(../img/job/druid.png);
 }
 
 #icon_rogue {
-    top: 215px;
+    top: 213px;
     left: 420px;
     background-image: url(../img/job/rogue.png);
 }
 
 #icon_priest {
-    top: 420px;
+    top: 416px;
     left: 10px;
     background-image: url(../img/job/priest.png);
 }
 
 #icon_warlock {
-    top: 420px;
+    top: 416px;
     left: 215px;
     background-image: url(../img/job/warlock.png);
 }
 
 #icon_mage {
-    top: 420px;
+    top: 416px;
     left: 420px;
     background-image: url(../img/job/mage.png);
 }
 
 .icon_1_select {
-    margin: -8px;
     border-radius: 8px;
-    border: 8px ridge goldenrod;
+    background-color: rgba(255, 255, 0, 0.05);
     box-shadow: 0 0 10px goldenrod;
 }
 
@@ -183,7 +182,7 @@
     font-size: 30px;
     letter-spacing: 5px;
     font-weight: bolder;
-    text-shadow: 0 0 5px goldenrod;
+    text-shadow: 0 0 3px cornsilk;
 }
 
 #view_job_info_1 {
@@ -194,7 +193,7 @@
     line-height: 30px;
     font-size: 20px;
     color: silver;
-    text-shadow: 0 0 5px cornsilk;
+    text-shadow: 0 0 3px cornsilk;
 }
 
 #icon_job_skill_1 {

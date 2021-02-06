@@ -18,6 +18,39 @@ function new_dot() {
         return dot;
     }
 
+    dot.shaman_1_1 = function (damage) {
+        let dot = {};
+        dot.name = "灼热图腾";
+        dot.damage = damage;
+        dot.T = -1;
+        dot.type = element_fire;
+        dot.icon = "spell_fire_searingtotem";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
+    dot.shaman_1_2 = function (damage) {
+        let dot = {};
+        dot.name = "烈焰震击";
+        dot.damage = damage;
+        dot.T = 3;
+        dot.type = element_fire;
+        dot.icon = "spell_fire_flameshock";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
+    dot.shaman_3 = function (heal) {
+        let dot = {};
+        dot.name = "治疗之泉";
+        dot.heal = heal;
+        dot.T = -1;
+        dot.type = element_natural;
+        dot.icon = "inv_spear_04";
+        dot.detail = "回合开始时，回复 " + dot.damage + " 点生命";
+        return dot;
+    }
+
     dot.druid_1_1 = function (damage) {
         let dot = {};
         dot.name = "月火术";
@@ -59,7 +92,7 @@ function new_dot() {
         dot.T = -1;
         dot.type = element_natural;
         dot.icon = "ability_druid_forceofnature";
-        dot.detail = "回合开始时，吸取 " + dot.damage + " 点 " + get_element_name(dot.type) + " 生命";
+        dot.detail = "回合开始时，吸取 " + dot.damage + " 点生命";
         return dot;
     }
 
@@ -81,17 +114,6 @@ function new_dot() {
         dot.T = 3;
         dot.type = element_physical;
         dot.icon = "ability_rogue_rupture";
-        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
-        return dot;
-    }
-
-    dot.mage_2 = function (damage) {
-        let dot = {};
-        dot.name = "点燃";
-        dot.damage = damage;
-        dot.T = 2;
-        dot.type = element_fire;
-        dot.icon = "spell_fire_incinerate";
         dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
         return dot;
     }

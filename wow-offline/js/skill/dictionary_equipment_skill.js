@@ -49,7 +49,7 @@ function new_equipment_skill() {
             if (skill_in_cd(attacker, skill)) {
                 return false;
             }
-            return attacker.skills[0].type === type_magic;
+            return attacker.skills[0].type === type_magic || attacker.skills[0].type === type_heal;
         }
         skill.cast = function (attacker, target) {
             let cast_skill = attacker.skills[0];

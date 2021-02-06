@@ -32,7 +32,7 @@
     font-size: 32px;
     letter-spacing: 5px;
     font-weight: bolder;
-    text-shadow: 0 0 5px goldenrod;
+    text-shadow: 0 0 3px cornsilk;
 }
 
 .view_job_info_1 {
@@ -42,7 +42,7 @@
     line-height: 35px;
     font-size: 22px;
     color: silver;
-    text-shadow: 0 0 5px cornsilk;
+    text-shadow: 0 0 3px cornsilk;
 }
 
 .icon_job_skill_1 {

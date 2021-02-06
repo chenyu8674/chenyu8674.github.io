@@ -459,6 +459,7 @@ function move_loop() {
         if (monster.name == null) {
             // 途经点
             map_monster_list.splice(target_monster, 1);
+            refresh_monster_point();
             attack_next_monster();
         } else {
             // 开始战斗

@@ -96,7 +96,7 @@ function new_role_whole() {
     role_whole.res_holy = 0;// 神圣抗性百分比
     role_whole.res_shadow = 0;// 暗影抗性百分比
 
-    role_whole.pierce_all = 0;// 全部穿透百分比
+    role_whole.pierce_all = 0;// 所有穿透百分比
     role_whole.pierce_physical = 0;// 物理穿透百分比
     role_whole.pierce_fire = 0;// 火焰穿透百分比
     role_whole.pierce_frost = 0;// 冰霜穿透百分比

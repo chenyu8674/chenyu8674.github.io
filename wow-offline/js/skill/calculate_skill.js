@@ -89,9 +89,8 @@ function get_skill_point(attacker) {
  * @return block_value 格挡数值
  * @return absorb_value 吸收数值
  */
-function calculate_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit, extra_critical, extra_block, pierce_shield) {
+function calculate_skill_attack(attacker, target, skill_name, damage_percent, attack_type, element_type, extra_hit = 0, extra_critical = 0, extra_block = 0, pierce_shield = false) {
     // 计算命中
-    extra_hit = extra_hit == null ? 0 : extra_hit;
     let hit_chance = calculate_hit(attacker, target) + extra_hit;
     if (show_hit_percent_in_log) {
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 命中率：" + hit_chance);
@@ -133,15 +132,15 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
             break;
         case element_frost:
             dmg = attacker.damage_frost;
-            res = target.res_frost - -attacker.pierce_frost;
+            res = target.res_frost - attacker.pierce_frost;
             break;
         case element_natural:
             dmg = attacker.damage_natural;
-            res = target.res_natural - -attacker.pierce_natural;
+            res = target.res_natural - attacker.pierce_natural;
             break;
         case element_arcane:
             dmg = attacker.damage_arcane;
-            res = target.res_arcane - -attacker.pierce_arcane;
+            res = target.res_arcane - attacker.pierce_arcane;
             break;
         case element_holy:
             dmg = attacker.damage_holy;
@@ -180,7 +179,6 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     }
     damage_value *= (100 + lvl_percent) / 100;
     // 计算暴击
-    extra_critical = extra_critical == null ? 0 : extra_critical;
     let critical_chance = calculate_critical(attacker, target) + extra_critical;
     if (show_critical_percent_in_log) {
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance);
@@ -200,7 +198,6 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
         damage_value = 0;
     }
     // 计算格挡值
-    extra_block = extra_block == null ? 0 : extra_block;
     let block_chance = calculate_block(attacker, target) + extra_block;
     if (show_block_percent_in_log) {
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance);
@@ -392,7 +389,7 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
  * @param heal_percent 技能治疗系数
  * @param extra_critical 额外暴击率
  */
-function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_critical) {
+function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_critical = 0) {
     /* 基础治疗 */
     let heal_value = attacker.heal_power * heal_percent / 100;// 基础治疗
     if (heal_value < 0) {
@@ -401,7 +398,6 @@ function calculate_skill_heal(attacker, target, skill_name, heal_percent, extra_
     // 治疗随机浮动(0.9~1.1)
     heal_value *= (0.9 + Math.random() * 0.2);
     // 计算暴击
-    extra_critical = extra_critical == null ? 0 : extra_critical;
     let critical_chance = calculate_critical(attacker, target) + extra_critical;
     if (show_critical_percent_in_log) {
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 暴击率：" + critical_chance);

@@ -147,8 +147,18 @@ function create_character(job, exp, name) {
                 break;
             case 31:
             case 32:
-            case 33:
                 current_character.equipments.push(15);
+                current_character.equipments.push(23);
+                break;
+            case 41:
+            case 43:
+                current_character.equipments.push(17);
+                current_character.equipments.push(23);
+                break;
+            case 33:
+            case 42:
+                current_character.equipments.push(19);
+                current_character.equipments.push(19);
                 current_character.equipments.push(23);
                 break;
             case 51:
