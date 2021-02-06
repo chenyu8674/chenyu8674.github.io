@@ -20,6 +20,30 @@
     border-color: darkred;
 }
 
+.normal_2 {
+    background-image: linear-gradient(to bottom right, yellow, darkorange);
+    border-style: outset;
+    border-color: saddlebrown;
+}
+
+.normal_2:hover {
+    background-image: linear-gradient(to bottom right, darkorange, yellow);
+    border-style: inset;
+    border-color: darkred;
+}
+
+.normal_3 {
+    background-image: linear-gradient(to bottom right, lightgray, dimgray);
+    border-style: outset;
+    border-color: saddlebrown;
+}
+
+.normal_3:hover {
+    background-image: linear-gradient(to bottom right, dimgray, lightgray);
+    border-style: inset;
+    border-color: darkred;
+}
+
 .instance {
     background-image: linear-gradient(to bottom right, lightskyblue, dodgerblue);
     border-style: outset;

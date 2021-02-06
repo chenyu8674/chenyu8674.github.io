@@ -67,8 +67,17 @@ let map_index = 0;
 function show_battle_view(info) {
     // 初始化
     map_info = info;
-    map_info.start_x = map_info.start_x > 100 ? map_info.start_x / 10 : map_info.start_x;
-    map_info.start_y = map_info.start_y > 100 ? map_info.start_y / 10 : map_info.start_y;
+    if (typeof map_info.area[0] === "number") {
+        map_info.area = [map_info.area];
+    }
+    for (let i = 0; i < map_info.area.length; i++) {
+        let area = map_info.area[i];
+        for (let j = 0; j < area.length; j++) {
+            if (map_info.area[i][j] > 100) {
+                map_info.area[i][j] = map_info.area[i][j] / 10;
+            }
+        }
+    }
     map_monster_list = [];
     target_x = 0;
     target_y = 0;
@@ -89,16 +98,18 @@ function show_battle_view(info) {
     $("#self_heal").show();
     show_heal_icon();
     if (map_info.type === 1) {
+        // 练级地图
         if (is_in_local_mode()) {
             show_monster_area(map_info);
         }
-        player_x = (map_info.start_x + map_info.end_x) / 2;
-        player_y = (map_info.start_y + map_info.end_y) / 2;
+        player_x = (map_info.area[0][0] + map_info.area[0][2]) / 2;
+        player_y = (map_info.area[0][1] + map_info.area[0][3]) / 2;
         refresh_random_monster();
     } else {
+        // 副本地图
         $("#monster_area").hide();
-        player_x = map_info.start_x;
-        player_y = map_info.start_y;
+        player_x = map_info.area[0][0];
+        player_y = map_info.area[0][1];
         refresh_raid_monster();
     }
     show_attack_icon();
@@ -150,19 +161,22 @@ function heal_loop() {
  * 绘制怪物刷新区域（调试用）
  */
 function show_monster_area(map_info) {
-    $("#monster_area").remove();
-    let monster_area = $("<div></div>");
-    monster_area.attr("id", "monster_area");
-    monster_area.css("left", map_info.start_x + "%");
-    monster_area.css("top", map_info.start_y + "%");
-    monster_area.css("width", map_info.end_x - map_info.start_x + "%");
-    monster_area.css("height", map_info.end_y - map_info.start_y + "%");
-    battle_map.append(monster_area);
-    monster_area.click(hide_monster_area);
+    $(".monster_area").remove();
+    for (let i = 0; i < map_info.area.length; i++) {
+        let area = map_info.area[i];
+        let monster_area = $("<div></div>");
+        monster_area.attr("class", "monster_area");
+        monster_area.css("left", area[0] + "%");
+        monster_area.css("top", area[1] + "%");
+        monster_area.css("width", area[2] - area[0] + "%");
+        monster_area.css("height", area[3] - area[1] + "%");
+        battle_map.append(monster_area);
+        monster_area.click(hide_monster_area);
+    }
 }
 
 function hide_monster_area() {
-    $("#monster_area").hide();
+    $(".monster_area").hide();
 }
 
 /**
@@ -209,78 +223,91 @@ function get_monster_count_by_rare(rare) {
 }
 
 /**
- * 判断刷新点是否过近
+ * 判断刷新点是否合法
  */
-function has_nearly_monster(x, y) {
-    let zoom = 1;
-    let min_distance_x = 6.18 / zoom;
-    let min_distance_y = 9.26 / zoom;
+function is_monster_position_valid(x, y) {
+    // 刷新点是否在指定范围内
+    let is_in_area = false;
+    for (let i = 0; i < map_info.area.length; i++) {
+        let area = map_info.area[i];
+        if (x >= area[0] && y >= area[1] && x <= area[2] && y <= area[3]) {
+            is_in_area = true;
+            break;
+        }
+    }
+    if (!is_in_area) {
+        return false;
+    }
+    // 刷新点是否与其他怪物过近
+    let zoom = 80;
+    let min_distance_x = battle_map[0].offsetHeight / zoom;
+    let min_distance_y = battle_map[0].offsetWidth / zoom;
     if (Math.abs(player_x - x) <= min_distance_x && Math.abs(player_y - y) <= min_distance_y) {
-        return true;
+        return false;
     }
     for (let i = 0; i < map_monster_list.length; i++) {
         if (Math.abs(map_monster_list[i].x - x) <= min_distance_x && Math.abs(map_monster_list[i].y - y) <= min_distance_y) {
-            return true;
+            return false;
         }
     }
-    return false;
-}
-
-/**
- * 向练级地图内添加怪物点
- */
-function add_random_monster() {
-    let lvl = current_character.lvl;
-    if (lvl < map_info.min) {
-        lvl = map_info.min;
-    } else if (lvl > map_info.max) {
-        lvl = map_info.max;
-    }
-    let monster_base_list;
-    if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
-        // if (get_monster_count_by_rare(4) === 0) {
-        // 到达等级上限时，必然刷新精英怪
-        monster_base_list = map_info.elite;
-    } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || (kill_count > 0 && random_percent(RARE_PERCENT)))) {
-        // 几率性刷新稀有怪（新角色100%）
-        monster_base_list = map_info.rare;
-    } else {
-        // 刷新普通怪
-        monster_base_list = map_info.monster;
-    }
-    let random_monster_name = random_list(monster_base_list);
-    let monster_obj = new_monster()[random_monster_name];
-    while (get_monster_count_by_rare(1) >= 3 && monster_obj.rare === 1) {
-        // 弱小怪物最多同时存在3个
-        random_monster_name = random_list(monster_base_list);
-        monster_obj = new_monster()[random_monster_name];
-    }
-    // 生成怪物对象
-    let monster = create_monster_by_model(random_monster_name, lvl);
-    if (monster.rare === 4) {
-        monster.x = monster_obj.x > 100 ? monster_obj.x / 10 : monster_obj.x;
-        monster.y = monster_obj.y > 100 ? monster_obj.y / 10 : monster_obj.y;
-    } else {
-        // 随机放置怪物坐标
-        monster.x = map_info.start_x + (map_info.end_x - map_info.start_x) * Math.random();
-        monster.y = map_info.start_y + (map_info.end_y - map_info.start_y) * Math.random();
-        while (has_nearly_monster(monster.x, monster.y)) {
-            // 距离已有怪物过近
-            monster.x = map_info.start_x + (map_info.end_x - map_info.start_x) * Math.random();
-            monster.y = map_info.start_y + (map_info.end_y - map_info.start_y) * Math.random();
-        }
-    }
-    map_monster_list.push(monster);
+    return true;
 }
 
 /**
  * 刷新练级地图怪物点
  */
 function refresh_random_monster() {
-    let try_count = 0;
-    while (try_count < 100 && map_monster_list.length < 15) {
-        try_count++;
-        add_random_monster(map_info);
+    let add_success = true;
+    while (add_success) {
+        let lvl = current_character.lvl;
+        if (lvl < map_info.min) {
+            lvl = map_info.min;
+        } else if (lvl > map_info.max) {
+            lvl = map_info.max;
+        }
+        let monster_base_list;
+        if (lvl >= map_info.max && get_monster_count_by_rare(4) === 0) {
+            // if (get_monster_count_by_rare(4) === 0) {
+            // 到达等级上限时，必然刷新精英怪
+            monster_base_list = map_info.elite;
+        } else if (get_monster_count_by_rare(3) === 0 && (current_character.exp === 0 || (kill_count > 0 && random_percent(RARE_PERCENT)))) {
+            // 几率性刷新稀有怪（新角色100%）
+            monster_base_list = map_info.rare;
+        } else {
+            // 刷新普通怪
+            monster_base_list = map_info.monster;
+        }
+        let random_monster_name = random_list(monster_base_list);
+        let monster_obj = new_monster()[random_monster_name];
+        while (get_monster_count_by_rare(1) >= 3 && monster_obj.rare === 1) {
+            // 弱小怪物最多同时存在3个
+            random_monster_name = random_list(monster_base_list);
+            monster_obj = new_monster()[random_monster_name];
+        }
+        // 生成怪物对象
+        let monster = create_monster_by_model(random_monster_name, lvl);
+        add_success = true;
+        if (monster.rare === 4) {
+            monster.x = monster_obj.x > 100 ? monster_obj.x / 10 : monster_obj.x;
+            monster.y = monster_obj.y > 100 ? monster_obj.y / 10 : monster_obj.y;
+        } else {
+            // 随机放置怪物坐标
+            monster.x = 100 * Math.random();
+            monster.y = 100 * Math.random();
+            let try_count = 0;
+            while (try_count < 1000 && !is_monster_position_valid(monster.x, monster.y)) {
+                try_count++;
+                // 未在刷新区域或距离已有怪物过近
+                monster.x = 100 * Math.random();
+                monster.y = 100 * Math.random();
+            }
+            if (try_count >= 1000) {
+                add_success = false;
+            }
+        }
+        if (add_success) {
+            map_monster_list.push(monster);
+        }
     }
     refresh_monster_point();
 }

@@ -250,7 +250,6 @@ function set_info_hover(view, html, item) {
 function show_text_info(view, html) {
     let x = view[0].offsetWidth + view.offset().left - window_margin_left;
     let y = view[0].offsetHeight + view.offset().top - window_margin_top;
-    console.log(x + "-" + y);
     $(".info_window").remove();
     let info = $("<div></div>");
     info.addClass("info_window");

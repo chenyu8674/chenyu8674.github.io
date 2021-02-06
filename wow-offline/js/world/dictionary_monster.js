@@ -128,9 +128,10 @@ function new_monster() {
     }// 提瑞斯法林地
     {
         monster["生锈的麦田魔像"] = {species: 7, type: 0, rare: 1, effect: ["armor_attack_percent+=100"]}
+        monster["小碎尸鸟"] = {species: 2, type: 3, rare: 1}
+
         monster["看守傀儡"] = {species: 7, type: 2, rare: 2, effect: ["armor_attack_percent+=100"]}
         monster["收割傀儡"] = {species: 7, type: 6, rare: 2, skills: "挥砍", effect: ["armor_attack_percent+=100"]}
-        monster["小碎尸鸟"] = {species: 2, type: 3, rare: 1}
         monster["碎尸鸟"] = {species: 2, type: 5, rare: 2, skills: "撕裂"}
         monster["大碎尸鸟"] = {species: 2, type: 1, rare: 2, skills: "撕裂"}
         monster["河爪豺狼人"] = {species: 1, type: 0, rare: 2}
@@ -151,6 +152,45 @@ function new_monster() {
             effect: ["critical_chance_final+=99", "attack_power_percent-=50"]
         }
     }// 西部荒野
+    {
+        monster["绵羊"] = {species: 8, type: 0, rare: 1}
+        monster["山羊"] = {species: 8, type: 5, rare: 1}
+
+        monster["坑道鼠歹徒"] = {species: 1, type: 2, rare: 2}
+        monster["坑道鼠地卜师"] = {species: 1, type: 4, rare: 2, skills: "火法"}
+        monster["老黑熊"] = {species: 2, type: 2, rare: 2, skills: "撕咬"}
+        monster["灰斑黑熊"] = {species: 2, type: 1, rare: 2, skills: "撕咬"}
+        monster["碎石怪先知"] = {species: 1, type: 4, rare: 2, skills: "电法"}
+        monster["碎石怪击颅者"] = {species: 1, type: 6, rare: 2, skills: "凿击"}
+        monster["黑铁伏击者"] = {species: 1, type: 3, rare: 2, skills: "伏击"}
+        monster["黑铁袭击者"] = {species: 1, type: 2, rare: 2, skills: "英勇打击"}
+        monster["林木潜伏者"] = {species: 1, type: 6, rare: 2, skills: "毒药"}
+
+        monster["纺织者杉达"] = {species: 2, type: 6, rare: 3, skills: "毒药"}
+        monster["大型洛克鳄"] = {species: 2, type: 1, rare: 3, skills: "撕咬"}
+        monster["摧毁者埃摩戈"] = {species: 1, type: 5, rare: 3, effect: ["health_percent+=50"]}
+
+        monster["卓克苏尔"] = {species: 1, type: 1, rare: 4, x: 78, y: 16, skills: "英勇打击"}
+    }// 洛克莫丹
+    {
+        monster["生病的鹿"] = {species: 8, type: 0, rare: 1}
+
+        monster["被诅咒的贵族"] = {species: 3, type: 4, rare: 2, skills: "致盲"}
+        monster["挣扎的贵族"] = {species: 3, type: 5, rare: 2, skills: "致盲"}
+        monster["月夜猛虎"] = {species: 2, type: 6, rare: 2, skills: "撕咬"}
+        monster["狂暴蓟熊"] = {species: 2, type: 1, rare: 2, skills: "撕咬"}
+        monster["月爪枭兽"] = {species: 1, type: 2, rare: 2, skills: "痛击"}
+        monster["月夜枭兽"] = {species: 1, type: 4, rare: 2, skills: "痛击"}
+        monster["雷鳞战士"] = {species: 1, type: 1, rare: 2, effect: ["block_chance_final+=30", "block_value+=50"]}
+        monster["雷鳞巫师"] = {species: 1, type: 9, rare: 2, skills: "冰法"}
+        monster["石巨兽"] = {species: 5, type: 1, rare: 2, effect: ["armor_attack_percent+=100"]}
+
+        monster["影爪"] = {species: 2, type: 3, rare: 3, skills: ["伏击", "撕咬"]}
+        monster["利斯林"] = {species: 4, type: 8, rare: 3, skills: "暗法"}
+        monster["残忍的弗拉格莫克"] = {species: 1, type: 4, rare: 3, skills: "英勇打击"}
+
+        monster["折磨者奥利加尔"] = {species: 4, type: 1, rare: 4, x: 78, y: 16, skills: "英勇打击"}
+    }// 黑海岸
     {
         monster["强壮的烈焰猎犬"] = {species: 3, type: 5, rare: 4, skills: "撕裂"}
         monster["成年的烈焰猎犬"] = {species: 3, type: 2, rare: 4, skills: "撕咬"}

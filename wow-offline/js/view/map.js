@@ -36,7 +36,13 @@ function draw_map() {
         map_info.y = map_info.y > 100 ? map_info.y / 10 : map_info.y;
         let dot = $("<div></div>");
         if (map_info.type === 1) {
-            dot.addClass("map_dot normal");
+            if (map_info.max >= current_lvl) {
+                dot.addClass("map_dot normal");
+            } else if (current_lvl - map_info.max < 10) {
+                dot.addClass("map_dot normal_2");
+            } else {
+                dot.addClass("map_dot normal_3");
+            }
         }
         if (map_info.type === 5) {
             dot.addClass("map_dot instance");
