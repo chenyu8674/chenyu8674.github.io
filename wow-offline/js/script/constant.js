@@ -55,7 +55,7 @@ let MULTIPLE_15_2 = 1;// 双手属性系数
 let MULTIPLE_16 = 0.6;// 副手属性系数
 
 let WEAPON_ATTACK_1 = 4;// 单手强度系数
-let WEAPON_ATTACK_2 = 6;// 双手强度系数
+let WEAPON_ATTACK_2 = 7;// 双手强度系数
 let WEAPON_ATTACK_3 = 2;// 副手手强度系数
 
 /** 系统设置 **/

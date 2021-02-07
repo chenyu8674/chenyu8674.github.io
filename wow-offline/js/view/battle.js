@@ -239,7 +239,7 @@ function is_monster_position_valid(x, y) {
         return false;
     }
     // 刷新点是否与其他怪物过近
-    let zoom = 80;
+    let zoom = 90;
     let min_distance_x = battle_map[0].offsetHeight / zoom;
     let min_distance_y = battle_map[0].offsetWidth / zoom;
     if (Math.abs(player_x - x) <= min_distance_x && Math.abs(player_y - y) <= min_distance_y) {

@@ -174,7 +174,7 @@ function new_dot() {
 
     dot.arcane = function (damage, turn) {
         let dot = {};
-        dot.name = "奥术流失";
+        dot.name = "流失";
         dot.damage = damage;
         dot.T = turn;
         dot.type = element_arcane;
@@ -185,7 +185,7 @@ function new_dot() {
 
     dot.holy = function (damage, turn) {
         let dot = {};
-        dot.name = "圣光审判";
+        dot.name = "审判";
         dot.damage = damage;
         dot.T = turn;
         dot.type = element_holy;
@@ -196,7 +196,7 @@ function new_dot() {
 
     dot.shadow = function (damage, turn) {
         let dot = {};
-        dot.name = "暗影灼烧";
+        dot.name = "痛苦";
         dot.damage = damage;
         dot.T = turn;
         dot.type = element_shadow;

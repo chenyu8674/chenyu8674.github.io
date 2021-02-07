@@ -294,6 +294,27 @@ function new_monster_skill() {
         return skill;
     }
 
+    skill["践踏"] = function () {
+        let skill = {};
+        skill.name = "践踏";
+        skill.type = type_attack;
+        skill.cooldown = 4;
+        skill.priority = 30;
+        skill.X = 50;
+        skill.Y = 80;
+        skill.Z = 1;
+        skill.icon = "ability_warstomp"
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，并使目标造成的伤害-" + skill.Y + "%，持续" + skill.Z + "回合。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_frost);
+            if (damage_obj.is_hit) {
+                target.debuffs.push(new_debuff().damage_all_decrease(skill.Y, skill.Z));
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
     skill["凿击"] = function () {
         let skill = {};
         skill.name = "凿击";
@@ -556,10 +577,50 @@ function new_monster_skill() {
         skill.icon = "spell_shadow_shadowfury";
         skill.detail = "使目标每回合受到" + skill.X + "%法术强度的暗影伤害，持续" + skill.Y + "回合。";
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_shadow);
+            let dot_damage = calculate_dot_base_damage(attacker, target, skill.X, skill.type);
+            let damage_obj = calculate_dot_final_damage(attacker, target, skill.name, dot_damage, element_shadow);
             if (damage_obj.is_hit) {
-                let dot_damage = calculate_dot_base_damage(attacker, target, skill.X, skill.type);
                 target.dots.push(new_dot().shadow(dot_damage, skill.Y - 1));
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
+    skill["暗言术：痛"] = function () {
+        let skill = {};
+        skill.name = "暗言术：痛";
+        skill.type = type_magic;
+        skill.cooldown = 8;
+        skill.X = 20;
+        skill.Y = 8;
+        skill.icon = "spell_shadow_shadowfury";
+        skill.detail = "使目标每回合受到" + skill.X + "%法术强度的暗影伤害，持续" + skill.Y + "回合。";
+        skill.cast = function (attacker, target) {
+            let dot_damage = calculate_dot_base_damage(attacker, target, skill.X, skill.type);
+            let damage_obj = calculate_dot_final_damage(attacker, target, skill.name, dot_damage, element_shadow);
+            if (damage_obj.is_hit) {
+                target.dots.push(new_dot().shadow(dot_damage, skill.Y - 1));
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
+    skill["献祭"] = function () {
+        let skill = {};
+        skill.name = "献祭";
+        skill.type = type_magic;
+        skill.cooldown = 8;
+        skill.X = 20;
+        skill.Y = 8;
+        skill.icon = "spell_fire_immolation";
+        skill.detail = "使目标每回合受到" + skill.X + "%法术强度的火焰伤害，持续" + skill.Y + "回合。";
+        skill.cast = function (attacker, target) {
+            let dot_damage = calculate_dot_base_damage(attacker, target, skill.X, skill.type);
+            let damage_obj = calculate_dot_final_damage(attacker, target, skill.name, dot_damage, element_fire);
+            if (damage_obj.is_hit) {
+                target.dots.push(new_dot().fire(dot_damage, skill.Y - 1));
             }
             return skill_cast_result(damage_obj);
         };

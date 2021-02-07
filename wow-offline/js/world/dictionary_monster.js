@@ -189,8 +189,59 @@ function new_monster() {
         monster["利斯林"] = {species: 4, type: 8, rare: 3, skills: "暗法"}
         monster["残忍的弗拉格莫克"] = {species: 1, type: 4, rare: 3, skills: "英勇打击"}
 
-        monster["折磨者奥利加尔"] = {species: 4, type: 1, rare: 4, x: 78, y: 16, skills: "英勇打击"}
+        monster["折磨者奥利加尔"] = {species: 4, type: 1, rare: 4, x: 433, y: 943, skills: "英勇打击"}
     }// 黑海岸
+    {
+        monster["被感染的松鼠"] = {species: 8, type: 0, rare: 1}
+
+        monster["月怒白头狼人"] = {species: 1, type: 2, rare: 2, skills: "冰霜新星"}
+        monster["月怒魔魂狼人"] = {species: 1, type: 6, rare: 2, skills: "痛击"}
+        monster["凶猛的灰斑熊"] = {species: 2, type: 1, rare: 2, skills: "撕咬"}
+        monster["杂斑座狼"] = {species: 2, type: 2, rare: 2, skills: "撕咬"}
+        monster["鸦爪仆从"] = {species: 3, type: 4, rare: 2, skills: "暗言术：痛"}
+        monster["鸦爪勇士"] = {species: 3, type: 1, rare: 2, effect: ["attack_power_percent+=20"]}
+        monster["鸦爪之手"] = {species: 3, type: 2, rare: 2, skills: "精灵之火"}
+        monster["老迈的湖岸潜藏者"] = {species: 5, type: 5, rare: 2, effect: ["health_percent+=50"]}
+        monster["老迈的湖岸爬行者"] = {species: 5, type: 5, rare: 2, effect: ["health_percent+=50"]}
+
+        monster["血牙狼人"] = {species: 2, type: 6, rare: 3, skills: "撕裂"}
+        monster["达拉然书记员"] = {species: 1, type: 9, rare: 3, skills: ["冰法", "冰霜新星"]}
+        monster["鸦爪摄政者"] = {species: 3, type: 8, rare: 3, skills: "暗言术：痛"}
+
+        monster["图勒·鸦爪"] = {species: 1, type: 8, rare: 4, x: 656, y: 255, skills: ["火法", "献祭"], effect: ["health_percent+=20"]}
+    }// 银松森林
+    {
+        monster["掘地鼠"] = {species: 8, type: 6, rare: 1}
+        monster["草原土拨鼠"] = {species: 8, type: 0, rare: 1}
+        monster["蝰蛇"] = {species: 8, type: 3, rare: 1}
+        monster["瞪羚"] = {species: 8, type: 0, rare: 1}
+
+        monster["巨型平原陆行鸟"] = {species: 2, type: 3, rare: 2, skills: "冰霜新星"}
+        monster["快步斑马"] = {species: 2, type: 5, rare: 2}
+        monster["游荡的长颈鹿"] = {species: 2, type: 5, rare: 2}
+        monster["草原科多兽"] = {species: 2, type: 5, rare: 2, skills: "践踏", effect: ["health_percent+=30"]}
+        monster["长鬃草原狮"] = {species: 2, type: 1, rare: 2, skills: "撕咬"}
+        monster["绿洲钳嘴龟"] = {species: 2, type: 5, rare: 2, effect: ["block_chance_final+=100", "block_value+=20"]}
+        monster["乱齿土狼"] = {species: 2, type: 2, rare: 2, skills: "撕咬"}
+        monster["雷鳞蜥蜴"] = {species: 2, type: 4, rare: 2, skills: "电法", effect: ["health_percent+=30"]}
+        monster["赤鳞镰爪龙"] = {species: 2, type: 6, rare: 2, skills: "痛击"}
+        monster["南海杀手"] = {species: 1, type: 2, rare: 2, skills: "毒药"}
+        monster["南海私掠者"] = {species: 1, type: 3, rare: 2, skills: "多重射击"}
+        monster["钢鬃地卜师"] = {species: 1, type: 9, rare: 2, skills: "火法"}
+        monster["钢鬃防御者"] = {species: 1, type: 1, rare: 2, skills: "英勇打击"}
+        monster["科卡尔召雷师"] = {species: 1, type: 4, rare: 2, skills: "电法"}
+        monster["科卡尔掠夺者"] = {species: 1, type: 1, rare: 2, skills: "冲锋"}
+        monster["风险投资公司雇工"] = {species: 1, type: 1, rare: 2, effect: ["health_percent+=20"]}
+        monster["风险投资公司雇佣兵"] = {species: 1, type: 3, rare: 2, skills: "多重射击"}
+
+        monster["迅鬃斑马"] = {species: 2, type: 5, rare: 3, skills: "刺穿护甲"}
+        monster["“跳跃者”塔克"] = {species: 2, type: 6, rare: 3, skills: "撕裂"}
+        monster["断矛"] = {species: 1, type: 1, rare: 3, skills: "英勇打击"}
+        monster["拉索利安"] = {species: 4, type: 1, rare: 3, skills: "冲锋"}
+        monster["布拉德雷大使"] = {species: 3, type: 8, rare: 3, skills: ["暗法", "暗言术：痛"]}
+
+        monster["狮王休玛"] = {species: 2, type: 2, rare: 4, x: 617, y: 335, skills: ["撕咬", "痛击"]}
+    }// 银松森林
     {
         monster["强壮的烈焰猎犬"] = {species: 3, type: 5, rare: 4, skills: "撕裂"}
         monster["成年的烈焰猎犬"] = {species: 3, type: 2, rare: 4, skills: "撕咬"}
