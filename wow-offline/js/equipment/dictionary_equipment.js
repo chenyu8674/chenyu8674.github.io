@@ -132,6 +132,39 @@ function new_equipment() {
         equipment[63483] = {name: "会长的战靴", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_boots_plate_dungeonplate_c_03", affix: 12104, effect: ["main+=4", "sta+=4", "mastery_rate+=3", "dodge_rate+=2"]};
 
     }// 死亡矿井
+    {
+        equipment[10412] = {name: "尖牙腰带", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_belt_03", affix: 10102, effect: ["main+=4", "sta+=4"], sets: "毒蛇的拥抱"};// 安娜科德拉
+        equipment[10411] = {name: "尖牙足垫", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_boots_04", affix: 12102, effect: ["main+=4", "sta+=4"], sets: "毒蛇的拥抱"};// 瑟芬迪斯
+        equipment[10413] = {name: "尖牙手套", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_gauntlets_18", affix: 9102, effect: ["main+=6", "sta+=4"], sets: "毒蛇的拥抱"};// 尖牙德鲁伊
+        equipment[10410] = {name: "尖牙护腿", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_pants_02", affix: 11102, effect: ["main+=6", "sta+=6"], sets: "毒蛇的拥抱"};// 考布莱恩
+        equipment[6473] = {name: "尖牙铠甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shirt_16", affix: 4102, effect: ["main+=6", "sta+=6"], sets: "毒蛇的拥抱"};// 皮萨斯
+        // 安娜科德拉
+        equipment[132737] = {name: "洞穴蛇行者肩甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shoulder_08", affix: 3103, effect: ["main+=4", "sta+=4"]};
+        equipment[5404] = {name: "坚硬的肩垫", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shoulder_08", affix: 3102, effect: ["main+=4", "sta+=4"]};
+        // 皮萨斯
+        equipment[6472] = {name: "毒蛇之刺", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_wand_10", affix: 15114, effect: [], skill: 18197};
+        // 考布莱恩
+        equipment[6460] = {name: "考布莱恩的腰带", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_belt_03", affix: 10104, effect: ["main+=4", "sta+=4", "hit_rate+=4"]};
+        equipment[6465] = {name: "水蛇法袍", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_chest_cloth_36", affix: 4101, effect: ["int+=6", "sta+=6", "dodge_rate+=6"]};
+        // 克雷什
+        equipment[6447] = {name: "破旧的龟壳盾牌", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shield_21", affix: 16141, effect: ["main+=3", "sta+=3"]};
+        equipment[13245] = {name: "克雷什之背", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shield_18", affix: 16141, effect: ["main+=3", "sta+=3", "dodge_rate+=4"]};
+        // 斯卡姆
+        equipment[6448] = {name: "尾钉", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_weapon_shortblade_10", affix: 15111, effect: ["agi+=4", "critical_rate+=3"]};
+        equipment[6449] = {name: "发光的蜥蜴披风", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_helmet_48", affix: 5101, effect: ["main+=3", "sta+=3"]};
+        // 瑟芬迪斯
+        equipment[6469] = {name: "毒蛇", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_weapon_bow_10", affix: 15131, effect: [], skill: 29636};
+        equipment[6459] = {name: "野蛮锁靴", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_boots_01", affix: 12103, effect: ["main+=4", "sta+=4"]};
+        equipment[5970] = {name: "毒蛇手套", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_gauntlets_19", affix: 9101, effect: ["int+=4", "sta+=4"]};
+        // 永生者沃尔丹
+        equipment[6629] = {name: "蜘蛛斗篷", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_misc_cape_11", affix: 5101, effect: ["main+=3", "sta+=3", "dodge_rate+=3"]};
+        equipment[6630] = {name: "淡云圆盾", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shield_09", affix: 16141, effect: ["main+=3", "sta+=3", "dodge_rate+=3"]};
+        equipment[6631] = {name: "生命之根", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_staff_25", affix: 15222, effect: ["int+=4", "sta+=3", "dodge_rate+=8"]};
+        // 吞噬者穆坦努斯
+        equipment[6461] = {name: "粘液覆盖的垫肩", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shoulder_05", affix: 3101, effect: ["int+=4", "sta+=4", "dodge_rate+=4"]};
+        equipment[6627] = {name: "变异板甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_chest_plate08", affix: 4104, effect: ["main+=6", "sta+=6"]};
+        equipment[6463] = {name: "深渊之戒", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_jewelry_ring_15", affix: 13199, effect: ["main+=3", "sta+=3", "dodge_rate+=5"]};
+    }// 哀嚎洞穴
 
     return equipment;
 }

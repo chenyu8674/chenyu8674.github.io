@@ -103,5 +103,42 @@ function new_equipment_skill() {
         return skill;
     }
 
+    skill[29636] = function () {
+        let skill = {};
+        skill.name = "毒箭";
+        skill.type = type_magic;
+        skill.chance = 50;
+        skill.cooldown = 2;
+        skill.X = 50;
+        skill.icon = "inv_misc_slime_01";
+        skill.detail = "向目标射出毒箭，造成" + skill.X + "%攻击强度的自然伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, type_attack, element_natural);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
+    skill[18197] = function () {
+        let skill = {};
+        skill.name = "毒刺";
+        skill.type = type_attack;
+        skill.chance = 50;
+        skill.cooldown = 5;
+        skill.X = 20;
+        skill.Y = 5;
+        skill.icon = "ability_upgrademoonglaive";
+        skill.detail = "使目标每回合受到" + skill.X + "%攻击强度的自然伤害，持续" + skill.Y + "回合。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_natural);
+            if (damage_obj.is_hit) {
+                let dot_damage = calculate_dot_base_damage(attacker, target, skill.X, skill.type);
+                target.dots.push(new_dot().natural(dot_damage, skill.Y - 1));
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
     return skill;
 }

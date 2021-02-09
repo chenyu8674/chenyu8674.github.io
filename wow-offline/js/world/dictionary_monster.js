@@ -78,7 +78,13 @@ function new_monster() {
         monster["刺背斗猪"] = {species: 2, type: 5, rare: 2, skills: "冲锋"}
         monster["消瘦的猛鹫"] = {species: 2, type: 6, rare: 2}
         monster["猛鹫"] = {species: 2, type: 2, rare: 2, skills: "挥砍"}
-        monster["加拉克半人马"] = {species: 1, type: 1, rare: 2, skills: "冲锋", effect: ["block_chance_final+=30", "block_value+=30"]}
+        monster["加拉克半人马"] = {
+            species: 1,
+            type: 1,
+            rare: 2,
+            skills: "冲锋",
+            effect: ["block_chance_final+=30", "block_value+=30"]
+        }
         monster["加拉克前锋"] = {species: 1, type: 6, rare: 2, skills: "多重射击"}
         monster["风险投资公司工人"] = {species: 1, type: 2, rare: 2, skills: "毒药"}
         monster["风险投资公司监工"] = {species: 1, type: 1, rare: 2, skills: "火攻"}
@@ -208,7 +214,15 @@ function new_monster() {
         monster["达拉然书记员"] = {species: 1, type: 9, rare: 3, skills: ["冰法", "冰霜新星"]}
         monster["鸦爪摄政者"] = {species: 3, type: 8, rare: 3, skills: "暗言术：痛"}
 
-        monster["图勒·鸦爪"] = {species: 1, type: 8, rare: 4, x: 656, y: 255, skills: ["火法", "献祭"], effect: ["health_percent+=20"]}
+        monster["图勒·鸦爪"] = {
+            species: 1,
+            type: 8,
+            rare: 4,
+            x: 656,
+            y: 255,
+            skills: ["火法", "献祭"],
+            effect: ["health_percent+=20"]
+        }
     }// 银松森林
     {
         monster["掘地鼠"] = {species: 8, type: 6, rare: 1}
@@ -221,7 +235,7 @@ function new_monster() {
         monster["游荡的长颈鹿"] = {species: 2, type: 5, rare: 2}
         monster["草原科多兽"] = {species: 2, type: 5, rare: 2, skills: "践踏", effect: ["health_percent+=30"]}
         monster["长鬃草原狮"] = {species: 2, type: 1, rare: 2, skills: "撕咬"}
-        monster["绿洲钳嘴龟"] = {species: 2, type: 5, rare: 2, effect: ["block_chance_final+=100", "block_value+=20"]}
+        monster["绿洲钳嘴龟"] = {species: 2, type: 5, rare: 2, effect: ["block_chance_final+=100"]}
         monster["乱齿土狼"] = {species: 2, type: 2, rare: 2, skills: "撕咬"}
         monster["雷鳞蜥蜴"] = {species: 2, type: 4, rare: 2, skills: "电法", effect: ["health_percent+=30"]}
         monster["赤鳞镰爪龙"] = {species: 2, type: 6, rare: 2, skills: "痛击"}
@@ -241,7 +255,7 @@ function new_monster() {
         monster["布拉德雷大使"] = {species: 3, type: 8, rare: 3, skills: ["暗法", "暗言术：痛"]}
 
         monster["狮王休玛"] = {species: 2, type: 2, rare: 4, x: 617, y: 335, skills: ["撕咬", "痛击"]}
-    }// 银松森林
+    }// 贫瘠之地
     {
         monster["强壮的烈焰猎犬"] = {species: 3, type: 5, rare: 4, skills: "撕裂"}
         monster["成年的烈焰猎犬"] = {species: 3, type: 2, rare: 4, skills: "撕咬"}
@@ -320,5 +334,58 @@ function new_monster() {
             detail: "当梵妮莎还是一个小女孩的时候，她亲眼目睹了父亲艾德温·范克里夫的悲惨下场。作为前任迪菲亚兄弟会领袖之女，她接过父亲领袖的衣钵，在迪菲亚兄弟会据点死亡矿井的黑暗回廊里厉兵秣马，谋划着对暴风城的复仇。"
         }
     }// 死亡矿井
+    {
+        monster["大型软浆怪"] = {species: 5, type: 5, rare: 4, effect: ["health_percent+=50"]}
+        monster["噩梦软浆怪"] = {species: 5, type: 6, rare: 4, effect: ["health_percent+=80"]}
+        monster["变异巨蟒"] = {species: 2, type: 2, rare: 4, skills: "毒药"}
+        monster["尖牙德鲁伊"] = {species: 1, type: 5, rare: 4, skills: ["电法", "回春"], drop: [10413]}
+        monster["变异破坏者"] = {species: 2, type: 6, rare: 4, skills: "痛击", effect: ["health_percent+=20"]}
+        monster["变异守护者"] = {species: 2, type: 3, rare: 4, skills: "痛击", effect: ["health_percent+=20"]}
+        monster["变异鳄鱼"] = {species: 2, type: 1, rare: 4, skills: "撕咬"}
+        monster["变异鞭笞者"] = {species: 5, type: 2, rare: 4, skills: "挥砍"}
+        monster["变异蹒跚者"] = {species: 5, type: 5, rare: 4, skills: "回春", effect: ["health_percent+=20"]}
+        monster["变异尖牙风蛇"] = {species: 2, type: 6, rare: 4, skills: "撕裂"}
+        monster["变异剧毒风蛇"] = {species: 2, type: 4, rare: 4, skills: "毒药"}
+        monster["安娜科德拉"] = {
+            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "致盲"],
+            effect: ["health_percent+=20"], drop: [132737, 5404, 10412],
+            detail: "当纳拉雷克斯自作主张地派人前往贫瘠之地时，绯叶是第一个自告奋勇的人。在心智被主人的噩梦彻底粉碎后，这位年轻的侍僧便将自己的名姓丢诸脑后，现在正酝酿着艾泽拉斯邪恶阴险的未来。"
+        }
+        monster["皮萨斯"] = {
+            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "英勇打击"],
+            effect: ["health_percent+=20"], drop: [6472, 6473],
+            detail: "作为纳拉雷克斯的儿时玩伴，战士阿里恩在德鲁伊之道上有着过人的天赋。尽管受过严格训练，但这位侍僧却仍无力对抗令他丧失理智的腐化。阿里恩改名换姓，以皮萨斯的新身份将自己超凡的近战能力与德鲁伊的学识合二为一，粉碎一切入侵者。"
+        }
+        monster["考布莱恩"] = {
+            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "毒药"],
+            effect: ["health_percent+=20"], drop: [6460, 6465, 10410],
+            detail: "加拉克斯拉驾驭动物形态的能力，为他在塞纳里奥议会的德鲁伊间赢得了威名。然而，哀嚎洞穴的腐化却扭曲了他的特殊能力。现在，加拉克斯拉已将一种致命的毒蛇形态演练得出神入化，为自己冠以考布莱恩的新名字，以体现他那全新的邪恶力量。"
+        }
+        monster["克雷什"] = {
+            species: 2, type: 1, rare: 5, skills: "撕咬",
+            effect: ["health_percent-=30", "block_chance_final+=100"], drop: ["6447+70", "13245+30"],
+            detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，他顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
+        }
+        monster["斯卡姆"] = {
+            species: 2, type: 4, rare: 5, skills: ["电法", "雷霆一击"],
+            effect: ["health_percent+=30"], drop: [6448, 6449],
+            detail: "斯卡姆原本只是为了逃避贫瘠之地的恶劣环境才前往哀嚎洞穴的。与洞内的许多其它住民一样，他也很快就遭到腐化。如今在他周身流淌着黑暗能量，他已经无可挽回地变成了一只强大凶残的野兽。"
+        }
+        monster["瑟芬迪斯"] = {
+            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],
+            effect: ["health_percent+=20"], drop: [6469, 6459, 5970, 10411],
+            detail: "毒牙德鲁伊的领袖曾是纳拉雷克斯最出色的学生。他的悲剧源自于他想要成为大导师，也就是“荣誉导师”的热望，想要和纳拉雷克斯比肩。疯狂在他心中生根发芽，瑟芬迪斯将他的兄弟们召集在一起，成立了这个名叫毒牙德鲁伊的组织。"
+        }
+        monster["永生者沃尔丹"] = {
+            species: 5, type: 4, rare: 5, skills: ["痛击", "雷霆一击"],
+            effect: ["health_percent+=40"], drop: [6629, 6630, 6631],
+            detail: "在纳拉雷克斯来到哀嚎洞穴之前，人们对这只生物了解甚少。永生者沃尔丹被看作是洞穴的原始守护者，没能逃过降临在自己家园的腐化。沃尔丹与其他疯狂的德鲁伊结为盟友，对那些擅自闯入的不速之客保持着高度警惕。"
+        }
+        monster["吞噬者穆坦努斯"] = {
+            species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
+            effect: ["attack_power+=30", "health_percent+=50"], drop: [6461, 6627, 6463],
+            detail: "从纳拉雷克斯扭曲心灵最为阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
+        }
+    }// 哀嚎洞穴
     return monster;
 }

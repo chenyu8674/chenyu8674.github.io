@@ -184,7 +184,7 @@ function new_monster_skill() {
         skill.priority = 30;
         skill.X = 100;
         skill.Y = 70;
-        skill.detail = "使自己回复" + skill.X + "%治疗强度的的生命。";
+        skill.detail = "回复" + skill.X + "%治疗强度的的生命。";
         // 判断技能可用
         skill.attempt = function (attacker) {
             if (skill_in_cd(attacker, skill)) {
@@ -195,6 +195,25 @@ function new_monster_skill() {
         skill.cast = function (attacker, target) {
             let heal_obj = calculate_skill_heal(attacker, target, skill.name, skill.X);
             return skill_cast_result([], heal_obj);
+        };
+        return skill;
+    }
+
+    skill.nature_hot = skill["回春"] = function () {
+        let skill = {};
+        skill.name = "回春术";
+        skill.type = type_heal;
+        skill.cooldown = 5;
+        skill.priority = 30;
+        skill.X = 20;
+        skill.Y = 5;
+        skill.detail = "每回合回复" + skill.X + "%治疗强度的的生命，持续" + skill.Y + "回合。";
+        // 判断技能可用
+        skill.cast = function (attacker, target) {
+            let heal_obj = calculate_hot_base_heal(attacker, skill.X);
+            attacker.dots.push(new_dot().heal(heal_obj, skill.Y));
+            battle_log(attacker.name + " 施放了 " + skill.name);
+            return skill_cast_result();
         };
         return skill;
     }

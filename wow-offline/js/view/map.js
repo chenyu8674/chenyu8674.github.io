@@ -23,6 +23,7 @@ function hide_view_map() {
  * 绘制地图点
  */
 function draw_map() {
+    $(".map_dot").remove();
     let current_lvl = current_character == null ? 1 : current_character.lvl;
     for (let map in dictionary_map) {
         let map_info = dictionary_map[map];

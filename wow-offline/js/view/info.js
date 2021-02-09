@@ -12,8 +12,8 @@ function hide_info() {
 function show_map_info(map_info) {
     let info = $("<div></div>");
     info.addClass("info_window");
-    info.css("left", 1600 * map_info.x / 100 + 25 + "px");
-    info.css("top", 900 * map_info.y / 100 + 25 + "px");
+    info.css("left", 1600 * map_info.x / 100 + 12 + "px");
+    info.css("top", 900 * map_info.y / 100 + 12 + "px");
     if (map_info.type === 1) {
         info.append("<div style='color:" + color_rare_3 + "'>探索地图</div>");
         info.append("<div>" + map_info.name + "</div>");// 地图名称
@@ -72,7 +72,7 @@ function show_monster_info(view, index) {
     info.css("top", y - 5 + "px");
     info.css("max-width", "220px");
     info.css("padding-right", "10px");
-    info.append("<div style='height:25px;font-size:13px;font-weight:bold;'>" + monster.name + "</div>");
+    info.append("<div style='height:25px;font-size:12px;font-weight:bold;'>" + monster.name + "</div>");
     info.append("<div style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare) + "</div>");
     info.append("<div style='color:goldenrod'>lv " + monster.lvl + " " + get_monster_species_name(monster.species) + "</div>");
     if (monster.detail != null) {
@@ -96,7 +96,7 @@ function show_equipment_info(view, model) {
     let equipment = create_equipment_by_model(model);
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
-    info.append("<div style='height:25px;font-size:13px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
+    info.append("<div style='height:25px;font-size:12px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
     // 物品等级
     info.append("<div style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</div>");
     let can_equip = check_can_equip(current_character, equipment);
