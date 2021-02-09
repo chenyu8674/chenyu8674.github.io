@@ -52,6 +52,7 @@
 .character_item:hover {
     color: goldenrod;
     border-color: goldenrod;
+    background-color: rgba(255, 255, 0, 0.01);
 }
 
 .character_icon {

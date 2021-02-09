@@ -22,7 +22,7 @@ function new_monster_skill() {
 
     skill.fire_attack = skill["火攻"] = function () {
         let skill = {};
-        skill.name = "火焰打击";
+        skill.name = "火焰攻击";
         skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的火焰伤害。";
@@ -35,7 +35,7 @@ function new_monster_skill() {
 
     skill.frost_attack = skill["冰攻"] = function () {
         let skill = {};
-        skill.name = "寒冰打击";
+        skill.name = "寒冰攻击";
         skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的冰霜伤害。";
@@ -48,7 +48,7 @@ function new_monster_skill() {
 
     skill.natural_attack = skill["电攻"] = function () {
         let skill = {};
-        skill.name = "闪电打击";
+        skill.name = "闪电攻击";
         skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的自然伤害。";
@@ -61,7 +61,7 @@ function new_monster_skill() {
 
     skill.arcane_attack = skill["奥攻"] = function () {
         let skill = {};
-        skill.name = "奥术打击";
+        skill.name = "奥术攻击";
         skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的奥术伤害。";
@@ -74,7 +74,7 @@ function new_monster_skill() {
 
     skill.holy_attack = skill["圣攻"] = function () {
         let skill = {};
-        skill.name = "神圣打击";
+        skill.name = "神圣攻击";
         skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的神圣伤害。";
@@ -87,7 +87,7 @@ function new_monster_skill() {
 
     skill.shadow_attack = skill["暗攻"] = function () {
         let skill = {};
-        skill.name = "暗影打击";
+        skill.name = "暗影攻击";
         skill.type = type_attack;
         skill.X = 100;
         skill.detail = "攻击目标，造成" + skill.X + "%攻击强度的暗影伤害。";
@@ -139,7 +139,7 @@ function new_monster_skill() {
 
     skill.arcane_cast = skill["奥法"] = function () {
         let skill = {};
-        skill.name = "奥术冲击";
+        skill.name = "奥术箭";
         skill.type = type_magic;
         skill.X = 100;
         skill.detail = "对目标施法，造成" + skill.X + "%法术强度的奥术伤害。";

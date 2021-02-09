@@ -12,33 +12,38 @@ function hide_info() {
 function show_map_info(map_info) {
     let info = $("<div></div>");
     info.addClass("info_window");
-    info.css("left", 1600 * map_info.x / 100 + 12 + "px");
-    info.css("top", 900 * map_info.y / 100 + 12 + "px");
+    let x = 1600 * map_info.x / 100 + 12;
+    let y = 900 * map_info.y / 100 + 12;
+    info.css("left", x + "px");
+    info.css("top", y + "px");
     if (map_info.type === 1) {
+        info.append("<div>" + map_info.name + "</div>");
         info.append("<div style='color:" + color_rare_3 + "'>探索地图</div>");
-        info.append("<div>" + map_info.name + "</div>");// 地图名称
-        info.append("<div>怪物等级：" + map_info.min + "~" + map_info.max + "</div>");// 怪物等级
+        info.append("<div style='color:goldenrod'>怪物等级：" + map_info.min + "~" + map_info.max + "</div>");// 怪物等级
     }
     if (map_info.type === 5) {
+        info.append("<div>" + map_info.name + "</div>");
         info.append("<div style='color:" + color_rare_4 + "'>小队副本</div>");
-        info.append("<div>" + map_info.name + "</div>");// 地图名称
-        info.append("<div>怪物等级：" + map_info.min + "~" + map_info.max + "</div>");// 怪物等级
+        info.append("<div style='color:goldenrod'>怪物等级：" + map_info.min + "~" + map_info.max + "</div>");// 怪物等级
     }
     if (map_info.type === 10) {
+        info.append("<div>" + map_info.name + "</div>");
         info.append("<div style='color:" + color_rare_5 + "'>小型团队副本</div>");
-        info.append("<div>" + map_info.name + "</div>");//
-        info.append("<div>掉落等级：" + map_info.min + "~" + map_info.max + "</div>");// 掉落等级
+        info.append("<div style='color:goldenrod'>掉落等级：" + map_info.min + "~" + map_info.max + "</div>");// 掉落等级
     }
     if (map_info.type === 40) {
+        info.append("<div>" + map_info.name + "</div>");
         info.append("<div style='color:" + color_rare_6 + "'>大型团队副本</div>");
-        info.append("<div>" + map_info.name + "</div>");// 地图名称
-        info.append("<div>掉落等级：" + map_info.min + "~" + map_info.max + "</div>");// 掉落等级
+        info.append("<div style='color:goldenrod'>掉落等级：" + map_info.min + "~" + map_info.max + "</div>");// 掉落等级
     }
     info.css("min-width", "120px");
     if (map_info.detail != null) {
-        info.append("<div style='color:goldenrod'>" + map_info.detail + "</div>");// 地图介绍
+        info.append("<div style='color:lightgray;margin-top:5px;line-height:17px;'>" + map_info.detail + "</div>");// 地图介绍
     }
     view_map.append(info);
+    if (y + info.outerHeight() > window_margin_top + window_height - 5) {
+        info.css("top", window_margin_top + window_height - info.outerHeight() - 5 + "px");
+    }
 }
 
 /**
@@ -70,7 +75,6 @@ function show_monster_info(view, index) {
     let y = view[0].offsetHeight + view.offset().top - window_margin_top;
     info.css("left", x - 5 + "px");
     info.css("top", y - 5 + "px");
-    info.css("max-width", "220px");
     info.css("padding-right", "10px");
     info.append("<div style='height:25px;font-size:12px;font-weight:bold;'>" + monster.name + "</div>");
     info.append("<div style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare) + "</div>");
@@ -92,7 +96,6 @@ function show_equipment_info(view, model) {
     info.addClass("info_window");
     info.css("left", x + "px");
     info.css("top", y + "px");
-    info.css("max-width", "250px");
     let equipment = create_equipment_by_model(model);
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
@@ -195,8 +198,8 @@ function show_equipment_info(view, model) {
     // 售价
     info.append("<span style='font-size: 10px;'>" + get_money_html(get_equipment_price(equipment), 10) + "</span>");
     window_view.append(info);
-    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() - 5) {
-        info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
+    if (y + info.outerHeight() > window_margin_top + window_height - 5) {
+        info.css("top", window_margin_top + window_height - info.outerHeight() - 5 + "px");
     }
 }
 

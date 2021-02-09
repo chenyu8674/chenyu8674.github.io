@@ -64,7 +64,6 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push(model.effect[i]);
         }
     }
-
     let monster = new_role_base();
     monster.equipments = [];
     monster.name = name;

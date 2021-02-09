@@ -56,14 +56,15 @@ function refresh_character_select_view() {
 
         let character_icon = $("<img/>");
         character_icon.addClass("character_icon");
-        let job_flag = dictionary_job.job_flag[10 * Math.floor(character.job / 10)];
+        let job = 10 * Math.floor(character.job / 10);
+        let job_flag = dictionary_job.job_flag[job];
         character_icon.attr("src", "img/job/" + job_flag + ".png");
         character_item.append(character_icon);
 
         let character_info = $("<div></div>");
         character_info.addClass("character_info");
         let name_html = "<span style='color:goldenrod;line-height:30px;'>" + character.name + "</span><br/>";
-        name_html += dictionary_job.job_name[character.job] + "<br/>";
+        name_html += "<span style='color:" + dictionary_job.job_color[job] + ";'>" + dictionary_job.job_name[character.job] + "</span><br/>";
         let character_lvl = get_level(character.exp)
         name_html += "人物等级：" + character_lvl + "<br/>";
         let equipment_lv = get_equipment_lvl(character);
