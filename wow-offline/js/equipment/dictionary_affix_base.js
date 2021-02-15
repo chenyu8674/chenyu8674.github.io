@@ -35,22 +35,22 @@ function new_affix() {
     // 单手攻击武器
     // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑 16-魔杖
     affix[15111] = affix[15112] = affix[15113] = affix[15114] = affix[15115] = function (lvl, rare) {
-        return ["attack_power+=" + (WEAPON_ATTACK_1 + get_effect_value(WEAPON_ATTACK_1, lvl, rare))];
+        return ["attack_power+=" + get_effect_value(WEAPON_ATTACK_1, lvl + 1, rare)];
     }
     // 单手法术武器
     // 11-匕首 12-拳套 13-单手斧 14-单手锤 15-单手剑 16-魔杖
     affix[15211] = affix[15212] = affix[15213] = affix[15214] = affix[15215] = affix[15116] = affix[15216] = function (lvl, rare) {
-        return ["magic_power+=" + (WEAPON_ATTACK_1 + get_effect_value(WEAPON_ATTACK_1, lvl, rare)), "heal_power+=" + (WEAPON_ATTACK_1 + get_effect_value(WEAPON_ATTACK_1, lvl, rare))];
+        return ["magic_power+=" + get_effect_value(WEAPON_ATTACK_1, lvl + 1, rare), "heal_power+=" + get_effect_value(WEAPON_ATTACK_1, lvl + 1, rare)];
     }
     // 双手攻击武器
     // 21-长柄 22-法杖 23-双手斧 24-双手锤 25-双手剑
     affix[15121] = affix[15122] = affix[15221] = affix[15123] = affix[15223] = affix[15124] = affix[15224] = affix[15125] = affix[15225] = affix[15131] = affix[15231] = affix[15132] = affix[15232] = affix[15133] = affix[15233] = function (lvl, rare) {
-        return ["attack_power+=" + (WEAPON_ATTACK_2 * 2 + get_effect_value(WEAPON_ATTACK_2, lvl, rare))];
+        return ["attack_power+=" + get_effect_value(WEAPON_ATTACK_2, lvl + 1, rare)];
     }
     // 双手法术武器
     // 22-法杖
     affix[15222] = function (lvl, rare) {
-        return ["magic_power+=" + (WEAPON_ATTACK_2 * 2 + get_effect_value(WEAPON_ATTACK_2, lvl, rare)), "heal_power+=" + (WEAPON_ATTACK_2 * 2 + get_effect_value(WEAPON_ATTACK_2, lvl, rare))];
+        return ["magic_power+=" + get_effect_value(WEAPON_ATTACK_2, lvl + 1, rare), "heal_power+=" + get_effect_value(WEAPON_ATTACK_2, lvl + 1, rare)];
     }
     // 盾牌
     affix[16141] = affix[16241] = function (lvl, rare) {

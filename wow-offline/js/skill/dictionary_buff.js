@@ -182,7 +182,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_fire_searingtotem";
-        buff.detail = "回合开始时，造成" + buff.X + "%法术强度的火焰伤害";
+        buff.detail = "战斗开始时施放灼热图腾，每回合造成" + buff.X + "%法术强度的火焰伤害";
         buff.effect = [];
         return buff;
     }
@@ -195,7 +195,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_nature_windfury";
-        buff.detail = "攻击命中时，" + buff.X + "%几率进行一次额外攻击，可以双持和使用部分双手武器";
+        buff.detail = "战斗开始时施放风怒图腾，" + buff.X + "%几率进行连击，可以双持和使用部分双手武器";
         buff.effect = [];
         return buff;
     }
@@ -208,7 +208,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "inv_spear_04";
-        buff.detail = "回合开始时，回复" + buff.X + "%治疗强度的生命";
+        buff.detail = "战斗开始时施放治疗之泉图腾，每回合回复" + buff.X + "%治疗强度的生命";
         buff.effect = [];
         return buff;
     }
@@ -253,7 +253,7 @@ function new_buff() {
         buff.icon = "ability_druid_catform";
         buff.detail = "移动速度+" + buff.X + "%，敏捷+" + buff.Y + "%";
         buff.effect = [
-            "move_speed+=" + buff.X,
+            "speed_move+=" + buff.X,
             "agi_percent+=" + buff.Y
         ];
         return buff;
@@ -338,6 +338,46 @@ function new_buff() {
         return buff;
     }
     buff[63] = buff.rogue_3();
+
+    // 痛苦
+    buff.warlock_1 = function () {
+        let buff = {};
+        buff.name = "虚弱诅咒";
+        buff.T = -1;
+        buff.X = 20;
+        buff.icon = "spell_shadow_curseofmannoroth";
+        buff.detail = "战斗开始时对目标施放痛苦诅咒，使其造成的伤害降低" + buff.X + "%";
+        buff.effect = [];
+        return buff;
+    }
+    buff[81] = buff.warlock_1();
+
+    // 恶魔
+    buff.warlock_2 = function () {
+        let buff = {};
+        buff.name = "鲁莽诅咒";
+        buff.T = -1;
+        buff.X = 20;
+        buff.icon = "spell_shadow_unholystrength";
+        buff.detail = "战斗开始时对目标施放鲁莽诅咒，使其物理抗性降低" + buff.X + "%";
+        buff.effect = [];
+        return buff;
+    }
+    buff[82] = buff.warlock_2();
+
+    // 毁灭
+    buff.warlock_3 = function () {
+        let buff = {};
+        buff.name = "元素诅咒";
+        buff.T = -1;
+        buff.X = 20;
+        buff.Y = 10;
+        buff.icon = "spell_shadow_chilltouch";
+        buff.detail = "战斗开始时对目标施放元素诅咒，使其暗影和火焰抗性降低" + buff.X + "%";
+        buff.effect = [];
+        return buff;
+    }
+    buff[83] = buff.warlock_3();
 
     // 奥法
     buff.mage_1 = function () {

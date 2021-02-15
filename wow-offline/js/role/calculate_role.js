@@ -166,7 +166,9 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.name = role_status.name;
     role_battle.lvl = role_status.lvl;
     role_battle.job = role_status.job;
-    role_battle.move_speed = role_status.move_speed;
+    role_battle.speed_move = role_status.speed_move;
+    role_battle.speed_battle = role_status.speed_battle;
+    role_battle.speed_resource = role_status.speed_resource;
     role_battle.buffs = role_status.buffs;
     role_battle.debuffs = role_status.debuffs;
     role_battle.dots = role_status.dots;

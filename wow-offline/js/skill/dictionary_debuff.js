@@ -85,6 +85,59 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.warlock_1 = function () {
+        let debuff = {};
+        debuff.name = "虚弱诅咒";
+        debuff.T = -1;
+        debuff.X = 20;
+        debuff.icon = "spell_shadow_curseofmannoroth";
+        debuff.detail = "所有伤害-" + debuff.X + "%";
+        debuff.effect = [
+            "damage_all-=" + debuff.X
+        ];
+        return debuff;
+    }
+
+    debuff.warlock_2 = function () {
+        let debuff = {};
+        debuff.name = "鲁莽诅咒";
+        debuff.T = -1;
+        debuff.X = 20;
+        debuff.icon = "spell_shadow_unholystrength";
+        debuff.detail = "物理抗性-" + debuff.X;
+        debuff.effect = [
+            "res_physical-=" + debuff.X
+        ];
+        return debuff;
+    }
+
+    debuff.warlock_2_2 = function (X, T) {
+        let debuff = {};
+        debuff.name = "伤害加深";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_frost_stun";
+        debuff.detail = "受到的伤害+" + X + "%";
+        debuff.effect = [
+            "taken_damage_percent+=" + X
+        ];
+        return debuff;
+    }
+
+    debuff.warlock_3 = function () {
+        let debuff = {};
+        debuff.name = "元素诅咒";
+        debuff.T = -1;
+        debuff.X = 20;
+        debuff.icon = "spell_shadow_chilltouch";
+        debuff.detail = "暗影和火焰抗性-" + debuff.X;
+        debuff.effect = [
+            "res_shadow-=" + debuff.X,
+            "res_fire-=" + debuff.X
+        ];
+        return debuff;
+    }
+
     debuff.mage_3 = function (X) {
         let debuff = {};
         debuff.name = "刺骨";
@@ -140,7 +193,7 @@ function new_debuff() {
 
     debuff.taken_damage_percent_increase = function (X, T) {
         let debuff = {};
-        debuff.name = "易伤";
+        debuff.name = "伤害加深";
         debuff.T = T;
         debuff.X = X;
         debuff.icon = "spell_frost_stun";

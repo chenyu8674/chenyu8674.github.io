@@ -99,9 +99,16 @@ function refresh_current_status_base() {
     $("#current_status_name").text(current_character.name);
     $("#current_status_job").text("等级 " + current_character.lvl + " " + dictionary_job.job_name[current_character.job]);
     $("#current_equipment_lvl").text("装备等级 " + get_equipment_lvl(current_character));
-    $("#current_status_area_2").html(
-        "承受伤害：" + role_battle_1.taken_damage_percent + "%<br/>" +
-        "承受治疗：" + role_battle_1.taken_heal_percent + "%<br/>"
+    let current_status_area_2 = $("#current_status_area_2");
+    current_status_area_2.empty();
+    create_status_area_2_line("移动速度：" + role_battle_1.speed_move + "%<br/>",
+        "影响角色在地图上的移动速度", current_status_area_2
+    );
+    create_status_area_2_line("战斗速度：" + role_battle_1.speed_battle + "%<br/>",
+        "影响角色战斗和休息速度<br/>当前间隔为 " + (TURN_TIME / 10 / role_battle_1.speed_battle).toFixed(3) + " 秒", current_status_area_2
+    );
+    create_status_area_2_line("资源获取：" + role_battle_1.speed_resource + "%<br/>",
+        "影响角色通过战斗获得的经验和金钱数量", current_status_area_2
     );
 }
 
@@ -110,11 +117,44 @@ function refresh_current_status_exp() {
     let exp_percent = get_exp_percent(lvl, current_character.exp);
     let exp = Math.round(exp_percent * LVL_EXP[lvl - 1]);
     let exp_max = LVL_EXP[lvl - 1];
-    $("#current_status_area_1").html(
-        "生命值：" + role_battle_1.current_health_value + "/" + role_battle_1.max_health_value + "<br/>" +
-        "护盾值：" + role_battle_1.current_shield_value + "<br/>" +
-        "经验值：" + (lvl >= MAX_LVL ? LVL_EXP[MAX_LVL - 1] + "/" + LVL_EXP[MAX_LVL - 1] : exp + "/" + exp_max)
+    let current_status_area_1 = $("#current_status_area_1");
+    current_status_area_1.empty();
+    create_status_area_1_line("生命值：" + role_battle_1.current_health_value + "/" + role_battle_1.max_health_value + "<br/>",
+        "当前/最大生命值", current_status_area_1
     );
+    create_status_area_1_line("护盾值：" + role_battle_1.current_shield_value + "<br/>",
+        "当前护盾值", current_status_area_1
+    );
+    create_status_area_1_line("经验值：" + (lvl >= MAX_LVL ? LVL_EXP[MAX_LVL - 1] + "/" + LVL_EXP[MAX_LVL - 1] : exp + "/" + exp_max) + "<br/>",
+        "当前/升级所需经验值", current_status_area_1
+    );
+}
+
+function create_status_area_1_line(show, info, view) {
+    let line = $("<div>" + show + "</div>");
+    line.css("float", "left");
+    line.css("margin-right", "100px");
+    line.hover(function () {
+        line.css("color", "goldenrod");
+        show_text_info($(this), info);
+    }, function () {
+        line.css("color", "whitesmoke");
+        hide_info();
+    });
+    view.append(line);
+}
+
+function create_status_area_2_line(show, info, view) {
+    let line = $("<div>" + show + "</div>");
+    line.css("float", "left");
+    line.hover(function () {
+        line.css("color", "goldenrod");
+        show_text_info($(this), info);
+    }, function () {
+        line.css("color", "whitesmoke");
+        hide_info();
+    });
+    view.append(line);
 }
 
 function create_status_line(show, info) {
@@ -124,7 +164,7 @@ function create_status_line(show, info) {
     if (show.length > 0) {
         line.css("margin-right", "30px");
     } else {
-        line.css("height", "18px");
+        line.css("height", "15px");
         line.css("margin-right", "150px");
     }
     line.hover(function () {
@@ -180,7 +220,7 @@ function refresh_current_status_1() {
         + "受到的攻击伤害减少 " + (calculate_armor_attack(role_battle_1) * 100).toFixed(2) + "%"
     );
     create_status_line("法术护甲：" + role_battle_1.armor_magic,
-        (role_battle_1.spr * spr_to_armor_magic) + "+" + (role_status_1.armor_magic + role_status_1.armor_all) + " (" + (role_status_1.armor_attack_percent + role_status_1.armor_all_percent) + "%)<br/>"
+        (role_battle_1.spr * spr_to_armor_magic) + "+" + (role_status_1.armor_magic + role_status_1.armor_all) + " (" + (role_status_1.armor_magic_percent + role_status_1.armor_all_percent) + "%)<br/>"
         + "受到的法术伤害减少 " + (calculate_armor_magic(role_battle_1) * 100).toFixed(2) + "%"
     );
     create_status_line("", "");
@@ -240,51 +280,57 @@ function get_mastery_html() {
     let mastery_percent = calculate_original_mastery(role_battle_1).toFixed(2);
     switch (role_battle_1.job) {
         case 11:
-            return "装备双手武器且致死打击命中时，" + mastery_percent + "%几率触发一次压制"
+            return "装备双手武器且致死打击命中时，" + mastery_percent + "%几率触发一次压制";
         case 12:
-            return "嗜血的生命回复效果提高" + mastery_percent + "%"
+            return "嗜血的生命回复效果提高" + mastery_percent + "%";
         case 13:
-            return "施放破甲时，获得" + mastery_percent + "%格挡值的伤害护盾"
+            return "施放破甲时，获得" + mastery_percent + "%格挡值的伤害护盾";
         case 21:
-            return "神圣震击获得" + mastery_percent + "%治疗强度的伤害加成"
+            return "神圣震击获得" + mastery_percent + "%治疗强度的伤害加成";
         case 22:
-            return "清算造成的神圣伤害的" + mastery_percent + "%转化为生命回复"
+            return "清算造成的神圣伤害的" + mastery_percent + "%转化为生命回复";
         case 23:
-            return "命令圣印的触发几率提高" + mastery_percent + "%"
+            return "命令圣印的触发几率提高" + mastery_percent + "%";
         case 31:
-            return "施放多重射击和狂野怒火时，" + mastery_percent + "%几率进行一次额外攻击"
+            return "施放多重射击和狂野怒火时，" + mastery_percent + "%几率进行一次额外攻击";
         case 32:
-            return "奥术射击命中时，" + mastery_percent + "%几率重置瞄准射击的冷却时间"
+            return "奥术射击命中时，" + mastery_percent + "%几率重置瞄准射击的冷却时间";
         case 33:
-            return "猛禽一击受到的闪避率加成提高" + mastery_percent + "%"
+            return "猛禽一击受到的闪避率加成提高" + mastery_percent + "%";
         case 41:
-            return "施放元素掌握时，额外获得" + mastery_percent + "%伤害穿透"
+            return "施放元素掌握时，额外获得" + mastery_percent + "%伤害穿透";
         case 42:
-            return "风怒武器的触发几率提高" + mastery_percent + "%"
+            return "风怒武器的触发几率提高" + mastery_percent + "%";
         case 43:
-            return "施放治疗波可使所有护甲提高" + mastery_percent + "%，持续5回合"
+            return "施放治疗波可使所有护甲提高" + mastery_percent + "%，持续5回合";
         case 51:
-            return "月火术和阳炎术造成的持续伤害提高" + mastery_percent + "%"
+            return "月火术和阳炎术造成的持续伤害提高" + mastery_percent + "%";
         case 52:
-            return "凶猛撕咬从每个连击点获得的伤害加成提高" + mastery_percent + "%"
+            return "凶猛撕咬从每个连击点获得的伤害加成提高" + mastery_percent + "%";
         case 53:
-            return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾"
+            return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾";
         case 61:
-            return "冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%"
+            return "冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%";
         case 62:
-            return "邪恶攻击命中时，" + mastery_percent + "%几率获得一个额外的连击点"
+            return "邪恶攻击命中时，" + mastery_percent + "%几率获得一个额外的连击点";
         case 63:
-            return "割裂造成伤害的" + mastery_percent + "%转化为生命回复"
+            return "割裂造成伤害的" + mastery_percent + "%转化为生命回复";
         case 54:
-            return "战斗开始时召唤树人作战，每回合从敌方吸取" + mastery_percent + "%治疗强度的生命"
+            return "战斗开始时召唤树人作战，每回合从敌方吸取" + mastery_percent + "%治疗强度的生命";
+        case 81:
+            return "吸取生命的效果提高" + mastery_percent + "%";
+        case 82:
+            return "顺劈斩命中时，" + mastery_percent + "%几率附加伤害加深效果";
+        case 83:
+            return "暗影箭命中时，" + mastery_percent + "%几率施放燃烧，结算献祭的剩余伤害并重置其冷却时间";
         case 91:
-            return "施放唤醒时，" + mastery_percent + "%几率使效果提高50%"
+            return "施放唤醒时，" + mastery_percent + "%几率使效果提高50%";
         case 92:
-            return "未暴击的火焰法术使暴击率提高" + mastery_percent + "%，叠加至造成暴击为止"
+            return "未暴击的火焰法术使暴击率提高" + mastery_percent + "%，叠加至造成暴击为止";
         case 93:
-            return "每层寒冰箭的附加效果使目标的所有伤害额外降低" + mastery_percent + "%"
+            return "每层寒冰箭的附加效果使目标的所有伤害额外降低" + mastery_percent + "%";
         default:
-            return "（施工中）技能效果提高" + mastery_percent + "%"
+            return "（施工中）技能效果提高" + mastery_percent + "%";
     }
 }
 
@@ -292,6 +338,14 @@ function refresh_current_status_2() {
     let current_status = $("#current_status");
     current_status.empty();
     current_status.attr("class", "current_status_2");
+
+    create_status_line("承受伤害：" + role_battle_1.taken_damage_percent + "%",
+        "受到的所有伤害的总百分比"
+    );
+    create_status_line("承受治疗：" + role_battle_1.taken_heal_percent + "%",
+        "受到的所有治疗的总百分比"
+    );
+    create_status_line("", "");
     create_status_line("物理伤害：" + role_battle_1.damage_physical + "%",
         "造成的物理伤害的百分比"
     );

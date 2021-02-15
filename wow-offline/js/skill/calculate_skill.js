@@ -95,7 +95,7 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     if (show_hit_percent_in_log) {
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 命中率：" + hit_chance);
     }
-    let is_hit = random_percent(hit_chance);
+    let is_hit = element_type === element_chaos ? true : random_percent(hit_chance);
     if (!is_hit) {
         let damage_obj = {};
         damage_obj.attacker_name = attacker.name;
@@ -169,8 +169,8 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     // 伤害随机浮动(0.9~1.1)
     damage_value *= 1 + Math.random() * 0.1;
     damage_value *= 1 - Math.random() * 0.1;
-    // 每差1级，伤害浮动5%，范围50~200%
-    let lvl_percent = (attacker.lvl - target.lvl) * 5;
+    // 每差1级，伤害浮动3%，范围50~200%
+    let lvl_percent = (attacker.lvl - target.lvl) * 3;
     if (lvl_percent > 100) {
         lvl_percent = 100;
     }
@@ -198,7 +198,7 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
         damage_value = 0;
     }
     // 计算格挡值
-    let block_chance = calculate_block(attacker, target) + extra_block;
+    let block_chance = element_type === element_chaos ? false : calculate_block(attacker, target) + extra_block;
     if (show_block_percent_in_log) {
         console.log(attacker.name + "->" + target.name + " " + skill_name + " 格挡率：" + block_chance);
     }
@@ -215,7 +215,7 @@ function calculate_skill_attack(attacker, target, skill_name, damage_percent, at
     // 计算伤害吸收
     let absorb_value = 0;
     let shield_point = target.current_shield_value;
-    if (pierce_shield) {
+    if (element_type === element_chaos || pierce_shield) {
         shield_point = 0;
     }
     if (damage_value > 0 && shield_point > 0) {
@@ -318,8 +318,8 @@ function calculate_dot_final_damage(attacker, target, skill_name, damage_value, 
     // 伤害随机浮动(0.9~1.1)
     damage_value *= 1 + Math.random() * 0.1;
     damage_value *= 1 - Math.random() * 0.1;
-    // 每差1级，伤害浮动5%，范围50~200%
-    let lvl_percent = (attacker.lvl - target.lvl) * 5;
+    // 每差1级，伤害浮动3%，范围50~200%
+    let lvl_percent = (attacker.lvl - target.lvl) * 3;
     if (lvl_percent > 100) {
         lvl_percent = 100;
     }
@@ -551,9 +551,12 @@ function calculate_original_hit(attacker) {
 function calculate_hit(attacker, target) {
     let hit_chance = calculate_original_hit(attacker);
     let dodge_chance = calculate_original_dodge(target);
-    let lvl_chance = (attacker.lvl - target.lvl) * 3;// 每差1级，命中率浮动3%
+    let lvl_chance = (attacker.lvl - target.lvl) * 2;// 每差1级，命中率浮动2%
     if (lvl_chance > 30) {
         lvl_chance = 30;
+    }
+    if (lvl_chance < -30) {
+        lvl_chance = -30;
     }
     return hit_chance - dodge_chance + lvl_chance;
 }
@@ -583,9 +586,12 @@ function calculate_original_critical(attacker) {
  * @return {number}
  */
 function calculate_critical(attacker, target) {
-    let lvl_chance = (attacker.lvl - target.lvl) * 3;// 每差1级，暴击率浮动3%
+    let lvl_chance = (attacker.lvl - target.lvl) * 2;// 每差1级，暴击率浮动2%
     if (lvl_chance > 30) {
         lvl_chance = 30;
+    }
+    if (lvl_chance < -30) {
+        lvl_chance = -30;
     }
     return calculate_original_critical(attacker) + lvl_chance;
 }
@@ -613,9 +619,12 @@ function calculate_block(attacker, target) {
     if (!has_equip_shield(target)) {
         return 0;
     } else {
-        let lvl_chance = (target.lvl - attacker.lvl) * 3;// 每差1级，格挡率浮动3%
+        let lvl_chance = (target.lvl - attacker.lvl) * 2;// 每差1级，格挡率浮动2%
         if (lvl_chance > 30) {
             lvl_chance = 30;
+        }
+        if (lvl_chance < -30) {
+            lvl_chance = -30;
         }
         return calculate_original_block(target) + lvl_chance;
     }

@@ -240,7 +240,7 @@ function new_monster() {
     {
         monster["骷髅战士"] = {species: 3, type: 1, rare: 2, skills: "冲锋"}
         monster["骷髅法师"] = {species: 3, type: 9, rare: 2, skills: "冰法"}
-        monster["骷髅医师"] = {species: 2, type: 8, rare: 2, skills: "暗法"}
+        monster["骷髅医师"] = {species: 3, type: 8, rare: 2, skills: "暗法"}
         monster["结网毒蜘蛛"] = {species: 2, type: 3, rare: 2, skills: "毒药"}
         monster["疯狂的恐狼"] = {species: 2, type: 2, rare: 2, skills: "撕咬"}
         monster["夜行织影狼人"] = {species: 1, type: 8, rare: 2, skills: ["暗法", "暗言术：痛"]}

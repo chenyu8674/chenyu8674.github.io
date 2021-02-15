@@ -128,7 +128,7 @@ function show_heal_icon() {
             battle_log("");
             battle_log(current_character.name + " 开始休息");
             clearTimeout(self_heal_timer);
-            self_heal_timer = setTimeout(heal_loop, 100);
+            self_heal_timer = setTimeout(heal_loop, 10);
         }
         e.stopPropagation();
         return false;
@@ -150,7 +150,8 @@ function heal_loop() {
         battle_log(current_character.name + " 恢复了全部生命");
     } else {
         clearTimeout(self_heal_timer);
-        self_heal_timer = setTimeout(heal_loop, TURN_TIME);
+        let timeout = TURN_TIME * 100 / role_battle_1.speed_battle;
+        self_heal_timer = setTimeout(heal_loop, timeout);
     }
     role_battle_1.current_health_value = role_health_1;
     refresh_battle_status(true);
@@ -401,7 +402,7 @@ function show_attack_icon() {
         return false;
     });
     attack_next.hover(function () {
-        show_text_info(attack_next, "<div style='color:goldenrod;letter-spacing:1px;'>" + (map_info.type === 1 ? "进攻" : "前进") + " !</div><div>向" + (map_info.type === 1 ? "最近的" : "下一个") + "敌人发起攻击</div>");
+        show_text_info(attack_next, "<div style='color:goldenrod;letter-spacing:1px;'>" + (map_info.type === 1 ? "进攻" : "前进") + "！</div><div>向" + (map_info.type === 1 ? "最近的" : "下一个") + "敌人发起攻击</div>");
     }, function () {
         hide_info();
     });
@@ -461,7 +462,7 @@ function do_move() {
  */
 function move_loop() {
     let move_distance = MOVE_DISTANCE;
-    move_distance *= role_battle_1.move_speed / 100;
+    move_distance *= role_battle_1.speed_move / 100;
     if (move_distance > move_step) {
         move_distance = move_step;
     }
@@ -528,6 +529,7 @@ function on_battle_end(index) {
         }
         // 计算经验/金钱
         let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
+        exp *= role_battle_1.speed_resource / 100;
         let money = exp;
         switch (monster.rare) {
             case 1:

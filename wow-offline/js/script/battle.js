@@ -77,6 +77,7 @@ function turn_loop() {
     role_battle_1.current_health_value = role_health_1;
     role_battle_1.current_shield_value = role_shield_1;
     if (battle_turn === 1) {
+        turn_time = TURN_TIME * 100 / role_battle_1.speed_battle;
         if (in_test_mode) {
             role_health_1 = role_battle_1.max_health_value;
             role_shield_1 = 0;

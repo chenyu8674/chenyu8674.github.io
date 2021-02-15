@@ -47,7 +47,7 @@
 #current_status_area_2 {
     position: absolute;
     top: 518px;
-    left: 192px;
+    left: 225px;
     font-size: 16px;
     line-height: 35px;
 }
@@ -118,7 +118,7 @@
 .current_status_2 {
     height: 588px;
     padding-top: 18px;
-    line-height: 24px;
+    line-height: 23px;
 }
 
 #current_equipments_icon {

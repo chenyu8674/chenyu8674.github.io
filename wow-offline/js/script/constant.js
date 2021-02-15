@@ -1,7 +1,7 @@
 /** 常量定义 **/
 
 // 等级上限
-let MAX_LVL = 20;
+let MAX_LVL = 60;
 // 最大抗性
 let MAX_RES = 75;
 // 最大包裹数量
@@ -132,7 +132,7 @@ let mastery_per_lvl = 5;// 每级附加精通等级
 
 let mastery_coefficient = [];
 mastery_coefficient[11] = 2;
-mastery_coefficient[12] = 6;
+mastery_coefficient[12] = 4;
 mastery_coefficient[13] = 4;
 mastery_coefficient[21] = 2;
 mastery_coefficient[22] = 5;
@@ -150,6 +150,9 @@ mastery_coefficient[54] = 2;
 mastery_coefficient[61] = 20;
 mastery_coefficient[62] = 4;
 mastery_coefficient[63] = 4;
+mastery_coefficient[81] = 4;
+mastery_coefficient[82] = 4;
+mastery_coefficient[83] = 2;
 mastery_coefficient[91] = 4;
 mastery_coefficient[92] = 4;
 mastery_coefficient[93] = 1;

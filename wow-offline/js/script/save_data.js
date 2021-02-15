@@ -95,14 +95,9 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    if (is_in_local_mode()) {
-        if (current_character.exp === 0) {
-            add_experience(20000);
-        }
-    }
-    // if (current_character.name === "GHOST") {
+    // if (is_in_local_mode()) {
     //     if (current_character.exp === 0) {
-    //         add_experience(20000);
+    //         add_experience(MAX_EXP);
     //     }
     // }
     current_character = calculate_base_property(current_character);
@@ -120,6 +115,10 @@ function create_character(job, exp, name) {
         current_character.money = 99999999;
     }
     if (exp === 0) {
+        if (is_in_local_mode() || current_character.name === "GHOST") {
+            current_character.items.push(33);
+            current_character.items.push(34);
+        }
         // 新手装备
         current_character.equipments.push(31);
         current_character.equipments.push(32);

@@ -260,7 +260,7 @@ function show_text_info(view, html) {
     info.css("top", y + "px");
     info.append(html);
     window_view.append(info);
-    if (info.offset().top + info.outerHeight() > view_equipment.outerHeight() - 5) {
-        info.css("top", view_equipment.outerHeight() - info.outerHeight() - 5 + "px");
+    if (y + info.outerHeight() > window_margin_top + window_height - 5) {
+        info.css("top", window_margin_top + window_height - info.outerHeight() - 5 + "px");
     }
 }

@@ -5,7 +5,9 @@ function new_role_whole() {
     role_whole.lvl = 0;
     role_whole.job = 0;
 
-    role_whole.move_speed = 100;// 移动速度
+    role_whole.speed_move = 100;// 移动速度
+    role_whole.speed_battle = 100;// 战斗速度
+    role_whole.speed_resource = 100;// 金钱获取
 
     role_whole.current_health_value = 0;// 当前生命值
     role_whole.current_shield_value = 0;// 伤害护盾

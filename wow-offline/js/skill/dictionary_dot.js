@@ -118,6 +118,28 @@ function new_dot() {
         return dot;
     }
 
+    dot.warlock_1 = function (damage, turn) {
+        let dot = {};
+        dot.name = "腐蚀术";
+        dot.damage = damage;
+        dot.T = turn;
+        dot.type = element_shadow;
+        dot.icon = "spell_shadow_abominationexplosion";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
+    dot.warlock_3 = function (damage) {
+        let dot = {};
+        dot.name = "献祭";
+        dot.damage = damage;
+        dot.T = 5;
+        dot.type = element_fire;
+        dot.icon = "spell_fire_immolation";
+        dot.detail = "回合开始时，受到 " + dot.damage + " 点 " + get_element_name(dot.type) + " 伤害";
+        return dot;
+    }
+
     dot.physical = function (damage, turn) {
         let dot = {};
         dot.name = "流血";

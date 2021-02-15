@@ -209,9 +209,9 @@ function new_job() {
     job.job_name[job.warlock_2] = "恶魔术士";
     job.job_info[job.warlock_2] = "恶魔指挥官，扭曲恶魔之魂来施展破坏之力。";
     job.job_main[job.warlock_2] = "int";
-    job.job_name[job.warlock_3] = "术士";
+    job.job_name[job.warlock_3] = "毁灭术士";
     job.job_info[job.warlock_3] = "混乱魔法的大师，能用灾厄的烈焰将敌人焚烧殆尽。";
-    job.job_info[job.warlock_3] = "int";
+    job.job_main[job.warlock_3] = "int";
 
     // 职业：法师
     job.mage = 90;
