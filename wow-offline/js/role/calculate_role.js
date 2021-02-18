@@ -102,6 +102,9 @@ function refresh_attribute_equipments(role_status) {
         for (let i = 0; i < battle_equipments.length; i++) {
             let equipment = battle_equipments[i];
             equipment = create_equipment_by_model(equipment);
+            if (role_status.lvl < equipment.c_lvl) {
+                continue;
+            }
             if (!check_can_equip(role_status, equipment)) {
                 continue;
             }

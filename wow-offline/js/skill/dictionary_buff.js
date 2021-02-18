@@ -182,7 +182,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_fire_searingtotem";
-        buff.detail = "战斗开始时施放灼热图腾，每回合造成" + buff.X + "%法术强度的火焰伤害";
+        buff.detail = "回合开始时，造成" + buff.X + "%法术强度的火焰伤害";
         buff.effect = [];
         return buff;
     }
@@ -195,7 +195,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_nature_windfury";
-        buff.detail = "战斗开始时施放风怒图腾，" + buff.X + "%几率进行连击，可以双持和使用部分双手武器";
+        buff.detail = "攻击命中时" + buff.X + "%几率进行一次额外攻击，可以双持和使用部分双手武器";
         buff.effect = [];
         return buff;
     }
@@ -208,7 +208,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "inv_spear_04";
-        buff.detail = "战斗开始时施放治疗之泉图腾，每回合回复" + buff.X + "%治疗强度的生命";
+        buff.detail = "回合开始时，回复" + buff.X + "%治疗强度的生命";
         buff.effect = [];
         return buff;
     }
@@ -358,12 +358,12 @@ function new_buff() {
         buff.name = "真言术：韧";
         buff.T = -1;
         buff.X = 20;
-        buff.Y = 100;
+        buff.Y = 5;
         buff.icon = "spell_holy_wordfortitude";
-        buff.detail = "最大生命值+" + buff.X + "%，所有护甲+" + buff.Y + "%";
+        buff.detail = "最大生命值+" + buff.X + "%，韧性等级+" + buff.Y * (current_character == null ? 1 : current_character.lvl) + "（受人物等级影响）";
         buff.effect = [
             "health_percent+=" + buff.X,
-            "armor_all_percent+=" + buff.Y
+            "resilient_rate+=5*current_character.lvl"
         ];
         return buff;
     }
@@ -389,7 +389,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_shadow_curseofmannoroth";
-        buff.detail = "使目标造成的伤害-" + buff.X + "%";
+        buff.detail = "使敌方造成的伤害-" + buff.X + "%";
         buff.effect = [];
         return buff;
     }
@@ -403,7 +403,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 100;
         buff.icon = "spell_shadow_unholystrength";
-        buff.detail = "使目标的物理抗性-" + buff.X + "%。变身为恶魔卫士作战，攻击护甲+" + buff.Y + "%";
+        buff.detail = "变身恶魔卫士，攻击护甲+" + buff.Y + "%，并使敌方的物理抗性-" + buff.X + "%";
         buff.effect = [
             "armor_attack_percent+=" + buff.Y
         ];
@@ -419,7 +419,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 10;
         buff.icon = "spell_shadow_chilltouch";
-        buff.detail = "使目标的暗影和火焰抗性-" + buff.X + "%";
+        buff.detail = "使敌方的暗影和火焰抗性-" + buff.X + "%";
         buff.effect = [];
         return buff;
     }
@@ -433,7 +433,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 10;
         buff.icon = "spell_magearmor";
-        buff.detail = "所有抗性+" + buff.X + "%，最大生命+" + buff.Y + "%";
+        buff.detail = "所有抗性+" + buff.X + "%，最大生命值+" + buff.Y + "%";
         buff.effect = [
             "res_all+=" + buff.X,
             "health_percent+=" + buff.Y

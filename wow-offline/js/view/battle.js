@@ -97,6 +97,7 @@ function show_battle_view(info) {
     battle_map.css("background-image", "url(\"./img/map/" + map + ".jpg\")");
     $("#self_heal").show();
     show_heal_icon();
+    hide_monster_area();
     if (map_info.type === 1) {
         // 练级地图
         if (is_in_local_mode()) {

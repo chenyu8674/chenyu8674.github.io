@@ -956,9 +956,9 @@ function new_player_skill() {
         skill.name = "出血";
         skill.type = type_attack;
         skill.X = 100;
-        skill.Y = 0.93;
+        skill.Y = 1;
         skill.icon = "spell_shadow_lifedrain";
-        skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，且韧性等级降低" + Math.round(4 + (current_character == null ? 1 : +current_character.lvl) * skill.Y) + "点(受人物等级影响)，持续" + dictionary_debuff.rogue_3().T + "回合。命中时获得一个连击点。";
+        skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，且韧性等级降低" + (current_character == null ? 1 : current_character.lvl) * skill.Y + "点（受人物等级影响），持续" + dictionary_debuff.rogue_3().T + "回合。命中时获得一个连击点。";
         skill.attempt = function (attacker) {
             let damage_count = get_skill_point(attacker);
             if (battle_turn === 1 || damage_count >= 100) {
@@ -970,7 +970,7 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
             if (damage_obj.is_hit) {
-                let resilient_rate = Math.round(4 + attacker.lvl * skill.Y);
+                let resilient_rate = attacker.lvl * skill.Y;
                 target.debuffs.push(new_debuff().rogue_3(resilient_rate));
                 add_skill_point(attacker, 1);
                 damage_obj.skill_name += "(" + get_skill_point(attacker) + ")";
@@ -1134,14 +1134,15 @@ function new_player_skill() {
         skill.name = "吸取生命";
         skill.type = type_magic;
         skill.X = 50;
+        skill.Y = 100;
         skill.icon = "spell_shadow_lifedrain02";
-        skill.detail = "吸取目标的生命力，对其造成" + skill.X + "%法术强度的暗影伤害，并将造成的伤害转化为生命回复。";
+        skill.detail = "吸取目标的生命力，对其造成" + skill.X + "%法术强度的暗影伤害，并将造成伤害的" + skill.Y + "%转化为生命回复。";
         skill.cast = function (attacker, target) {
             let mastery_percent = calculate_original_mastery(attacker);
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X * (1 + mastery_percent / 100), skill.type, element_shadow);
             let heal_obj = [];
             if (damage_obj.is_hit) {
-                heal_obj = calculate_flat_heal(attacker, target, skill.name, damage_obj.damage_value);
+                heal_obj = calculate_flat_heal(attacker, target, skill.name, damage_obj.damage_value * skill.Y / 100);
             }
             return skill_cast_result(damage_obj, heal_obj);
         };
@@ -1188,11 +1189,11 @@ function new_player_skill() {
         skill.detail = "向目标冲锋，造成" + skill.X + "%法术强度的物理伤害。同时附加伤害加深效果，使目标下一回合受到的伤害提高" + skill.Y + "%。";
         skill.attempt = function (attacker, target) {
             if (battle_turn === 1) {
+                battle_log(attacker.name + " 施放了 " + skill.name_2);
                 let debuff = new_debuff().warlock_2();
                 target.debuffs.push(debuff);
                 target.res_physical -= debuff.X;
                 battle_log(attacker.name + " 施放了 " + debuff.name);
-                battle_log(attacker.name + " 施放了 " + skill.name_2);
             }
             return !skill_in_cd(attacker, skill);
         }

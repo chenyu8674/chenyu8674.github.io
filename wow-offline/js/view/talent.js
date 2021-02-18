@@ -71,7 +71,7 @@ function refresh_talent_view() {
         info_job_skill_1.addClass("info_job_skill_1");
         info_job_skill_1.css("width", item_width - 125 + "px");
         let buff_name = dictionary_buff[current_job].name;
-        let buff_detail = dictionary_buff[current_job].detail;
+        let buff_detail = new_buff()[current_job].detail;
         info_job_skill_1.html("<span style='color:goldenrod'>" + buff_name + "（天赋加成）</span><br/>" + buff_detail);
         view_job_info.append(info_job_skill_1);
 

@@ -229,7 +229,7 @@ function refresh_current_status_1() {
         + "命中几率提高 " + (calculate_original_hit(role_battle_1) - role_battle_1.hit_chance_final).toFixed(2) + "%"
     );
     create_status_line("命中几率：" + calculate_original_hit(role_battle_1).toFixed(2) + "%",
-        "技能命中敌方的基础几率<br/>受到双方等级与对方闪避率的影响"
+        "技能命中目标的基础几率<br/>受到双方等级与目标闪避率的影响"
     );
     create_status_line("暴击等级：" + role_battle_1.critical_rate,
         role_battle_1.agi * agi_to_critical_rate + "+" + role_status_1.critical_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
@@ -247,7 +247,7 @@ function refresh_current_status_1() {
         + "闪避几率提高 " + (calculate_original_dodge(role_battle_1) - role_battle_1.dodge_chance_final).toFixed(2) + "%"
     );
     create_status_line("闪避几率：" + calculate_original_dodge(role_battle_1).toFixed(2) + "%",
-        "闪避敌方技能的几率<br/>受到双方等级的影响"
+        "闪避目标技能的几率<br/>受到双方等级的影响"
     );
     if (has_equip_shield(current_character)) {
         create_status_line("格挡等级：" + role_battle_1.block_rate,
@@ -255,11 +255,11 @@ function refresh_current_status_1() {
             + "格挡几率提高 " + (calculate_original_block(role_battle_1) - role_battle_1.block_chance_final).toFixed(2) + "%"
         );
         create_status_line("格挡几率：" + calculate_original_block(role_battle_1).toFixed(2) + "%",
-            "格挡敌方技能的几率<br/>受到双方等级的影响"
+            "格挡目标技能的几率<br/>受到双方等级的影响"
         );
         create_status_line("盾格挡值：" + role_battle_1.block_value,
             role_battle_1.str * str_to_block_value + "+" + role_status_1.block_value + " (" + role_status_1.block_value_percent + "%)<br/>"
-            + "格挡敌方技能时减少受到的伤害"
+            + "格挡目标技能时减少受到的伤害"
         );
     }
     create_status_line("", "");
@@ -316,7 +316,7 @@ function get_mastery_html() {
         case 63:
             return "割裂造成伤害的" + mastery_percent + "%转化为生命回复";
         case 54:
-            return "战斗开始时召唤树人作战，每回合从敌方吸取" + mastery_percent + "%治疗强度的生命";
+            return "战斗开始时召唤树人作战，每回合从目标吸取" + mastery_percent + "%治疗强度的生命";
         case 81:
             return "吸取生命的效果提高" + mastery_percent + "%";
         case 82:
@@ -347,69 +347,69 @@ function refresh_current_status_2() {
     );
     create_status_line("", "");
     create_status_line("物理伤害：" + role_battle_1.damage_physical + "%",
-        "造成的物理伤害的百分比"
+        "物理伤害的总百分比"
     );
     create_status_line("火焰伤害：" + role_battle_1.damage_fire + "%",
-        "造成的火焰伤害的百分比"
+        "火焰伤害的总百分比"
     );
     create_status_line("冰霜伤害：" + role_battle_1.damage_frost + "%",
-        "造成的冰霜伤害的百分比"
+        "冰霜伤害的总百分比"
     );
     create_status_line("自然伤害：" + role_battle_1.damage_natural + "%",
-        "造成的自然伤害的百分比"
+        "自然伤害的总百分比"
     );
     create_status_line("奥术伤害：" + role_battle_1.damage_arcane + "%",
-        "造成的奥术伤害的百分比"
+        "奥术伤害的总百分比"
     );
     create_status_line("神圣伤害：" + role_battle_1.damage_holy + "%",
-        "造成的神圣伤害的百分比"
+        "神圣伤害的总百分比"
     );
     create_status_line("暗影伤害：" + role_battle_1.damage_shadow + "%",
-        "造成的暗影伤害的百分比"
+        "暗影伤害的总百分比"
     );
     create_status_line("", "");
     create_status_line("物理抗性：" + role_battle_1.res_physical + "%",
-        "对物理伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对物理伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("火焰抗性：" + role_battle_1.res_fire + "%",
-        "对火焰伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对火焰伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("冰霜抗性：" + role_battle_1.res_frost + "%",
-        "对冰霜伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对冰霜伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("自然抗性：" + role_battle_1.res_natural + "%",
-        "对自然伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对自然伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("奥术抗性：" + role_battle_1.res_arcane + "%",
-        "对奥术伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对奥术伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("神圣抗性：" + role_battle_1.res_holy + "%",
-        "对神圣伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对神圣伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("暗影抗性：" + role_battle_1.res_shadow + "%",
-        "对暗影伤害的抗性百分比<br/>战斗中最高按" + MAX_RES + "%结算"
+        "对暗影伤害的抗性百分比<br/>战斗中最高按 " + MAX_RES + "% 结算"
     );
     create_status_line("", "");
     create_status_line("物理穿透：" + role_battle_1.pierce_physical + "%",
-        "物理伤害抵消对方抗性的百分比"
+        "物理伤害抵消目标抗性的百分比"
     );
     create_status_line("火焰穿透：" + role_battle_1.pierce_fire + "%",
-        "火焰伤害抵消对方抗性的百分比"
+        "火焰伤害抵消目标抗性的百分比"
     );
     create_status_line("冰霜穿透：" + role_battle_1.pierce_frost + "%",
-        "冰霜伤害抵消对方抗性的百分比"
+        "冰霜伤害抵消目标抗性的百分比"
     );
     create_status_line("自然穿透：" + role_battle_1.pierce_natural + "%",
-        "自然伤害抵消对方抗性的百分比"
+        "自然伤害抵消目标抗性的百分比"
     );
     create_status_line("奥术穿透：" + role_battle_1.pierce_arcane + "%",
-        "奥术伤害抵消对方抗性的百分比"
+        "奥术伤害抵消目标抗性的百分比"
     );
     create_status_line("神圣穿透：" + role_battle_1.pierce_holy + "%",
-        "神圣伤害抵消对方抗性的百分比"
+        "神圣伤害抵消目标抗性的百分比"
     );
     create_status_line("暗影穿透：" + role_battle_1.pierce_shadow + "%",
-        "暗影伤害抵消对方抗性的百分比"
+        "暗影伤害抵消目标抗性的百分比"
     );
 }
 
