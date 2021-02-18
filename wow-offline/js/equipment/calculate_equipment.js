@@ -301,6 +301,20 @@ function get_main_effect(effect, equipment) {
             }
         }
         return effect.replace("main", main);
+    } else if (effect.startsWith("second")) {
+        let second = current_character == null ? "agi" : dictionary_job.job_second[current_character.job];
+        if (equipment != null) {
+            if (equipment.type === 1 && equipment.pos !== 5 && (second === "str" || second === "agi")) {
+                second = "spr";
+            } else if (equipment.type === 3 && second === "agi") {
+                second = "str";
+            } else if (equipment.type === 4 && second === "str") {
+                second = "agi";
+            } else if (equipment.type === 4 && second === "int") {
+                second = "spr";
+            }
+        }
+        return effect.replace("second", second);
     } else {
         return effect;
     }

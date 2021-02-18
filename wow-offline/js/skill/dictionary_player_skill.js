@@ -858,7 +858,7 @@ function new_player_skill() {
         skill.type = type_attack;
         skill.X = 100;
         skill.icon = "ability_backstab";
-        skill.detail = "从背后攻击目标，造成" + skill.X + "%攻击强度的物理伤害，无法被闪避。命中时获得一个连击点。";
+        skill.detail = "从背后攻击目标，造成" + skill.X + "%攻击强度的物理伤害。命中时获得一个连击点。";
         skill.cast = function (attacker, target) {
             let damage_count = get_skill_point(attacker);
             let damage_obj;
@@ -866,7 +866,7 @@ function new_player_skill() {
                 // 伏击
                 set_skill_point(attacker, 0);
                 let mastery_percent = calculate_original_mastery(attacker);
-                damage_obj = calculate_skill_attack(attacker, target, skill.name_1, skill.X * (100 + mastery_percent) / 100, skill.type, element_physical, 999);
+                damage_obj = calculate_skill_attack(attacker, target, skill.name_1, skill.X * (100 + mastery_percent) / 100, skill.type, element_physical);
             } else {
                 damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical, 999);
             }
@@ -890,6 +890,12 @@ function new_player_skill() {
         skill.Y = 50;
         skill.icon = "ability_rogue_kidneyshot";
         skill.detail = "终结技，使目标造成的伤害降低" + skill.Y + "%，持续1回合。每个消耗的连击点使效果多持续1回合。";
+        skill.attempt = function (attacker) {
+            if (battle_turn === 1) {
+                attacker.critical_chance_final += dictionary_buff.rogue_1().X;
+            }
+            return !skill_in_cd(attacker, skill);
+        }
         skill.cast = function (attacker, target) {
             let damage_count = get_skill_point(attacker);
             let damage_obj = calculate_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X, skill.type, element_physical);
@@ -912,11 +918,6 @@ function new_player_skill() {
         skill.icon = "spell_shadow_ritualofsacrifice";
         skill.detail = "凶狠地攻击目标，造成" + skill.X + "%攻击强度的物理伤害。命中时获得一个连击点。";
         skill.cast = function (attacker, target) {
-            let damage_count = get_skill_point(attacker);
-            if (battle_turn === 1 || damage_count >= 100) {
-                attacker.attack_power_percent += 50;
-                set_skill_point(attacker, 0);
-            }
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
             if (damage_obj.is_hit) {
                 let mastery_percent = calculate_original_mastery(attacker);
@@ -939,12 +940,18 @@ function new_player_skill() {
         skill.Y = 50;
         skill.icon = "ability_rogue_eviscerate";
         skill.detail = "终结技，攻击目标的要害，造成" + skill.X + "%攻击强度的物理伤害。每个消耗的连击点使总伤害提高" + skill.Y + "%。";
+        skill.attempt = function (attacker) {
+            if (battle_turn === 1) {
+                attacker.attack_power_percent += dictionary_buff.rogue_2().X;
+            }
+            return !skill_in_cd(attacker, skill);
+        }
         skill.cast = function (attacker, target) {
             // 计算连击加成
             let damage_count = get_skill_point(attacker);
             let damage_obj = calculate_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X + skill.Y * damage_count, skill.type, element_physical);
             attacker.buffs.push(new_buff().rogue_2());
-            set_skill_point(attacker, 100);
+            set_skill_point(attacker, 0);
             return skill_cast_result(damage_obj);
         };
         return skill;
@@ -960,10 +967,8 @@ function new_player_skill() {
         skill.icon = "spell_shadow_lifedrain";
         skill.detail = "令目标流血不止，造成" + skill.X + "%攻击强度的物理伤害，且韧性等级降低" + (current_character == null ? 1 : current_character.lvl) * skill.Y + "点（受人物等级影响），持续" + dictionary_debuff.rogue_3().T + "回合。命中时获得一个连击点。";
         skill.attempt = function (attacker) {
-            let damage_count = get_skill_point(attacker);
-            if (battle_turn === 1 || damage_count >= 100) {
-                attacker.dodge_chance_final += 50;
-                set_skill_point(attacker, 0);
+            if (battle_turn === 1) {
+                attacker.dodge_chance_final += dictionary_buff.rogue_3().X;
             }
             return !skill_in_cd(attacker, skill);
         }
@@ -999,7 +1004,7 @@ function new_player_skill() {
             let mastery_percent = calculate_original_mastery(attacker);
             target.dots.push(new_dot().rogue_3(dot_damage, mastery_percent / 100));
             battle_log(attacker.name + " 施放了 " + skill.name + "(" + get_skill_point(attacker) + ")");
-            set_skill_point(attacker, 100);
+            set_skill_point(attacker, 0);
             return skill_cast_result();
         };
         return skill;

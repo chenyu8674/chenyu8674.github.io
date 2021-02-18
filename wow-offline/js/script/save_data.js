@@ -102,7 +102,8 @@ function create_character(job, exp, name) {
     // }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
-    current_character.buffs = [dictionary_buff[job]];
+    let buff = dictionary_buff[job];
+    current_character.buffs = buff.T < 0 ? [buff] : [];
     current_character.debuffs = [];
     current_character.dots = [];
     current_character.equipments = [];
