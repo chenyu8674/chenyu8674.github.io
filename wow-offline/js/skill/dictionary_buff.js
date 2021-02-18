@@ -389,7 +389,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_shadow_curseofmannoroth";
-        buff.detail = "目标造成的伤害-" + buff.X + "%";
+        buff.detail = "使目标造成的伤害-" + buff.X + "%";
         buff.effect = [];
         return buff;
     }
@@ -403,7 +403,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 100;
         buff.icon = "spell_shadow_unholystrength";
-        buff.detail = "目标的物理抗性-" + buff.X + "%。变身为恶魔卫士，攻击护甲+" + buff.Y + "%";
+        buff.detail = "使目标的物理抗性-" + buff.X + "%。变身为恶魔卫士作战，攻击护甲+" + buff.Y + "%";
         buff.effect = [
             "armor_attack_percent+=" + buff.Y
         ];
@@ -419,7 +419,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 10;
         buff.icon = "spell_shadow_chilltouch";
-        buff.detail = "目标的暗影和火焰抗性-" + buff.X + "%";
+        buff.detail = "使目标的暗影和火焰抗性-" + buff.X + "%";
         buff.effect = [];
         return buff;
     }
