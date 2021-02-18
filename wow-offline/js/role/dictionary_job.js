@@ -141,7 +141,7 @@ function new_job() {
     job.job_info[job.druid_2] = "致命的猎豹形态，利用撕咬和流血造成大量伤害。";
     job.job_main[job.druid_2] = "agi";
     job.job_name[job.druid_3] = "守护德鲁伊";
-    job.job_info[job.druid_3] = "强大的巨熊形态，吸收伤害并保护盟友。";
+    job.job_info[job.druid_3] = "强大的巨熊形态，以强壮身躯吸收伤害并保护盟友。";
     job.job_main[job.druid_3] = "str";
     job.job_name[job.druid_4] = "恢复德鲁伊";
     job.job_info[job.druid_4] = "化身生命之树，使用自然魔法使盟友重焕活力。";
@@ -185,7 +185,7 @@ function new_job() {
     job.job_info[job.priest_1] = "使用魔法护盾保护盟友，也能治愈他们的伤口。";
     job.job_main[job.priest_1] = "spr";
     job.job_name[job.priest_2] = "神圣牧师";
-    job.job_info[job.priest_2] = "多才多艺，能照顾单体和团队，死后也能继续治疗。";
+    job.job_info[job.priest_2] = "多才多艺，使用神圣力量照顾单体和团队。";
     job.job_main[job.priest_2] = "spr";
     job.job_name[job.priest_3] = "暗影牧师";
     job.job_info[job.priest_3] = "使用邪恶的暗影魔法和可怕的虚空魔法来根除敌人。";

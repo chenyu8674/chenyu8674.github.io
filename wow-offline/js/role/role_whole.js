@@ -45,7 +45,7 @@ function new_role_whole() {
     role_whole.magic_power_percent = 100;// 法术强度百分比
 
     role_whole.heal_power = 0;// 治疗强度
-    role_whole.heal_power_percent = 100;// 法术强度百分比
+    role_whole.heal_power_percent = 100;// 治疗强度百分比
 
     role_whole.armor_attack = 0;// 攻击护甲
     role_whole.armor_attack_percent = 100;// 攻击护甲百分比

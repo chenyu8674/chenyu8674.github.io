@@ -33,7 +33,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 5;
         buff.Y = 50;
-        buff.Z = 5;
+        buff.Z = 10;
         buff.icon = "ability_racial_avatar";
         buff.detail = "暴击率+" + buff.X + "%，暴击伤害+" + buff.Y + "%，承受伤害+" + buff.Z + "%";
         buff.effect = [
@@ -50,9 +50,9 @@ function new_buff() {
         let buff = {};
         buff.name = "防御姿态";
         buff.T = -1;
-        buff.X = 5;
+        buff.X = 10;
         buff.Y = 10;
-        buff.Z = -5;
+        buff.Z = -10;
         buff.icon = "ability_warrior_defensivestance";
         buff.detail = "格挡率+" + buff.X + "%，格挡值+" + buff.Y + "%，承受伤害" + buff.Z + "%";
         buff.effect = [
@@ -87,7 +87,7 @@ function new_buff() {
         buff.name = "王者祝福";
         buff.T = -1;
         buff.X = 10;
-        buff.Y = 5;
+        buff.Y = 10;
         buff.icon = "spell_magic_magearmor";
         buff.detail = "所有属性+" + buff.X + "%，格挡率+" + buff.Y + "%";
         buff.effect = [
@@ -137,9 +137,9 @@ function new_buff() {
         let buff = {};
         buff.name = "野性守护";
         buff.T = -1;
-        buff.X = 1;
+        buff.X = 1.5;
         buff.icon = "spell_nature_protectionformnature";
-        buff.detail = "猎人技能命中目标时，回复" + buff.X + "%最大生命值";
+        buff.detail = "技能命中目标时，回复" + buff.X + "%最大生命值";
         buff.effect = [];
         return buff;
     }
@@ -301,7 +301,7 @@ function new_buff() {
         buff.T = 1;
         buff.X = 50;
         buff.icon = "spell_ice_lament";
-        buff.detail = "进入战斗或施放终结技后，暴击率提高" + buff.X + "%，持续" + buff.T + "回合";
+        buff.detail = "进入战斗或施放终结技后，暴击率+" + buff.X + "%，持续" + buff.T + "回合";
         buff.effect = [
             "critical_chance_final+=" + buff.X
         ];
@@ -316,7 +316,7 @@ function new_buff() {
         buff.T = 1;
         buff.X = 50;
         buff.icon = "spell_shadow_shadowworddominate";
-        buff.detail = "进入战斗或施放终结技后，攻击强度提高" + buff.X + "%，持续" + buff.T + "回合";
+        buff.detail = "进入战斗或施放终结技后，攻击强度+" + buff.X + "%，持续" + buff.T + "回合";
         buff.effect = [
             "attack_power_percent+=" + buff.X
         ];
@@ -331,13 +331,56 @@ function new_buff() {
         buff.T = 1;
         buff.X = 50;
         buff.icon = "ability_vanish";
-        buff.detail = "进入战斗或施放终结技后，闪避率提高" + buff.X + "%，持续" + buff.T + "回合";
+        buff.detail = "进入战斗或施放终结技后，闪避率+" + buff.X + "%，持续" + buff.T + "回合";
         buff.effect = [
             "dodge_chance_final+=" + buff.X
         ];
         return buff;
     }
     buff[63] = buff.rogue_3();
+
+    // 戒律
+    buff.priest_1 = function () {
+        let buff = {};
+        buff.name = "真言术：盾";
+        buff.T = -1;
+        buff.X = 50;
+        buff.icon = "spell_holy_powerwordshield";
+        buff.detail = "战斗开始时施放真言术：盾，获得" + buff.X + "%最大生命值的伤害护盾";
+        buff.effect = [];
+        return buff;
+    }
+    buff[71] = buff.priest_1();
+
+    // 神圣
+    buff.priest_2 = function () {
+        let buff = {};
+        buff.name = "真言术：韧";
+        buff.T = -1;
+        buff.X = 20;
+        buff.Y = 100;
+        buff.icon = "spell_holy_wordfortitude";
+        buff.detail = "最大生命值+" + buff.X + "%，所有护甲+" + buff.Y + "%";
+        buff.effect = [
+            "health_percent+=" + buff.X,
+            "armor_all_percent+=" + buff.Y
+        ];
+        return buff;
+    }
+    buff[72] = buff.priest_2();
+
+    // 暗影
+    buff.priest_3 = function () {
+        let buff = {};
+        buff.name = "暗言术：痛";
+        buff.T = -1;
+        buff.X = 20;
+        buff.icon = "spell_shadow_shadowwordpain";
+        buff.detail = "战斗开始时施放暗言术：痛，每回合造成" + buff.X + "%法术强度的暗影伤害";
+        buff.effect = [];
+        return buff;
+    }
+    buff[73] = buff.priest_3();
 
     // 痛苦
     buff.warlock_1 = function () {
@@ -346,7 +389,7 @@ function new_buff() {
         buff.T = -1;
         buff.X = 20;
         buff.icon = "spell_shadow_curseofmannoroth";
-        buff.detail = "战斗开始时对目标施放痛苦诅咒，使其造成的伤害降低" + buff.X + "%";
+        buff.detail = "目标造成的伤害-" + buff.X + "%";
         buff.effect = [];
         return buff;
     }
@@ -358,9 +401,12 @@ function new_buff() {
         buff.name = "鲁莽诅咒";
         buff.T = -1;
         buff.X = 20;
+        buff.Y = 100;
         buff.icon = "spell_shadow_unholystrength";
-        buff.detail = "战斗开始时对目标施放鲁莽诅咒，使其物理抗性降低" + buff.X + "%";
-        buff.effect = [];
+        buff.detail = "目标的物理抗性-" + buff.X + "%。变身为恶魔卫士，攻击护甲+" + buff.Y + "%";
+        buff.effect = [
+            "armor_attack_percent+=" + buff.Y
+        ];
         return buff;
     }
     buff[82] = buff.warlock_2();
@@ -373,7 +419,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 10;
         buff.icon = "spell_shadow_chilltouch";
-        buff.detail = "战斗开始时对目标施放元素诅咒，使其暗影和火焰抗性降低" + buff.X + "%";
+        buff.detail = "目标的暗影和火焰抗性-" + buff.X + "%";
         buff.effect = [];
         return buff;
     }

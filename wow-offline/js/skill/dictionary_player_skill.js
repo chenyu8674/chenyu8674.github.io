@@ -1006,6 +1006,93 @@ function new_player_skill() {
     };
     skill[63] = [skill.rogue_3_1(), skill.rogue_3_2()];
 
+    skill.priest_1_1 = function () {
+        let skill = {};
+        skill.name = "惩击";
+        skill.type = type_magic;
+        skill.X = 100;
+        skill.icon = "spell_holy_holysmite";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+
+    skill.priest_1_2 = function () {
+        let skill = {};
+        skill.name = "惩击";
+        skill.type = type_magic;
+        skill.X = 100;
+        skill.icon = "spell_holy_holysmite";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+    skill[71] = [skill.priest_1_1(), skill.priest_1_2()];
+
+    skill.priest_2_1 = function () {
+        let skill = {};
+        skill.name = "惩击";
+        skill.type = type_magic;
+        skill.X = 100;
+        skill.icon = "spell_holy_holysmite";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+
+    skill.priest_2_2 = function () {
+        let skill = {};
+        skill.name = "惩击";
+        skill.type = type_magic;
+        skill.X = 100;
+        skill.icon = "spell_holy_holysmite";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+    skill[72] = [skill.priest_2_1(), skill.priest_2_2()];
+
+    skill.priest_3_1 = function () {
+        let skill = {};
+        skill.name = "惩击";
+        skill.type = type_magic;
+        skill.X = 100;
+        skill.icon = "spell_holy_holysmite";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+
+    skill.priest_3_2 = function () {
+        let skill = {};
+        skill.name = "惩击";
+        skill.type = type_magic;
+        skill.X = 100;
+        skill.icon = "spell_holy_holysmite";
+        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    };
+    skill[73] = [skill.priest_3_1(), skill.priest_3_2()];
+
     skill.warlock_1_1 = function () {
         let skill = {};
         skill.name = "腐蚀术";
@@ -1070,7 +1157,7 @@ function new_player_skill() {
         skill.Y = 100;
         skill.Z = 1;
         skill.icon = "ability_warrior_cleave";
-        skill.detail = "战斗开始时变身为恶魔卫士。使用武器横扫目标，对其造成" + skill.X + "%法术强度的物理伤害。";
+        skill.detail = "使用武器横扫目标，对其造成" + skill.X + "%法术强度的物理伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
             if (damage_obj.is_hit) {
