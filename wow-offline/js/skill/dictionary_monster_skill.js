@@ -195,7 +195,7 @@ function new_monster_skill() {
         skill.type = type_heal;
         skill.cooldown = 5;
         skill.priority = 30;
-        skill.X = 100;
+        skill.X = 150;
         skill.Y = 70;
         skill.detail = "回复" + skill.X + "%治疗强度的的生命。";
         // 判断技能可用
@@ -218,7 +218,7 @@ function new_monster_skill() {
         skill.type = type_heal;
         skill.cooldown = 5;
         skill.priority = 30;
-        skill.X = 20;
+        skill.X = 40;
         skill.Y = 5;
         skill.detail = "每回合回复" + skill.X + "%治疗强度的的生命，持续" + skill.Y + "回合。";
         // 判断技能可用

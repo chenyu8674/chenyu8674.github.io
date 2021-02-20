@@ -344,22 +344,41 @@ function refresh_raid_monster() {
  * 生成怪物图标
  */
 function refresh_monster_point() {
+    $(".passing_point").remove();
     $(".monster_point").remove();
     for (let i = 0; i < map_monster_list.length; i++) {
         let monster = map_monster_list[i];
-        let monster_point = $("<img/>");
-        monster_point.addClass("monster_point");
-        monster_point.css("left", monster.x + "%");
-        monster_point.css("top", monster.y + "%");
         if (monster.name == null) {
+            // 途经点
+            let monster_point = $("<div></div>");
+            monster_point.css("left", monster.x + "%");
+            monster_point.css("top", monster.y + "%");
             if (is_in_local_mode()) {
-                let color = "rgba(0,0,0,0.2)";
-                monster_point.css("background", color);
-                monster_point.css("border-color", color);
+                monster_point.addClass("passing_point");
             } else {
                 monster_point.css("display", "none");
             }
+            monster_point.click(function (e) {
+                if ((is_in_local_mode() || map_info.type === 1) && !on_battle) {
+                    clearTimeout(self_heal_timer);
+                    target_x = monster.x;
+                    target_y = monster.y;
+                    map_monster_list.splice(0, i);
+                    target_monster = 0;
+                    calculate_role_2(map_monster_list[0]);
+                    refresh_monster_point();
+                    do_move();
+                }
+                e.stopPropagation();
+                return false;
+            });
+            battle_map.append(monster_point);
         } else {
+            // 怪物
+            let monster_point = $("<img/>");
+            monster_point.css("left", monster.x + "%");
+            monster_point.css("top", monster.y + "%");
+            monster_point.addClass("monster_point");
             monster_point.attr("src", "./img/monster/" + monster.species + ".jpg");
             monster_point.css("border-color", eval("color_rare_" + monster.rare));
             monster_point.hover(function () {
@@ -378,13 +397,14 @@ function refresh_monster_point() {
                     calculate_role_2(map_monster_list[i]);
                     fill_role_2_health();
                     refresh_battle_status(false);
+                    refresh_monster_point();
                     do_move();
                 }
                 e.stopPropagation();
                 return false;
             });
+            battle_map.append(monster_point);
         }
-        battle_map.append(monster_point);
         if (monster.next) {
             break;
         }

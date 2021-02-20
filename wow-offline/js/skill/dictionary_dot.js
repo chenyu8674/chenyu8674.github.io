@@ -153,7 +153,7 @@ function new_dot() {
 
     dot.heal = function (heal, turn) {
         let dot = {};
-        dot.name = "回复";
+        dot.name = "恢复";
         dot.heal = heal;
         dot.T = turn;
         dot.icon = "spell_nature_rejuvenation";

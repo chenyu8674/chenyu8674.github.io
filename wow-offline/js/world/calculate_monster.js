@@ -8,75 +8,158 @@ function create_monster_by_model(name, lvl) {
     if (model.multiple == null) {
         model.multiple = 1;
     }
-    model.multiple *= lvl > 10 ? 1.5 : 1 + lvl * 0.05;
     if (model.buffs == null) {
         model.buffs = model.rare >= 5 ? [new_buff().rage()] : [];
-    }
-    let armor_attack = 0;
-    let armor_magic = 0;
-    switch (model.type) {
-        case 1:
-        case 2:
-            armor_attack = 40;
-            armor_magic = 10;
-            break;
-        case 3:
-        case 4:
-            armor_attack = 30;
-            armor_magic = 20;
-            break;
-        case 5:
-        case 6:
-            armor_attack = 20;
-            armor_magic = 30;
-            break;
-        case 7:
-        case 8:
-        case 9:
-            armor_attack = 10;
-            armor_magic = 40;
-            break;
-    }
-    let buff = {};
-    buff.T = -1;
-    buff.effect = [
-        "armor_attack+=" + Math.ceil(lvl * armor_attack * get_multiple_by_rare(model.rare) * model.multiple),
-        "armor_magic+=" + Math.ceil(lvl * armor_magic * get_multiple_by_rare(model.rare) * model.multiple),
-        "health_percent+=20"
-    ];
-    if (model.rare === 4) {
-        // 精英怪物增加血量，降低伤害
-        buff.effect.push("health_percent+=50");
-        buff.effect.push("cause_damage_percent-=30");
-    }
-    if (model.rare === 5) {
-        // 首领怪物增加血量，降低伤害
-        buff.effect.push("health_percent+=100");
-        buff.effect.push("cause_damage_percent-=50");
-    }
-    if (model.rare === 6) {
-        // 团队首领怪物增加血量，降低伤害
-        buff.effect.push("health_percent+=200");
-        buff.effect.push("cause_damage_percent-=70");
-    }
-    if (model.effect != null && model.effect.length > 0) {
-        for (let i = 0; i < model.effect.length; i++) {
-            buff.effect.push(model.effect[i]);
-        }
     }
     let monster = new_role_base();
     monster.equipments = [];
     monster.name = name;
     monster.lvl = lvl;
-    monster.job = model.type * 10;
-    monster = calculate_base_property(monster);
+    monster.job = model.type;
+    if (monster.job < 10) {
+        monster.job *= 10;
+    }
+    // 计算怪物职业加成
+    let buff = {};
+    buff.T = -1;
+    buff.effect = [];
+    if (model.effect != null && model.effect.length > 0) {
+        for (let i = 0; i < model.effect.length; i++) {
+            buff.effect.push(model.effect[i]);
+        }
+    }
+    switch (monster.job) {
+        // 1-战士
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            buff.effect.push("str_percent+=100");
+            buff.effect.push("agi_percent+=50");
+            buff.effect.push("sta_percent+=100");
+            buff.effect.push("armor_attack+=" + Math.ceil(25 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(10 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 2-圣骑士
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+            buff.effect.push("str_percent+=60");
+            buff.effect.push("agi_percent+=30");
+            buff.effect.push("sta_percent+=90");
+            buff.effect.push("int_percent+=60");
+            buff.effect.push("spr_percent+=60");
+            buff.effect.push("armor_attack+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 3-猎人
+        case 30:
+        case 31:
+        case 32:
+        case 33:
+            buff.effect.push("str_percent+=80");
+            buff.effect.push("agi_percent+=100");
+            buff.effect.push("sta_percent+=75");
+            buff.effect.push("armor_attack+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 4-萨满
+        case 40:
+        case 41:
+        case 42:
+        case 43:
+            buff.effect.push("str_percent+=50");
+            buff.effect.push("agi_percent+=50");
+            buff.effect.push("sta_percent+=70");
+            buff.effect.push("int_percent+=80");
+            buff.effect.push("spr_percent+=80");
+            buff.effect.push("armor_attack+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 5-德鲁伊
+        case 50:
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+            buff.effect.push("str_percent+=80");
+            buff.effect.push("agi_percent+=80");
+            buff.effect.push("sta_percent+=80");
+            buff.effect.push("int_percent+=80");
+            buff.effect.push("spr_percent+=80");
+            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 6-盗贼
+        case 60:
+        case 61:
+        case 62:
+        case 63:
+            buff.effect.push("str_percent+=90");
+            buff.effect.push("agi_percent+=100");
+            buff.effect.push("sta_percent+=60");
+            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 7-牧师
+        case 70:
+        case 71:
+        case 72:
+        case 73:
+            buff.effect.push("agi_percent+=40");
+            buff.effect.push("sta_percent+=65");
+            buff.effect.push("int_percent+=80");
+            buff.effect.push("spr_percent+=100");
+            buff.effect.push("armor_attack+=" + Math.ceil(12 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 8-术士
+        case 80:
+        case 81:
+        case 82:
+        case 83:
+            buff.effect.push("agi_percent+=20");
+            buff.effect.push("sta_percent+=90");
+            buff.effect.push("int_percent+=80");
+            buff.effect.push("spr_percent+=30");
+            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+        // 9-法师
+        case 90:
+        case 91:
+        case 92:
+        case 93:
+            buff.effect.push("agi_percent+=30");
+            buff.effect.push("sta_percent+=60");
+            buff.effect.push("int_percent+=100");
+            buff.effect.push("spr_percent+=50");
+            buff.effect.push("armor_attack+=" + Math.ceil(12 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            break;
+    }
+    // 血量随机浮动
+    buff.effect.push("health_percent+=" + (15 + Math.random() * 10).toFixed(2));
+    // 计算怪物属性
+    monster.str = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.agi = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.sta = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.int = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.spr = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
+    // 精英/首领怪物增加血量，降低伤害
+    if (model.rare === 4) {
+        buff.effect.push("health_percent+=60");
+        buff.effect.push("cause_damage_percent-=30");
+    } else if (model.rare === 5) {
+        buff.effect.push("health_percent+=100");
+        buff.effect.push("cause_damage_percent-=50");
+    } else if (model.rare === 6) {
+        buff.effect.push("health_percent+=200");
+        buff.effect.push("cause_damage_percent-=70");
+    }
     monster.buffs = model.buffs;
     monster.buffs.push(buff);
-    monster.str = Math.ceil(monster.str * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.agi = Math.ceil(monster.agi * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.sta = Math.ceil(monster.sta * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.int = Math.ceil(monster.int * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.spr = Math.ceil(monster.spr * get_multiple_by_rare(model.rare) * model.multiple);
     monster.detail = model.detail;
     monster.species = model.species;
     monster.rare = model.rare;

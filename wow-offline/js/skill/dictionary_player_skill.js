@@ -988,7 +988,7 @@ function new_player_skill() {
     skill.rogue_3_2 = function () {
         let skill = {};
         skill.name = "割裂";
-        skill.type = type_other;
+        skill.type = type_attack;
         skill.cooldown = 4;
         skill.first_turn = 4;
         skill.priority = 30;

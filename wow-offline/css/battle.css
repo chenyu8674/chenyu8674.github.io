@@ -75,6 +75,17 @@
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+.passing_point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
+    background-color: red;
+    border-radius: 50%;
+    z-index: 1;
+}
+
 .monster_point {
     position: absolute;
     width: 24px;

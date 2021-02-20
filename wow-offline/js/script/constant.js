@@ -110,16 +110,16 @@ let int_to_magic_power = 2;
 let int_to_hit_rate = 1;
 let int_to_critical_damage = 0.2;
 
-let spr_to_heal_power = 2;
-let spr_to_magic_power = 0.5;
+let spr_to_heal_power = 2.5;
+let spr_to_magic_power = 1;
 let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/
 
 let hit_coefficient = 2;// 命中等级转化系数
-let dodge_coefficient = 2.2;// 躲闪等级转化系数
+let dodge_coefficient = 2.4;// 躲闪等级转化系数
 
-let critical_coefficient = 2.5;// 暴击等级转化系数
+let critical_coefficient = 2;// 暴击等级转化系数
 
 let block_coefficient = 2.5;// 格挡等级转化系数
 
@@ -129,7 +129,6 @@ let resilient_multiple = 2;// 韧性等级转化系数（暴击）
 let mastery_per_lvl = 5;// 每级附加精通等级
 
 /* 精通等级转化系数 */
-
 let mastery_coefficient = [];
 mastery_coefficient[11] = 2;
 mastery_coefficient[12] = 4;
@@ -150,6 +149,9 @@ mastery_coefficient[54] = 2;
 mastery_coefficient[61] = 20;
 mastery_coefficient[62] = 4;
 mastery_coefficient[63] = 4;
+mastery_coefficient[71] = 1;
+mastery_coefficient[72] = 1;
+mastery_coefficient[73] = 1;
 mastery_coefficient[81] = 4;
 mastery_coefficient[82] = 4;
 mastery_coefficient[83] = 2;
