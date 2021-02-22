@@ -619,14 +619,19 @@ function calculate_block(attacker, target) {
     if (!has_equip_shield(target)) {
         return 0;
     } else {
-        let lvl_chance = (target.lvl - attacker.lvl) * 2;// 每差1级，格挡率浮动2%
-        if (lvl_chance > 30) {
-            lvl_chance = 30;
+        let original_block = calculate_original_block(target);
+        if (original_block > 0) {
+            let lvl_chance = (target.lvl - attacker.lvl) * 2;// 每差1级，格挡率浮动2%
+            if (lvl_chance > 30) {
+                lvl_chance = 30;
+            }
+            if (lvl_chance < -30) {
+                lvl_chance = -30;
+            }
+            return +lvl_chance;
+        } else {
+            return original_block;
         }
-        if (lvl_chance < -30) {
-            lvl_chance = -30;
-        }
-        return calculate_original_block(target) + lvl_chance;
     }
 }
 

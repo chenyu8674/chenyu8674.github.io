@@ -195,7 +195,7 @@ function new_monster_skill() {
         skill.type = type_heal;
         skill.cooldown = 5;
         skill.priority = 30;
-        skill.X = 150;
+        skill.X = 100;
         skill.Y = 70;
         skill.detail = "回复" + skill.X + "%治疗强度的的生命。";
         // 判断技能可用
@@ -548,12 +548,13 @@ function new_monster_skill() {
         skill.type = type_attack;
         skill.cooldown = Number.MAX_VALUE;
         skill.priority = 99;
-        skill.X = 200;
+        skill.X = 150;
+        skill.Y = 50;
         skill.speed = 3;
         skill.icon = "ability_rogue_ambush";
-        skill.detail = "伏击目标，造成" + skill.X + "%攻击强度的物理伤害，无法被闪避。";
+        skill.detail = "伏击目标，造成" + skill.X + "%攻击强度的物理伤害，暴击率提高" + skill.Y + "%。";
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical, 999);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical, 0, skill.Y);
             return skill_cast_result(damage_obj);
         };
         return skill;

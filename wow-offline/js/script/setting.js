@@ -2,7 +2,7 @@
 let ONLINE_MULTIPLE = 1;
 
 // 调试加速系数
-let LOCAL_MULTIPLE = is_in_local_mode() ? 10 : 1;
+let LOCAL_MULTIPLE = is_in_local_mode() ? 1 : 1;
 
 // 回合时间
 let TURN_TIME = 1000 / ONLINE_MULTIPLE / LOCAL_MULTIPLE;
@@ -11,7 +11,7 @@ let TURN_TIME = 1000 / ONLINE_MULTIPLE / LOCAL_MULTIPLE;
 let HEAL_TIME = 10000 / ONLINE_MULTIPLE / LOCAL_MULTIPLE;
 
 // 移动距离
-let MOVE_DISTANCE = 5 * ONLINE_MULTIPLE * LOCAL_MULTIPLE;
+let MOVE_DISTANCE = 10 * ONLINE_MULTIPLE * LOCAL_MULTIPLE;
 
 // 经验系数
 let EXP_MULTIPLE = is_in_local_mode() ? 0 : 1;

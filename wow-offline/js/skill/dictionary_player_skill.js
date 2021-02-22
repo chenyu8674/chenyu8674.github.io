@@ -147,7 +147,7 @@ function new_player_skill() {
         skill.type = type_attack;
         skill.cooldown = 5;
         skill.priority = 30;
-        skill.X = 100;
+        skill.X = 150;
         skill.Y = 150;
         skill.icon = "inv_shield_05";
         skill.detail = "持盾猛击目标，造成" + skill.X + "%攻击强度的物理伤害，并获得" + skill.Y + "%格挡值的伤害护盾。必须装备盾牌才可使用。";
@@ -807,7 +807,7 @@ function new_player_skill() {
         skill.name = "愤怒";
         skill.name_2 = "自然之力";
         skill.type = type_magic;
-        skill.X = 100;
+        skill.X = 80;
         skill.icon = "spell_nature_abolishmagic";
         skill.detail = "向目标投掷一个能量球，造成" + skill.X + "%法术强度的自然伤害。";
         skill.cast = function (attacker, target) {
@@ -824,7 +824,7 @@ function new_player_skill() {
         skill.cooldown = 5;
         skill.priority = 30;
         skill.X = 70;
-        skill.Y = 50;
+        skill.Y = 30;
         skill.Z = 20;
         skill.icon = "spell_nature_resistnature";
         skill.detail = "使用自然力量愈合伤口，回复" + skill.Y + "%治疗强度的生命，之后每回合回复" + skill.Z + "%治疗强度的生命，持续" + dictionary_dot.druid_4_2().T + "回合。";
@@ -868,7 +868,7 @@ function new_player_skill() {
                 let mastery_percent = calculate_original_mastery(attacker);
                 damage_obj = calculate_skill_attack(attacker, target, skill.name_1, skill.X * (100 + mastery_percent) / 100, skill.type, element_physical);
             } else {
-                damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical, 999);
+                damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
             }
             if (damage_obj.is_hit) {
                 add_skill_point(attacker, 1);
@@ -887,9 +887,10 @@ function new_player_skill() {
         skill.first_turn = 4;
         skill.priority = 30;
         skill.X = 50;
-        skill.Y = 50;
+        skill.Y = 15;
+        skill.Z = 5;
         skill.icon = "ability_rogue_kidneyshot";
-        skill.detail = "终结技，使目标造成的伤害降低" + skill.Y + "%，持续1回合。每个消耗的连击点使效果多持续1回合。";
+        skill.detail = "终结技，对目标造成" + skill.X + "%攻击强度的物理伤害，并使其造成的伤害降低" + skill.Y + "%，持续" + dictionary_debuff.rogue_1().T + "回合。每个消耗的连击点使减伤效果提高" + skill.Z + "%。";
         skill.attempt = function (attacker) {
             if (battle_turn === 1) {
                 attacker.critical_chance_final += dictionary_buff.rogue_1().X;
@@ -900,7 +901,7 @@ function new_player_skill() {
             let damage_count = get_skill_point(attacker);
             let damage_obj = calculate_skill_attack(attacker, target, skill.name + "(" + damage_count + ")", skill.X, skill.type, element_physical);
             if (damage_obj.is_hit) {
-                target.debuffs.push(new_debuff().rogue_1(skill.Y, 1 + damage_count));
+                target.debuffs.push(new_debuff().rogue_1(skill.Y + skill.Z * damage_count));
             }
             attacker.buffs.push(new_buff().rogue_1());
             set_skill_point(attacker, 100);

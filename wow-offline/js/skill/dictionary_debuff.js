@@ -23,8 +23,8 @@ function new_debuff() {
     debuff.warrior_3 = function () {
         let debuff = {};
         debuff.name = "破甲";
-        debuff.T = 6;
-        debuff.X = 3;
+        debuff.T = 5;
+        debuff.X = 4;
         debuff.icon = "ability_warrior_sunder";
         debuff.detail = "物理抗性-" + debuff.X;
         debuff.effect = [
@@ -59,10 +59,10 @@ function new_debuff() {
         return debuff;
     }
 
-    debuff.rogue_1 = function (X, T) {
+    debuff.rogue_1 = function (X) {
         let debuff = {};
         debuff.name = "肾击";
-        debuff.T = T;
+        debuff.T = 4;
         debuff.X = X;
         debuff.icon = "ability_rogue_kidneyshot";
         debuff.detail = "所有伤害-" + X + "%";

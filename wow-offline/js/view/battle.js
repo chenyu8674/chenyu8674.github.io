@@ -21,7 +21,9 @@ function show_view_battle() {
 function hide_view_battle() {
     clearTimeout(self_heal_timer);
     clearTimeout(move_timer);
+    move_timer = 0;
     clearTimeout(battle_timer);
+    battle_callback = null;
     $("#battle_log").html("");
     map_info = null;
     role_battle_2 = null;
@@ -126,6 +128,7 @@ function show_heal_icon() {
     self_heal.click(function (e) {
         if (!on_battle && role_health_1 < role_battle_1.max_health_value) {
             clearTimeout(move_timer);
+            move_timer = 0;
             battle_log("");
             battle_log(current_character.name + " 开始休息");
             clearTimeout(self_heal_timer);
@@ -459,6 +462,13 @@ function attack_next_monster() {
 }
 
 /**
+ * 是否处于移动中
+ */
+function is_in_move() {
+    return move_timer !== 0;
+}
+
+/**
  * 玩家开始移动
  */
 function do_move() {
@@ -468,6 +478,7 @@ function do_move() {
     move_step = Math.round(move_distance * 100);
     if (move_step === 0) {
         // 原地战斗
+        move_timer = 0;
         on_battle = true;
         $(".player_point").addClass("on_battle");
         battle_time = 1;
@@ -512,6 +523,7 @@ function move_loop() {
             attack_next_monster();
         } else {
             // 开始战斗
+            move_timer = 0;
             on_battle = true;
             $(".player_point").addClass("on_battle");
             battle_time = 1;
@@ -519,7 +531,7 @@ function move_loop() {
         }
     } else {
         clearTimeout(move_timer);
-        move_timer = setTimeout(move_loop, 5);
+        move_timer = setTimeout(move_loop, 10);
     }
 }
 

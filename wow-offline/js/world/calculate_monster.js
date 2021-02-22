@@ -38,7 +38,7 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("agi_percent+=50");
             buff.effect.push("sta_percent+=100");
             buff.effect.push("armor_attack+=" + Math.ceil(25 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(10 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 2-圣骑士
         case 20:
@@ -50,8 +50,8 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("sta_percent+=90");
             buff.effect.push("int_percent+=60");
             buff.effect.push("spr_percent+=60");
-            buff.effect.push("armor_attack+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(30 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(30 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 3-猎人
         case 30:
@@ -61,7 +61,7 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("str_percent+=80");
             buff.effect.push("agi_percent+=100");
             buff.effect.push("sta_percent+=75");
-            buff.effect.push("armor_attack+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(25 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 4-萨满
@@ -74,8 +74,8 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("sta_percent+=70");
             buff.effect.push("int_percent+=80");
             buff.effect.push("spr_percent+=80");
-            buff.effect.push("armor_attack+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(25 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(25 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 5-德鲁伊
         case 50:
@@ -83,13 +83,13 @@ function create_monster_by_model(name, lvl) {
         case 52:
         case 53:
         case 54:
-            buff.effect.push("str_percent+=80");
-            buff.effect.push("agi_percent+=80");
-            buff.effect.push("sta_percent+=80");
-            buff.effect.push("int_percent+=80");
-            buff.effect.push("spr_percent+=80");
-            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("str_percent+=70");
+            buff.effect.push("agi_percent+=70");
+            buff.effect.push("sta_percent+=70");
+            buff.effect.push("int_percent+=70");
+            buff.effect.push("spr_percent+=70");
+            buff.effect.push("armor_attack+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 6-盗贼
         case 60:
@@ -99,8 +99,8 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("str_percent+=90");
             buff.effect.push("agi_percent+=100");
             buff.effect.push("sta_percent+=60");
-            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(20 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 7-牧师
         case 70:
@@ -111,8 +111,8 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("sta_percent+=65");
             buff.effect.push("int_percent+=80");
             buff.effect.push("spr_percent+=100");
-            buff.effect.push("armor_attack+=" + Math.ceil(12 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(25 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 8-术士
         case 80:
@@ -123,8 +123,8 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("sta_percent+=90");
             buff.effect.push("int_percent+=80");
             buff.effect.push("spr_percent+=30");
-            buff.effect.push("armor_attack+=" + Math.ceil(15 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(22 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
         // 9-法师
         case 90:
@@ -135,12 +135,16 @@ function create_monster_by_model(name, lvl) {
             buff.effect.push("sta_percent+=60");
             buff.effect.push("int_percent+=100");
             buff.effect.push("spr_percent+=50");
-            buff.effect.push("armor_attack+=" + Math.ceil(12 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
-            buff.effect.push("armor_magic+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_attack+=" + Math.ceil(18 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
+            buff.effect.push("armor_magic+=" + Math.ceil(22 * lvl * get_multiple_by_rare(model.rare) * model.multiple));
             break;
     }
     // 血量随机浮动
-    buff.effect.push("health_percent+=" + (15 + Math.random() * 10).toFixed(2));
+    if (model.rare <= 4) {
+        buff.effect.push("health_percent+=" + (15 + Math.random() * 10).toFixed(2));
+    } else {
+        buff.effect.push("health_percent+=20");
+    }
     // 计算怪物属性
     monster.str = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
     monster.agi = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);

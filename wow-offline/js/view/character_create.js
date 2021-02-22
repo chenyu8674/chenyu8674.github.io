@@ -25,6 +25,7 @@ $(document).ready(function () {
         save_data();
         hide_view_character_select();
         hide_view_character_create();
+        hide_view_battle();
         show_view_map();
         // show_view_test();
     });

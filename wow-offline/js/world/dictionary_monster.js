@@ -356,7 +356,7 @@ function new_monster() {
         }
         monster["克雷什"] = {
             species: 2, type: 1, rare: 5, skills: "撕咬",
-            effect: ["health_percent-=50", "block_chance_final+=100"], drop: [6447, 13245, 151430],
+            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=18"], drop: [6447, 13245, 151430],
             detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
         }
         monster["斯卡姆"] = {
@@ -370,13 +370,13 @@ function new_monster() {
             detail: "毒牙德鲁伊的领袖曾是纳拉雷克斯最出色的学生。他的悲剧源自于他想要成为大导师，也就是“荣誉导师”的热望，想要和纳拉雷克斯比肩。疯狂在他心中生根发芽，瑟芬迪斯将他的兄弟们召集在一起，成立了这个名叫毒牙德鲁伊的组织。"
         }
         monster["永生者沃尔丹"] = {
-            species: 5, type: 4, rare: 5, skills: ["痛击", "雷霆一击"],
-            effect: ["health_percent+=40"], drop: [6629, 6630, 6631],
+            species: 5, type: 4, rare: 5, skills: ["痛击", "雷霆一击", "回春"],
+            effect: ["health_percent+=50"], drop: [6629, 6630, 6631],
             detail: "在纳拉雷克斯来到哀嚎洞穴之前，人们对这只生物了解甚少。永生者沃尔丹被看作是洞穴的原始守护者，没能逃过降临在自己家园的腐化。沃尔丹与其他疯狂的德鲁伊结为盟友，对那些擅自闯入的不速之客保持着高度警惕。"
         }
         monster["吞噬者穆坦努斯"] = {
                 species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
-            effect: ["attack_power+=30", "health_percent+=50"], drop: [6461, 6627, 6463],
+            effect: ["attack_power+=30", "health_percent+=60"], drop: [6461, 6627, 6463],
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }
     }// 哀嚎洞穴
