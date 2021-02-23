@@ -628,7 +628,7 @@ function calculate_block(attacker, target) {
             if (lvl_chance < -30) {
                 lvl_chance = -30;
             }
-            return +lvl_chance;
+            return original_block + lvl_chance;
         } else {
             return original_block;
         }
