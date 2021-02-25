@@ -551,7 +551,7 @@ function calculate_original_hit(attacker) {
 function calculate_hit(attacker, target) {
     let hit_chance = calculate_original_hit(attacker);
     let dodge_chance = calculate_original_dodge(target);
-    let lvl_chance = (attacker.lvl - target.lvl) * 2;// 每差1级，命中率浮动2%
+    let lvl_chance = (attacker.lvl - target.lvl) * hit_chance_per_lvl;
     if (lvl_chance > 30) {
         lvl_chance = 30;
     }
@@ -586,7 +586,7 @@ function calculate_original_critical(attacker) {
  * @return {number}
  */
 function calculate_critical(attacker, target) {
-    let lvl_chance = (attacker.lvl - target.lvl) * 2;// 每差1级，暴击率浮动2%
+    let lvl_chance = (attacker.lvl - target.lvl) * critical_chance_per_lvl;
     if (lvl_chance > 30) {
         lvl_chance = 30;
     }
@@ -621,7 +621,7 @@ function calculate_block(attacker, target) {
     } else {
         let original_block = calculate_original_block(target);
         if (original_block > 0) {
-            let lvl_chance = (target.lvl - attacker.lvl) * 2;// 每差1级，格挡率浮动2%
+            let lvl_chance = (target.lvl - attacker.lvl) * block_chance_per_lvl;
             if (lvl_chance > 30) {
                 lvl_chance = 30;
             }

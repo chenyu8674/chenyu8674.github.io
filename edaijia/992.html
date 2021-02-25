@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<title>异常终止</title>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+function doTerminate() {
+	let orderId = $("#orderId").val();
+	let url = "https://skb-dgs.g-book.com.cn/test/driving/order/updateOrderStatus?orderId="+orderId+"&from=1&sign=00&status=992&type=1";
+	$("#result").hide();
+	$.post(url, null,
+	function(data){
+		$("#result").show();
+		$("#result").html("&nbsp;" + JSON.stringify(data));
+	});
+}
+$(document).ready(function () {
+    do_adapt();
+    $(window).resize(do_adapt);
+});
+function do_adapt() {
+    let browser_width = $(window).width();
+    let browser_height = $(window).height();
+    let orderId = $("#orderId");
+    orderId.css("position", "absolute");
+    orderId.css("top", browser_height*0.2 + "px");
+    orderId.css("height", browser_height*0.2 + "px");
+    orderId.css("font-size", browser_height*0.2 + "px");
+    orderId.css("line-height", browser_height*0.2 + "px");
+    orderId.css("left", browser_width*0.1 + "px");
+    orderId.css("width", browser_width*0.75 + "px");
+    orderId.css("padding-left", browser_width*0.05 + "px");
+    let button = $("#button");
+    button.css("position", "absolute");
+    button.css("top", browser_height*0.5 + "px");
+    button.css("height", browser_height*0.15 + "px");
+    button.css("font-size", browser_height*0.1 + "px");
+    button.css("left", browser_width*0.3 + "px");
+    button.css("width", browser_width*0.4 + "px");
+    button.css("background-color", "red");
+    button.css("color", "white");
+    button.css("font-weight", "bold");
+    button.css("border", "1px solid black");
+    let result = $("#result");
+	result.hide();
+    result.css("position", "absolute");
+    result.css("width", "100%");
+    result.css("background-color", "black");
+    result.css("color", "white");
+    result.css("top", browser_height*0.9 + "px");
+    result.css("height", browser_height*0.1 + "px");
+    result.css("font-size", browser_height*0.035 + "px");
+    result.css("line-height", browser_height*0.1 + "px");
+}
+</script>
+<style type="text/css">
+body{margin:0;padding:0;}
+</style>
+</head>
+<body>
+<input id="orderId" value="76218" />
+<button id="button" onclick="doTerminate()">终止</button>
+<div id="result"></div>
+</body>
+</html>

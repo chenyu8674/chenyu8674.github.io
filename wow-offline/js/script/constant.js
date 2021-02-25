@@ -117,7 +117,7 @@ let spr_to_armor_magic = 2;
 /** 副属性转化系数 **/
 
 let hit_coefficient = 2;// 命中等级转化系数
-let dodge_coefficient = 2.4;// 躲闪等级转化系数
+let dodge_coefficient = 2.5;// 躲闪等级转化系数
 
 let critical_coefficient = 2;// 暴击等级转化系数
 
@@ -127,6 +127,10 @@ let resilient_coefficient = 4;// 韧性等级转化系数（dot）
 let resilient_multiple = 2;// 韧性等级转化系数（暴击）
 
 let mastery_per_lvl = 5;// 每级附加精通等级
+
+let hit_chance_per_lvl = 3;// 每差1级的命中率浮动
+let critical_chance_per_lvl = 3;// 每差1级的暴击率浮动
+let block_chance_per_lvl = 3;// 每差1级的格挡率浮动
 
 /* 精通等级转化系数 */
 let mastery_coefficient = [];
