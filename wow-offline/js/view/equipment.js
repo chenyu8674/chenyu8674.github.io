@@ -97,7 +97,15 @@ function refresh_current_status_exp() {
     create_status_area_1_line("护盾值：" + role_battle_1.current_shield_value + "<br/>",
         "当前护盾值", current_status_area_1
     );
-    create_status_area_1_line("经验值：" + (lvl >= MAX_LVL ? LVL_EXP[MAX_LVL - 1] + "/" + LVL_EXP[MAX_LVL - 1] : exp + "/" + exp_max) + "<br/>",
+    let exp_total = lvl >= MAX_LVL ? LVL_EXP[MAX_LVL - 1] : exp_max;
+    if (exp_total >= 1000000) {
+        exp_total = Math.round(exp_total / 1000) + "K"
+    }
+    let exp_current = lvl >= MAX_LVL ? LVL_EXP[MAX_LVL - 1] : exp;
+    if (exp_total.indexOf("K") > 0 && exp_current >= 10000) {
+        exp_current = Math.round(exp_current / 1000) + "K"
+    }
+    create_status_area_1_line("经验值：" + exp_current + "/" + exp_total + "<br/>",
         "当前/升级所需经验值", current_status_area_1
     );
 }
