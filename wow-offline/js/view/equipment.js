@@ -401,9 +401,11 @@ function refresh_current_equipment() {
     let weapon_count = 0;
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
+        // 装备后绑定
         if (typeof equipment[0] === "number" && equipment[1] === 1) {
-            // 装备后绑定
             equipments[i] = equipment[0];
+        } else if (equipment.bind === 1) {
+            delete equipment.bind;
         }
         let list = get_equipment_by_model(equipment);
         let equipment_name = list[0];
@@ -587,7 +589,7 @@ function equip_equipment(index) {
     if (!check_can_equip(current_character, check_equipment)) {
         return;// 装备类型与职业不符
     }
-    if (check_equipment.bind === 1 && !confirm("装备后绑定")) {
+    if (check_equipment.bind === 1 && !confirm("该装备将于装备之后绑定")) {
         return;// 装备后绑定
     }
     if (check_equipment.pos === 15 && is_in_array(check_equipment.type, [21, 22, 23, 24, 25, 31, 32, 33])

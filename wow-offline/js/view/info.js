@@ -100,6 +100,8 @@ function show_equipment_info(view, model) {
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
     info.append("<div style='height:25px;font-size:12px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
+    // 物品等级
+    info.append("<div style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</div>");
     // 装备绑定
     if (equipment.bind !== 0) {
         if (equipment.bind === 1) {
@@ -148,8 +150,6 @@ function show_equipment_info(view, model) {
     can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
     // 需要等级
     info.append("<div" + can_not + ">需要等级：" + equipment.c_lvl + "</div>");
-    // 物品等级
-    info.append("<div>物品等级：" + equipment.e_lvl + "</div>");
     if (equipment.skill != null) {
         // 附加技能
         let skill = equipment.skill;
