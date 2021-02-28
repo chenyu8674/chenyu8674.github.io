@@ -2,6 +2,7 @@
 
 let character_list = [];
 let bank_item_list = [];
+let bank_money = 0;
 
 let current_character;
 let current_index = 0;
@@ -33,6 +34,10 @@ function load_data() {
     if (bank_item_list == null) {
         bank_item_list = [];
     }
+    bank_money = save_data.bank_money;
+    if (bank_money == null) {
+        bank_money = 0;
+    }
     character_list = save_data.character_list;
 }
 
@@ -54,6 +59,7 @@ function load_character() {
     create_character(character_obj.job, character_obj.exp, character_obj.name);
     current_character.equipments = character_obj.equipments;
     current_character.items = character_obj.items;
+    current_character.banks = character_obj.banks == null ? [] : character_obj.banks;
     current_character.money = character_obj.money;
     // 刷新状态栏
     calculate_role_1(current_character);
@@ -74,10 +80,12 @@ function save_data() {
     save_character.exp = current_character.exp;
     save_character.equipments = current_character.equipments;
     save_character.items = current_character.items;
+    save_character.banks = current_character.banks;
     save_character.money = current_character.money;
     character_list[current_index] = save_character;
     let save_data = {};
     save_data.bank_item_list = bank_item_list;
+    save_data.bank_money = bank_money;
     save_data.character_list = character_list;
     let json = JSON.stringify(save_data);
     localStorage.setItem("save_data", json);
@@ -108,6 +116,7 @@ function create_character(job, exp, name) {
     current_character.dots = [];
     current_character.equipments = [];
     current_character.items = [];
+    current_character.banks = [];
     current_character.money = 0;
     if (is_in_local_mode()) {
         current_character.money = 99999999;

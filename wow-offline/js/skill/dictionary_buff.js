@@ -137,7 +137,7 @@ function new_buff() {
         let buff = {};
         buff.name = "野性守护";
         buff.T = -1;
-        buff.X = 1.5;
+        buff.X = 1;
         buff.icon = "spell_nature_protectionformnature";
         buff.detail = "技能命中目标时，回复" + buff.X + "%最大生命值";
         buff.effect = [];

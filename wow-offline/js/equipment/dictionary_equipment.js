@@ -172,23 +172,23 @@ function new_equipment() {
         // 黑暗迪菲亚
         equipment[10403] = {
             name: "黑暗迪菲亚腰带", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_belt_03", affix: 10102,
-            effect: ["main+=4", "sta+=6"], sets: "黑暗迪菲亚护甲"
+            effect: ["main+=4", "sta+=6"], sets: "黑暗迪菲亚护甲", bind: 1
         };
         equipment[10402] = {
             name: "黑暗迪菲亚长靴", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_boots_05", affix: 12102,
-            effect: ["main+=4", "sta+=6"], sets: "黑暗迪菲亚护甲"
+            effect: ["main+=4", "sta+=6"], sets: "黑暗迪菲亚护甲", bind: 1
         };
         equipment[10401] = {
             name: "黑暗迪菲亚手套", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_gauntlets_05", affix: 9102,
-            effect: ["main+=4", "sta+=6"], sets: "黑暗迪菲亚护甲"
+            effect: ["main+=4", "sta+=6"], sets: "黑暗迪菲亚护甲", bind: 1
         };
         equipment[10400] = {
             name: "黑暗迪菲亚护腿", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_pants_12", affix: 11102,
-            effect: ["main+=7", "sta+=7"], sets: "黑暗迪菲亚护甲"
+            effect: ["main+=7", "sta+=7"], sets: "黑暗迪菲亚护甲", bind: 1
         };
         equipment[10399] = {
             name: "黑暗迪菲亚护甲", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_chest_leather_08", affix: 4102,
-            effect: ["main+=7", "sta+=7"], sets: "黑暗迪菲亚护甲"
+            effect: ["main+=7", "sta+=7"], sets: "黑暗迪菲亚护甲", bind: 1
         };
         // 格拉布托克
         equipment[5444] = {
@@ -333,7 +333,7 @@ function new_equipment() {
         };// 瑟芬迪斯
         equipment[10413] = {
             name: "尖牙手套", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_gauntlets_18", affix: 9102,
-            effect: ["main+=4", "sta+=4", "mastery_rate+=5"], sets: "毒蛇的拥抱"
+            effect: ["main+=4", "sta+=4", "mastery_rate+=5"], sets: "毒蛇的拥抱", bind: 1
         };// 尖牙德鲁伊
         equipment[10410] = {
             name: "尖牙护腿", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_pants_02", affix: 11102,
@@ -403,6 +403,15 @@ function new_equipment() {
         equipment[6448] = {
             name: "尾钉", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_weapon_shortblade_10", affix: 15111,
             effect: ["agi+=4", "critical_rate+=3"]
+        };
+        // 变异精灵龙
+        equipment[5243] = {
+            name: "彩火魔杖", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_wand_11", affix: 15216,
+            effect: ["int+=12", "sta+=4", "critical_rate+=2", "hit_rate+=1"]
+        };
+        equipment[6632] = {
+            name: "灵鳞披风", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_misc_cape_13", affix: 5101,
+            effect: ["main+=4", "sta+=4"]
         };
         // 瑟芬迪斯
         equipment[5970] = {

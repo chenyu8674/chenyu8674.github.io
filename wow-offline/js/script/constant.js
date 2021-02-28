@@ -13,9 +13,9 @@ let MAX_LOG = 200;
 // 稀有怪刷新率
 let RARE_PERCENT = 5;
 // 怪物专属装备掉率
-let DROP_MONSTER = 5;
+let DROP_MONSTER = 115;
 // 地图专属装备掉率
-let DROP_MAP = 5;
+let DROP_MAP = 115;
 // 普通怪物掉率
 let DROP_1 = 5;
 let DROP_2 = 10;

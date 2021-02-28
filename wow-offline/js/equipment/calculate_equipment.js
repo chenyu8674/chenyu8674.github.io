@@ -140,6 +140,8 @@ function create_random_equipment_model(param) {
             type = random_list([41, 42]);// 副手
         }
     }
+    // 装备后绑定
+    model.bind = model.rare >= 3 ? 1 : 0;
     // 装备图标
     model.icon = create_equipment_icon(model, pos, type);
     // 装备名称
@@ -204,6 +206,10 @@ function create_static_equipment_model(name) {
     }
     let attribute = get_attribute_by_pos(model.pos, model.type, base_model.icon);
     model.type_name = attribute[2];
+    // 装备后绑定
+    if (base_model.bind) {
+        model.bind = base_model.bind;
+    }
     model.name = base_model.name;
     model.rare = base_model.rare;
     model.effect = base_model.effect;
@@ -220,9 +226,7 @@ function create_static_equipment_model(name) {
  * @param model 装备模板
  */
 function create_equipment_by_model(model) {
-    if (typeof model === "number") {
-        model = create_static_equipment_model(model);
-    }
+    model = get_equipment_by_model(model)[1];
     if (model == null) {
         return;
     }
@@ -242,6 +246,7 @@ function create_equipment_by_model(model) {
     // 装备属性系数
     let multiple = attribute[0];
     equipment.type_name = attribute[2];
+    equipment.bind = model.bind;
     equipment.icon = model.icon;
     equipment.rare = model.rare;
     equipment.c_lvl = model.c_lvl;
@@ -283,6 +288,74 @@ function create_equipment_by_model(model) {
     equipment_name.push(model.name);
     equipment.name = equipment_name.join(" ");
     return equipment;
+}
+
+/**
+ * 将存储的装备转化为装备对象
+ */
+function get_equipment_by_model(model) {
+    let name;
+    let item;
+    if (typeof model === "number") {
+        name = model;
+        item = create_static_equipment_model(model);
+        delete item.bind;
+    } else if (typeof model[0] === "number") {
+        name = model[0];
+        item = create_static_equipment_model(model[0]);
+        item.bind = model[1];
+    } else {
+        item = model;
+    }
+    return [name, item];
+}
+
+/**
+ * 装备排序算法
+ * @param a
+ * @param b
+ * @return {number}
+ */
+function sort_equipment(a, b) {
+    if (a == null) {
+        return 1;
+    }
+    if (b == null) {
+        return -1;
+    }
+    if (typeof a === "number") {
+        a = create_static_equipment_model(a);
+    }
+    if (typeof b === "number") {
+        b = create_static_equipment_model(b);
+    }
+    a = create_equipment_by_model(a);
+    b = create_equipment_by_model(b);
+    if (a.rare === 6 && b.rare !== 6) {
+        return -1;
+    }
+    if (b.rare === 6 && a.rare !== 6) {
+        return 1;
+    }
+    if (a.pos !== b.pos) {
+        return a.pos - b.pos;
+    }
+    if (a.type !== b.type) {
+        return a.type - b.type;
+    }
+    if (a.rare !== b.rare) {
+        return a.rare - b.rare;
+    }
+    if (a.c_lvl !== b.c_lvl) {
+        return a.c_lvl - b.c_lvl;
+    }
+    if (a.e_lvl !== b.e_lvl) {
+        return a.e_lvl - b.e_lvl;
+    }
+    if (a.icon !== b.icon) {
+        return a.icon > b.icon ? 1 : -1;
+    }
+    return a.name > b.name ? 1 : -1;
 }
 
 /** 获取当前职业的主属性 **/

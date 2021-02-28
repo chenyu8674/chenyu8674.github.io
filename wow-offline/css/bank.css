@@ -11,10 +11,82 @@
     border: 3px ridge slategray;
 }
 
+#bank_personal {
+    position: absolute;
+    top: 48px;
+    left: 196px;
+    width: 108px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 30px;
+    border-radius: 10px 10px 0 0;
+    letter-spacing: 5px;
+    background-color: black;
+    border-left: 3px ridge slategray;
+    border-top: 3px ridge slategray;
+    border-right: 3px ridge slategray;
+}
+
+#bank_public {
+    position: absolute;
+    top: 48px;
+    left: 307px;
+    width: 108px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 30px;
+    border-radius: 10px 10px 0 0;
+    letter-spacing: 5px;
+    background-color: black;
+    border-left: 3px ridge slategray;
+    border-top: 3px ridge slategray;
+    border-right: 3px ridge slategray;
+}
+
+.bank_normal {
+    height: 29px;
+}
+
+.bank_selected {
+    height: 32px;
+}
+
 #bank_pack_bank {
     position: absolute;
     top: 680px;
     left: 196px;
+    width: 80px;
+    height: 34px;
+    border-radius: 5px;
+    letter-spacing: 5px;
+    border-width: 3px;
+}
+
+#bank_money_bank {
+    position: absolute;
+    height: 30px;
+    top: 681px;
+    right: 1000px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: right;
+}
+
+#bank_money_set {
+    position: absolute;
+    top: 680px;
+    right: 912px;
+    width: 80px;
+    height: 34px;
+    border-radius: 5px;
+    letter-spacing: 5px;
+    border-width: 3px;
+}
+
+#bank_money_get {
+    position: absolute;
+    top: 680px;
+    right: 826px;
     width: 80px;
     height: 34px;
     border-radius: 5px;
@@ -49,7 +121,7 @@
     position: absolute;
     height: 30px;
     top: 681px;
-    right: 200px;
+    right: 195px;
     font-weight: bold;
     font-size: 20px;
     text-align: right;

@@ -221,19 +221,23 @@ function get_monster_species_name(species) {
 /**
  * 获取怪物阶级名称
  */
-function get_monster_rare_name(rare) {
-    switch (rare) {
-        case 1:
-            return "弱小";
-        case 2:
-            return "普通";
-        case 3:
-            return "稀有";
-        case 4:
-            return "精英";
-        case 5:
-            return "首领";
-        case 6:
-            return "团队首领";
+function get_monster_rare_name(rare, percent) {
+    if (percent) {
+        return "稀有精英";
+    } else {
+        switch (rare) {
+            case 1:
+                return "弱小";
+            case 2:
+                return "普通";
+            case 3:
+                return "稀有";
+            case 4:
+                return "精英";
+            case 5:
+                return "首领";
+            case 6:
+                return "团队首领";
+        }
     }
 }

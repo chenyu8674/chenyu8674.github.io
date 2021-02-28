@@ -319,9 +319,7 @@ function get_equipment_skill(attacker, target) {
     let equipments = attacker.equipments;
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
-        if (typeof equipment === "number") {
-            equipment = create_static_equipment_model(equipment);
-        }
+        equipment = get_equipment_by_model(equipment)[1];
         if (equipment.skill != null) {
             let skill = dictionary_equipment_skill[equipment.skill]();
             if (skill.attempt != null) {

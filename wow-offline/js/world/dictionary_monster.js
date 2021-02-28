@@ -364,6 +364,10 @@ function new_monster() {
             effect: ["health_percent+=30"], drop: [6449, 6448],
             detail: "斯卡姆原本只是为了逃避贫瘠之地的恶劣环境才前往哀嚎洞穴的。与洞内的许多其它住民一样，他也很快就遭到腐化。如今在他周身流淌着黑暗能量，他已经无可挽回地变成了一只强大凶残的野兽。"
         }
+        monster["变异精灵龙"] = {
+            species: 6, type: 6, rare: 3, skills: ["致盲", "闪避"],
+            effect: ["attr_percent+=100", "health_percent+=100", "cause_damage_percent-=50"], drop: [5243, 6632]
+        }
         monster["瑟芬迪斯"] = {
             species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],
             effect: ["health_percent+=20", "int_percent+=50"], drop: [5970, 6459, 6469, 10411],
@@ -375,7 +379,7 @@ function new_monster() {
             detail: "在纳拉雷克斯来到哀嚎洞穴之前，人们对这只生物了解甚少。永生者沃尔丹被看作是洞穴的原始守护者，没能逃过降临在自己家园的腐化。沃尔丹与其他疯狂的德鲁伊结为盟友，对那些擅自闯入的不速之客保持着高度警惕。"
         }
         monster["吞噬者穆坦努斯"] = {
-                species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
+            species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
             effect: ["attack_power+=30", "health_percent+=60"], drop: [6461, 6627, 6463],
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }

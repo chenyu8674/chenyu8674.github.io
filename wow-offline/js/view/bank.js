@@ -1,6 +1,7 @@
 let view_bank;
 let bank_view;
 let bank_items;
+let bank_types = 0;// 0个人，1公共
 
 $(document).ready(function () {
     view_bank = $("#view_bank");
@@ -21,11 +22,53 @@ $(document).ready(function () {
         save_data();
     });
     set_info_hover(bank_pack_bag, "为背包物品排序");
+    let bank_personal = $("#bank_personal");
+    let bank_public = $("#bank_public");
+    bank_personal.click(function () {
+        bank_personal.attr("class", "bank_selected");
+        bank_public.attr("class", "bank_normal");
+        bank_types = 0;
+        refresh_bank_view();
+    });
+    bank_public.click(function () {
+        bank_public.attr("class", "bank_selected");
+        bank_personal.attr("class", "bank_normal");
+        bank_types = 1;
+        refresh_bank_view();
+    });
+    let bank_money_set = $("#bank_money_set");
+    bank_money_set.click(function () {
+        let money = prompt("输入要存入的金钱（铜币）：");
+        money = Number(money);
+        if (money && money <= current_character.money) {
+            current_character.money -= money;
+            bank_money += money;
+            save_data();
+            $("#bank_money_bank").html(get_money_html(bank_money, 20));
+            $("#bank_money").html(get_money_html(current_character.money, 20));
+        } else {
+            alert("超过当前现金上限");
+        }
+    });
+    let bank_money_get = $("#bank_money_get");
+    bank_money_get.click(function () {
+        let money = prompt("输入要取出的金钱（铜币）：");
+        money = Number(money);
+        if (money && money <= bank_money) {
+            current_character.money += money;
+            bank_money -= money;
+            save_data();
+            $("#bank_money_bank").html(get_money_html(bank_money, 20));
+            $("#bank_money").html(get_money_html(current_character.money, 20));
+        } else {
+            alert("超过银行存款上限");
+        }
+    });
 });
 
 function show_view_bank() {
     view_bank.show();
-    refresh_bank_view();
+    $("#bank_personal").click();
     refresh_bank_items();
 }
 
@@ -38,19 +81,15 @@ function hide_view_bank() {
  */
 function refresh_bank_view() {
     bank_view.empty();
+    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
     for (let i = 0; i < MAX_ITEMS; i++) {
-        let item = bank_item_list[i];
+        let model = bank_list[i];
         let cell = $("<div></div>");
         cell.addClass("item");
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
-        if (item != null) {
-            let item_name;
-            if (typeof item === "number") {
-                // 生成固定装备model
-                item_name = item;
-                item = create_static_equipment_model(item);
-            }
+        if (model != null) {
+            let item = get_equipment_by_model(model)[1];
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
             cell.css("box-shadow", "0 0 10px inset " + rare_color);
@@ -69,11 +108,11 @@ function refresh_bank_view() {
                     let items = current_character.items;
                     for (let k = 0; k < MAX_ITEMS; k++) {
                         if (items[k] == null) {
-                            items[k] = item_name != null ? item_name : item;
+                            items[k] = model;
                             break;
                         }
                     }
-                    bank_item_list[i] = null;
+                    bank_list[i] = null;
                     refresh_bank_view();
                     refresh_bank_items();
                     save_data();
@@ -81,6 +120,17 @@ function refresh_bank_view() {
             });
         }
         bank_view.append(cell);
+    }
+    let bank_money_bank = $("#bank_money_bank");
+    if (bank_types === 0) {
+        $("#bank_money_set").hide();
+        $("#bank_money_get").hide();
+        bank_money_bank.hide();
+    } else {
+        $("#bank_money_set").show();
+        $("#bank_money_get").show();
+        bank_money_bank.show();
+        bank_money_bank.html(get_money_html(bank_money, 20));
     }
 }
 
@@ -91,18 +141,13 @@ function refresh_bank_items() {
     bank_items.empty();
     let items = current_character.items;
     for (let i = 0; i < MAX_ITEMS; i++) {
-        let item = items[i];
+        let model = items[i];
         let cell = $("<div></div>");
         cell.addClass("item");
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
-        if (item != null) {
-            let item_name;
-            if (typeof item === "number") {
-                // 生成固定装备model
-                item_name = item;
-                item = create_static_equipment_model(item);
-            }
+        if (model != null) {
+            let item = get_equipment_by_model(model)[1];
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
             cell.css("box-shadow", "0 0 10px inset " + rare_color);
@@ -116,11 +161,15 @@ function refresh_bank_items() {
             // 右键点击事件，存入装备
             cell.contextmenu(function (e) {
                 e.preventDefault();
+                if (item.bind !== 0 && item.bind !== 1) {
+                    return;
+                }
                 if (get_bank_empty_count() > 0) {
                     hide_info();
-                    for (let k = 0; k < MAX_ITEMS; k++) {
-                        if (bank_item_list[k] == null) {
-                            bank_item_list[k] = item_name != null ? item_name : item;
+                    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
+                    for (let k = 0; k < MAX_BANKS; k++) {
+                        if (bank_list[k] == null) {
+                            bank_list[k] = model;
                             break;
                         }
                     }
@@ -141,9 +190,10 @@ function refresh_bank_items() {
  * @return {number}
  */
 function get_bank_empty_count() {
+    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
     let count = 0;
     for (let k = 0; k < MAX_BANKS; k++) {
-        if (bank_item_list[k] == null) {
+        if (bank_list[k] == null) {
             count++;
         }
     }
@@ -154,33 +204,6 @@ function get_bank_empty_count() {
  * 整理银行
  */
 function pack_bank() {
-    bank_item_list.sort(function (a, b) {
-        if (a == null) {
-            return 1;
-        }
-        if (b == null) {
-            return -1;
-        }
-        if (typeof a === "number") {
-            a = create_static_equipment_model(a);
-        }
-        if (typeof b === "number") {
-            b = create_static_equipment_model(b);
-        }
-        a = create_equipment_by_model(a);
-        b = create_equipment_by_model(b);
-        if (a.pos !== b.pos) {
-            return a.pos - b.pos;
-        }
-        if (a.type !== b.type) {
-            return a.type - b.type;
-        }
-        if (a.rare !== b.rare) {
-            return a.rare - b.rare;
-        }
-        if (a.icon !== b.icon) {
-            return a.icon > b.icon ? 1 : -1;
-        }
-        return a.name > b.name ? 1 : -1;
-    });
+    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
+    bank_list.sort(sort_equipment);
 }

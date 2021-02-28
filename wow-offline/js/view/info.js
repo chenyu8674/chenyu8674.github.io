@@ -77,7 +77,7 @@ function show_monster_info(view, index) {
     info.css("top", y - 5 + "px");
     info.css("padding-right", "10px");
     info.append("<div style='height:25px;font-size:12px;font-weight:bold;'>" + monster.name + "</div>");
-    info.append("<div style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare) + "</div>");
+    info.append("<div style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare, monster.percent) + "</div>");
     info.append("<div style='color:goldenrod'>lv " + monster.lvl + " " + get_monster_species_name(monster.species) + "</div>");
     if (monster.detail != null) {
         info.append("<div style='color:lightgray;margin-top:5px;line-height:17px;'>" + monster.detail + "</div>");
@@ -100,12 +100,20 @@ function show_equipment_info(view, model) {
     let rare_color = eval("color_rare_" + equipment.rare);
     // 装备名称
     info.append("<div style='height:25px;font-size:12px;font-weight:bold;color:" + rare_color + "'>" + equipment.name + "</div>");
-    // 物品等级
-    info.append("<div style='color:goldenrod'>物品等级：" + equipment.e_lvl + "</div>");
+    // 装备绑定
+    if (equipment.bind !== 0) {
+        if (equipment.bind === 1) {
+            info.append("<div>装备后绑定</div>");
+        } else {
+            info.append("<div>已绑定</div>");
+        }
+    }
     let can_equip = check_can_equip(current_character, equipment);
     let can_not = can_equip ? "" : " style='color:red'";
     // 装备品质+类型
     info.append("<div" + can_not + ">" + get_type_name_by_rare(equipment.rare) + "的 " + equipment.type_name + "</div>");
+    // 空行
+    info.append("<div style='height:3px;'></div>");
     for (let i = 0; i < equipment.effect.length; i++) {
         let effect = equipment.effect[i];
         effect = effect.split("+=");
@@ -119,22 +127,29 @@ function show_equipment_info(view, model) {
         text = text.replace(" %", "% ");
         let color = "";
         if (is_in_array(equipment.pos, [1, 3, 4, 5, 8, 9, 10, 11, 12]) && i < 2) {
+            // 装备护甲属性
             color = " style='color:lightblue'"
         } else if (equipment.pos === 15) {
             if ((text.indexOf(dictionary_attribute_name.attack_power) > 0 || text.indexOf(dictionary_attribute_name.magic_power) > 0 || text.indexOf(dictionary_attribute_name.heal_power) > 0) && i < 2) {
+                // 武器强度属性
                 color = " style='color:lightblue'"
             }
         } else if (equipment.pos === 16) {
             if (i < 2) {
+                // 盾牌护甲属性
                 color = " style='color:lightblue'"
             }
         }
         // 装备属性
         info.append("<div" + color + ">" + text + "</div>");
     }
+    // 空行
+    info.append("<div style='height:3px;'></div>");
     can_not = current_character.lvl >= equipment.c_lvl ? "" : " style='color:red'";
     // 需要等级
     info.append("<div" + can_not + ">需要等级：" + equipment.c_lvl + "</div>");
+    // 物品等级
+    info.append("<div>物品等级：" + equipment.e_lvl + "</div>");
     if (equipment.skill != null) {
         // 附加技能
         let skill = equipment.skill;

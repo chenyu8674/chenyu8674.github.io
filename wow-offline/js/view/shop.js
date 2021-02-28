@@ -22,9 +22,10 @@ $(document).ready(function () {
             let items = current_character.items;
             for (let i = 0; i < MAX_ITEMS; i++) {
                 let item = items[i];
-                if (typeof item === "number") {
-                    item = create_static_equipment_model(item);
+                if (item == null) {
+                    continue;
                 }
+                item = get_equipment_by_model(item)[1];
                 if (item != null && item.rare <= rare) {
                     sell_equipment(i, true);
                 }
@@ -246,10 +247,7 @@ function refresh_shop_items() {
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
-            if (typeof item === "number") {
-                // 生成固定装备model
-                item = create_static_equipment_model(item);
-            }
+            item = get_equipment_by_model(item)[1];
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
             cell.css("box-shadow", "0 0 10px inset " + rare_color);
@@ -297,15 +295,16 @@ function get_money_html(money, text_size) {
     let silver = (money - copper) % 10000 / 100;
     let gold = (money - silver * 100 - copper) / 10000;
     let html = "";
-    let font_size = text_size * 1.6;
+    let font_size = text_size * 1.5;
+    let line_height = font_size * 0.9;
     if (gold > 0) {
-        html += gold + "<span style='font-size: " + font_size + "px' class='money_gold'>●</span>";
+        html += "<span style='line-height: " + line_height + "px'>" + gold + "</span><span style='font-size: " + font_size + "px' class='money_gold'>●</span>";
     }
     if (silver > 0) {
-        html += silver + "<span style='font-size: " + font_size + "px' class='money_silver'>●</span>";
+        html += "<span style='line-height: " + line_height + "px'>" + silver + "</span><span style='font-size: " + font_size + "px' class='money_silver'>●</span>";
     }
     if (copper > 0 || (gold === 0 && silver === 0)) {
-        html += copper + "<span style='font-size: " + font_size + "px' class='money_copper'>●</span>";
+        html += "<span style='line-height: " + line_height + "px'>" + copper + "</span><span style='font-size: " + font_size + "px' class='money_copper'>●</span>";
     }
     return html;
 }

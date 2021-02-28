@@ -326,14 +326,17 @@ function refresh_raid_monster() {
         let monster_raid = map_info.monster[i];
         let monster = {};
         if (monster_raid.name != null) {
-            let lvl;
-            monster = dictionary_monster[monster_raid.name];
-            if (monster_raid.lvl == null) {
-                lvl = monster.rare >= 5 ? map_info.max : map_info.min;
-            } else {
-                lvl = monster_raid.lvl
+            if (monster_raid.percent == null || random_percent(monster_raid.percent)) {
+                let lvl;
+                monster = dictionary_monster[monster_raid.name];
+                if (monster_raid.lvl == null) {
+                    lvl = monster.rare >= 5 ? map_info.max : map_info.min;
+                } else {
+                    lvl = monster_raid.lvl;
+                }
+                monster = create_monster_by_model(monster_raid.name, lvl);
+                monster.percent = monster_raid.percent;
             }
-            monster = create_monster_by_model(monster_raid.name, lvl)
         }
         monster.x = monster_raid.x > 100 ? monster_raid.x / 10 : monster_raid.x;
         monster.y = monster_raid.y > 100 ? monster_raid.y / 10 : monster_raid.y;
@@ -598,7 +601,7 @@ function on_battle_end(index) {
         $("#current_money").html(get_money_html(current_character.money, 20));
         $("#shop_money").html(get_money_html(current_character.money, 20));
         // 道具掉落判定
-        if (monster.rare >= 5) {
+        if (monster.rare >= 5 || monster.percent != null) {
             // 副本BOSS掉落
             drop_raid_equipment(monster);
         } else {
@@ -651,11 +654,25 @@ function drop_random_equipment(monster) {
     let is_drop = random_percent(drop_list[rare - 1] * DROP_MULTIPLE);
     if (is_drop) {
         if (monster.drop != null && random_percent(DROP_MONSTER)) {
-            put_equipment_to_items(random_list(monster.drop));
+            let drop = random_list(monster.drop);
+            let equipment = create_static_equipment_model(drop);
+            if (equipment.bind == null) {
+                // 拾取绑定
+                put_equipment_to_items(drop);
+            } else {
+                put_equipment_to_items([drop, equipment.bind]);
+            }
             return;
         }
         if (map_info.drop != null && random_percent(DROP_MAP)) {
-            put_equipment_to_items(random_list(map_info.drop));
+            let drop = random_list(map_info.drop);
+            let equipment = create_static_equipment_model(drop);
+            if (equipment.bind == null) {
+                // 拾取绑定
+                put_equipment_to_items(drop);
+            } else {
+                put_equipment_to_items([drop, equipment.bind]);
+            }
             return;
         }
         if (map_info.type !== 1) {
@@ -687,8 +704,13 @@ function drop_raid_equipment(monster) {
             if (typeof drop === "number") {
                 drop_rate -= 100 / drop_list.length;
                 if (drop_rate <= 0 || test_mode) {
-                    let equipment = Number(drop);
-                    put_equipment_to_items(equipment);
+                    let equipment = create_static_equipment_model(drop);
+                    if (equipment.bind == null) {
+                        // 拾取绑定
+                        put_equipment_to_items(drop);
+                    } else {
+                        put_equipment_to_items([drop, equipment.bind]);
+                    }
                     if (!test_mode) {
                         return;
                     }

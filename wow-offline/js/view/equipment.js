@@ -46,35 +46,7 @@ $(document).ready(function () {
  * 整理背包
  */
 function pack_bag() {
-    current_character.items.sort(function (a, b) {
-        if (a == null) {
-            return 1;
-        }
-        if (b == null) {
-            return -1;
-        }
-        if (typeof a === "number") {
-            a = create_static_equipment_model(a);
-        }
-        if (typeof b === "number") {
-            b = create_static_equipment_model(b);
-        }
-        a = create_equipment_by_model(a);
-        b = create_equipment_by_model(b);
-        if (a.pos !== b.pos) {
-            return a.pos - b.pos;
-        }
-        if (a.type !== b.type) {
-            return a.type - b.type;
-        }
-        if (a.rare !== b.rare) {
-            return a.rare - b.rare;
-        }
-        if (a.icon !== b.icon) {
-            return a.icon > b.icon ? 1 : -1;
-        }
-        return a.name > b.name ? 1 : -1;
-    });
+    current_character.items.sort(sort_equipment);
 }
 
 /**
@@ -429,11 +401,13 @@ function refresh_current_equipment() {
     let weapon_count = 0;
     for (let i = 0; i < equipments.length; i++) {
         let equipment = equipments[i];
-        let equipment_name;
-        if (typeof equipment === "number") {
-            equipment_name = equipment;
-            equipment = create_static_equipment_model(equipment);
+        if (typeof equipment[0] === "number" && equipment[1] === 1) {
+            // 装备后绑定
+            equipments[i] = equipment[0];
         }
+        let list = get_equipment_by_model(equipment);
+        let equipment_name = list[0];
+        equipment = list[1];
         let check_equipment = create_equipment_by_model(equipment);
         let pos_new = check_equipment.pos;
         let rare = check_equipment.rare;
@@ -492,10 +466,7 @@ function refresh_current_items() {
         cell.css("left", 11 + (i % 10) * 58 + "px");
         cell.css("top", 11 + Math.floor(i / 10) * 58 + "px");
         if (item != null) {
-            if (typeof item === "number") {
-                // 生成固定装备model
-                item = create_static_equipment_model(item);
-            }
+            item = get_equipment_by_model(item)[1];
             let rare_color = eval("color_rare_" + item.rare);
             cell.css("border-color", rare_color);
             cell.css("box-shadow", "0 0 10px inset " + rare_color);
@@ -606,17 +577,18 @@ function equip_equipment(index) {
     }
     let items = current_character.items;
     let item = items[index];
-    let item_name;
-    if (typeof item === "number") {
-        item_name = item;
-        item = create_static_equipment_model(item);
-    }
+    let list = get_equipment_by_model(item);
+    let item_name = list[0];
+    item = list[1];
     if (current_character.lvl < item.c_lvl) {
         return;// 等级不够
     }
     let check_equipment = create_equipment_by_model(item);
     if (!check_can_equip(current_character, check_equipment)) {
         return;// 装备类型与职业不符
+    }
+    if (check_equipment.bind === 1 && !confirm("装备后绑定")) {
+        return;// 装备后绑定
     }
     if (check_equipment.pos === 15 && is_in_array(check_equipment.type, [21, 22, 23, 24, 25, 31, 32, 33])
         && get_equipment_count_by_pos(15) + get_equipment_count_by_pos(16) >= 2
@@ -635,11 +607,9 @@ function equip_equipment(index) {
         if (count === 2) {
             for (let j = 0; j < equipments.length; j++) {
                 let equipment = equipments[j];
-                let equipment_name;
-                if (typeof equipment === "number") {
-                    equipment_name = equipment;
-                    equipment = create_static_equipment_model(equipment);
-                }
+                let list = get_equipment_by_model(equipment);
+                let equipment_name = list[0];
+                equipment = list[1];
                 if (create_equipment_by_model(equipment).pos === check_equipment.pos) {
                     equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                     equipments[j] = item;
@@ -656,11 +626,9 @@ function equip_equipment(index) {
         // 双持时装备副手
         for (let j = equipments.length - 1; j >= 0; j--) {
             let equipment = equipments[j];
-            let equipment_name;
-            if (typeof equipment === "number") {
-                equipment_name = equipment;
-                equipment = create_static_equipment_model(equipment);
-            }
+            let list = get_equipment_by_model(equipment);
+            let equipment_name = list[0];
+            equipment = list[1];
             if (create_equipment_by_model(equipment).pos === 15) {
                 equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 equipments.splice(j, 1);
@@ -672,11 +640,9 @@ function equip_equipment(index) {
         // 装备双手武器
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
-            let equipment_name;
-            if (typeof equipment === "number") {
-                equipment_name = equipment;
-                equipment = create_static_equipment_model(equipment);
-            }
+            let list = get_equipment_by_model(equipment);
+            let equipment_name = list[0];
+            equipment = list[1];
             if (create_equipment_by_model(equipment).pos === 15 || create_equipment_by_model(equipment).pos === 16) {
                 if (equipment_exchange_1 == null) {
                     equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
@@ -692,11 +658,9 @@ function equip_equipment(index) {
         // 装备双手武器时装备副手
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
-            let equipment_name;
-            if (typeof equipment === "number") {
-                equipment_name = equipment;
-                equipment = create_static_equipment_model(equipment);
-            }
+            let list = get_equipment_by_model(equipment);
+            let equipment_name = list[0];
+            equipment = list[1];
             if (create_equipment_by_model(equipment).pos === 15) {
                 equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 equipments.splice(j, 1);
@@ -707,11 +671,9 @@ function equip_equipment(index) {
     } else {
         for (let j = 0; j < equipments.length; j++) {
             let equipment = equipments[j];
-            let equipment_name;
-            if (typeof equipment === "number") {
-                equipment_name = equipment;
-                equipment = create_static_equipment_model(equipment);
-            }
+            let list = get_equipment_by_model(equipment);
+            let equipment_name = list[0];
+            equipment = list[1];
             if (create_equipment_by_model(equipment).pos === check_equipment.pos) {
                 equipment_exchange_1 = equipment_name != null ? equipment_name : equipment;
                 equipments.splice(j, 1);
@@ -749,11 +711,9 @@ function take_off_equipment(equipment) {
         return;// 背包已满
     }
     hide_info();
-    let equipment_name;
-    if (typeof equipment === "number") {
-        equipment_name = equipment;
-        equipment = create_static_equipment_model(equipment);
-    }
+    let list = get_equipment_by_model(equipment);
+    let equipment_name = list[0];
+    equipment = list[1];
     let equipments = current_character.equipments;
     for (let j = 0; j < equipments.length; j++) {
         if (equipments[j] === (equipment_name != null ? equipment_name : equipment)) {
