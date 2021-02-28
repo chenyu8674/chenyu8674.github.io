@@ -413,7 +413,6 @@ function do_attack(attacker, skill, target) {
  */
 function is_death(role) {
     if (role.current_health_value <= 0) {
-        battle_log("");
         battle_log(role.name + " 战败");
         return true;
     } else {

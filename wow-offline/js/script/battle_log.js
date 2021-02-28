@@ -12,6 +12,9 @@ function battle_log(str) {
     if (battle_time !== 1) {
         return;
     }
+    if (str == null) {
+        str = "";
+    }
     let log_view;
     if (in_test_mode) {
         battle_log_text.push(str);

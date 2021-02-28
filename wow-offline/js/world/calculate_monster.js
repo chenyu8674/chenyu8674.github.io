@@ -15,6 +15,8 @@ function create_monster_by_model(name, lvl) {
     monster.equipments = [];
     monster.name = name;
     monster.lvl = lvl;
+    monster.say_start = model.say_start;
+    monster.say_end = model.say_end;
     monster.job = model.type;
     if (monster.job < 10) {
         monster.job *= 10;
@@ -223,7 +225,14 @@ function get_monster_species_name(species) {
  */
 function get_monster_rare_name(rare, percent) {
     if (percent) {
-        return "稀有精英";
+        switch (rare) {
+            case 4:
+                return "稀有精英";
+            case 5:
+                return "稀有首领";
+            case 6:
+                return "稀有团队首领";
+        }
     } else {
         switch (rare) {
             case 1:

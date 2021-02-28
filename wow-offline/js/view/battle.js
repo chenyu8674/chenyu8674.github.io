@@ -479,17 +479,8 @@ function do_move() {
     let move_y = target_y - player_y;
     let move_distance = Math.sqrt(Math.pow(move_x, 2) + Math.pow(move_y, 2));
     move_step = Math.round(move_distance * 100);
-    if (move_step === 0) {
-        // 原地战斗
-        move_timer = 0;
-        on_battle = true;
-        $(".player_point").addClass("on_battle");
-        battle_time = 1;
-        start_battle(current_character, map_monster_list[target_monster], on_turn_end, on_battle_end);
-    } else {
-        clearTimeout(move_timer);
-        move_timer = setTimeout(move_loop, 10);
-    }
+    clearTimeout(move_timer);
+    move_timer = setTimeout(move_loop, 10);
 }
 
 /**
@@ -530,6 +521,11 @@ function move_loop() {
             on_battle = true;
             $(".player_point").addClass("on_battle");
             battle_time = 1;
+            // 战斗开始喊话
+            if (monster.say_start) {
+                battle_log();
+                battle_log("<span style='color:red'>" + monster.name + " 大喊：" + monster.say_start + "</span>");
+            }
             start_battle(current_character, monster, on_turn_end, on_battle_end);
         }
     } else {
@@ -557,6 +553,10 @@ function on_battle_end(index) {
     if (index === 1) {
         kill_count++;
         let monster = map_monster_list[target_monster];
+        if (monster.say_end) {
+            battle_log("<span style='color:red'>" + monster.name + " 大喊：" + monster.say_end + "</span>");
+        }
+        battle_log();
         if (map_info.type === 1 && monster.rare === 4) {
             // 练级地图击败精英怪时移位
             player_x += 3;
@@ -626,7 +626,14 @@ function on_battle_end(index) {
         if (map_info.type === 1) {
             refresh_random_monster();
         } else {
-            if (map_monster_list.length === 0) {
+            let monster_count = 0;
+            for (let i = 0; i < map_monster_list.length; i++) {
+                let monster = map_monster_list[i];
+                if (monster.name != null) {
+                    monster_count++;
+                }
+            }
+            if (monster_count <= 0) {
                 // 完成副本
                 battle_log("<br/><span style='color:goldenrod'>副本完成</span>");
                 $("#attack_next").hide();

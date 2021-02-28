@@ -1,7 +1,7 @@
 let view_bank;
 let bank_view;
 let bank_items;
-let bank_types = 0;// 0个人，1公共
+let bank_type = 0;// 0个人，1公共
 
 $(document).ready(function () {
     view_bank = $("#view_bank");
@@ -27,13 +27,13 @@ $(document).ready(function () {
     bank_personal.click(function () {
         bank_personal.attr("class", "bank_selected");
         bank_public.attr("class", "bank_normal");
-        bank_types = 0;
+        bank_type = 0;
         refresh_bank_view();
     });
     bank_public.click(function () {
         bank_public.attr("class", "bank_selected");
         bank_personal.attr("class", "bank_normal");
-        bank_types = 1;
+        bank_type = 1;
         refresh_bank_view();
     });
     let bank_money_set = $("#bank_money_set");
@@ -81,7 +81,7 @@ function hide_view_bank() {
  */
 function refresh_bank_view() {
     bank_view.empty();
-    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
+    let bank_list = bank_type === 0 ? current_character.banks : bank_item_list;
     for (let i = 0; i < MAX_ITEMS; i++) {
         let model = bank_list[i];
         let cell = $("<div></div>");
@@ -122,7 +122,7 @@ function refresh_bank_view() {
         bank_view.append(cell);
     }
     let bank_money_bank = $("#bank_money_bank");
-    if (bank_types === 0) {
+    if (bank_type === 0) {
         $("#bank_money_set").hide();
         $("#bank_money_get").hide();
         bank_money_bank.hide();
@@ -161,12 +161,12 @@ function refresh_bank_items() {
             // 右键点击事件，存入装备
             cell.contextmenu(function (e) {
                 e.preventDefault();
-                if (item.bind !== 0 && item.bind !== 1) {
+                if (bank_type === 1 && item.bind !== 0 && item.bind !== 1) {
                     return;
                 }
                 if (get_bank_empty_count() > 0) {
                     hide_info();
-                    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
+                    let bank_list = bank_type === 0 ? current_character.banks : bank_item_list;
                     for (let k = 0; k < MAX_BANKS; k++) {
                         if (bank_list[k] == null) {
                             bank_list[k] = model;
@@ -190,7 +190,7 @@ function refresh_bank_items() {
  * @return {number}
  */
 function get_bank_empty_count() {
-    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
+    let bank_list = bank_type === 0 ? current_character.banks : bank_item_list;
     let count = 0;
     for (let k = 0; k < MAX_BANKS; k++) {
         if (bank_list[k] == null) {
@@ -204,6 +204,6 @@ function get_bank_empty_count() {
  * 整理银行
  */
 function pack_bank() {
-    let bank_list = bank_types === 0 ? current_character.banks : bank_item_list;
+    let bank_list = bank_type === 0 ? current_character.banks : bank_item_list;
     bank_list.sort(sort_equipment);
 }
