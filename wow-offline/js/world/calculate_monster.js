@@ -226,6 +226,7 @@ function get_monster_species_name(species) {
 function get_monster_rare_name(rare, percent) {
     if (percent) {
         switch (rare) {
+            case 3:
             case 4:
                 return "稀有精英";
             case 5:
