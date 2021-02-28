@@ -125,13 +125,14 @@ function create_character(job, exp, name) {
         current_character.money = 99999999;
     }
     if (exp === 0) {
+        // 衬衫、战袍
         if (is_in_local_mode() || current_character.name === "GHOST") {
-            current_character.items.push(33);
-            current_character.items.push(34);
+            current_character.equipments.push(33);
+            current_character.equipments.push(34);
+        } else {
+            current_character.equipments.push(31);
+            current_character.equipments.push(32);
         }
-        // 新手装备
-        current_character.equipments.push(31);
-        current_character.equipments.push(32);
         switch (job) {
             case 11:
             case 23:
@@ -208,11 +209,11 @@ function create_character(job, exp, name) {
     //         push_equipment();
     //     }
     // }
-    current_character.items.push(19019);
-    current_character.items.push(17182);
-    current_character.items.push(22589);
-    current_character.items.push(12939);
-    current_character.items.push(12940);
+    // current_character.items.push(19019);
+    // current_character.items.push(17182);
+    // current_character.items.push(22589);
+    // current_character.items.push(12939);
+    // current_character.items.push(12940);
 
     // 刷新状态栏
     calculate_role_1(current_character);

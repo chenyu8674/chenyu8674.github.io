@@ -48,10 +48,10 @@ function new_player_skill() {
         skill.type = type_attack;
         skill.cooldown = 3;
         skill.priority = 30;
-        skill.X = 120;
+        skill.X = 150;
         skill.Y = 25;
         skill.icon = "ability_meleedamage";
-        skill.detail = "在攻击被闪避后立刻对目标进行压制，造成" + skill.X + "%攻击强度的物理伤害。压制无法被闪避或格挡，且暴击率提高" + skill.Y + "%。";
+        skill.detail = "攻击被目标闪避后立刻对其进行压制，造成" + skill.X + "%攻击强度的物理伤害。压制无法被闪避或格挡，且暴击率提高" + skill.Y + "%。";
         skill.attempt = function (attacker, target) {
             if (skill_in_cd(attacker, skill)) {
                 return false;

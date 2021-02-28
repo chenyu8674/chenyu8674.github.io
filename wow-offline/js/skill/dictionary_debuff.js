@@ -23,8 +23,8 @@ function new_debuff() {
     debuff.warrior_3 = function () {
         let debuff = {};
         debuff.name = "破甲";
-        debuff.T = 5;
-        debuff.X = 4;
+        debuff.T = 3;
+        debuff.X = 5;
         debuff.icon = "ability_warrior_sunder";
         debuff.detail = "物理抗性-" + debuff.X;
         debuff.effect = [

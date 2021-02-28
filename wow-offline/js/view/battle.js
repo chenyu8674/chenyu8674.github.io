@@ -34,11 +34,13 @@ function set_key_listener() {
     $(window).keydown(function (event) {
         switch (event.which) {
             case 49:
-                if (view_battle.is(":visible") && !is_front_view_show()) {
+                // 按键1
+                if (view_battle.is(":visible") && !is_front_view_show() && map_monster_list.length > 0) {
                     $("#attack_next").click();
                 }
                 break;
             case 50:
+                // 按键2
                 if (view_battle.is(":visible") && !is_front_view_show()) {
                     $("#self_heal").click();
                 }
@@ -635,6 +637,8 @@ function on_battle_end(index) {
             }
             if (monster_count <= 0) {
                 // 完成副本
+                map_monster_list = [];
+                refresh_monster_point();
                 battle_log("<br/><span style='color:goldenrod'>副本完成</span>");
                 $("#attack_next").hide();
             }
