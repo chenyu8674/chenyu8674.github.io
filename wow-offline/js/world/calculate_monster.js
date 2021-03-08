@@ -148,11 +148,13 @@ function create_monster_by_model(name, lvl) {
         buff.effect.push("health_percent+=20");
     }
     // 计算怪物属性
-    monster.str = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.agi = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.sta = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.int = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
-    monster.spr = Math.ceil((10 + monster.lvl * 2) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.str = Math.ceil((10 + monster.lvl * 3) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.agi = Math.ceil((10 + monster.lvl * 3) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.sta = Math.ceil((10 + monster.lvl * 3) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.int = Math.ceil((10 + monster.lvl * 3) * get_multiple_by_rare(model.rare) * model.multiple);
+    monster.spr = Math.ceil((10 + monster.lvl * 3) * get_multiple_by_rare(model.rare) * model.multiple);
+    // 降低低级怪物强度
+    buff.effect.push("attr_percent-=" + 3 * (21 - lvl > 0 ? 21 - lvl : 0));
     // 精英/首领怪物增加血量，降低伤害
     if (model.rare === 4) {
         buff.effect.push("health_percent+=60");

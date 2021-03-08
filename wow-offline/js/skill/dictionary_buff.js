@@ -403,7 +403,7 @@ function new_buff() {
         buff.X = 20;
         buff.Y = 100;
         buff.icon = "spell_shadow_unholystrength";
-        buff.detail = "变身恶魔卫士，攻击护甲+" + buff.Y + "%，并使敌方的物理抗性-" + buff.X + "%";
+        buff.detail = "使敌方的物理抗性-" + buff.X + "%";
         buff.effect = [
             "armor_attack_percent+=" + buff.Y
         ];

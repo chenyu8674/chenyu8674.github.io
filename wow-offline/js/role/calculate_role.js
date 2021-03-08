@@ -41,7 +41,7 @@ function calculate_role_2(role_base) {
     role_battle_2 = new_role_whole();
     refresh_base_attribute(role_base_2, role_status_2);
     refresh_attribute_equipments(role_status_2);
-    refresh_attribute_sets(role_status_1);
+    refresh_attribute_sets(role_status_2);
     refresh_attribute_buffs(role_status_2);
     refresh_attribute_debuffs(role_status_2);
     refresh_battle_attribute(role_status_2, role_battle_2);

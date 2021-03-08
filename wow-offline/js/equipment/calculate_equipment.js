@@ -878,6 +878,9 @@ function get_equipment_price(equipment) {
 function get_equipment_lvl(role) {
     let equipment_lvl_list = [];
     let equipments = role.equipments;
+    if (equipments == null) {
+        return 0;
+    }
     let ring_count = 0;
     let trinket_count = 0;
     let weapon_count = 0;
@@ -924,6 +927,9 @@ function get_equipment_lvl(role) {
  */
 function is_equip_equipment(role, name) {
     let equipments = role.equipments;
+    if (equipments == null) {
+        return false;
+    }
     for (let i = 0; i < equipments.length; i++) {
         let module = equipments[i];
         if (module === name) {
@@ -937,6 +943,9 @@ function get_set_effects(role) {
     let calculated_sets = [];
     let result_effects = [];
     let equipments = role.equipments;
+    if (equipments == null) {
+        return [];
+    }
     for (let i = 0; i < equipments.length; i++) {
         let model = equipments[i];
         let equipment = create_equipment_by_model(model);

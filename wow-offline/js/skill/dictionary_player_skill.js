@@ -87,7 +87,7 @@ function new_player_skill() {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
             let heal_obj = null;
             if (damage_obj.is_hit) {
-                let heal_value = damage_obj.damage_value * 10 * attacker.taken_heal_percent / 100 / 100;
+                let heal_value = damage_obj.damage_value * skill.Y * attacker.taken_heal_percent / 100 / 100;
                 let mastery_percent = calculate_original_mastery(attacker);
                 heal_value *= (100 + mastery_percent) / 100;
                 heal_obj = calculate_flat_heal(attacker, target, skill.name, Math.round(heal_value));

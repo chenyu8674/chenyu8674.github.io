@@ -358,7 +358,7 @@ function new_monster() {
         }
         monster["克雷什"] = {
             species: 2, type: 1, rare: 5, skills: "撕咬",
-            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=18"], drop: [6447, 13245, 151430],
+            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=19"], drop: [6447, 13245, 151430],
             detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
         }
         monster["斯卡姆"] = {
@@ -386,5 +386,30 @@ function new_monster() {
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }
     }// 哀嚎洞穴
+    {
+        monster["食尸者"] = {species: 3, type: 1, rare: 4, skills: "吸血"}
+        monster["无脑的恐魔"] = {species: 3, type: 2, rare: 4, skills: "战争践踏", effect: ["health_percent+=50"]}
+        monster["鬼怪仆从"] = {species: 3, type: 6, rare: 4}
+        monster["阴影仆从"] = {species: 3, type: 9, rare: 4, skills: "暗法"}
+
+        monster["幽灵厨师"] = {species: 3, type: 1, rare: 4, skills: "挥砍"}
+
+        monster["哀嚎的卫兵"] = {species: 3, type: 2, rare: 4}
+        monster["痛苦的军官"] = {species: 3, type: 1, rare: 4, effect: ["block_chance_final+=30", "block_value+=50"]}
+
+        monster["巫术骷髅"] = {species: 3, type: 9, rare: 4, skills: "冰法"}
+        monster["臭气食尸鬼"] = {species: 3, type: 3, rare: 4, skills: "毒药"}
+        monster["石头沉睡者"] = {species: 3, type: 6, rare: 4, effect: ["armor_all_percent+=100"]}
+
+        monster["黑暗潜伏者"] = {species: 3, type: 3, rare: 4, skills: "暗攻"}
+        monster["怨骨守护者"] = {
+            species: 3, type: 1, rare: 4, skills: "英勇打击",
+            effect: ["health_percent+=30", "block_chance_final+=30", "block_value+=50"]
+        }
+
+        monster["怨骨掠夺者"] = {species: 3, type: 1, rare: 4, skills: "痛击", effect: ["health_percent+=50"]}
+        monster["脓疮畸体"] = {species: 3, type: 2, rare: 4, skills: "毒药", effect: ["health_percent+=50"]}
+        monster["恐惧占星师"] = {species: 3, type: 8, rare: 4, skills: ["冰法", "冰霜新星"]}
+    }// 影牙城堡
     return monster;
 }

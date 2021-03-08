@@ -231,7 +231,7 @@ function new_job() {
     job.job_main[job.warlock_1] = "int";
     job.job_second[job.warlock_1] = "spr";
     job.job_name[job.warlock_2] = "恶魔术士";
-    job.job_info[job.warlock_2] = "恶魔指挥官，扭曲恶魔之魂来施展破坏之力。";
+    job.job_info[job.warlock_2] = "恶魔指挥官，化身恶魔卫士来施展破坏之力。";
     job.job_main[job.warlock_2] = "int";
     job.job_second[job.warlock_2] = "spr";
     job.job_name[job.warlock_3] = "毁灭术士";

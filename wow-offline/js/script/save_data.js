@@ -118,15 +118,11 @@ function create_character(job, exp, name) {
     current_character.items = [];
     current_character.banks = [];
     current_character.money = 0;
-    if (is_in_local_mode()) {
-        current_character.money = 99999999;
-    }
-    if (current_character.name === "GHOST") {
-        current_character.money = 99999999;
+    if (is_vip()) {
+        current_character.money = 1000000;
     }
     if (exp === 0) {
-        // 衬衫、战袍
-        if (is_in_local_mode() || current_character.name === "GHOST") {
+        if (is_vip()) {
             current_character.equipments.push(33);
             current_character.equipments.push(34);
         } else {
@@ -220,6 +216,14 @@ function create_character(job, exp, name) {
     fill_role_1_health();
     refresh_current_status();
     return current_character;
+}
+
+/**
+ * 是否为测试角色
+ */
+function is_vip() {
+    // return is_in_local_mode() || current_character.name === "GHOST"
+    return true;
 }
 
 /**

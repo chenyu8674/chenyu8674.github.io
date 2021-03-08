@@ -359,7 +359,28 @@ function new_monster_skill() {
         skill.icon = "spell_frost_frostnova"
         skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，并使目标造成的伤害-" + skill.Y + "%，持续" + skill.Z + "回合。";
         skill.cast = function (attacker, target) {
-            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_frost);
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
+            if (damage_obj.is_hit) {
+                target.debuffs.push(new_debuff().damage_all_decrease(skill.Y, skill.Z));
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
+    skill["战争践踏"] = function () {
+        let skill = {};
+        skill.name = "战争践踏";
+        skill.type = type_attack;
+        skill.cooldown = 4;
+        skill.priority = 30;
+        skill.X = 100;
+        skill.Y = 50;
+        skill.Z = 1;
+        skill.icon = "spell_nature_thunderclap"
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，并使目标造成的伤害-" + skill.Y + "%，持续" + skill.Z + "回合。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
             if (damage_obj.is_hit) {
                 target.debuffs.push(new_debuff().damage_all_decrease(skill.Y, skill.Z));
             }
@@ -556,6 +577,27 @@ function new_monster_skill() {
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical, 0, skill.Y);
             return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
+    skill["吸血"] = function () {
+        let skill = {};
+        skill.name = "吸血";
+        skill.type = type_attack;
+        skill.cooldown = 2;
+        skill.first_turn = 2;
+        skill.priority = 30;
+        skill.X = 100;
+        skill.icon = "ability_racial_cannibalize";
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，并回复等量的生命。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_physical);
+            let heal_obj = null;
+            if (damage_obj.is_hit) {
+                heal_obj = calculate_flat_heal(attacker, target, skill.name, damage_obj.damage_value);
+            }
+            return skill_cast_result(damage_obj, heal_obj);
         };
         return skill;
     }
