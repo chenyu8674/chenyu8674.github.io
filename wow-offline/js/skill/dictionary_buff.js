@@ -342,11 +342,12 @@ function new_buff() {
     // 戒律
     buff.priest_1 = function () {
         let buff = {};
-        buff.name = "真言术：盾";
+        buff.name = "心灵之火";
         buff.T = -1;
         buff.X = 50;
-        buff.icon = "spell_holy_powerwordshield";
-        buff.detail = "战斗开始时施放真言术：盾，获得" + buff.X + "%最大生命值的伤害护盾";
+        buff.Y = 30;
+        buff.icon = "spell_holy_innerfire";
+        buff.detail = "若生命值低于" + buff.X + "%，则受到的所有伤害降低" + buff.Y + "%";
         buff.effect = [];
         return buff;
     }
@@ -355,12 +356,12 @@ function new_buff() {
     // 神圣
     buff.priest_2 = function () {
         let buff = {};
-        buff.name = "真言术：韧";
+        buff.name = "光明之泉";
         buff.T = -1;
-        buff.X = 20;
-        buff.Y = 5;
-        buff.icon = "spell_holy_wordfortitude";
-        buff.detail = "最大生命值+" + buff.X + "%，韧性等级+" + buff.Y * (current_character == null ? 1 : current_character.lvl) + "（受人物等级影响）";
+        buff.X = 50;
+        buff.Y = 30;
+        buff.icon = "spell_holy_summonlightwell";
+        buff.detail = "若生命值低于" + buff.X + "%，则回合开始时回复" + buff.Y + "%治疗强度的生命";
         buff.effect = [
             "health_percent+=" + buff.X,
             "resilient_rate+=5*current_character.lvl"
@@ -372,11 +373,12 @@ function new_buff() {
     // 暗影
     buff.priest_3 = function () {
         let buff = {};
-        buff.name = "暗言术：痛";
+        buff.name = "暗影之躯";
         buff.T = -1;
-        buff.X = 20;
-        buff.icon = "spell_shadow_shadowwordpain";
-        buff.detail = "战斗开始时施放暗言术：痛，每回合造成" + buff.X + "%法术强度的暗影伤害";
+        buff.X = 50;
+        buff.Y = 30;
+        buff.icon = "spell_shadow_shadowform";
+        buff.detail = "若生命值低于" + buff.X + "%，则暗影法术造成伤害的" + buff.Y + "%转化为生命回复";
         buff.effect = [];
         return buff;
     }
@@ -401,12 +403,9 @@ function new_buff() {
         buff.name = "鲁莽诅咒";
         buff.T = -1;
         buff.X = 20;
-        buff.Y = 100;
         buff.icon = "spell_shadow_unholystrength";
         buff.detail = "使敌方的物理抗性-" + buff.X + "%";
-        buff.effect = [
-            "armor_attack_percent+=" + buff.Y
-        ];
+        buff.effect = [];
         return buff;
     }
     buff[82] = buff.warlock_2();
@@ -417,7 +416,6 @@ function new_buff() {
         buff.name = "元素诅咒";
         buff.T = -1;
         buff.X = 20;
-        buff.Y = 10;
         buff.icon = "spell_shadow_chilltouch";
         buff.detail = "使敌方的暗影和火焰抗性-" + buff.X + "%";
         buff.effect = [];

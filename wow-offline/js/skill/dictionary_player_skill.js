@@ -659,7 +659,7 @@ function new_player_skill() {
         skill.X = 40;
         skill.Y = 40;
         skill.icon = "spell_nature_starfall";
-        skill.detail = "召唤一束月光灼烧敌人，造成" + skill.X + "%法术强度的奥术伤害，并使其每回合受到" + skill.Y + "%法术强度的奥术伤害，持续" + dictionary_dot.druid_1_1().T + "回合。";
+        skill.detail = "召唤一束月光灼烧目标，造成" + skill.X + "%法术强度的奥术伤害，并使其每回合受到" + skill.Y + "%法术强度的奥术伤害，持续" + dictionary_dot.druid_1_1().T + "回合。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_arcane);
             if (damage_obj.is_hit) {
@@ -683,7 +683,7 @@ function new_player_skill() {
         skill.X = 40;
         skill.Y = 40;
         skill.icon = "ability_mage_firestarter";
-        skill.detail = "召唤一束日光灼烧敌人，造成" + skill.X + "%法术强度的自然伤害，并使其每回合受到" + skill.Y + "%法术强度的自然伤害，持续" + dictionary_dot.druid_1_2().T + "回合。";
+        skill.detail = "召唤一束日光灼烧目标，造成" + skill.X + "%法术强度的自然伤害，并使其每回合受到" + skill.Y + "%法术强度的自然伤害，持续" + dictionary_dot.druid_1_2().T + "回合。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_natural);
             if (damage_obj.is_hit) {
@@ -1014,11 +1014,13 @@ function new_player_skill() {
 
     skill.priest_1_1 = function () {
         let skill = {};
-        skill.name = "惩击";
+        skill.name = "苦修";
         skill.type = type_magic;
-        skill.X = 100;
-        skill.icon = "spell_holy_holysmite";
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.X = 5;
+        skill.Y = 30;
+        skill.Z = 50;
+        skill.icon = "spell_holy_penance";
+        skill.detail = "引导并发射" + skill.X + "道" + skill.Y + "%治疗强度的神圣之光，生命值低于" + skill.Z + "%时对自身造成治疗，反之对目标造成伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
             return skill_cast_result(damage_obj);
@@ -1028,11 +1030,14 @@ function new_player_skill() {
 
     skill.priest_1_2 = function () {
         let skill = {};
-        skill.name = "惩击";
+        skill.name = "真言术：盾";
         skill.type = type_magic;
+        skill.cooldown = 5;
+        skill.priority = 30;
+        skill.speed = 1;
         skill.X = 100;
-        skill.icon = "spell_holy_holysmite";
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.icon = "spell_holy_powerwordshield";
+        skill.detail = "为自身施加神圣护盾，获得" + skill.X + "%治疗强度的伤害护盾。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
             return skill_cast_result(damage_obj);
@@ -1043,11 +1048,12 @@ function new_player_skill() {
 
     skill.priest_2_1 = function () {
         let skill = {};
-        skill.name = "惩击";
+        skill.name = "神圣之火";
         skill.type = type_magic;
         skill.X = 100;
-        skill.icon = "spell_holy_holysmite";
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.Y = 50;
+        skill.icon = "spell_holy_searinglight";
+        skill.detail = "神圣的烈焰吞噬目标，造成" + skill.X + "%法术强度的神圣伤害，并使其每回合受到" + skill.Y + "%法术强度的神圣伤害，持续" + dictionary_dot.priest_2().T + "回合。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
             return skill_cast_result(damage_obj);
@@ -1057,11 +1063,11 @@ function new_player_skill() {
 
     skill.priest_2_2 = function () {
         let skill = {};
-        skill.name = "惩击";
+        skill.name = "快速治疗";
         skill.type = type_magic;
-        skill.X = 100;
-        skill.icon = "spell_holy_holysmite";
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.X = 80;
+        skill.icon = "spell_holy_flashheal";
+        skill.detail = "施放迅捷的治疗法术，回复" + skill.X + "%治疗强度的生命。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
             return skill_cast_result(damage_obj);
@@ -1072,11 +1078,11 @@ function new_player_skill() {
 
     skill.priest_3_1 = function () {
         let skill = {};
-        skill.name = "惩击";
+        skill.name = "精神鞭笞";
         skill.type = type_magic;
         skill.X = 100;
-        skill.icon = "spell_holy_holysmite";
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.icon = "spell_shadow_siphonmana";
+        skill.detail = "用暗影能量攻击目标的精神，造成" + skill.X + "%法术强度的暗影伤害，并使其造成的伤害降低" + dictionary_debuff.priest_3().X + "%，持续" + dictionary_debuff.priest_3().T + "回合。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
             return skill_cast_result(damage_obj);
@@ -1086,11 +1092,11 @@ function new_player_skill() {
 
     skill.priest_3_2 = function () {
         let skill = {};
-        skill.name = "惩击";
+        skill.name = "心灵震爆";
         skill.type = type_magic;
-        skill.X = 100;
-        skill.icon = "spell_holy_holysmite";
-        skill.detail = "对目标施法，造成" + skill.X + "%法术强度的神圣伤害。";
+        skill.X = 200;
+        skill.icon = "spell_shadow_unholyfrenzy";
+        skill.detail = "冲击目标的意识，造成" + skill.X + "%法术强度的暗影伤害。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_holy);
             return skill_cast_result(damage_obj);
@@ -1221,7 +1227,7 @@ function new_player_skill() {
         skill.type = type_magic;
         skill.X = 100;
         skill.icon = "spell_shadow_shadowbolt";
-        skill.detail = "向敌人射出一支暗影箭，造成" + skill.X + "%法术强度的暗影伤害。";
+        skill.detail = "向目标射出一支暗影箭，造成" + skill.X + "%法术强度的暗影伤害。";
         skill.cast = function (attacker, target) {
             let damage_list = [];
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_shadow);
@@ -1419,7 +1425,7 @@ function new_player_skill() {
         skill.type = type_magic;
         skill.X = 100;
         skill.icon = "spell_frost_frostbolt02";
-        skill.detail = "向敌人射出一支寒冰箭，造成" + skill.X + "%法术强度的冰霜伤害，并使其造成的伤害降低" + dictionary_debuff.mage_3().X + "%，持续" + dictionary_debuff.mage_3().T + "回合。";
+        skill.detail = "向目标射出一支寒冰箭，造成" + skill.X + "%法术强度的冰霜伤害，并使其造成的伤害降低" + dictionary_debuff.mage_3().X + "%，持续" + dictionary_debuff.mage_3().T + "回合。";
         skill.cast = function (attacker, target) {
             let damage_obj = calculate_skill_attack(attacker, target, skill.name, skill.X, skill.type, element_frost);
             if (damage_obj.is_hit) {

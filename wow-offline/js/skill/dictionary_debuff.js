@@ -85,6 +85,20 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.priest_3 = function (X) {
+        let debuff = {};
+        debuff.name = "精神鞭笞";
+        debuff.T = 1;
+        debuff.X = 20;
+        debuff.Y = X == null ? debuff.X : X;
+        debuff.icon = "spell_shadow_siphonmana";
+        debuff.detail = "所有伤害-" + debuff.Y + "%";
+        debuff.effect = [
+            "damage_all-=" + debuff.Y
+        ];
+        return debuff;
+    }
+
     debuff.warlock_1 = function () {
         let debuff = {};
         debuff.name = "虚弱诅咒";

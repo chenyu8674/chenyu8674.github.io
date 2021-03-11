@@ -103,11 +103,11 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    // if (is_in_local_mode()) {
-    //     if (current_character.exp === 0) {
-    //         add_experience(MAX_EXP);
-    //     }
-    // }
+    if (is_in_local_mode()) {
+        if (current_character.exp === 0) {
+            add_experience(20000);
+        }
+    }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
     let buff = dictionary_buff[job];
@@ -118,6 +118,18 @@ function create_character(job, exp, name) {
     current_character.items = [];
     current_character.banks = [];
     current_character.money = 0;
+    if (is_in_local_mode()) {
+        // 添加测试装备
+        for (let i = 0; i < MAX_ITEMS - 10; i++) {
+            let param = {};
+            param.c_lvl = 6;
+            param.rare = 5;
+            let model = get_random_equipment_model(param);
+            model.affix[1] = 6;
+            model.affix[2] = 28;
+            current_character.items.push(model);
+        }
+    }
     if (is_vip()) {
         current_character.money = 1000000;
     }
@@ -199,12 +211,6 @@ function create_character(job, exp, name) {
         }
     }
 
-    // 添加测试装备
-    // if (is_in_local_mode()) {
-    //     for (let i = 0; i < MAX_ITEMS - 10; i++) {
-    //         push_equipment();
-    //     }
-    // }
     // current_character.items.push(19019);
     // current_character.items.push(17182);
     // current_character.items.push(22589);
@@ -224,14 +230,6 @@ function create_character(job, exp, name) {
 function is_vip() {
     // return is_in_local_mode() || current_character.name === "GHOST"
     return true;
-}
-
-/**
- * 添加测试装备
- */
-function push_equipment() {
-    let model = get_random_equipment_model(1);
-    current_character.items.push(model);
 }
 
 /**
