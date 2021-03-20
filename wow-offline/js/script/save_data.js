@@ -78,17 +78,35 @@ function save_data() {
     save_character.name = current_character.name;
     save_character.job = current_character.job;
     save_character.exp = current_character.exp;
+    clear_empty_item(current_character.equipments);
     save_character.equipments = current_character.equipments;
+    clear_empty_item(current_character.items);
     save_character.items = current_character.items;
+    clear_empty_item(current_character.banks);
     save_character.banks = current_character.banks;
     save_character.money = current_character.money;
     character_list[current_index] = save_character;
     let save_data = {};
+    clear_empty_item(bank_item_list);
     save_data.bank_item_list = bank_item_list;
     save_data.bank_money = bank_money;
     save_data.character_list = character_list;
     let json = JSON.stringify(save_data);
     localStorage.setItem("save_data", json);
+}
+
+/**
+ * 清除列表末尾空项，节省存储空间
+ */
+function clear_empty_item(list) {
+    for (let i = list.length - 1; i >= 0; i--) {
+        let item = list[i];
+        if (item == null) {
+            list.splice(i, 1);
+        } else {
+            break;
+        }
+    }
 }
 
 /**
@@ -110,6 +128,7 @@ function create_character(job, exp, name) {
     }
     current_character = calculate_base_property(current_character);
     current_character.skills = dictionary_player_skill[job];
+    current_character.hit = dictionary_player_hit[job];
     let buff = dictionary_buff[job];
     current_character.buffs = buff.T < 0 ? [buff] : [];
     current_character.debuffs = [];
@@ -122,10 +141,10 @@ function create_character(job, exp, name) {
         // 添加测试装备
         for (let i = 0; i < MAX_ITEMS - 10; i++) {
             let param = {};
-            param.c_lvl = 6;
+            param.c_lvl = current_character.lvl;
             param.rare = 5;
             let model = get_random_equipment_model(param);
-            model.affix[1] = 6;
+            model.affix[1] = 0;
             model.affix[2] = 28;
             current_character.items.push(model);
         }
@@ -211,11 +230,11 @@ function create_character(job, exp, name) {
         }
     }
 
-    // current_character.items.push(19019);
-    // current_character.items.push(17182);
-    // current_character.items.push(22589);
-    // current_character.items.push(12939);
-    // current_character.items.push(12940);
+    current_character.items.push(19019);
+    current_character.items.push(17182);
+    current_character.items.push(22589);
+    current_character.items.push(12939);
+    current_character.items.push(12940);
 
     // 刷新状态栏
     calculate_role_1(current_character);

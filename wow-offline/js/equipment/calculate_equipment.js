@@ -274,6 +274,9 @@ function create_equipment_by_model(model) {
         equipment_name.push(affix_prefix_name + "之");
         let affix_prefix_func = dictionary_affix[affix_prefix_name];
         let affix_prefix_effect = affix_prefix_func(equipment.e_lvl, equipment.rare, multiple);
+        for (let i = 0; i < affix_prefix_effect.length; i++) {
+            affix_prefix_effect[i] = get_main_effect(affix_prefix_effect[i], equipment);
+        }
         equipment.effect = equipment.effect.concat(affix_prefix_effect);
     }
     // 装备后缀属性
@@ -283,6 +286,9 @@ function create_equipment_by_model(model) {
         equipment_name.push(affix_suffix_name + "的");
         let affix_suffix_func = dictionary_affix_suffix[affix_suffix_name];
         let affix_suffix_effect = affix_suffix_func(equipment.e_lvl, equipment.rare, multiple);
+        for (let i = 0; i < affix_suffix_effect.length; i++) {
+            affix_suffix_effect[i] = get_main_effect(affix_suffix_effect[i], equipment);
+        }
         equipment.effect = equipment.effect.concat(affix_suffix_effect);
     }
     equipment_name.push(model.name);

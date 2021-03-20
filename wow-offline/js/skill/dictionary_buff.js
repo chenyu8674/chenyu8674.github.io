@@ -180,7 +180,7 @@ function new_buff() {
         let buff = {};
         buff.name = "灼热图腾";
         buff.T = -1;
-        buff.X = 20;
+        buff.X = 15;
         buff.icon = "spell_fire_searingtotem";
         buff.detail = "回合开始时，造成" + buff.X + "%法术强度的火焰伤害";
         buff.effect = [];
@@ -193,9 +193,9 @@ function new_buff() {
         let buff = {};
         buff.name = "风怒图腾";
         buff.T = -1;
-        buff.X = 20;
+        buff.X = 15;
         buff.icon = "spell_nature_windfury";
-        buff.detail = "攻击命中时" + buff.X + "%几率进行一次额外攻击，可以双持和使用部分双手武器";
+        buff.detail = buff.X + "%几率触发额外的风怒打击和风暴打击，可以双持和使用部分双手武器";
         buff.effect = [];
         return buff;
     }
@@ -206,7 +206,7 @@ function new_buff() {
         let buff = {};
         buff.name = "治疗之泉图腾";
         buff.T = -1;
-        buff.X = 20;
+        buff.X = 15;
         buff.icon = "inv_spear_04";
         buff.detail = "回合开始时，回复" + buff.X + "%治疗强度的生命";
         buff.effect = [];
@@ -344,10 +344,9 @@ function new_buff() {
         let buff = {};
         buff.name = "心灵之火";
         buff.T = -1;
-        buff.X = 50;
-        buff.Y = 30;
+        buff.X = 30;
         buff.icon = "spell_holy_innerfire";
-        buff.detail = "若生命值低于" + buff.X + "%，则受到的所有伤害降低" + buff.Y + "%";
+        buff.detail = "根据损失的生命值，受到的所有伤害最高降低" + buff.X + "%";
         buff.effect = [];
         return buff;
     }
@@ -358,14 +357,10 @@ function new_buff() {
         let buff = {};
         buff.name = "光明之泉";
         buff.T = -1;
-        buff.X = 50;
-        buff.Y = 30;
+        buff.X = 30;
         buff.icon = "spell_holy_summonlightwell";
-        buff.detail = "若生命值低于" + buff.X + "%，则回合开始时回复" + buff.Y + "%治疗强度的生命";
-        buff.effect = [
-            "health_percent+=" + buff.X,
-            "resilient_rate+=5*current_character.lvl"
-        ];
+        buff.detail = "每回合首次受到伤害时，根据损失的生命值回复最高" + buff.X + "%治疗强度的生命";
+        buff.effect = [];
         return buff;
     }
     buff[72] = buff.priest_2();
@@ -375,10 +370,9 @@ function new_buff() {
         let buff = {};
         buff.name = "暗影之躯";
         buff.T = -1;
-        buff.X = 50;
-        buff.Y = 30;
+        buff.X = 30;
         buff.icon = "spell_shadow_shadowform";
-        buff.detail = "若生命值低于" + buff.X + "%，则暗影法术造成伤害的" + buff.Y + "%转化为生命回复";
+        buff.detail = "根据损失的生命值，技能造成伤害的最高" + buff.X + "%转化为生命回复";
         buff.effect = [];
         return buff;
     }
@@ -476,7 +470,7 @@ function new_buff() {
         buff.name = "冰甲术";
         buff.T = -1;
         buff.X = 100;
-        buff.Y = 10;
+        buff.Y = 20;
         buff.icon = "spell_frost_frostarmor02";
         buff.detail = "所有护甲+" + buff.X + "%，精通等级+" + buff.Y + "%";
         buff.effect = [

@@ -90,6 +90,7 @@ function refresh_base_attribute(role_base, role_status) {
     role_status.equipments = role_base.equipments;
     role_status.items = role_base.items;
     role_status.skills = role_base.skills;
+    role_status.hit = role_base.hit;
     role_status.money = role_base.money;
 }
 
@@ -178,6 +179,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.equipments = role_status.equipments;
     role_battle.items = role_status.items;
     role_battle.skills = role_status.skills;
+    role_battle.hit = role_status.hit;
     role_battle.money = role_status.money;
 
     role_battle.str = Math.round((role_status.str + role_status.attr) * (role_status.str_percent + role_status.attr_percent) / 100);// 力量
@@ -247,6 +249,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.damage_arcane = role_status.damage_arcane + role_status.damage_all;
     role_battle.damage_holy = role_status.damage_holy + role_status.damage_all;
     role_battle.damage_shadow = role_status.damage_shadow + role_status.damage_all;
+    role_battle.damage_all = 0;
 
     role_battle.res_physical = role_status.res_physical + role_status.res_all;
     role_battle.res_fire = role_status.res_fire + role_status.res_all;
@@ -255,6 +258,7 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.res_arcane = role_status.res_arcane + role_status.res_all;
     role_battle.res_holy = role_status.res_holy + role_status.res_all;
     role_battle.res_shadow = role_status.res_shadow + role_status.res_all;
+    role_battle.damage_all = 0;
 
     role_battle.pierce_physical = role_status.pierce_physical + role_status.pierce_all;
     role_battle.pierce_fire = role_status.pierce_fire + role_status.pierce_all;
@@ -263,8 +267,127 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.pierce_arcane = role_status.pierce_arcane + role_status.pierce_all;
     role_battle.pierce_holy = role_status.pierce_holy + role_status.pierce_all;
     role_battle.pierce_shadow = role_status.pierce_shadow + role_status.pierce_all;
+    role_battle.damage_all = 0;
 
     role_battle.cause_damage_percent = role_status.cause_damage_percent;
     role_battle.taken_damage_percent = role_status.taken_damage_percent;
     role_battle.taken_heal_percent = role_status.taken_heal_percent;
+}
+
+/**
+ * role深拷贝
+ */
+function copy_role(role) {
+    let copy_role = {};
+
+    copy_role.current_health_value = role.current_health_value;// 当前生命值
+    copy_role.current_shield_value = role.current_shield_value;// 伤害护盾
+
+    copy_role.name = role.name;
+    copy_role.lvl = role.lvl;
+    copy_role.job = role.job;
+    copy_role.speed_move = role.speed_move;
+    copy_role.speed_battle = role.speed_battle;
+    copy_role.speed_resource = role.speed_resource;
+    copy_role.buffs = role.buffs;
+    copy_role.debuffs = role.debuffs;
+    copy_role.dots = role.dots;
+    copy_role.equipments = role.equipments;
+    copy_role.items = role.items;
+    copy_role.skills = role.skills;
+    copy_role.hit = role.hit;
+    copy_role.money = role.money;
+
+    copy_role.str = role.str;// 力量
+    copy_role.str_percent = role.str_percent;
+    copy_role.agi = role.agi;// 敏捷
+    copy_role.agi_percent = role.agi_percent;
+    copy_role.sta = role.sta;// 耐力
+    copy_role.sta_percent = role.sta_percent;
+    copy_role.int = role.int;// 智力
+    copy_role.int_percent = role.int_percent;
+    copy_role.spr = role.spr;// 精神
+    copy_role.spr_percent = role.spr_percent;
+
+    copy_role.attr = role.attr;
+    copy_role.attr_percent = role.attr_percent;
+
+    copy_role.max_health_value = role.max_health_value;// 最大生命值
+    copy_role.health_percent = role.health_percent;
+
+    copy_role.attack_power = role.attack_power;// 攻击强度
+    copy_role.attack_power_percent = role.attack_power_percent;
+
+    copy_role.magic_power = role.magic_power;// 法术强度
+    copy_role.magic_power_percent = role.magic_power_percent;
+
+    copy_role.heal_power = role.heal_power;// 治疗强度
+    copy_role.heal_power_percent = role.heal_power_percent;
+
+    copy_role.armor_attack = role.armor_attack;// 攻击护甲
+    copy_role.armor_attack_percent = role.armor_attack_percent;
+    copy_role.armor_magic = role.armor_magic;// 法术护甲
+    copy_role.armor_magic_percent = role.armor_magic_percent;
+    copy_role.armor_all = role.armor_all;
+    copy_role.armor_all_percent = role.armor_all_percent;
+
+    copy_role.hit_rate = role.hit_rate;// 命中等级
+    copy_role.hit_chance_final = role.hit_chance_final;// 最终命中率百分比
+    copy_role.hit_rate_percent = role.hit_rate_percent;
+
+    copy_role.critical_rate = role.critical_rate;// 暴击等级
+    copy_role.critical_chance_final = role.critical_chance_final;// 最终暴击率百分比
+    copy_role.critical_rate_percent = role.critical_rate_percent;
+
+    copy_role.critical_damage = role.critical_damage;// 暴击伤害系数
+
+    copy_role.dodge_rate = role.dodge_rate;// 闪避等级
+    copy_role.dodge_chance_final = role.dodge_chance_final;// 最终闪避率百分比
+    copy_role.dodge_rate_percent = role.dodge_rate_percent;
+
+    copy_role.mastery_rate = role.mastery_rate;// 精通等级
+    copy_role.mastery_rate_percent = role.mastery_rate_percent;
+
+    copy_role.resilient_rate = role.resilient_rate;// 韧性等级
+    copy_role.resilient_rate_percent = role.resilient_rate_percent;
+
+    copy_role.block_rate = role.block_rate;// 格挡等级
+    copy_role.block_chance_final = role.block_chance_final;// 最终格挡率百分比
+    copy_role.block_rate_percent = role.block_rate_percent;
+
+    copy_role.block_value = role.block_value;// 格挡值
+    copy_role.block_value_percent = role.block_value_percent;
+
+    copy_role.damage_physical = role.damage_physical;
+    copy_role.damage_fire = role.damage_fire;
+    copy_role.damage_frost = role.damage_frost;
+    copy_role.damage_natural = role.damage_natural;
+    copy_role.damage_arcane = role.damage_arcane;
+    copy_role.damage_holy = role.damage_holy;
+    copy_role.damage_shadow = role.damage_shadow;
+    copy_role.damage_all = role.damage_all;
+
+    copy_role.res_physical = role.res_physical;
+    copy_role.res_fire = role.res_fire;
+    copy_role.res_frost = role.res_frost;
+    copy_role.res_natural = role.res_natural;
+    copy_role.res_arcane = role.res_arcane;
+    copy_role.res_holy = role.res_holy;
+    copy_role.res_shadow = role.res_shadow;
+    copy_role.res_all = role.res_all;
+
+    copy_role.pierce_physical = role.pierce_physical;
+    copy_role.pierce_fire = role.pierce_fire;
+    copy_role.pierce_frost = role.pierce_frost;
+    copy_role.pierce_natural = role.pierce_natural;
+    copy_role.pierce_arcane = role.pierce_arcane;
+    copy_role.pierce_holy = role.pierce_holy;
+    copy_role.pierce_shadow = role.pierce_shadow;
+    copy_role.pierce_all = role.pierce_all;
+
+    copy_role.cause_damage_percent = role.cause_damage_percent;
+    copy_role.taken_damage_percent = role.taken_damage_percent;
+    copy_role.taken_heal_percent = role.taken_heal_percent;
+
+    return copy_role;
 }

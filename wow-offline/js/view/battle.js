@@ -787,9 +787,9 @@ function refresh_battle_status(only_player) {
     let shield_value = role_battle_1.current_shield_value;
     let health_width = 200 * health_value / max_health_value;
     let player_health_bar = $("#player_health_bar");
-    if (health_width >= 200 * 0.7) {
+    if (health_width >= 2 * THRESHOLD_HEAL) {
         player_health_bar.css("background-color", "yellowgreen");
-    } else if (health_width >= 200 * 0.35) {
+    } else if (health_width >= 2 * THRESHOLD_EXECUTE) {
         player_health_bar.css("background-color", "goldenrod");
     } else {
         player_health_bar.css("background-color", "darkred");
@@ -836,9 +836,9 @@ function refresh_battle_status(only_player) {
             let shield_value = role_battle_2.current_shield_value;
             let health_width = 200 * health_value / max_health_value;
             let monster_health_bar = $("#monster_health_bar");
-            if (health_width >= 200 * 0.7) {
+            if (health_width >= 2 * THRESHOLD_HEAL) {
                 monster_health_bar.css("background-color", "yellowgreen");
-            } else if (health_width >= 200 * 0.35) {
+            } else if (health_width >= 2 * THRESHOLD_EXECUTE) {
                 monster_health_bar.css("background-color", "goldenrod");
             } else {
                 monster_health_bar.css("background-color", "darkred");

@@ -98,7 +98,7 @@ function new_equipment() {
         };
         equipment[82772] = {
             name: "咆哮之口长裤", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_pants_06", affix: 11101,
-            effect: ["int+=5", "sta+=5", "critical_rate+=3", "hit_rate+=1"]
+            effect: ["main+=5", "sta+=5", "critical_rate+=3", "hit_rate+=1"]
         };
         equipment[82880] = {
             name: "阿达罗格之牙", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_weapon_shortblade_04", affix: 15111,
@@ -140,7 +140,7 @@ function new_equipment() {
         };
         equipment[82878] = {
             name: "萤火法袍", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_chest_cloth_18", affix: 4101,
-            effect: ["int+=5", "sta+=5", "critical_rate+=1", "hit_rate+=3"]
+            effect: ["main+=5", "sta+=5", "critical_rate+=1", "hit_rate+=3"]
         };
         equipment[132552] = {
             name: "甲质腕轮", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_bracer_05", affix: 8103,
@@ -149,7 +149,7 @@ function new_equipment() {
         // 熔岩守卫戈多斯
         equipment[82888] = {
             name: "熬心之杖", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_staff_13", affix: 15222,
-            effect: ["int+=4", "sta+=6", "critical_rate+=4"]
+            effect: ["main+=4", "sta+=6", "critical_rate+=4"]
         };
         equipment[82886] = {
             name: "踏血锁靴", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_boots_01", affix: 12104,
@@ -197,7 +197,7 @@ function new_equipment() {
         };
         equipment[5195] = {
             name: "金斑手套", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_gauntlets_23", affix: 9101,
-            effect: ["int+=4", "sta+=4", "critical_rate+=2", "dodge_rate+=3"]
+            effect: ["main+=4", "sta+=4", "critical_rate+=2", "dodge_rate+=3"]
         };
         equipment[2169] = {
             name: "蜂鸣之刃", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_weapon_shortblade_05", affix: 15111,
@@ -222,7 +222,7 @@ function new_equipment() {
         };
         equipment[151062] = {
             name: "流亡建筑师的护臂", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_bracer_robe_dungeonrobe_c_03", affix: 8201,
-            effect: ["int+=3", "sta+=3", "critical_rate+=2", "hit_rate+=2"]
+            effect: ["main+=3", "sta+=3", "critical_rate+=2", "hit_rate+=2"]
         };
         equipment[5199] = {
             name: "铁匠短裤", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_pants_02", affix: 11102,
@@ -273,7 +273,7 @@ function new_equipment() {
         // “船长”曲奇
         equipment[5202] = {
             name: "海盗的罩衫", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_shirt_08", affix: 4101,
-            effect: ["int+=5", "sta+=5", "critical_rate+=3", "dodge_rate+=3"]
+            effect: ["main+=5", "sta+=5", "critical_rate+=3", "dodge_rate+=3"]
         };
         equipment[5197] = {
             name: "曲奇的吹火棍", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_misc_flute_01", affix: 15214,
@@ -281,7 +281,7 @@ function new_equipment() {
         };
         equipment[5198] = {
             name: "曲奇的搅汤棒", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_staff_02", affix: 15216,
-            effect: ["int+=11", "sta+=3", "critical_rate+=2", "dodge_rate+=1"]
+            effect: ["main+=11", "sta+=3", "critical_rate+=2", "dodge_rate+=1"]
         };
         equipment[5192] = {
             name: "盗贼之刃", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_sword_24", affix: 15115,
@@ -358,7 +358,7 @@ function new_equipment() {
         };
         equipment[151426] = {
             name: "安娜科德拉的绸缎护腕", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_bracer_12", affix: 8201,
-            effect: ["int+=3", "sta+=3", "critical_rate+=3", "hit_rate+=1"]
+            effect: ["main+=3", "sta+=3", "critical_rate+=3", "hit_rate+=1"]
         };
         // 皮萨斯
         equipment[6472] = {
@@ -371,7 +371,7 @@ function new_equipment() {
         };
         equipment[151428] = {
             name: "休眠之丝腰带", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_belt_43c", affix: 10101,
-            effect: ["int+=4", "sta+=4", "critical_rate+=2", "dodge_rate+=3"]
+            effect: ["main+=4", "sta+=4", "critical_rate+=2", "dodge_rate+=3"]
         };
         // 考布莱恩
         equipment[6460] = {
@@ -380,7 +380,7 @@ function new_equipment() {
         };
         equipment[6465] = {
             name: "水蛇法袍", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_chest_cloth_36", affix: 4101,
-            effect: ["int+=6", "sta+=6", "hit_rate+=3", "dodge_rate+=3"]
+            effect: ["main+=6", "sta+=6", "hit_rate+=3", "dodge_rate+=3"]
         };
         // 克雷什
         equipment[6447] = {
@@ -407,7 +407,7 @@ function new_equipment() {
         // 变异精灵龙
         equipment[5243] = {
             name: "彩火魔杖", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_wand_11", affix: 15216,
-            effect: ["int+=12", "sta+=4", "critical_rate+=2", "hit_rate+=1"]
+            effect: ["main+=12", "sta+=4", "critical_rate+=2", "hit_rate+=1"]
         };
         equipment[6632] = {
             name: "灵鳞披风", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_misc_cape_13", affix: 5101,
@@ -416,7 +416,7 @@ function new_equipment() {
         // 瑟芬迪斯
         equipment[5970] = {
             name: "毒蛇手套", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_gauntlets_19", affix: 9101,
-            effect: ["int+=4", "sta+=4", "critical_rate+=3", "dodge_rate+=2"]
+            effect: ["main+=4", "sta+=4", "critical_rate+=3", "dodge_rate+=2"]
         };
         equipment[6459] = {
             name: "野蛮锁靴", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_boots_01", affix: 12103,
@@ -437,7 +437,7 @@ function new_equipment() {
         };
         equipment[6631] = {
             name: "生命之根", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_staff_25", affix: 15222,
-            effect: ["int+=12", "sta+=4", "critical_rate+=3", "hit_rate+=3"]
+            effect: ["main+=12", "sta+=4", "critical_rate+=3", "hit_rate+=3"]
         };
         // 吞噬者穆坦努斯
         equipment[6463] = {
@@ -446,7 +446,7 @@ function new_equipment() {
         };
         equipment[6461] = {
             name: "粘液覆盖的垫肩", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shoulder_05", affix: 3101,
-            effect: ["int+=4", "sta+=4", "hit_rate+=3", "dodge_rate+=2"]
+            effect: ["main+=4", "sta+=4", "hit_rate+=3", "dodge_rate+=2"]
         };
         equipment[6627] = {
             name: "变异板甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_chest_plate08", affix: 4104,

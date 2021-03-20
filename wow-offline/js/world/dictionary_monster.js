@@ -343,46 +343,45 @@ function new_monster() {
         monster["变异剧毒风蛇"] = {species: 2, type: 4, rare: 4, skills: "毒药"}
         monster["安娜科德拉"] = {
             species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "致盲"],
-            effect: ["health_percent+=20", "int_percent+=50"], drop: [132737, 5404, 10412, 151427, 151426],
+            effect: ["int_percent+=20"], drop: [132737, 5404, 10412, 151427, 151426],
             detail: "当纳拉雷克斯自作主张地派人前往贫瘠之地时，绯叶是第一个自告奋勇的人。在心智被主人的噩梦彻底粉碎后，这位年轻的侍僧便将自己的名姓丢诸脑后，现在正酝酿着艾泽拉斯邪恶阴险的未来。"
         }
         monster["皮萨斯"] = {
             species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "英勇打击"],
-            effect: ["health_percent+=20", "int_percent+=50"], drop: [6472, 6473, 151429, 151428],
+            effect: ["int_percent+=20"], drop: [6472, 6473, 151429, 151428],
             detail: "作为纳拉雷克斯的儿时玩伴，战士阿里恩在德鲁伊之道上有着过人的天赋。尽管受过严格训练，这位侍僧却仍无力对抗令他丧失理智的腐化。阿里恩改名换姓，以皮萨斯的新身份将自己超凡的近战能力与德鲁伊的学识合二为一，粉碎一切入侵者。"
         }
         monster["考布莱恩"] = {
             species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "毒药"],
-            effect: ["health_percent+=20", "int_percent+=50"], drop: [6460, 6465, 10410],
+            effect: ["int_percent+=20"], drop: [6460, 6465, 10410],
             detail: "加拉克斯拉驾驭动物形态的能力为他在塞纳里奥议会的德鲁伊间赢得了威名，然而哀嚎洞穴的腐化却扭曲了他的特殊能力。现在，加拉克斯拉已将一种致命的毒蛇形态演练得出神入化，为自己冠以考布莱恩的新名字，以体现他那全新的邪恶力量。"
         }
         monster["克雷什"] = {
             species: 2, type: 1, rare: 5, skills: "撕咬",
-            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=19"], drop: [6447, 13245, 151430],
+            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=26"], drop: [6447, 13245, 151430],
             detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
         }
         monster["斯卡姆"] = {
-            species: 2, type: 4, rare: 5, skills: ["电法", "雷霆一击"],
-            effect: ["health_percent+=30"], drop: [6449, 6448],
+            species: 2, type: 4, rare: 5, skills: ["电法", "雷霆一击"], drop: [6449, 6448],
             detail: "斯卡姆原本只是为了逃避贫瘠之地的恶劣环境才前往哀嚎洞穴的。与洞内的许多其它住民一样，他也很快就遭到腐化。如今在他周身流淌着黑暗能量，他已经无可挽回地变成了一只强大凶残的野兽。"
         }
         monster["变异精灵龙"] = {
             species: 6, type: 6, rare: 3, skills: ["致盲", "闪避"],
-            effect: ["attr_percent+=100", "health_percent+=100", "cause_damage_percent-=50"], drop: [5243, 6632]
+            effect: ["attr_percent+=100", "health_percent+=100"], drop: [5243, 6632]
         }
         monster["瑟芬迪斯"] = {
             species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],
-            effect: ["health_percent+=20", "int_percent+=50"], drop: [5970, 6459, 6469, 10411],
+            effect: ["int_percent+=20"], drop: [5970, 6459, 6469, 10411],
             detail: "毒牙德鲁伊的领袖曾是纳拉雷克斯最出色的学生。他的悲剧源自于他想要成为大导师，也就是“荣誉导师”的热望，想要和纳拉雷克斯比肩。疯狂在他心中生根发芽，瑟芬迪斯将他的兄弟们召集在一起，成立了这个名叫毒牙德鲁伊的组织。"
         }
         monster["永生者沃尔丹"] = {
             species: 5, type: 4, rare: 5, skills: ["痛击", "雷霆一击", "回春"],
-            effect: ["health_percent+=50"], drop: [6629, 6630, 6631],
+            effect: ["health_percent+=20"], drop: [6629, 6630, 6631],
             detail: "在纳拉雷克斯来到哀嚎洞穴之前，人们对这只生物了解甚少。永生者沃尔丹被看作是洞穴的原始守护者，没能逃过降临在自己家园的腐化。沃尔丹与其他疯狂的德鲁伊结为盟友，对那些擅自闯入的不速之客保持着高度警惕。"
         }
         monster["吞噬者穆坦努斯"] = {
             species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
-            effect: ["attack_power+=30", "health_percent+=60"], drop: [6461, 6627, 6463],
+            effect: ["attack_power+=30", "health_percent+=40"], drop: [6461, 6627, 6463],
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }
     }// 哀嚎洞穴

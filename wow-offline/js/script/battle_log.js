@@ -126,6 +126,6 @@ function heal_log(heal_obj) {
 function shield_log(shield_obj) {
     battle_log(shield_obj.attacker_name
         + " 通过 " + shield_obj.skill_name
-        + " 获得 " + shield_obj.shield_value + " 点伤害吸收护盾"
+        + " 获得 " + shield_obj.shield_value + " 点伤害护盾"
     );
 }

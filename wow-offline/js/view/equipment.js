@@ -257,49 +257,58 @@ function refresh_current_status_1() {
     );
 }
 
+/**
+ * 生成精通提示文字
+ */
 function get_mastery_html() {
     let mastery_percent = calculate_original_mastery(role_battle_1).toFixed(2);
     switch (role_battle_1.job) {
         case 11:
-            return "装备双手武器且致死打击命中时，" + mastery_percent + "%几率触发一次压制";
+            return "致死打击命中时" + mastery_percent + "%几率触发一次压制，需要装备双手武器";
         case 12:
-            return "嗜血的生命回复效果提高" + mastery_percent + "%";
+            return "根据当前损失生命值提高嗜血的伤害，最高为" + mastery_percent + "%";
         case 13:
             return "施放破甲时，获得" + mastery_percent + "%格挡值的伤害护盾";
         case 21:
             return "神圣震击获得" + mastery_percent + "%治疗强度的伤害加成";
         case 22:
-            return "清算造成的神圣伤害的" + mastery_percent + "%转化为生命回复";
+            return "清算造成神圣伤害的" + mastery_percent + "%转化为生命回复";
         case 23:
             return "命令圣印的触发几率提高" + mastery_percent + "%";
         case 31:
-            return "施放多重射击和狂野怒火时，" + mastery_percent + "%几率进行一次额外攻击";
+            return "多重射击和狂野怒火有" + mastery_percent + "%几率进行一次额外攻击";
         case 32:
-            return "奥术射击命中时，" + mastery_percent + "%几率重置瞄准射击的冷却时间";
+            return "奥术射击命中时" + mastery_percent + "%几率重置瞄准射击的冷却时间";
         case 33:
-            return "猛禽一击受到的闪避率加成提高" + mastery_percent + "%";
+            return "闪避率为猛禽一击提供的加成提高" + mastery_percent + "%";
         case 41:
-            return "施放元素掌握时，额外获得" + mastery_percent + "%伤害穿透";
+            return "受到伤害时反弹" + mastery_percent + "%法术强度的自然伤害，每回合最多3次";
         case 42:
             return "风怒武器的触发几率提高" + mastery_percent + "%";
         case 43:
-            return "施放治疗波可使所有护甲提高" + mastery_percent + "%，持续5回合";
+            return "治疗波使所有护甲提高" + mastery_percent + "%，持续" + dictionary_buff.shaman_3_2().T + "回合";
         case 51:
             return "月火术和阳炎术造成的持续伤害提高" + mastery_percent + "%";
         case 52:
             return "凶猛撕咬从每个连击点获得的伤害加成提高" + mastery_percent + "%";
         case 53:
             return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾";
+        case 54:
+            return "召唤树人协助作战，回合开始时从目标吸取" + mastery_percent + "%治疗强度的生命";
         case 61:
             return "冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%";
         case 62:
-            return "邪恶攻击命中时，" + mastery_percent + "%几率获得一个额外的连击点";
+            return "邪恶攻击命中时" + mastery_percent + "%几率获得额外连击点";
         case 63:
             return "割裂造成伤害的" + mastery_percent + "%转化为生命回复";
-        case 54:
-            return "战斗开始时召唤树人作战，每回合从目标吸取" + mastery_percent + "%治疗强度的生命";
+        case 71:
+            return "苦修有" + mastery_percent + "%几率同时造成伤害和治疗效果";
+        case 72:
+            return "快速治疗有" + mastery_percent + "%几率获得等量的伤害护盾";
+        case 73:
+            return "精神鞭笞和心灵震爆有" + mastery_percent + "%几率造成最大值的混乱伤害";
         case 81:
-            return "吸取生命的效果提高" + mastery_percent + "%";
+            return "吸取生命的伤害提高" + mastery_percent + "%";
         case 82:
             return "顺劈斩命中时，" + mastery_percent + "%几率附加伤害加深效果";
         case 83:
