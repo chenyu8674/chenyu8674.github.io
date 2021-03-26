@@ -87,16 +87,6 @@ function dot_log(dot_obj) {
 }
 
 /**
- * 输出drain日志
- */
-function drain_log(drain_obj) {
-    battle_log(drain_obj.attack_name
-        + " 因 " + drain_obj.skill_name
-        + " 回复 " + drain_obj.drain_value + " 点生命"
-    );
-}
-
-/**
  * 输出hot日志
  */
 function hot_log(hot_obj) {

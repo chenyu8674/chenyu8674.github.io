@@ -191,8 +191,10 @@ function hide_monster_area() {
  */
 function show_player_point() {
     $(".player_point").remove();
-    let player_point = $("<img alt='' src='./img/job/" + Math.round(current_character.job / 10) * 10 + ".png'/>");
+    let job = Math.round(current_character.job / 10) * 10;
+    let player_point = $("<img alt='' src='./img/job/" + job + ".png'/>");
     player_point.addClass("player_point");
+    player_point.addClass("player_point_" + job);
     player_point.hover(function () {
         show_player_info();
     }, function () {
@@ -390,10 +392,8 @@ function refresh_monster_point() {
             monster_point.attr("src", "./img/monster/" + monster.species + ".jpg");
             monster_point.css("border-color", eval("color_rare_" + monster.rare));
             monster_point.hover(function () {
-                monster_point.css("border-color", "goldenrod");
                 show_monster_info(monster_point, i);
             }, function () {
-                monster_point.css("border-color", eval("color_rare_" + monster.rare));
                 hide_info();
             });
             monster_point.click(function (e) {

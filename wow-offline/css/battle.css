@@ -99,20 +99,61 @@
     z-index: 1;
 }
 
+.monster_point:hover {
+    box-shadow: 0 0 10px goldenrod;
+}
+
 .player_point {
     position: absolute;
-    width: 30px;
-    height: 30px;
-    margin: -15px;
+    width: 28px;
+    height: 28px;
+    margin: -18px;
+    padding: 1px;
     border-radius: 50%;
-    box-shadow: 0 0 10px ghostwhite;
-    background-color: #111;
+    background-color: black;
+    border-width: 3px;
+    border-style: solid;
     z-index: 2;
 }
 
 .player_point:hover {
-    margin: -18px;
-    border: 3px solid goldenrod;
+    box-shadow: 0 0 10px goldenrod;
+}
+
+.player_point_10 {
+    border-color: #C69B6D;
+}
+
+.player_point_20 {
+    border-color: #F48CBA;
+}
+
+.player_point_30 {
+    border-color: #AAD372;
+}
+
+.player_point_40 {
+    border-color: #2359FF;
+}
+
+.player_point_50 {
+    border-color: #FF7C0A;
+}
+
+.player_point_60 {
+    border-color: #FFF468;
+}
+
+.player_point_70 {
+    border-color: #F0EBE0;
+}
+
+.player_point_80 {
+    border-color: #9382C9;
+}
+
+.player_point_90 {
+    border-color: #68CCEF;
 }
 
 .on_battle {
@@ -146,7 +187,7 @@
     height: 60px;
     top: 5px;
     left: 5px;
-    background-size: 70px 70px;
+    background-size: 58px 58px;
     background-repeat: no-repeat;
     background-position: center;
 }

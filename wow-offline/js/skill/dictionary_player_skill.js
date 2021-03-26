@@ -1350,7 +1350,7 @@ function new_player_skill() {
                 if (point > 0) {
                     add_skill_point(attacker, -1);
                 }
-                let damage_obj = calculate_skill(attacker, target, skill.name, skill.Y * (1 + point * skill_1_2.Y / 100), skill.type, element_arcane);
+                let damage_obj = calculate_skill(attacker, target, skill.name, skill.Y * (1 + point * skill_1_2.X / 100), skill.type, element_arcane);
                 damage_obj.skill_name += "(" + point + ")";
                 damage_list.push(damage_obj);
             }
