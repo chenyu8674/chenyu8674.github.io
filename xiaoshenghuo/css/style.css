@@ -10,6 +10,7 @@ Primary use:	App Landing Page
 ========================================================================== */
 @import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500,700,800');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC:100,300,400,500,700,900');
 /*---------------General style---------------*/
 a:hover, a:focus {
     text-decoration: none;
@@ -17,11 +18,11 @@ a:hover, a:focus {
 
 body {
     background: #ffffff;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Noto Sans SC', 'Montserrat', 'Raleway', sans-serif;
 }
 
 section {
-    padding: 6.5em 0 4em 0;
+    padding: 5.5em 0 4em 0;
 }
 
 .dark {
@@ -35,7 +36,6 @@ section {
 .dark .row-heading h2 {
     color: #ffffff;
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .dark .row-heading h2 span {
@@ -48,7 +48,6 @@ section {
 
 .row-heading h2 {
     color: #425161;
-    font-family: 'Montserrat', sans-serif;
     text-align: center;
 }
 
@@ -61,13 +60,11 @@ section {
     font-size: 17px;
     text-align: center;
     opacity: 0.8;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .dark .row-heading p {
     color: #ffffff;
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
     opacity: 0.8;
 }
 
@@ -89,6 +86,7 @@ nav.navbar.bootsnav {
 
 nav.navbar.bootsnav ul.nav > li > a {
     color: #ffffff;
+    font-size: 17px;
     font-weight: 500;
 }
 
@@ -139,7 +137,6 @@ Banner Style Start
     color: #ffffff;
     text-align: left;
     text-shadow: none;
-    font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     line-height: 1.3;
 }
@@ -168,7 +165,6 @@ Banner Style Start
     font-size: 24px;
     margin-top: 15px;
     margin-bottom: 15px;
-    font-family: 'Montserrat', sans-serif;
     text-align: center;
 }
 
@@ -178,7 +174,6 @@ Banner Style Start
 
 .banner-btn h4 {
     text-align: left;
-    font-family: 'Montserrat', sans-serif;
     display: inline-block;
     margin: 0;
     color: #ffffff;
@@ -217,7 +212,6 @@ Banner Style Start
     border-radius: 2px;
     margin-top: 15px;
     margin-bottom: 15px;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .login-btn:hover {
@@ -244,7 +238,6 @@ Banner Style Start
     color: #425161;
     position: relative;
     padding-bottom: 10px;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .smart-header h1:before {
@@ -254,7 +247,7 @@ Banner Style Start
     content: "";
     display: block;
     height: 2px;
-    width: 110px;
+    width: 485px;
     background: #ff6700;
 }
 
@@ -268,7 +261,6 @@ Banner Style Start
     font-weight: 500;
     color: #37484e;
     text-transform: uppercase;
-    font-family: 'Montserrat', sans-serif;
     font-size: 22px;
     margin-bottom: 4px;
 }
@@ -277,7 +269,6 @@ Banner Style Start
     color: #5d6c71;
     font-size: 15.4px;
     line-height: 1.8;
-    font-family: 'Montserrat', sans-serif;
 }
 
 /*-----------Service style---------------*/
@@ -302,7 +293,6 @@ Banner Style Start
 .service-content h4 {
     font-weight: 500;
     text-transform: capitalize;
-    font-family: 'Montserrat', sans-serif;
     color: #ffffff;
     margin-bottom: 7px;
 }
@@ -311,7 +301,6 @@ Banner Style Start
     line-height: 1.8;
     font-size: 14.4px;
     color: #90a1b3;
-    font-family: 'Montserrat', sans-serif;
 }
 
 /*---------Pricing Plan---------------*/
@@ -331,7 +320,6 @@ Banner Style Start
 }
 
 .prc-header h3 {
-    font-family: 'Montserrat', sans-serif;
     font-size: 25px;
     color: #3b4b5a;
 }
@@ -358,20 +346,17 @@ Banner Style Start
     font-size: 55px;
     color: #3b4b5a;
     opacity: 0.1;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .prc-price h3 {
     margin-top: 27px;
     color: #485a6d;
-    font-family: 'Montserrat', sans-serif;
     font-size: 38px;
     margin-bottom: 5px;
 }
 
 .prc-price p {
     color: #485a6d;
-    font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
     font-size: 15px;
     margin-bottom: 2px;
@@ -388,7 +373,6 @@ Banner Style Start
     color: #778898;
     line-height: 2;
     padding: 7px 0;
-    font-family: 'Montserrat', sans-serif;
 }
 
 button.btn.select-plan {
@@ -397,7 +381,6 @@ button.btn.select-plan {
     text-transform: uppercase;
     margin: 20px 0;
     background: #1d2a37;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .active button.btn.select-plan {
@@ -415,7 +398,6 @@ button.btn.select-plan {
 
 .heading h2 {
     position: relative;
-    font-family: 'Montserrat', sans-serif;
     margin-bottom: 20px;
     color: #ffffff;
 }
@@ -769,7 +751,6 @@ footer {
 
 .footer-navi li a {
     color: #708598;
-    font-family: 'Montserrat', sans-serif;
 }
 
 .footer-widget-copy p {
