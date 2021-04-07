@@ -790,6 +790,7 @@ footer {
     }
 
     .img-responsive.imack {
+        margin-top: -25%;
         max-width: 112%;
     }
 
