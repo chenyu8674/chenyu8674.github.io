@@ -367,7 +367,7 @@ function new_monster() {
         }
         monster["变异精灵龙"] = {
             species: 6, type: 6, rare: 3, skills: ["致盲", "闪避"],
-            effect: ["attr_percent+=100", "health_percent+=100"], drop: [5243, 6632]
+            effect: ["attr_percent+=100", "health_percent+=50"], drop: [5243, 6632]
         }
         monster["瑟芬迪斯"] = {
             species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],
@@ -381,12 +381,13 @@ function new_monster() {
         }
         monster["吞噬者穆坦努斯"] = {
             species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
-            effect: ["attack_power+=30", "health_percent+=40"], drop: [6461, 6627, 6463],
+            effect: ["attack_power+=30", "health_percent+=30"], drop: [6461, 6627, 6463],
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }
     }// 哀嚎洞穴
     {
         monster["食尸者"] = {species: 3, type: 1, rare: 4, skills: "吸血"}
+
         monster["无脑的恐魔"] = {species: 3, type: 2, rare: 4, skills: "战争践踏", effect: ["health_percent+=50"]}
         monster["鬼怪仆从"] = {species: 3, type: 6, rare: 4}
         monster["阴影仆从"] = {species: 3, type: 9, rare: 4, skills: "暗法"}
@@ -409,6 +410,36 @@ function new_monster() {
         monster["怨骨掠夺者"] = {species: 3, type: 1, rare: 4, skills: "痛击", effect: ["health_percent+=50"]}
         monster["脓疮畸体"] = {species: 3, type: 2, rare: 4, skills: "毒药", effect: ["health_percent+=50"]}
         monster["恐惧占星师"] = {species: 3, type: 8, rare: 4, skills: ["冰法", "冰霜新星"]}
+
+        monster["灰葬男爵"] = {
+            species: 3, type: 8, rare: 5, skills: ["暗法", "暗言术：痛", "自疗"],
+            effect: ["magic_power+=30"], drop: [6314, 6324, 6323],
+            detail: "灰葬男爵被狼人所杀，随后被遗忘者将其复活成亡灵。这个叛徒擅长使用暗影的力量，将他的敌人玩弄于鼓掌之间。"
+        }
+        monster["席瓦莱恩男爵"] = {
+            species: 3, type: 1, rare: 5, skills: ["致死打击", "撕裂"],
+            effect: ["attack_power+=20"], drop: [5943, 6321, 132567, 132568, 6319, 5254],
+            detail: "在这座城堡尚未落入阿鲁高狼人之手的时候，席瓦莱恩男爵是这里的主人。现在他被诅咒的灵魂召唤着将他杀害的狼人，惩处那些侵入其家园的来犯者。"
+        }
+        monster["指挥官斯普林瓦尔"] = {
+            species: 3, type: 2, rare: 5, skills: ["暗攻", "吸血"],
+            effect: ["health_percent+=40"], drop: [6320, 3191, 151067, 151068, 151070, 151069],
+            detail: "作为一名忠诚的士兵，指挥官斯普林瓦尔的鬼魂游荡在议会大厅里，用不洁之力为他的领主席瓦莱恩男爵复仇。"
+        }
+        monster["死亡之誓"] = {
+            species: 3, type: 1, rare: 3, skills: ["挥砍", "冲锋"],
+            effect: ["attr_percent+=100", "health_percent+=30"], drop: [6641, 6642]
+        }
+        monster["沃登勋爵"] = {
+            species: 3, type: 4, rare: 5, skills: ["冰攻", "毒药"],
+            effect: ["attack_power+=30"], drop: [6341, 3230, 1292, 132566],
+            detail: "高弗雷的左右手、傲慢的沃登勋爵曾发誓不惜一切代价，也要为其同胞鞠躬尽瘁。如今成了亡灵的一员，沃登依然信守诺言，用冰与毒对敌人发起猛攻。"
+        }
+        monster["高弗雷勋爵"] = {
+            species: 3, type: 3, rare: 5, skills: ["暗攻", "诅咒之弹"],
+            effect: ["attack_power+=20", "health_percent+=20"], drop: [6318, 3748, 6220, 151073, 151071, 151072],
+            detail: "身为吉尔尼斯贵族及被遗忘者的眼线，狡猾而又多智的高弗雷勋爵擅使双枪，麾下还有大批残忍嗜血的食尸鬼。"
+        }
     }// 影牙城堡
     return monster;
 }

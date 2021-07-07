@@ -686,14 +686,7 @@ function drop_random_equipment(monster) {
             }
             return;
         }
-        if (map_info.type !== 1) {
-            let param = {};
-            param.c_lvl = map_info.min;
-            param.e_lvl = map_info.max;
-            put_equipment_to_items(get_random_equipment_model(param));
-        } else {
-            put_equipment_to_items(get_random_equipment_model(lvl));
-        }
+        put_equipment_to_items(get_random_equipment_model(lvl));
     }
 }
 

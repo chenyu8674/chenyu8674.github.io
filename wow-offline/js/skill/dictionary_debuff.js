@@ -257,6 +257,19 @@ function new_debuff() {
         return debuff;
     }
 
+    debuff.res_shadow_decrease = function (X, T) {
+        let debuff = {};
+        debuff.name = "暗影抗性降低";
+        debuff.T = T;
+        debuff.X = X;
+        debuff.icon = "spell_shadow_painspike";
+        debuff.detail = "暗影抗性-" + debuff.X;
+        debuff.effect = [
+            "res_shadow-=" + debuff.X
+        ];
+        return debuff;
+    }
+
     debuff[21992] = function () {
         let debuff = {};
         debuff.name = "雷霆之怒";

@@ -135,5 +135,21 @@ function new_equipment_skill() {
         return skill;
     }
 
+    skill[245729] = function () {
+        let skill = {};
+        skill.name = "流星碎片";
+        skill.type = type_magic;
+        skill.chance = 40;
+        skill.cooldown = 2;
+        skill.X = 50;
+        skill.icon = "spell_fire_firebolt02";
+        skill.detail = "冲击目标，造成" + skill.X + "%攻击强度的火焰伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill(attacker, target, skill.name, skill.X, type_attack, element_fire);
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
     return skill;
 }

@@ -91,34 +91,38 @@ function create_random_equipment_model(param) {
     if (pos == null) {
         pos = 100 * Math.random();
         if (pos <= 6) {
-            pos = 1;
+            pos = 1;// 6% 头部
         } else if (pos <= 12) {
-            pos = 2;
+            pos = 2;// 6% 项链
         } else if (pos <= 18) {
-            pos = 3;
+            pos = 3;// 6% 肩部
         } else if (pos <= 24) {
-            pos = 4;
+            pos = 4;// 6% 胸部
         } else if (pos <= 30) {
-            pos = 5;
+            pos = 5;// 6% 披风
         } else if (pos <= 36) {
-            pos = 8;
+            pos = 8;// 6% 手腕
         } else if (pos <= 42) {
-            pos = 9;
+            pos = 9;// 6% 手部
         } else if (pos <= 48) {
-            pos = 10;
+            pos = 10;// 6% 腰部
         } else if (pos <= 54) {
-            pos = 11;
+            pos = 11;// 6% 腿部
         } else if (pos <= 60) {
-            pos = 12;
+            pos = 12;// 6% 脚部
         } else if (pos <= 68) {
-            pos = 13;
+            pos = 13;// 8% 戒指
         } else if (pos <= 75) {
-            pos = 14;
+            pos = 14;// 7% 饰品
         } else if (pos <= 80) {
-            pos = 16;
+            pos = 16;// 5% 副手
         } else if (pos <= 100) {
-            pos = 15;
+            pos = 15;// 20% 主手
         }
+    }
+    // 灰白色项链戒指饰品升格为绿色
+    if (model.rare < 3 && (pos === 2 || pos === 13 || pos === 14)) {
+        model.rare = 3;
     }
     // 装备倾向
     let inclination = random_list([1, 2]);
@@ -149,27 +153,36 @@ function create_random_equipment_model(param) {
     model.name = random_list(random_pre_names) + attribute[1];
     // 装备等级
     model.c_lvl = param.c_lvl;
-    model.e_lvl = param.e_lvl ? param.e_lvl : param.c_lvl;
-    // 生成随机后缀，双手/远程武器不会有格挡词缀
+    model.e_lvl = param.e_lvl ? param.e_lvl : Math.round(param.c_lvl * get_multiple_by_rare(model.rare));
+    // 装备词缀
+    model.affix = [pos * 1000 + inclination * 100 + type];
     let affix_suffix_length = (type > 20 && type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
-    let affix_suffix = Math.floor(Math.random() * affix_suffix_length);
-    while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {
-        affix_suffix = Math.floor(Math.random() * affix_suffix_length);
-    }
-    // 生成随机前缀
-    let affix_prefix;
-    if (pos !== 14) {
-        affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
-        while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
+    // if (model.rare >= 3) {
+    if (model.rare >= 0) {
+        // 生成随机前缀
+        let affix_prefix;
+        if (pos !== 14) {
             affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
-        }
-    } else {
-        affix_prefix = Math.floor(Math.random() * affix_suffix_length);
-        while (dictionary_affix_suffix[affix_prefix] == null || dictionary_affix_suffix[affix_prefix]() == null) {
+            while (dictionary_affix_prefix[affix_prefix] == null || dictionary_affix_prefix[affix_prefix]() == null) {
+                affix_prefix = Math.floor(Math.random() * dictionary_affix_prefix_length);
+            }
+        } else {
             affix_prefix = Math.floor(Math.random() * affix_suffix_length);
+            while (dictionary_affix_suffix[affix_prefix] == null || dictionary_affix_suffix[affix_prefix]() == null) {
+                affix_prefix = Math.floor(Math.random() * affix_suffix_length);
+            }
         }
+        model.affix.push(affix_prefix);
     }
-    model.affix = [pos * 1000 + inclination * 100 + type, affix_prefix, affix_suffix];
+    // if (model.rare >= 5) {
+    if (model.rare >= 0) {
+        // 生成随机后缀，双手/远程武器不会有格挡词缀
+        let affix_suffix = Math.floor(Math.random() * affix_suffix_length);
+        while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {
+            affix_suffix = Math.floor(Math.random() * affix_suffix_length);
+        }
+        model.affix.push(affix_suffix);
+    }
     return model;
 }
 
@@ -217,6 +230,7 @@ function create_static_equipment_model(name) {
     model.detail = base_model.detail;
     model.skill = base_model.skill;
     model.sets = base_model.sets;
+    model.multiple = base_model.multiple;
     model.affix = affix;
     return model;
 }
@@ -244,7 +258,7 @@ function create_equipment_by_model(model) {
     equipment.type = affix[0] % 100;
     let attribute = get_attribute_by_pos(equipment.pos, equipment.type, model.icon);
     // 装备属性系数
-    let multiple = attribute[0];
+    let multiple = model.multiple != null ? attribute[0] * model.multiple : attribute[0];
     equipment.type_name = attribute[2];
     equipment.bind = model.bind;
     equipment.icon = model.icon;
@@ -253,6 +267,24 @@ function create_equipment_by_model(model) {
     equipment.e_lvl = model.e_lvl;
     equipment.detail = model.detail;
     equipment.sets = model.sets;
+    // 装备属性转化
+    let equipment_effects = [];
+    let model_effects = model.effect;
+    if (model_effects != null && model_effects.length > 0) {
+        if (typeof dictionary_affix_prefix[model_effects[0]] === "function") {
+            equipment_effects.push(...dictionary_affix_prefix[model_effects[0]](model.e_lvl, model.rare, multiple));
+        } else {
+            equipment_effects.push(model_effects[0]);
+        }
+        for (let i = 1; i < model_effects.length; i++) {
+            if (typeof dictionary_affix_suffix[model_effects[i]] === "function") {
+                equipment_effects.push(...dictionary_affix_suffix[model_effects[i]](model.e_lvl, model.rare, multiple));
+            } else {
+                equipment_effects.push(model_effects[i]);
+            }
+        }
+    }
+    model.effect = equipment_effects;
     equipment.effect = model.effect == null ? [] : model.effect;
     let effects = equipment.effect;
     for (let i = 0; i < effects.length; i++) {
@@ -691,15 +723,15 @@ function get_multiple_by_rare(rare) {
         case 1:
             return 0.5;
         case 2:
-            return 0.8;
-        case 3:
             return 1;
+        case 3:
+            return 1.05;
         case 4:
-            return 1.2;
+            return 1.15;
         case 5:
-            return 1.4;
+            return 1.25;
         case 6:
-            return 2;
+            return 1.4;
     }
 }
 
@@ -760,7 +792,6 @@ function create_equipment_icon(model, pos, type) {
  */
 function get_effect_value(X, lvl, rare, multiple) {
     multiple = multiple == null ? 1 : multiple;
-    multiple *= get_multiple_by_rare(rare);
     return Math.ceil(lvl * multiple * X);
 }
 
@@ -874,7 +905,7 @@ function get_equipment_price(equipment) {
             base_price *= 1.3;
             break;
     }
-    base_price *= Math.pow(get_multiple_by_rare(equipment.rare), 4);
+    base_price *= Math.pow(0.6 + (get_multiple_by_rare(equipment.rare) - 0.5), 6);
     return Math.round(base_price);
 }
 

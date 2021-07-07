@@ -516,6 +516,27 @@ function new_monster_skill() {
         return skill;
     }
 
+    skill["诅咒之弹"] = function () {
+        let skill = {};
+        skill.name = "诅咒之弹";
+        skill.type = type_attack;
+        skill.cooldown = 5;
+        skill.priority = 30;
+        skill.X = 150;
+        skill.Y = 20;
+        skill.T = 5;
+        skill.icon = "spell_shadow_painspike"
+        skill.detail = "造成" + skill.X + "%攻击强度的暗影伤害，并使目标的暗影抗性-" + skill.Y + "，持续" + skill.T + "回合。";
+        skill.cast = function (attacker, target) {
+            let damage_obj = calculate_skill(attacker, target, skill.name, skill.X, skill.type, element_physical);
+            if (damage_obj.is_hit) {
+                target.debuffs.push(new_debuff().res_shadow_decrease(skill.Y, skill.T));
+            }
+            return skill_cast_result(damage_obj);
+        };
+        return skill;
+    }
+
     skill["寒冰爪"] = function () {
         let skill = {};
         skill.name = "寒冰爪";

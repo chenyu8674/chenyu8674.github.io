@@ -266,7 +266,7 @@ function refresh_dots(attacker, target) {
             if (dot.type === "dot") {
                 let result_obj = calculate_dot(attacker, target, dot.name, dot.power_percent, dot.attack_type, dot.element_type);
                 if (dot.drain > 0) {
-                    let heal_value = result_obj.damage_value;
+                    let heal_value = result_obj.damage_value * dot.drain;
                     calculate_flat_heal(attacker, attacker, dot.name, heal_value);
                 }
             } else if (dot.type === "hot") {

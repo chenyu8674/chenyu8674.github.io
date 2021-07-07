@@ -183,9 +183,9 @@ function create_shop_view() {
         shop_item.append(shop_price);
         let html = "<div>" + "获得一件随机" + type + "</div>"
             + "<div><span style='color: " + color_rare_3 + "'>" + get_type_name_by_rare(3) + "</span>：60%&emsp;"
-            + "<span style='color: " + color_rare_5 + "'>" + get_type_name_by_rare(5) + "</span>：9%</div>"
-            + "<div><span style='color: " + color_rare_4 + "'>" + get_type_name_by_rare(4) + "</span>：30%&emsp;"
-            + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：1%</div>"
+            + "<span style='color: " + color_rare_4 + "'>" + get_type_name_by_rare(4) + "</span>：30%</div>"
+            + "<div><span style='color: " + color_rare_5 + "'>" + get_type_name_by_rare(5) + "</span>：??%&emsp;"
+            + "<span style='color: " + color_rare_6 + "'>" + get_type_name_by_rare(6) + "</span>：??%</div>"
         set_info_hover(shop_item, html, cell);
         // 右键点击事件，购买装备
         shop_item.contextmenu(function (e) {
