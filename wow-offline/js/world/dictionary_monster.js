@@ -418,7 +418,7 @@ function new_monster() {
         }
         monster["席瓦莱恩男爵"] = {
             species: 3, type: 1, rare: 5, skills: ["致死打击", "撕裂"],
-            effect: ["attack_power+=20"], drop: [5943, 6321, 132567, 132568, 6319, 5254],
+            effect: ["attack_power+=10"], drop: [5943, 6321, 132567, 132568, 6319, 5254],
             detail: "在这座城堡尚未落入阿鲁高狼人之手的时候，席瓦莱恩男爵是这里的主人。现在他被诅咒的灵魂召唤着将他杀害的狼人，惩处那些侵入其家园的来犯者。"
         }
         monster["指挥官斯普林瓦尔"] = {
@@ -437,7 +437,7 @@ function new_monster() {
         }
         monster["高弗雷勋爵"] = {
             species: 3, type: 3, rare: 5, skills: ["暗攻", "诅咒之弹"],
-            effect: ["attack_power+=20", "health_percent+=20"], drop: [6318, 3748, 6220, 151073, 151071, 151072],
+            effect: ["attack_power+=20"], drop: [6318, 3748, 6220, 151073, 151071, 151072],
             detail: "身为吉尔尼斯贵族及被遗忘者的眼线，狡猾而又多智的高弗雷勋爵擅使双枪，麾下还有大批残忍嗜血的食尸鬼。"
         }
     }// 影牙城堡

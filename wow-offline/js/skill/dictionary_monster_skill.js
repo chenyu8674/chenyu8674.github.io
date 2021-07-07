@@ -523,7 +523,7 @@ function new_monster_skill() {
         skill.cooldown = 5;
         skill.priority = 30;
         skill.X = 150;
-        skill.Y = 20;
+        skill.Y = 15;
         skill.T = 5;
         skill.icon = "spell_shadow_painspike"
         skill.detail = "造成" + skill.X + "%攻击强度的暗影伤害，并使目标的暗影抗性-" + skill.Y + "，持续" + skill.T + "回合。";

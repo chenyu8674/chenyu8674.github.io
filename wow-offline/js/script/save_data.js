@@ -20,13 +20,17 @@ $(document).ready(function () {
     }
 });
 
+// 当前版本号
+let CURRENT_VERSION = 1.00000001;
+
 /**
  * 从localStorage读取存档
  */
 function load_data() {
     let save_data = JSON.parse(localStorage.getItem("save_data"));
-    if (save_data == null) {
+    if (save_data == null || save_data.version == null || Math.floor(save_data.version) < Math.floor(CURRENT_VERSION)) {
         save_data = {};
+        save_data.version = CURRENT_VERSION;
         save_data.bank_item_list = [];
         save_data.character_list = [];
     }
@@ -88,6 +92,7 @@ function save_data() {
     character_list[current_index] = save_character;
     let save_data = {};
     clear_empty_item(bank_item_list);
+    save_data.version = CURRENT_VERSION;
     save_data.bank_item_list = bank_item_list;
     save_data.bank_money = bank_money;
     save_data.character_list = character_list;
