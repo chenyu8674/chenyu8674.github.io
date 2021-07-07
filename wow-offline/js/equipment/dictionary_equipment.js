@@ -106,11 +106,11 @@ function new_equipment() {
         };
         equipment[151421] = {
             name: "焦灼的炽焰猎犬之靴", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_boots_05", affix: 12102,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[151422] = {
             name: "骨炭护腰", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_belt_16", affix: 10103,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         // 黑暗萨满柯兰萨
         equipment[82882] = {
@@ -119,24 +119,24 @@ function new_equipment() {
         };
         equipment[82877] = {
             name: "破碎图腾之握", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_chest_leather_10", affix: 4102,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[82881] = {
             name: "黑色元素腕轮", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_bracer_13", affix: 8101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[132551] = {
             name: "黑暗萨满卫衣", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_chest_leather_10", affix: 4103,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         // 焰喉
         equipment[82885] = {
             name: "焦灼链甲", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_chest_chain", affix: 4104,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[82884] = {
             name: "角质护腕", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_bracer_05", affix: 8102,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[82878] = {
             name: "萤火法袍", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_chest_cloth_18", affix: 4101,
@@ -161,11 +161,11 @@ function new_equipment() {
         };
         equipment[151424] = {
             name: "无边怒火腰带", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_belt_37a", affix: 10102,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[151425] = {
             name: "戈多斯的碾压之手", rare: 4, c_lvl: 13, e_lvl: 18, icon: "inv_gauntlets_03", affix: 9103,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
     }// 怒焰裂谷
     {
@@ -197,7 +197,7 @@ function new_equipment() {
         };
         equipment[5195] = {
             name: "金斑手套", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_gauntlets_23", affix: 9101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[2169] = {
             name: "蜂鸣之刃", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_weapon_shortblade_05", affix: 15111,
@@ -205,7 +205,7 @@ function new_equipment() {
         };
         equipment[151064] = {
             name: "好奇访客的外套", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_chest_leather_31", affix: 4102,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         // 赫利克斯·破甲
         equipment[5191] = {
@@ -214,11 +214,11 @@ function new_equipment() {
         };
         equipment[132556] = {
             name: "熔炼师的长裤", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_pants_02", affix: 11103,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[5443] = {
             name: "镀金圆盾", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_shield_02", affix: 16141,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[151062] = {
             name: "流亡建筑师的护臂", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_bracer_robe_dungeonrobe_c_03", affix: 8201,
@@ -226,20 +226,20 @@ function new_equipment() {
         };
         equipment[5199] = {
             name: "铁匠短裤", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_pants_02", affix: 11102,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[151063] = {
             name: "符记手铠", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_glove_plate_dungeonplate_c_03", affix: 9104,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[5200] = {
             name: "穿刺鱼叉", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_spear_06", affix: 15121,
-            effect: ["敏捷耐力", "暴击躲闪"]
+            effect: ["敏捷耐力", "暴击闪避"]
         };
         // 死神5000
         equipment[5201] = {
             name: "火石法杖", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_staff_13", affix: 15222,
-            effect: ["智力耐力", "暴击躲闪"]
+            effect: ["智力耐力", "暴击闪避"]
         };
         equipment[151065] = {
             name: "老友的手套", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_gauntlets_mail_dungeonmail_c_03", affix: 9103,
@@ -251,7 +251,7 @@ function new_equipment() {
         };
         equipment[151066] = {
             name: "失踪外交家的肩甲", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_shoulder_plate_dungeonplate_c_03", affix: 3104,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[1937] = {
             name: "电锯", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_sword_24", affix: 15115,
@@ -273,23 +273,23 @@ function new_equipment() {
         // “船长”曲奇
         equipment[5202] = {
             name: "海盗的罩衫", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_shirt_08", affix: 4101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[5197] = {
             name: "曲奇的吹火棍", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_misc_flute_01", affix: 15214,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[5198] = {
             name: "曲奇的搅汤棒", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_staff_02", affix: 15216,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[5192] = {
             name: "盗贼之刃", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_sword_24", affix: 15115,
-            effect: ["敏捷耐力", "暴击躲闪"]
+            effect: ["敏捷耐力", "暴击闪避"]
         };
         equipment[5193] = {
             name: "兄弟会斗篷", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_helmet_48", affix: 5101,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         // 梵妮莎·范克里夫
         equipment[63478] = {
@@ -298,7 +298,7 @@ function new_equipment() {
         };
         equipment[63485] = {
             name: "反叛罩帽", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_helmet_104", affix: 1102,
-            effect: ["万用", "躲闪精通"]
+            effect: ["万用", "闪避精通"]
         };
         equipment[65178] = {
             name: "范克里夫的靴子", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_boots_leather_15", affix: 12102,
@@ -310,26 +310,26 @@ function new_equipment() {
         };
         equipment[63486] = {
             name: "背弃镣铐", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_bracer_mail_dungeonmail_c_03", affix: 8103,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[63482] = {
             name: "女儿之手", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_gauntlets_robe_dungeonrobe_c_03", affix: 9101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[63483] = {
             name: "会长的战靴", rare: 4, c_lvl: 15, e_lvl: 20, icon: "inv_boots_plate_dungeonplate_c_03", affix: 12104,
-            effect: ["万用", "躲闪精通"]
+            effect: ["万用", "闪避精通"]
         };
 
     }// 死亡矿井
     {
         equipment[10412] = {
             name: "尖牙腰带", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_belt_03", affix: 10102,
-            effect: ["万用", "暴击躲闪"], sets: "毒蛇的拥抱"
+            effect: ["万用", "暴击闪避"], sets: "毒蛇的拥抱"
         };// 安娜科德拉
         equipment[10411] = {
             name: "尖牙足垫", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_boots_04", affix: 12102,
-            effect: ["万用", "命中躲闪"], sets: "毒蛇的拥抱"
+            effect: ["万用", "命中闪避"], sets: "毒蛇的拥抱"
         };// 瑟芬迪斯
         equipment[10413] = {
             name: "尖牙手套", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_gauntlets_18", affix: 9102,
@@ -341,7 +341,7 @@ function new_equipment() {
         };// 考布莱恩
         equipment[6473] = {
             name: "尖牙铠甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shirt_16", affix: 4102,
-            effect: ["万用", "命中躲闪"], sets: "毒蛇的拥抱"
+            effect: ["万用", "命中闪避"], sets: "毒蛇的拥抱"
         };// 皮萨斯
         // 安娜科德拉
         equipment[5404] = {
@@ -367,11 +367,11 @@ function new_equipment() {
         };
         equipment[151429] = {
             name: "皮萨斯的肩甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shoulder_20", affix: 3104,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[151428] = {
             name: "休眠之丝腰带", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_belt_43c", affix: 10101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         // 考布莱恩
         equipment[6460] = {
@@ -380,16 +380,16 @@ function new_equipment() {
         };
         equipment[6465] = {
             name: "水蛇法袍", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_chest_cloth_36", affix: 4101,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         // 克雷什
         equipment[6447] = {
             name: "破旧的龟壳盾牌", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shield_21", affix: 16141,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[13245] = {
             name: "克雷什之背", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shield_18", affix: 16141,
-            effect: ["万用", "躲闪格挡"]
+            effect: ["万用", "闪避格挡"]
         };
         equipment[151430] = {
             name: "铁锈龟壳吊坠", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_misc_necklacea1", affix: 2199,
@@ -416,11 +416,11 @@ function new_equipment() {
         // 瑟芬迪斯
         equipment[5970] = {
             name: "毒蛇手套", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_gauntlets_19", affix: 9101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[6459] = {
             name: "野蛮锁靴", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_boots_01", affix: 12103,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[6469] = {
             name: "毒蛇", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_weapon_bow_10", affix: 15131,
@@ -429,11 +429,11 @@ function new_equipment() {
         // 永生者沃尔丹
         equipment[6629] = {
             name: "蜘蛛斗篷", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_misc_cape_17", affix: 5101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[6630] = {
             name: "淡云圆盾", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shield_10", affix: 16141,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[6631] = {
             name: "生命之根", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_staff_25", affix: 15222,
@@ -446,11 +446,11 @@ function new_equipment() {
         };
         equipment[6461] = {
             name: "粘液覆盖的垫肩", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_shoulder_05", affix: 3101,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[6627] = {
             name: "变异板甲", rare: 4, c_lvl: 16, e_lvl: 21, icon: "inv_chest_plate08", affix: 4104,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
     }// 哀嚎洞穴
     {
@@ -461,7 +461,7 @@ function new_equipment() {
         };
         equipment[6324] = {
             name: "阿鲁高法袍", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_chest_cloth_31", affix: 4101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[6323] = {
             name: "巴隆的节杖", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_mace_02", affix: 15114,
@@ -470,7 +470,7 @@ function new_equipment() {
         // 席瓦莱恩男爵
         equipment[5943] = {
             name: "地狱护腕", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_bracer_03", affix: 8104,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[6321] = {
             name: "席瓦莱恩家族徽记", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_belt_29", affix: 13199,
@@ -478,7 +478,7 @@ function new_equipment() {
         };
         equipment[132567] = {
             name: "盲眼守护者腰链", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_belt_03", affix: 10103,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[132568] = {
             name: "影牙肩甲", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_shoulder_08", affix: 3103,
@@ -486,16 +486,16 @@ function new_equipment() {
         };
         equipment[6319] = {
             name: "盲者束带", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_belt_03", affix: 10102,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[5254] = {
             name: "皱褶肩甲", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_shoulder_08", affix: 3102,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         // 指挥官斯普林瓦尔
         equipment[6320] = {
             name: "指挥官纹章盾", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_shield_03", affix: 16141,
-            effect: ["万用", "躲闪"]
+            effect: ["万用", "闪避"]
         };
         equipment[3191] = {
             name: "曲刃战斧", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_axe_06", affix: 15123,
@@ -503,7 +503,7 @@ function new_equipment() {
         };
         equipment[151067] = {
             name: "萦绕悲伤之靴", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_boots_robe_dungeonrobe_c_03", affix: 12101,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[151068] = {
             name: "掠食者之靴", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_boots_leather_15", affix: 12102,
@@ -511,16 +511,16 @@ function new_equipment() {
         };
         equipment[151070] = {
             name: "格雷迈恩之墙手甲", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_glove_plate_dungeonplate_c_03", affix: 9104,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[151069] = {
             name: "静寂之心胸甲", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_chest_mail_dungeonmail_c_03", affix: 4103,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         // 死亡之誓
         equipment[6641] = {
             name: "鬼魂之刃", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_sword_17", affix: 15125,
-            effect: ["力量耐力", "命中躲闪"]
+            effect: ["力量耐力", "命中闪避"]
         };
         equipment[6642] = {
             name: "幻影之甲", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_chest_chain_05", affix: 4104,
@@ -533,11 +533,11 @@ function new_equipment() {
         };
         equipment[3230] = {
             name: "黑狼护腕", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_bracer_07", affix: 8102,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[1292] = {
             name: "屠夫的切肉斧", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_axe_23", affix: 15113,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[132566] = {
             name: "黑狼裹腕", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_bracer_07", affix: 8103,
@@ -546,11 +546,11 @@ function new_equipment() {
         // 高弗雷勋爵
         equipment[6318] = {
             name: "奥杜之杖", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_staff_27", affix: 15222,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[3748] = {
             name: "猎豹衬肩", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_shoulder_05", affix: 3101,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[6220] = {
             name: "流星碎片", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_weapon_shortblade_25", affix: 15111,
@@ -558,15 +558,15 @@ function new_equipment() {
         };
         equipment[151073] = {
             name: "误导腿铠", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_pants_plate_dungeonplate_c_03", affix: 11104,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
         equipment[151071] = {
             name: "换盏手甲", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_gauntlets_25", affix: 9102,
-            effect: ["万用", "暴击躲闪"]
+            effect: ["万用", "暴击闪避"]
         };
         equipment[151072] = {
             name: "狼人猎手之盔", rare: 4, c_lvl: 18, e_lvl: 24, icon: "inv_helmet_mail_dungeonmail_c_03", affix: 1103,
-            effect: ["万用", "命中躲闪"]
+            effect: ["万用", "命中闪避"]
         };
     }// 影牙城堡
     /*
