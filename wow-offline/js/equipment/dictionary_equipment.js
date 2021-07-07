@@ -51,12 +51,12 @@ function new_equipment() {
             effect: ["speed_battle+=10"]
         };
         equipment[33] = {
-            name: "大佬衬衫", icon: "inv_shirt_01", rare: 6, affix: 6199, detail: "FOR NOOB",
+            name: "大佬衬衫", icon: "inv_shirt_01", rare: 6, affix: 6199, detail: "ONLY FOR NOOB",
             effect: ["speed_move+=400"]
         };
         equipment[34] = {
             name: "基情战袍", icon: "inv_shirt_guildtabard_01", rare: 6, affix: 7199, detail: "DAISY BOOM",
-            effect: ["speed_battle+=200"]
+            effect: ["speed_battle+=200", "speed_resource+=200"]
         };
 
         equipment[21] = {name: "训练罩袍", icon: "inv_chest_cloth_21", rare: 2, affix: 4101};

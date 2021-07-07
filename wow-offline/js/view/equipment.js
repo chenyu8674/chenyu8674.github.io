@@ -77,7 +77,7 @@ function refresh_current_status_base() {
         "影响角色在地图上的移动速度", current_status_area_2
     );
     create_status_area_2_line("战斗速度：" + role_battle_1.speed_battle + "%<br/>",
-        "影响角色战斗和休息速度<br/>当前间隔为 " + (TURN_TIME / 10 / role_battle_1.speed_battle).toFixed(3) + " 秒", current_status_area_2
+        "影响角色战斗和休息速度<br/>当前回合间隔为 " + (TURN_TIME / 10 / role_battle_1.speed_battle).toFixed(3) + " 秒", current_status_area_2
     );
     create_status_area_2_line("资源获取：" + role_battle_1.speed_resource + "%<br/>",
         "影响角色通过战斗获得的经验和金钱数量", current_status_area_2

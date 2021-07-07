@@ -149,8 +149,8 @@ function create_character(job, exp, name) {
             param.c_lvl = current_character.lvl;
             param.rare = 5;
             let model = get_random_equipment_model(param);
-            model.affix[1] = 0;
-            model.affix[2] = 34;
+            model.affix[1] = 16;
+            // model.affix[2] = 34;
             current_character.items.push(model);
         }
     }

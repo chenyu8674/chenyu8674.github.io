@@ -9,12 +9,6 @@ $(document).ready(function () {
 function new_affix_prefix() {
     let affix = [];
 
-    affix[-1] = function(surely) {return surely || Math.random() <= 0 ? "虚无" : null};
-    affix["虚无"] = function () {return []}
-
-    affix[0] = function(surely) {return surely || Math.random() <= 0 ? "万用" : null};
-    affix["万用"] = function (lvl, rare, multiple) {return ["main+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.3, lvl, rare, multiple)]}
-
     affix[1] = function(surely) {return surely || Math.random() <= 0.8 ? "巨人" : null};
     affix["巨人"] = affix["力量"] = function (lvl, rare, multiple) {return ["str+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     affix[2] = function(surely) {return surely || Math.random() <= 0.8 ? "猫鼬" : null};
@@ -46,6 +40,35 @@ function new_affix_prefix() {
     affix["夜枭"] = affix["智力精神"] = function (lvl, rare, multiple) {return ["int+=" + get_effect_value(0.2, lvl, rare, multiple), "spr+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[15] = function(surely) {return surely || Math.random() <= 0.8 ? "巨鲸" : null};
     affix["巨鲸"] = affix["精神耐力"] = function (lvl, rare, multiple) {return ["spr+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.3, lvl, rare, multiple)]}
+
+    affix[16] = function(surely) {return surely || Math.random() <= 0.1 ? "打击" : null};
+    affix["打击"] = function (lvl, rare, multiple) {return [
+        "str+=" + get_effect_value(0.15, lvl, rare, multiple),
+        "agi+=" + get_effect_value(0.15, lvl, rare, multiple),
+        "sta+=" + get_effect_value(0.25, lvl, rare, multiple)
+    ]}
+
+    affix[17] = function(surely) {return surely || Math.random() <= 0.1 ? "巫术" : null};
+    affix["巫术"] = function (lvl, rare, multiple) {return [
+        "spr+=" + get_effect_value(0.15, lvl, rare, multiple),
+        "int+=" + get_effect_value(0.15, lvl, rare, multiple),
+        "sta+=" + get_effect_value(0.25, lvl, rare, multiple)
+    ]}
+
+    affix[0] = function(surely) {return surely || Math.random() <= 0 ? "万用" : null};
+    affix["万用"] = function (lvl, rare, multiple) {return ["main+=" + get_effect_value(0.2, lvl, rare, multiple), "sta+=" + get_effect_value(0.3, lvl, rare, multiple)]}
+
+    affix[99] = function(surely) {return surely || Math.random() <= 0 ? "虚无" : null};
+    affix["虚无"] = function () {return []}
+
+    affix[100] = function(surely) {return surely || Math.random() <= 0.01 ? "多彩" : null};
+    affix["多彩"] = function (lvl, rare, multiple) {return [
+        "str+=" + get_effect_value(0.12, lvl, rare, multiple),
+        "agi+=" + get_effect_value(0.12, lvl, rare, multiple),
+        "spr+=" + get_effect_value(0.12, lvl, rare, multiple),
+        "int+=" + get_effect_value(0.12, lvl, rare, multiple),
+        "sta+=" + get_effect_value(0.12, lvl, rare, multiple)
+    ]}
 
     return affix;
 }
