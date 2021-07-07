@@ -121,7 +121,7 @@ function create_character(job, exp, name) {
         current_character.name = dictionary_job.job_name[job];
     }
     add_experience(exp);
-    if (is_in_local_mode()) {
+    if (is_in_local_mode() || is_vip()) {
         if (current_character.exp === 0) {
             add_experience(20000);
         }
