@@ -157,8 +157,7 @@ function create_random_equipment_model(param) {
     // 装备词缀
     model.affix = [pos * 1000 + inclination * 100 + type];
     let affix_suffix_length = (type > 20 && type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
-    // if (model.rare >= 3) {
-    if (model.rare >= 0) {
+    if (model.rare >= 3) {
         // 生成随机前缀
         let affix_prefix;
         if (pos !== 14) {
@@ -174,8 +173,7 @@ function create_random_equipment_model(param) {
         }
         model.affix.push(affix_prefix);
     }
-    // if (model.rare >= 5) {
-    if (model.rare >= 0) {
+    if (model.rare >= 5) {
         // 生成随机后缀，双手/远程武器不会有格挡词缀
         let affix_suffix = Math.floor(Math.random() * affix_suffix_length);
         while (dictionary_affix_suffix[affix_suffix] == null || dictionary_affix_suffix[affix_suffix]() == null) {

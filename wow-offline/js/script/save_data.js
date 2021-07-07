@@ -142,10 +142,10 @@ function create_character(job, exp, name) {
         for (let i = 0; i < MAX_ITEMS - 10; i++) {
             let param = {};
             param.c_lvl = current_character.lvl;
-        //     param.rare = 5;
+            param.rare = 5;
             let model = get_random_equipment_model(param);
-        //     model.affix[1] = 0;
-        //     model.affix[2] = 28;
+            model.affix[1] = 0;
+            model.affix[2] = 34;
             current_character.items.push(model);
         }
     }
