@@ -14,7 +14,7 @@ let HEAL_TIME = 10000 / ONLINE_MULTIPLE / LOCAL_MULTIPLE;
 let MOVE_DISTANCE = 10 * ONLINE_MULTIPLE * LOCAL_MULTIPLE;
 
 // 经验系数
-let EXP_MULTIPLE = is_in_local_mode() ? 0 : 1;
+let EXP_MULTIPLE = is_in_local_mode() ? 1 : 1;
 
 // 金钱系数
 let MONEY_MULTIPLE = 1;

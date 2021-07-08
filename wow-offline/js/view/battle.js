@@ -5,6 +5,8 @@ let battle_map;
 let map_info;
 let kill_count;
 
+let is_auto_battle;
+
 $(document).ready(function () {
     view_battle = $("#view_battle");
     battle_map = $("#battle_map");
@@ -12,6 +14,7 @@ $(document).ready(function () {
 });
 
 function show_view_battle() {
+    is_auto_battle = false;
     kill_count = 0;
     view_battle.show();
     $("#attack_next").show();
@@ -19,6 +22,7 @@ function show_view_battle() {
 }
 
 function hide_view_battle() {
+    is_auto_battle = false;
     clearTimeout(self_heal_timer);
     clearTimeout(move_timer);
     move_timer = 0;
@@ -107,11 +111,14 @@ function show_battle_view(info) {
         if (is_in_local_mode()) {
             show_monster_area(map_info);
         }
+        $("#auto_battle").show();
+        show_auto_battle();
         player_x = (map_info.area[0][0] + map_info.area[0][2]) / 2;
         player_y = (map_info.area[0][1] + map_info.area[0][3]) / 2;
         refresh_random_monster();
     } else {
         // 副本地图
+        $("#auto_battle").hide();
         $("#monster_area").hide();
         player_x = map_info.area[0][0];
         player_y = map_info.area[0][1];
@@ -119,6 +126,29 @@ function show_battle_view(info) {
     }
     show_attack_icon();
     show_player_point();
+}
+
+/**
+ * 生成自动战斗图标
+ */
+function show_auto_battle() {
+    let auto_battle = $("#auto_battle");
+    auto_battle.unbind("click");
+    auto_battle.click(function (e) {
+        if (!is_auto_battle) {
+            is_auto_battle = true;
+            $("#self_heal").click();
+        } else {
+            is_auto_battle = false;
+        }
+        e.stopPropagation();
+        return false;
+    });
+    auto_battle.hover(function () {
+        show_text_info(auto_battle, "<div style='color:goldenrod;letter-spacing:1px;'>挂机</div><div>自动索敌、战斗和恢复</div>");
+    }, function () {
+        hide_info();
+    });
 }
 
 /**
@@ -135,6 +165,8 @@ function show_heal_icon() {
             battle_log(current_character.name + " 开始休息");
             clearTimeout(self_heal_timer);
             self_heal_timer = setTimeout(heal_loop, 10);
+        } else if (is_auto_battle) {
+            $("#attack_next").click();
         }
         e.stopPropagation();
         return false;
@@ -154,6 +186,9 @@ function heal_loop() {
     if (role_health_1 >= role_battle_1.max_health_value) {
         role_health_1 = role_battle_1.max_health_value;
         battle_log(current_character.name + " 恢复了全部生命");
+        if (is_auto_battle) {
+            $("#attack_next").click();
+        }
     } else {
         clearTimeout(self_heal_timer);
         let timeout = TURN_TIME * 100 / role_battle_1.speed_battle;
@@ -651,6 +686,9 @@ function on_battle_end(index) {
         refresh_player_point();
         $("#self_heal").click();
         refresh_battle_status(false);
+    }
+    if (is_auto_battle) {
+        $("#self_heal").click();
     }
 }
 
