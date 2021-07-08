@@ -680,15 +680,15 @@ function on_battle_end(index) {
             $(".monster_point").remove();
             refresh_monster_point();
         }
+        if (is_auto_battle) {
+            $("#self_heal").click();
+        }
     } else {
         player_x += 3;
         player_y += 3;
         refresh_player_point();
         $("#self_heal").click();
         refresh_battle_status(false);
-    }
-    if (is_auto_battle) {
-        $("#self_heal").click();
     }
 }
 
