@@ -100,7 +100,6 @@ function show_skill_info(view, skill) {
     info.css("left", x - 5 + "px");
     info.css("top", y - 5 + "px");
     info.css("padding-right", "10px");
-    console.log(skill)
     info.append("<div style='height:25px;font-size:12px;font-weight:bold;'>" + skill.name + "</div>");
     if (skill.effect != null) {
         info.append("<div style='color:goldenrod'>被动加成</div>");

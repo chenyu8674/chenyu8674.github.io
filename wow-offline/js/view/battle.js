@@ -289,8 +289,18 @@ function show_dungeon_content(index) {
                 drop = drop.split("+");
                 drop = Number(drop[0]);
             }
-            drop = get_equipment_by_model(drop)[1];
             let item = $("<div></div>");
+            if (is_in_local_mode()) {
+                // 右键点击事件，取出装备
+                item.contextmenu(function (e) {
+                    e.preventDefault();
+                    if (get_item_empty_count() > 0) {
+                        put_equipment_to_items(drop);
+                        save_data();
+                    }
+                });
+            }
+            drop = get_equipment_by_model(drop)[1];
             item.addClass("dungeon_content_item");
             let rare_color = eval("color_rare_" + drop.rare);
             item.css("border-color", rare_color);
@@ -917,7 +927,7 @@ function drop_random_equipment(monster) {
  */
 function drop_raid_equipment(monster) {
     let test_mode = is_in_local_mode();
-    // test_mode = false;
+    test_mode = false;
     let drop_list = dictionary_monster[monster.name].drop;
     if (drop_list != null) {
         let drop_rate = 100 * Math.random();

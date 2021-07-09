@@ -19,7 +19,7 @@ function new_sets() {
 
     sets["毒蛇的拥抱"] = {
         equipments: [10412, 10411, 10413, 10410, 6473],
-        effects: [null, ["hit_chance_final+=5"], ["int_percent+=10"], ["magic_power_percent+=10"], ["damage_all+=10"]],
+        effects: [null, ["heal_power_percent+=10"], ["magic_power_percent+=10"], ["spr_percent+=10"], ["int_percent+=10"]],
     };
 
     return sets;
