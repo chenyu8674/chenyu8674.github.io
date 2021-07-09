@@ -128,7 +128,7 @@ function create_character(job, exp, name) {
     add_experience(exp);
     if (is_in_local_mode() || is_vip()) {
         if (current_character.exp === 0) {
-            // add_experience(20000);
+            add_experience(20000);
         }
     }
     current_character = calculate_base_property(current_character);
