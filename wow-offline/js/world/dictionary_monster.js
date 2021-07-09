@@ -264,24 +264,22 @@ function new_monster() {
         monster["怒焰穴居人"] = {species: 1, type: 6, rare: 4}
         monster["怒焰萨满祭司"] = {species: 1, type: 4, rare: 4, skills: ["火法", "熔岩爆裂"]}
         monster["燃刃信徒"] = {species: 1, type: 6, rare: 4, skills: "伏击"}
+        monster["燃刃执行者"] = {ui: "", species: 1, type: 1, rare: 4, skills: "英勇打击", effect: ["block_chance_final+=30", "block_value+=80"]}
+
         monster["阿达罗格"] = {
-            species: 3, type: 3, rare: 5, skills: ["火攻", "冲锋"], drop: [82879, 82772, 82880, 151421, 151422],
+            ui: "ui-ej-boss-adarogg", species: 3, type: 3, rare: 5, skills: ["火攻", "冲锋"], drop: [82879, 82772, 82880, 151421, 151422],
             detail: "怒焰裂谷穴居人的人数近几个月急剧下跌，原因只有一个：阿达罗格。这只贪吃的怪物是最早被黑暗萨满从火焰之地赶离的烈焰猎犬之一。阿达罗格的驯养员每天喂这只狂怒难驯的巨兽吃超出他体重两倍的穴居人肉块，以使他心平气和。"
         }
         monster["黑暗萨满柯兰萨"] = {
-            species: 1, type: 4, rare: 5, skills: ["暗法", "暗影风暴"], drop: [82882, 82877, 82881, 132551],
+            ui: "ui-ej-boss-dark-shaman-koranthal", species: 1, type: 4, rare: 5, skills: ["暗法", "暗影风暴"], drop: [82882, 82877, 82881, 132551],
             detail: "柯兰萨始终认为凶蛮之力是控制艾泽拉斯元素的唯一方法。正是这一极端观点使他加入了邪恶的暮光之锤。当教派衰落后，这位兽人和其它志同道合的萨满一同潜入了怒焰裂谷，继续从事他们的邪恶勾当。"
         }
-        monster["燃刃执行者"] = {
-            species: 1, type: 1, rare: 4, skills: "英勇打击",
-            effect: ["block_chance_final+=30", "block_value+=80"]
-        }
         monster["焰喉"] = {
-            species: 2, type: 9, rare: 5, skills: ["火法", "岩浆喷吐"], drop: [82885, 82884, 82878, 132552],
+            ui: "ui-ej-boss-magmaw", species: 2, type: 9, rare: 5, skills: ["火法", "岩浆喷吐"], drop: [82885, 82884, 82878, 132552],
             detail: "事实证明，与其它被黑暗萨满奴役的熔岩虫不同，焰喉几乎不受任何控制。这只猛兽在地下深处恣意钻掘，对其行动引发的后果毫不在意，谁要是挡了它的路也只能自认倒霉。"
         }
         monster["熔岩守卫戈多斯"] = {
-            species: 1, type: 2, rare: 5, skills: ["战斗怒吼", "英勇打击"], drop: [82888, 82886, 82883, 151424, 151425],
+            ui: "ui-ej-boss-lava-guard-gordoth", species: 1, type: 2, rare: 5, skills: ["战斗怒吼", "英勇打击"], drop: [82888, 82886, 82883, 151424, 151425],
             detail: "在狂妄的驱使下，才华横溢的萨满戈多斯变成了汲取火焰之地力量的活体导管。他和同伴想要效仿暮光之锤创造的元素升腾者。结果，能量汇聚而引发的爆炸使戈多斯陷入疯狂，还把他的身体扭曲成了令人惨不忍睹的形态。"
         }
     }// 怒焰裂谷
@@ -298,32 +296,33 @@ function new_monster() {
         monster["迪菲亚法师"] = {species: 1, type: 9, rare: 4, skills: "冰法"}
         monster["迪菲亚恶棍"] = {species: 1, type: 1, rare: 4, skills: "多重射击"}
         monster["迪菲亚塑风师"] = {species: 1, type: 4, rare: 4, skills: ["治疗波", "电法"]}
+
         monster["格拉布托克"] = {
-            species: 1, type: 4, rare: 5, skills: ["烈焰之拳", "寒冰之拳", "烈焰绽放", "寒冰绽放"],
+            ui: "ui-ej-boss-glubtok", species: 1, type: 4, rare: 5, skills: ["烈焰之拳", "寒冰之拳", "烈焰绽放", "寒冰绽放"],
             effect: ["health_percent+=40"], drop: [5444, 5195, 2169, 151064],
             detail: "只是一阵心血来潮，格拉布托克就释放出强大的魔法力量，把他的食人魔山夷为了平地。听到这个消息，迪菲亚立刻雇佣了这位食人魔法师作为死亡矿井的工头，借助他毁灭性的天赋来监督那些劳工。"
         }
         monster["赫利克斯·破甲"] = {
-            species: 1, type: 2, rare: 5, skills: "黏性炸弹", drop: [5191, 132556, 5443, 151062, 5199, 151063, 5200],
+            ui: "ui-ej-boss-helix-gearbreaker", species: 1, type: 2, rare: 5, skills: "黏性炸弹", drop: [5191, 132556, 5443, 151062, 5199, 151063, 5200],
             detail: "赫利克斯从前是锈水财阀的工匠，可之后他收到了迪菲亚兄弟会的一笔款项，足以让他那样的无名部落工程师所做的一切都一文不值。就像所有精明的地精会做的那样，他迅速接下了这份工作，声称不再对前任雇主效忠。"
         }
         monster["死神5000"] = {
-            species: 7, type: 2, rare: 5, skills: ["挥砍", "安全限制离线"],
+            ui: "ui-ej-boss-foe-reaper-5000", species: 7, type: 2, rare: 5, skills: ["挥砍", "安全限制离线"],
             effect: ["attack_power_percent-=20"], drop: [5201, 151065, 5187, 151066, 1937],
             detail: "迪菲亚的工程师们在死神4000的基础上，日以继夜地想要完善出一种新型号的收割机。兄弟会相信，只要完工，这台恐怖的机械就能像割麦子一样从暴风城的武装士兵中杀出一条路来。"
         }
         monster["撕心狼将军"] = {
-            species: 1, type: 6, rare: 5, skills: ["撕心", "直取要害"], drop: ["5196+30", "872+30", "1156+40"],
+            ui: "ui-ej-boss-admiral-ripsnarl", species: 1, type: 6, rare: 5, skills: ["撕心", "直取要害"], drop: ["5196+30", "872+30", "1156+40"],
             detail: "詹姆斯·哈林顿身中狼人的诅咒后，在一个刺骨的寒夜里毁掉了钟爱的家庭和他的远洋航海生涯。在那之后，他改名为撕心狼，逃到了西部荒野，之后更是接受了任命，指挥迪菲亚兄弟会可怖的无畏舰。"
         }
         monster["“船长”曲奇"] = {
-            species: 1, type: 5, rare: 5, skills: ["治疗波", "火攻", "火法", "冰攻", "冰法", "电攻", "电法"],
+            ui: "ui-ej-boss-captain-cookie", species: 1, type: 5, rare: 5, skills: ["火攻", "冰攻", "电攻", "火法", "冰法", "电法", "治疗波"],
             drop: [5202, 5197, 5198, 5192, 5193],
             detail: "随着迪菲亚兄弟会前任无畏舰指挥官的死亡，曲奇自封为船长。尽管他在主厨的工作上仍然尽职尽责，但若是有谁质疑其船长的头衔来得是否光明磊落，那人就会因为严重的食物中毒而倒地不起。"
         }
         monster["梵妮莎·范克里夫"] = {
-            species: 1, type: 6, rare: 5, appear: 50, skills: ["多重射击", "闪避", "炽热火焰"],
-            effect: ["health_percent+=20"], drop: [63478, 63485, 65178, 63479, 63486, 63482, 63483],
+            ui: "ui-ej-boss-vanessa-vancleef", species: 1, type: 6, rare: 5, appear: 50, skills: ["多重射击", "闪避", "炽热火焰"],
+            effect: ["health_percent+=20"], drop: [63478, 63485, 65178, 63479, 63486, 63482, 63483, 63485, 65178, 63479, 63486, 63482, 63483],
             say_start: "希望？难道那是我眼睁睁地看到你们这些贵族的走狗砍下我父亲的头颅时应该满怀的感觉吗？希望于我来说只是这个冷酷的世界当中一个恶毒的玩笑罢了！",
             say_end: "你们这些贵族的走狗，我们的事业是正义的！",
             detail: "当梵妮莎还是一个小女孩的时候，她亲眼目睹了父亲艾德温·范克里夫的悲惨下场。作为前任迪菲亚兄弟会领袖之女，她接过父亲领袖的衣钵，在迪菲亚兄弟会据点死亡矿井的黑暗回廊里厉兵秣马，谋划着对暴风城的复仇。"
@@ -341,28 +340,29 @@ function new_monster() {
         monster["变异蹒跚者"] = {species: 5, type: 5, rare: 4, skills: "回春", effect: ["health_percent+=30"]}
         monster["变异尖牙风蛇"] = {species: 2, type: 6, rare: 4, skills: "撕裂"}
         monster["变异剧毒风蛇"] = {species: 2, type: 4, rare: 4, skills: "毒药"}
+
         monster["安娜科德拉"] = {
-            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "致盲"],
+            ui: "ui-ej-boss-lady-anacondra", species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "致盲"],
             effect: ["int_percent+=20"], drop: [132737, 5404, 10412, 151427, 151426],
             detail: "当纳拉雷克斯自作主张地派人前往贫瘠之地时，绯叶是第一个自告奋勇的人。在心智被主人的噩梦彻底粉碎后，这位年轻的侍僧便将自己的名姓丢诸脑后，现在正酝酿着艾泽拉斯邪恶阴险的未来。"
         }
         monster["皮萨斯"] = {
-            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "英勇打击"],
+            ui: "ui-ej-boss-lord-pythas", species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "英勇打击"],
             effect: ["int_percent+=20"], drop: [6472, 6473, 151429, 151428],
             detail: "作为纳拉雷克斯的儿时玩伴，战士阿里恩在德鲁伊之道上有着过人的天赋。尽管受过严格训练，这位侍僧却仍无力对抗令他丧失理智的腐化。阿里恩改名换姓，以皮萨斯的新身份将自己超凡的近战能力与德鲁伊的学识合二为一，粉碎一切入侵者。"
         }
         monster["考布莱恩"] = {
-            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "毒药"],
+            ui: "ui-ej-boss-lord-cobrahn", species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "毒药"],
             effect: ["int_percent+=20"], drop: [6460, 6465, 10410],
             detail: "加拉克斯拉驾驭动物形态的能力为他在塞纳里奥议会的德鲁伊间赢得了威名，然而哀嚎洞穴的腐化却扭曲了他的特殊能力。现在，加拉克斯拉已将一种致命的毒蛇形态演练得出神入化，为自己冠以考布莱恩的新名字，以体现他那全新的邪恶力量。"
         }
         monster["克雷什"] = {
-            species: 2, type: 1, rare: 5, skills: "撕咬",
+            ui: "ui-ej-boss-kresh", species: 2, type: 1, rare: 5, skills: "撕咬",
             effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=30"], drop: [6447, 13245, 151430],
             detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
         }
         monster["斯卡姆"] = {
-            species: 2, type: 4, rare: 5, skills: ["电法", "雷霆一击"], drop: [6449, 6448],
+            ui: "ui-ej-boss-skum", species: 2, type: 4, rare: 5, skills: ["电法", "雷霆一击"], drop: [6449, 6448],
             detail: "斯卡姆原本只是为了逃避贫瘠之地的恶劣环境才前往哀嚎洞穴的。与洞内的许多其它住民一样，他也很快就遭到腐化。如今在他周身流淌着黑暗能量，他已经无可挽回地变成了一只强大凶残的野兽。"
         }
         monster["变异精灵龙"] = {
@@ -370,17 +370,17 @@ function new_monster() {
             effect: ["attr_percent+=100", "health_percent+=50"], drop: [5243, 6632]
         }
         monster["瑟芬迪斯"] = {
-            species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],
+            ui: "ui-ej-boss-lord-serpentis", species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],
             effect: ["int_percent+=20"], drop: [5970, 6459, 6469, 10411],
             detail: "毒牙德鲁伊的领袖曾是纳拉雷克斯最出色的学生。他的悲剧源自于他想要成为大导师，也就是“荣誉导师”的热望，想要和纳拉雷克斯比肩。疯狂在他心中生根发芽，瑟芬迪斯将他的兄弟们召集在一起，成立了这个名叫毒牙德鲁伊的组织。"
         }
         monster["永生者沃尔丹"] = {
-            species: 5, type: 4, rare: 5, skills: ["痛击", "雷霆一击", "回春"],
+            ui: "ui-ej-boss-verdan-the-everliving", species: 5, type: 4, rare: 5, skills: ["痛击", "雷霆一击", "回春"],
             effect: ["health_percent+=20"], drop: [6629, 6630, 6631],
             detail: "在纳拉雷克斯来到哀嚎洞穴之前，人们对这只生物了解甚少。永生者沃尔丹被看作是洞穴的原始守护者，没能逃过降临在自己家园的腐化。沃尔丹与其他疯狂的德鲁伊结为盟友，对那些擅自闯入的不速之客保持着高度警惕。"
         }
         monster["吞噬者穆坦努斯"] = {
-            species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
+            ui: "ui-ej-boss-mutanus-the-devourer", species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
             effect: ["attack_power+=30", "health_percent+=30"], drop: [6461, 6627, 6463],
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }
@@ -412,17 +412,17 @@ function new_monster() {
         monster["恐惧占星师"] = {species: 3, type: 8, rare: 4, skills: ["冰法", "冰霜新星"]}
 
         monster["灰葬男爵"] = {
-            species: 3, type: 8, rare: 5, skills: ["暗法", "暗言术：痛", "自疗"],
+            ui: "ui-ej-boss-baron-ashbury", species: 3, type: 8, rare: 5, skills: ["暗法", "暗言术：痛", "自疗"],
             effect: ["magic_power+=30"], drop: [6314, 6324, 6323],
             detail: "灰葬男爵被狼人所杀，随后被遗忘者将其复活成亡灵。这个叛徒擅长使用暗影的力量，将他的敌人玩弄于鼓掌之间。"
         }
         monster["席瓦莱恩男爵"] = {
-            species: 3, type: 1, rare: 5, skills: ["致死打击", "撕裂"],
+            ui: "ui-ej-boss-baron-silverlaine", species: 3, type: 1, rare: 5, skills: ["致死打击", "撕裂"],
             effect: ["attack_power+=10"], drop: [5943, 6321, 132567, 132568, 6319, 5254],
             detail: "在这座城堡尚未落入阿鲁高狼人之手的时候，席瓦莱恩男爵是这里的主人。现在他被诅咒的灵魂召唤着将他杀害的狼人，惩处那些侵入其家园的来犯者。"
         }
         monster["指挥官斯普林瓦尔"] = {
-            species: 3, type: 2, rare: 5, skills: ["暗攻", "吸血"],
+            ui: "ui-ej-boss-commander-springvale", species: 3, type: 2, rare: 5, skills: ["暗攻", "吸血"],
             effect: ["health_percent+=40", "block_chance_final+=50", "block_value+=50"], drop: [6320, 3191, 151067, 151068, 151070, 151069],
             detail: "作为一名忠诚的士兵，指挥官斯普林瓦尔的鬼魂游荡在议会大厅里，用不洁之力为他的领主席瓦莱恩男爵复仇。"
         }
@@ -431,12 +431,12 @@ function new_monster() {
             effect: ["attr_percent+=100", "health_percent+=30"], drop: [6641, 6642]
         }
         monster["沃登勋爵"] = {
-            species: 3, type: 4, rare: 5, skills: ["冰攻", "毒药"],
+            ui: "ui-ej-boss-lord-walden", species: 3, type: 4, rare: 5, skills: ["冰攻", "毒药"],
             effect: ["attack_power+=30"], drop: [6341, 3230, 1292, 132566],
             detail: "高弗雷的左右手、傲慢的沃登勋爵曾发誓不惜一切代价，也要为其同胞鞠躬尽瘁。如今成了亡灵的一员，沃登依然信守诺言，用冰与毒对敌人发起猛攻。"
         }
         monster["高弗雷勋爵"] = {
-            species: 3, type: 3, rare: 5, skills: ["暗攻", "诅咒之弹"],
+            ui: "ui-ej-boss-lord-godfrey", species: 3, type: 3, rare: 5, skills: ["暗攻", "诅咒之弹"],
             effect: ["attack_power+=20"], drop: [6318, 3748, 6220, 151073, 151071, 151072],
             detail: "身为吉尔尼斯贵族及被遗忘者的眼线，狡猾而又多智的高弗雷勋爵擅使双枪，麾下还有大批残忍嗜血的食尸鬼。"
         }

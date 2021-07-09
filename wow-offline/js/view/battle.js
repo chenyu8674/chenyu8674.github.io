@@ -2,7 +2,7 @@
 
 let view_battle;
 let battle_map;
-let dungeon_book;
+let dungeon_view;
 let map_info;
 let kill_count;
 
@@ -11,7 +11,7 @@ let is_auto_battle;
 $(document).ready(function () {
     view_battle = $("#view_battle");
     battle_map = $("#battle_map");
-    dungeon_book = $("#dungeon_book");
+    dungeon_view = $("#dungeon_view");
     set_key_listener();
 });
 
@@ -19,7 +19,7 @@ function show_view_battle() {
     is_auto_battle = false;
     kill_count = 0;
     view_battle.show();
-    dungeon_book.hide();
+    dungeon_view.hide();
     $("#attack_next").show();
     refresh_battle_status(false);
 }
@@ -122,7 +122,9 @@ function show_battle_view(info) {
         refresh_random_monster();
     } else {
         // 副本地图
-        // show_dungeon_guide();
+        if (is_in_local_mode()) {
+            show_dungeon_guide();
+        }
         $("#auto_battle").hide();
         $("#monster_area").hide();
         player_x = map_info.area[0][0];
@@ -133,6 +135,8 @@ function show_battle_view(info) {
     show_player_point();
 }
 
+let dungeon_guide_list = [];
+
 /**
  * 生成地下城手册图标
  */
@@ -141,13 +145,13 @@ function show_dungeon_guide() {
     dungeon_guide.show();
     dungeon_guide.unbind("click");
     dungeon_guide.click(function (e) {
-        if (dungeon_book.is(":visible")) {
-            dungeon_book.hide();
+        if (dungeon_view.is(":visible")) {
+            dungeon_view.hide();
             $(".monster_point").show();
             $(".player_point").show();
             $(".passing_point").show();
         } else {
-            dungeon_book.show();
+            dungeon_view.show();
             $(".monster_point").hide();
             $(".player_point").hide();
             $(".passing_point").hide();
@@ -160,6 +164,146 @@ function show_dungeon_guide() {
     }, function () {
         hide_info();
     });
+    // 创建地下城手册数据
+    dungeon_guide_list = [];
+    for (let i = 0; i < map_info.monster.length; i++) {
+        let monster_info = map_info.monster[i];
+        if (monster_info.name != null) {
+            let monster = dictionary_monster[monster_info.name];
+            if (monster.rare === 3 || monster.rare === 5 || monster.rare === 6) {
+                monster.name = monster_info.name;
+                dungeon_guide_list.push(monster);
+            }
+        }
+    }
+    let dungeon_list = $("#dungeon_list");
+    dungeon_list.empty();
+    let line_height = 84;
+    for (let i = 0; i < dungeon_guide_list.length; i++) {
+        let monster = dungeon_guide_list[i];
+        let dungeon_list_bar = $("<div></div>");
+        dungeon_list_bar.addClass("dungeon_list_bar");
+        dungeon_list_bar.css("top", 10 + line_height * i + "px");
+        dungeon_list_bar.css("color", eval("color_rare_" + monster.rare));
+        let dungeon_list_ui = $("<div></div>");
+        dungeon_list_ui.addClass("dungeon_list_ui");
+        if (monster.ui != null) {
+            dungeon_list_ui.css("background-image", "url(./img/monster/" + monster.ui + ".png)");
+        } else {
+            dungeon_list_ui.html("?");
+        }
+        dungeon_list_bar.append(dungeon_list_ui);
+        dungeon_list_bar.append("<span>" + monster.name + "</span>");
+        dungeon_list.append(dungeon_list_bar);
+        dungeon_list_bar.click(function () {
+            show_dungeon_content(i);
+        });
+    }
+    dungeon_list.append($("<div style='position:absolute;top:" + (10 + dungeon_guide_list.length * line_height) + "px;height:50px;width:280px;'></div>"));
+    show_dungeon_content(0);
+}
+
+function show_dungeon_content(index) {
+    let dungeon_list_bar = $(".dungeon_list_bar");
+    dungeon_list_bar.removeClass("dungeon_list_select");
+    $(dungeon_list_bar[index]).addClass("dungeon_list_select");
+
+    let dungeon_content = $("#dungeon_content");
+    dungeon_content.empty();
+    let monster = dungeon_guide_list[index];
+
+    let detail = monster.detail;
+    if (detail != null) {
+        let title1 = $("<div>介绍</div>");
+        title1.addClass("dungeon_content_title");
+        dungeon_content.append(title1);
+
+        let dungeon_content_detail = $("<div>" + detail + "</div>");
+        dungeon_content_detail.addClass("dungeon_content_detail");
+        dungeon_content.append(dungeon_content_detail);
+    }
+
+    let title2 = $("<div>技能</div>");
+    title2.addClass("dungeon_content_title");
+    dungeon_content.append(title2);
+
+    let dungeon_content_view = $("<div></div>");
+    dungeon_content_view.addClass("dungeon_content_view");
+    dungeon_content_view.css("margin-bottom", "-15px");
+    dungeon_content.append(dungeon_content_view);
+
+    let rage = dictionary_buff.rage();
+    let item = $("<div></div>");
+    item.addClass("dungeon_content_item");
+    item.css("background-image", "url(./img/icon/" + rage.icon + ".jpg)");
+    item.hover(function () {
+        show_skill_info($(this), rage);
+    }, function () {
+        hide_info();
+    });
+    dungeon_content_view.append(item);
+
+    let skills = monster.skills;
+    if (typeof skills === "string") {
+        // 只有一个技能
+        let skill = dictionary_monster_skill[skills]();
+        let item = $("<div></div>");
+        item.addClass("dungeon_content_item");
+        item.css("background-image", "url(./img/icon/" + skill.icon + ".jpg)");
+        item.hover(function () {
+            show_skill_info($(this), skill);
+        }, function () {
+            hide_info();
+        });
+        dungeon_content_view.append(item);
+    } else {
+        // 有多个技能
+        for (let i = 0; i < skills.length; i++) {
+            let skill = dictionary_monster_skill[skills[i]]();
+            let item = $("<div></div>");
+            item.addClass("dungeon_content_item");
+            item.css("background-image", "url(./img/icon/" + skill.icon + ".jpg)");
+            item.hover(function () {
+                show_skill_info($(this), skill);
+            }, function () {
+                hide_info();
+            });
+            dungeon_content_view.append(item);
+        }
+    }
+
+    let drops = monster.drop;
+    if (drops != null && drops.length > 0) {
+        let title3 = $("<div>掉落</div>");
+        title3.addClass("dungeon_content_title");
+        dungeon_content.append(title3);
+
+        let dungeon_content_view = $("<div></div>");
+        dungeon_content_view.addClass("dungeon_content_view");
+        dungeon_content_view.css("padding-bottom", "15px");
+        dungeon_content.append(dungeon_content_view);
+
+        for (let i = 0; i < drops.length; i++) {
+            let drop = drops[i];
+            if (typeof drop === "string") {
+                drop = drop.split("+");
+                drop = Number(drop[0]);
+            }
+            drop = get_equipment_by_model(drop)[1];
+            let item = $("<div></div>");
+            item.addClass("dungeon_content_item");
+            let rare_color = eval("color_rare_" + drop.rare);
+            item.css("border-color", rare_color);
+            item.css("box-shadow", "0 0 10px inset " + rare_color);
+            item.css("background-image", "url(./img/equipment/" + drop.icon + ".jpg)");
+            item.hover(function () {
+                show_equipment_info($(this), drop);
+            }, function () {
+                hide_info();
+            });
+            dungeon_content_view.append(item);
+        }
+    }
 }
 
 /**
@@ -723,6 +867,11 @@ function on_battle_end(index) {
         refresh_player_point();
         $("#self_heal").click();
         refresh_battle_status(false);
+    }
+    if (dungeon_view.is(":visible")) {
+        $(".monster_point").hide();
+        $(".player_point").hide();
+        $(".passing_point").hide();
     }
 }
 

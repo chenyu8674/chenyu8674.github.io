@@ -89,14 +89,116 @@
     box-shadow: 0 0 20px goldenrod;
 }
 
-#dungeon_book {
+#dungeon_view {
     position: absolute;
-    margin: 0;
+    margin: -1px;
     padding: 0;
-    width: 926px;
-    height: 618px;
+    width: 928px;
+    height: 620px;
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0.9);
+}
+
+#dungeon_list {
+    position: absolute;
+    width: 327px;
+    height: 620px;
+    overflow-y: auto;
+}
+
+.dungeon_list_bar {
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    margin: 15px;
+    padding-left: 130px;
+    font-size: 16px;
+    line-height: 50px;
+    color: white;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 2px ridge slategray;
+}
+
+.dungeon_list_select {
+    /*color: goldenrod;*/
+    border-color: goldenrod;
+    background-color: rgba(255, 255, 0, 0.02);
+}
+
+.dungeon_list_ui {
+    position: absolute;
+    width: 128px;
+    height: 64px;
+    margin-left: -130px;
+    bottom: 0;
+    background-size: 100%;
+    font-size: 64px;
+    line-height: 64px;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 1px 1px darkred;
+    color: indianred;
+    background-position: center;
+}
+
+#dungeon_split {
+    position: absolute;
+    width: 1px;
+    height: 620px;
+    left: 324px;
+    background-color: gray;
+}
+
+#dungeon_content {
+    position: absolute;
+    width: 600px;
+    height: 620px;
+    right: 0;
+    overflow-y: auto;
+}
+
+.dungeon_content_title {
+    width: 560px;
+    height: 30px;
+    margin: 25px 15px 10px 15px;
+    padding-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 30px;
+    color: goldenrod;
+    border-bottom: 2px ridge gray;
+    float: left;
+}
+
+.dungeon_content_detail {
+    width: 550px;
+    padding-left: 25px;
+    padding-right: 25px;
+    font-size: 14px;
+    line-height: 25px;
+    color: silver;
+    float: left;
+}
+
+.dungeon_content_view {
+    width: 570px;
+    padding-top: 5px;
+    padding-left: 27px;
+    float: left;
+}
+
+.dungeon_content_item {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: rgba(30, 30, 30, 0.9);
+    background-size: 100%;
+    background-position: center;
+    border: 2px ridge slategray;
+    float: left;
 }
 
 #battle_log {

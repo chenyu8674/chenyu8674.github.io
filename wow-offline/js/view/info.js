@@ -79,8 +79,44 @@ function show_monster_info(view, index) {
     info.append("<div style='height:25px;font-size:12px;font-weight:bold;'>" + monster.name + "</div>");
     info.append("<div style='color:" + eval("color_rare_" + monster.rare) + "'>" + get_monster_rare_name(monster.rare, monster.percent) + "</div>");
     info.append("<div style='color:goldenrod'>lv " + monster.lvl + " " + get_monster_species_name(monster.species) + "</div>");
-    if (monster.detail != null) {
-        info.append("<div style='color:lightgray;margin-top:5px;line-height:17px;'>" + monster.detail + "</div>");
+    // if (monster.detail != null) {
+    //     info.append("<div style='color:lightgray;margin-top:5px;line-height:17px;'>" + monster.detail + "</div>");
+    // }
+    window_view.append(info);
+}
+
+/**
+ * 显示技能介绍
+ */
+function show_skill_info(view, skill) {
+    if (skill.name == null) {
+        return;
+    }
+    $(".info_window").remove();
+    let info = $("<div></div>");
+    info.addClass("info_window");
+    let x = view[0].offsetWidth + view.offset().left - window_margin_left;
+    let y = view[0].offsetHeight + view.offset().top - window_margin_top;
+    info.css("left", x - 5 + "px");
+    info.css("top", y - 5 + "px");
+    info.css("padding-right", "10px");
+    console.log(skill)
+    info.append("<div style='height:25px;font-size:12px;font-weight:bold;'>" + skill.name + "</div>");
+    if (skill.effect != null) {
+        info.append("<div style='color:goldenrod'>被动加成</div>");
+    }
+    if (skill.condition != null) {
+        info.append("<div style='color:goldenrod'>" + skill.condition + "</div>");
+    }
+    if (skill.cooldown != null) {
+        if (skill.cooldown >= Number.MAX_VALUE) {
+            info.append("<div style='color:goldenrod'>每场战斗限一次</div>");
+        } else {
+            info.append("<div style='color:goldenrod'>CD: " + skill.cooldown + "</div>");
+        }
+    }
+    if (skill.detail != null) {
+        info.append("<div style='color:lightgray;margin-top:5px;line-height:17px;'>" + skill.detail + "</div>");
     }
     window_view.append(info);
 }
