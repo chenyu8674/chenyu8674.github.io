@@ -2,6 +2,7 @@
 
 let view_battle;
 let battle_map;
+let dungeon_book;
 let map_info;
 let kill_count;
 
@@ -10,6 +11,7 @@ let is_auto_battle;
 $(document).ready(function () {
     view_battle = $("#view_battle");
     battle_map = $("#battle_map");
+    dungeon_book = $("#dungeon_book");
     set_key_listener();
 });
 
@@ -17,6 +19,7 @@ function show_view_battle() {
     is_auto_battle = false;
     kill_count = 0;
     view_battle.show();
+    dungeon_book.hide();
     $("#attack_next").show();
     refresh_battle_status(false);
 }
@@ -108,6 +111,7 @@ function show_battle_view(info) {
     hide_monster_area();
     if (map_info.type === 1) {
         // 练级地图
+        $("#dungeon_guide").hide();
         if (is_in_local_mode()) {
             show_monster_area(map_info);
         }
@@ -118,6 +122,7 @@ function show_battle_view(info) {
         refresh_random_monster();
     } else {
         // 副本地图
+        // show_dungeon_guide();
         $("#auto_battle").hide();
         $("#monster_area").hide();
         player_x = map_info.area[0][0];
@@ -126,6 +131,35 @@ function show_battle_view(info) {
     }
     show_attack_icon();
     show_player_point();
+}
+
+/**
+ * 生成地下城手册图标
+ */
+function show_dungeon_guide() {
+    let dungeon_guide = $("#dungeon_guide");
+    dungeon_guide.show();
+    dungeon_guide.unbind("click");
+    dungeon_guide.click(function (e) {
+        if (dungeon_book.is(":visible")) {
+            dungeon_book.hide();
+            $(".monster_point").show();
+            $(".player_point").show();
+            $(".passing_point").show();
+        } else {
+            dungeon_book.show();
+            $(".monster_point").hide();
+            $(".player_point").hide();
+            $(".passing_point").hide();
+        }
+        e.stopPropagation();
+        return false;
+    });
+    dungeon_guide.hover(function () {
+        show_text_info(dungeon_guide, "<div style='color:goldenrod;letter-spacing:1px;'>地下城手册</div><div>查看首领介绍、技能与掉落</div>");
+    }, function () {
+        hide_info();
+    });
 }
 
 /**

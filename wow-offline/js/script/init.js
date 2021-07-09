@@ -6,7 +6,7 @@ $(document).ready(function () {
     $(document).bind("selectstart", function () {
         return false;
     });
-    $("#timestamp").text("2021年2月9日12:32:54 Ver." + CURRENT_VERSION);
+    $("#timestamp").text("Ver." + CURRENT_VERSION);
 
     window_view = $("#window");
     do_adapt();

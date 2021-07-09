@@ -358,7 +358,7 @@ function new_monster() {
         }
         monster["克雷什"] = {
             species: 2, type: 1, rare: 5, skills: "撕咬",
-            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=26"], drop: [6447, 13245, 151430],
+            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=30"], drop: [6447, 13245, 151430],
             detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
         }
         monster["斯卡姆"] = {
@@ -423,7 +423,7 @@ function new_monster() {
         }
         monster["指挥官斯普林瓦尔"] = {
             species: 3, type: 2, rare: 5, skills: ["暗攻", "吸血"],
-            effect: ["health_percent+=40"], drop: [6320, 3191, 151067, 151068, 151070, 151069],
+            effect: ["health_percent+=40", "block_chance_final+=50", "block_value+=50"], drop: [6320, 3191, 151067, 151068, 151070, 151069],
             detail: "作为一名忠诚的士兵，指挥官斯普林瓦尔的鬼魂游荡在议会大厅里，用不洁之力为他的领主席瓦莱恩男爵复仇。"
         }
         monster["死亡之誓"] = {

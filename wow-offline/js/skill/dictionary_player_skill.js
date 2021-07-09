@@ -841,12 +841,13 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             let damage_count = get_skill_point(attacker);
             let damage_obj;
-            if (battle_turn === 1 || damage_count >= 100) {
+            if (has_equip_dagger(attacker) && (battle_turn === 1 || damage_count >= 100)) {
                 // 施放伏击
                 set_skill_point(attacker, 0);
                 let mastery_percent = calculate_original_mastery(attacker);
-                damage_obj = calculate_skill(attacker, target, skill.name_1, skill.X * (100 + mastery_percent) / 100, skill.type, element_physical);
+                damage_obj = calculate_skill(attacker, target, skill.name_1, skill.X * (100 + mastery_percent) / 100, skill.type, element_physical, 50);
             } else {
+                // 施放背刺
                 damage_obj = calculate_skill(attacker, target, skill.name, skill.X, skill.type, element_physical);
             }
             if (damage_obj.is_hit) {

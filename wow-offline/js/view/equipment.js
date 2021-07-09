@@ -296,7 +296,7 @@ function get_mastery_html() {
         case 54:
             return "召唤树人协助作战，回合开始时从目标吸取" + mastery_percent + "%治疗强度的生命";
         case 61:
-            return "冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%";
+            return "装备匕首时冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%";
         case 62:
             return "邪恶攻击命中时" + mastery_percent + "%几率获得额外连击点";
         case 63:
@@ -540,6 +540,28 @@ function has_equip_shield(role) {
         let equipment = equipments[j];
         equipment = create_equipment_by_model(equipment);
         if (equipment.type === 41) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * 是否装备了匕首
+ * @return {boolean}
+ */
+function has_equip_dagger(role) {
+    if (role == null) {
+        role = current_character;
+    }
+    let equipments = role.equipments;
+    for (let j = 0; j < equipments.length; j++) {
+        let module = equipments[j];
+        let equipment = create_equipment_by_model(module);
+        if (equipment.pos === 15 && equipment.type === 11) {
+            return true;
+        }
+        if (equipment.pos === 16 && equipment.type === 11) {
             return true;
         }
     }

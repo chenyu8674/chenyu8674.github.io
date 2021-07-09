@@ -88,6 +88,7 @@ function refresh_character_select_view() {
             if (confirm('警告！确认删除人物存档？')) {
                 character_list.splice(i, 1);
                 let save_data = {};
+                save_data.version = CURRENT_VERSION;
                 save_data.bank_item_list = bank_item_list;
                 save_data.character_list = character_list;
                 let json = JSON.stringify(save_data);
