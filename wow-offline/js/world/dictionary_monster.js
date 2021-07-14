@@ -322,7 +322,7 @@ function new_monster() {
         }
         monster["梵妮莎·范克里夫"] = {
             ui: "ui-ej-boss-vanessa-vancleef", species: 1, type: 6, rare: 5, appear: 50, skills: ["多重射击", "闪避", "炽热火焰"],
-            effect: ["health_percent+=20"], drop: [63478, 63485, 65178, 63479, 63486, 63482, 63483, 63485, 65178, 63479, 63486, 63482, 63483],
+            effect: ["health_percent+=20"], drop: [63478, 63485, 65178, 63479, 63486, 63482, 63483],
             say_start: "希望？难道那是我眼睁睁地看到你们这些贵族的走狗砍下我父亲的头颅时应该满怀的感觉吗？希望于我来说只是这个冷酷的世界当中一个恶毒的玩笑罢了！",
             say_end: "你们这些贵族的走狗，我们的事业是正义的！",
             detail: "当梵妮莎还是一个小女孩的时候，她亲眼目睹了父亲艾德温·范克里夫的悲惨下场。作为前任迪菲亚兄弟会领袖之女，她接过父亲领袖的衣钵，在迪菲亚兄弟会据点死亡矿井的黑暗回廊里厉兵秣马，谋划着对暴风城的复仇。"
@@ -413,7 +413,7 @@ function new_monster() {
 
         monster["灰葬男爵"] = {
             ui: "ui-ej-boss-baron-ashbury", species: 3, type: 8, rare: 5, skills: ["暗法", "暗言术：痛", "自疗"],
-            effect: ["magic_power+=30"], drop: [6314, 6324, 6323],
+            effect: ["magic_power+=30"], drop: [6314, 6324, 6323, 23173],
             detail: "灰葬男爵被狼人所杀，随后被遗忘者将其复活成亡灵。这个叛徒擅长使用暗影的力量，将他的敌人玩弄于鼓掌之间。"
         }
         monster["席瓦莱恩男爵"] = {
@@ -428,7 +428,7 @@ function new_monster() {
         }
         monster["死亡之誓"] = {
             species: 3, type: 1, rare: 3, skills: ["挥砍", "冲锋"],
-            effect: ["attr_percent+=100", "health_percent+=30"], drop: [6641, 6642]
+            effect: ["attr_percent+=80", "health_percent+=30"], drop: [6641, 6642]
         }
         monster["沃登勋爵"] = {
             ui: "ui-ej-boss-lord-walden", species: 3, type: 4, rare: 5, skills: ["冰攻", "毒药"],

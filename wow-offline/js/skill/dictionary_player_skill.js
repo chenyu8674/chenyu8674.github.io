@@ -643,8 +643,7 @@ function new_player_skill() {
             let damage_obj = calculate_skill(attacker, target, skill.name, skill.X, skill.type, element_arcane);
             if (damage_obj.is_hit) {
                 let mastery_percent = calculate_original_mastery(attacker);
-                skill.Y *= (100 + mastery_percent) / 100;
-                target.dots.push(new_dot().dot(skill.name, skill.icon, skill.Y, skill.type, element_arcane, skill.T));
+                target.dots.push(new_dot().dot(skill.name, skill.icon, skill.Y * (100 + mastery_percent) / 100, skill.type, element_arcane, skill.T));
             }
             return skill_cast_result(damage_obj);
         };
@@ -667,8 +666,7 @@ function new_player_skill() {
             let damage_obj = calculate_skill(attacker, target, skill.name, skill.X, skill.type, element_natural);
             if (damage_obj.is_hit) {
                 let mastery_percent = calculate_original_mastery(attacker);
-                skill.Y *= (100 + mastery_percent) / 100;
-                target.dots.push(new_dot().dot(skill.name, skill.icon, skill.Y, skill.type, element_natural, skill.T));
+                target.dots.push(new_dot().dot(skill.name, skill.icon, skill.Y * (100 + mastery_percent) / 100, skill.type, element_natural, skill.T));
             }
             return skill_cast_result(damage_obj);
         };
@@ -1282,8 +1280,7 @@ function new_player_skill() {
                     for (let i = 0; i < dots.length; i++) {
                         let dot = dots[i];
                         if (dot.name === skill.name) {
-                            let damage_value = dot.damage * dot.T;
-                            damage_obj = calculate_dot(attacker, target, skill.name_2, damage_value, element_fire);
+                            damage_obj = calculate_dot(attacker, target, skill.name_2, dot.power_percent * dot.T, dot.attack_type, element_fire);
                             damage_list.push(damage_obj);
                             let skill_state = get_skill_state(attacker.flag, skill.name);
                             if (skill_state != null) {

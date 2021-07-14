@@ -85,7 +85,9 @@ function refresh_talent_view() {
         info_job_skill_2.css("width", item_width - 125 + "px");
         let skill_name_1 = player_skill[current_job][0].name;
         let skill_detail_1 = player_skill[current_job][0].detail;
-        info_job_skill_2.html("<span style='color:goldenrod'>" + skill_name_1 + "：</span>" + skill_detail_1.replace("<br/>", ""));
+        let cooldown_1 = player_skill[current_job][0].cooldown;
+        cooldown_1 = (cooldown_1 != null && cooldown_1 < Number.MAX_VALUE) ? ("（CD " + cooldown_1 + "）") : "";
+        info_job_skill_2.html("<span style='color:goldenrod'>" + skill_name_1 + cooldown_1 + "：</span>" + skill_detail_1.replace("<br/>", ""));
         view_job_info.append(info_job_skill_2);
 
         let icon_job_skill_3 = $("<div></div>");
@@ -98,7 +100,9 @@ function refresh_talent_view() {
         info_job_skill_3.css("width", item_width - 125 + "px");
         let skill_name_2 = player_skill[current_job][1].name;
         let skill_detail_2 = player_skill[current_job][1].detail;
-        info_job_skill_3.html("<span style='color:goldenrod'>" + skill_name_2 + "：</span>" + skill_detail_2.replace("<br/>", ""));
+        let cooldown_2 = player_skill[current_job][1].cooldown;
+        cooldown_2 = (cooldown_2 != null && cooldown_2 < Number.MAX_VALUE) ? ("（CD " + cooldown_2 + "）") : "";
+        info_job_skill_3.html("<span style='color:goldenrod'>" + skill_name_2 + cooldown_2 + "：</span>" + skill_detail_2.replace("<br/>", ""));
         view_job_info.append(info_job_skill_3);
     }
 }

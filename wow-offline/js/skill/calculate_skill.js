@@ -426,7 +426,11 @@ function calculate_armor_magic(target) {
  * 计算原始命中率
  */
 function calculate_original_hit(attacker) {
-    return attacker.hit_rate * hit_coefficient / (attacker.lvl + 5) + attacker.hit_chance_final;
+    let original_hit = attacker.hit_rate * hit_coefficient / (attacker.lvl + 5) + attacker.hit_chance_final;
+    if (has_equip_two_weapons(attacker)) {
+        original_hit -= TWO_HAND_HIT_DECREASE;
+    }
+    return original_hit;
 }
 
 /**

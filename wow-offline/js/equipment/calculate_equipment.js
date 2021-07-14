@@ -153,7 +153,7 @@ function create_random_equipment_model(param) {
     model.name = random_list(random_pre_names) + attribute[1];
     // 装备等级
     model.c_lvl = param.c_lvl;
-    model.e_lvl = param.e_lvl ? param.e_lvl : Math.round(param.c_lvl * get_multiple_by_rare(model.rare));
+    model.e_lvl = param.e_lvl ? param.e_lvl : Math.floor(param.c_lvl * get_multiple_by_rare(model.rare));
     // 装备词缀
     model.affix = [pos * 1000 + inclination * 100 + type];
     let affix_suffix_length = (type > 20 && type < 40) ? dictionary_affix_suffix_length - 1 : dictionary_affix_suffix_length;
@@ -208,12 +208,12 @@ function create_static_equipment_model(name) {
         model.pos = base_model.pos;
         model.type = base_model.type;
     }
-    if (base_model.c_lvl == null || base_model.e_lvl == null) {
+    if (base_model.c_lvl == null && base_model.e_lvl == null) {
         model.c_lvl = 1;
         model.e_lvl = 1;
     } else {
         model.c_lvl = base_model.c_lvl;
-        model.e_lvl = base_model.e_lvl;
+        model.e_lvl = base_model.e_lvl ? base_model.e_lvl : Math.floor(base_model.c_lvl * get_multiple_by_rare(base_model.rare));
     }
     let attribute = get_attribute_by_pos(model.pos, model.type, base_model.icon);
     model.type_name = attribute[2];
@@ -903,7 +903,7 @@ function get_equipment_price(equipment) {
             base_price *= 1.3;
             break;
     }
-    base_price *= Math.pow(0.6 + (get_multiple_by_rare(equipment.rare) - 0.5), 6);
+    base_price *= Math.pow(0.6 + (get_multiple_by_rare(equipment.rare) - 0.5), 6) / 3;
     return Math.round(base_price);
 }
 

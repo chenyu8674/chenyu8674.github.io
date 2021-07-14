@@ -128,10 +128,14 @@ function init_skill_2_click() {
         $("#info_job_skill_1").html("<span style='color:goldenrod'>" + buff_name + "（天赋加成）</span><br />" + buff_detail);
         let skill_name_1 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].name;
         let skill_detail_1 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].detail;
-        $("#info_job_skill_2").html("<span style='color:goldenrod'>" + skill_name_1 + "：</span>" + skill_detail_1);
+        let cooldown_1 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][0].cooldown;
+        cooldown_1 = (cooldown_1 != null && cooldown_1 < Number.MAX_VALUE) ? ("（CD " + cooldown_1 + "）") : "";
+        $("#info_job_skill_2").html("<span style='color:goldenrod'>" + skill_name_1 + cooldown_1 + "：</span>" + skill_detail_1);
         let skill_name_2 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].name;
         let skill_detail_2 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].detail;
-        $("#info_job_skill_3").html("<span style='color:goldenrod'>" + skill_name_2 + "：</span>" + skill_detail_2);
+        let cooldown_2 = dictionary_player_skill[selected_job_1_index + selected_job_2_index][1].cooldown;
+        cooldown_2 = (cooldown_2 != null && cooldown_2 < Number.MAX_VALUE) ? ("（CD " + cooldown_2 + "）") : "";
+        $("#info_job_skill_3").html("<span style='color:goldenrod'>" + skill_name_2 + cooldown_2 + "：</span>" + skill_detail_2);
         // $("#view_name_input").focus();
     });
 }

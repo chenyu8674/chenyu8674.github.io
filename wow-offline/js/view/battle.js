@@ -288,14 +288,20 @@ function show_dungeon_content(index) {
             if (typeof drop === "string") {
                 drop = drop.split("+");
                 drop = Number(drop[0]);
+                drops[i] = drop;
             }
+        }
+        drops.sort(sort_equipment);
+        for (let i = 0; i < drops.length; i++) {
+            let drop = drops[i];
+            let index = drop;
             let item = $("<div></div>");
             if (is_in_local_mode()) {
                 // 右键点击事件，取出装备
                 item.contextmenu(function (e) {
                     e.preventDefault();
                     if (get_item_empty_count() > 0) {
-                        put_equipment_to_items(drop);
+                        put_equipment_to_items(index);
                         save_data();
                     }
                 });
@@ -864,6 +870,12 @@ function on_battle_end(index) {
                 refresh_monster_point();
                 battle_log("<br/><span style='color:goldenrod'>副本完成</span>");
                 $("#attack_next").hide();
+                // 奖励饰品
+                let param = {};
+                param.c_lvl = map_info.min;
+                param.pos = 14;
+                let model = get_random_equipment_model(param);
+                put_equipment_to_items(model);
             }
             $(".monster_point").remove();
             refresh_monster_point();

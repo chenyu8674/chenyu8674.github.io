@@ -210,7 +210,7 @@ function refresh_current_status_1() {
         + "命中几率提高 " + (calculate_original_hit(role_battle_1) - role_battle_1.hit_chance_final).toFixed(2) + "%"
     );
     create_status_line("命中几率：" + calculate_original_hit(role_battle_1).toFixed(2) + "%",
-        "技能命中目标的基础几率<br/>受到双方等级与目标闪避率的影响"
+        "技能命中目标的基础几率<br/>受到双方等级与目标闪避率的影响<br/>双持武器会使命中额外降低" + TWO_HAND_HIT_DECREASE + "%"
     );
     create_status_line("暴击等级：" + role_battle_1.critical_rate,
         role_battle_1.agi * agi_to_critical_rate + "+" + role_status_1.critical_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
@@ -264,7 +264,7 @@ function get_mastery_html() {
     let mastery_percent = calculate_original_mastery(role_battle_1).toFixed(2);
     switch (role_battle_1.job) {
         case 11:
-            return "致死打击命中时" + mastery_percent + "%几率触发一次压制，需要装备双手武器";
+            return "装备双手武器且致死打击命中时，" + mastery_percent + "%几率触发一次压制";
         case 12:
             return "根据当前损失生命值提高嗜血的伤害，最高为" + mastery_percent + "%";
         case 13:
@@ -278,11 +278,11 @@ function get_mastery_html() {
         case 31:
             return "多重射击和狂野怒火有" + mastery_percent + "%几率进行一次额外攻击";
         case 32:
-            return "奥术射击命中时" + mastery_percent + "%几率重置瞄准射击的冷却时间";
+            return "奥术射击命中时，" + mastery_percent + "%几率重置瞄准射击的冷却时间";
         case 33:
             return "闪避率为猛禽一击提供的加成提高" + mastery_percent + "%";
         case 41:
-            return "受到伤害时反弹" + mastery_percent + "%法术强度的自然伤害，每回合最多3次";
+            return "被击中时以" + mastery_percent + "%法术强度的自然伤害反击攻击者，每回合最多3次";
         case 42:
             return "风怒武器的触发几率提高" + mastery_percent + "%";
         case 43:
@@ -296,7 +296,7 @@ function get_mastery_html() {
         case 54:
             return "召唤树人协助作战，回合开始时从目标吸取" + mastery_percent + "%治疗强度的生命";
         case 61:
-            return "装备匕首时冷血状态下的背刺强化为伏击，伤害提高" + mastery_percent + "%";
+            return "装备匕首时冷血状态下会以伏击替代背刺，伤害提高" + mastery_percent + "%";
         case 62:
             return "邪恶攻击命中时" + mastery_percent + "%几率获得额外连击点";
         case 63:
@@ -308,7 +308,7 @@ function get_mastery_html() {
         case 73:
             return "精神鞭笞和心灵震爆有" + mastery_percent + "%几率造成最大值的混乱伤害";
         case 81:
-            return "吸取生命的伤害提高" + mastery_percent + "%";
+            return "吸取生命的效果提高" + mastery_percent + "%";
         case 82:
             return "顺劈斩命中时，" + mastery_percent + "%几率附加伤害加深效果";
         case 83:
@@ -566,6 +566,26 @@ function has_equip_dagger(role) {
         }
     }
     return false;
+}
+
+/**
+ * 是否装备了双武器
+ * @return {boolean}
+ */
+function has_equip_two_weapons(role) {
+    if (role == null) {
+        role = current_character;
+    }
+    let weapon_count = 0;
+    let equipments = role.equipments;
+    for (let j = 0; j < equipments.length; j++) {
+        let module = equipments[j];
+        let equipment = create_equipment_by_model(module);
+        if (equipment.pos === 15 && is_in_array(equipment.type, [11, 12, 13, 14, 15, 16])) {
+            weapon_count++;
+        }
+    }
+    return weapon_count >= 2;
 }
 
 /**

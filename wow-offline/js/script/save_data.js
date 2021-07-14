@@ -129,6 +129,9 @@ function create_character(job, exp, name) {
     if (is_in_local_mode() || is_vip()) {
         if (current_character.exp === 0) {
             add_experience(20000);
+            if (is_in_local_mode()) {
+                add_experience(15000);
+            }
         }
     }
     current_character = calculate_base_property(current_character);
@@ -144,15 +147,15 @@ function create_character(job, exp, name) {
     current_character.money = 0;
     if (is_in_local_mode()) {
         // 添加测试装备
-        for (let i = 0; i < MAX_ITEMS - 10; i++) {
-            let param = {};
-            param.c_lvl = current_character.lvl;
-            param.rare = 5;
-            let model = get_random_equipment_model(param);
-            model.affix[1] = 16;
-            // model.affix[2] = 34;
-            current_character.items.push(model);
-        }
+        // for (let i = 0; i < MAX_ITEMS - 10; i++) {
+        //     let param = {};
+        //     param.c_lvl = current_character.lvl;
+        //     param.rare = 5;
+        //     let model = get_random_equipment_model(param);
+        //     model.affix[1] = 16;
+        //     // model.affix[2] = 34;
+        //     current_character.items.push(model);
+        // }
     }
     if (is_vip()) {
         current_character.money = 1000000;
