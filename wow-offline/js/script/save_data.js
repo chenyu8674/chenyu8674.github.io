@@ -21,7 +21,7 @@ $(document).ready(function () {
 });
 
 // 当前版本号
-let CURRENT_VERSION = 1.0001;
+let CURRENT_VERSION = 1.0002;
 
 /**
  * 从localStorage读取存档

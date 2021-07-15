@@ -428,7 +428,7 @@ function new_monster() {
         }
         monster["死亡之誓"] = {
             species: 3, type: 1, rare: 3, skills: ["挥砍", "冲锋"],
-            effect: ["attr_percent+=80", "health_percent+=30"], drop: [6641, 6642]
+            effect: ["attr_percent+=60", "health_percent+=30"], drop: [6641, 6642]
         }
         monster["沃登勋爵"] = {
             ui: "ui-ej-boss-lord-walden", species: 3, type: 4, rare: 5, skills: ["冰攻", "毒药"],
