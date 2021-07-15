@@ -267,6 +267,50 @@ function new_monster_skill() {
         return skill;
     };
 
+    skill["狂野穿刺"] = function () {
+        let skill = {};
+        skill.name = "狂野穿刺";
+        skill.name_2 = "攻击";
+        skill.type = type_attack;
+        skill.X = 100;
+        skill.Y = 80;
+        skill.Z = 30;
+        skill.icon = "ability_warrior_rampage";
+        skill.detail = skill.Y + "%几率造成两次" + skill.X + "%攻击强度的物理伤害，但命中率降低" + skill.Z + "%。";
+        skill.cast = function (attacker, target) {
+            let double_strike = random_percent(skill.Y);
+            let damage_list = [];
+            let damage_obj = calculate_skill(attacker, target, double_strike ? skill.name : skill.name_2, skill.X, skill.type, element_physical, double_strike ? -skill.Z : 0);
+            damage_list.push(damage_obj);
+            if (double_strike) {
+                damage_obj = calculate_skill(attacker, target, skill.name, skill.X, skill.type, element_physical, -skill.Z);
+                damage_list.push(damage_obj);
+            }
+            return skill_cast_result(damage_list);
+        };
+        return skill;
+    };
+
+    skill["恶意切割"] = function () {
+        let skill = {};
+        skill.name = "恶意切割";
+        skill.name_2 = "攻击";
+        skill.type = type_attack;
+        skill.X = 100;
+        skill.Y = 5;
+        skill.icon = "ability_warrior_punishingblow";
+        skill.detail = "造成" + skill.X + "%攻击强度的物理伤害，并附加目标" + skill.Y + "%最大生命值的额外伤害。";
+        skill.cast = function (attacker, target) {
+            let damage_list = [];
+            let damage_obj = calculate_skill(attacker, target, skill.name_2, skill.X, skill.type, element_physical);
+            damage_list.push(damage_obj);
+            let damage_obj_2 = calculate_flat_damage(attacker, target, skill.name, Math.round(target.max_health_value * skill.Y / 100), skill.type, element_physical)
+            damage_list.push(damage_obj_2);
+            return skill_cast_result(damage_list);
+        };
+        return skill;
+    };
+
     skill["刺穿护甲"] = function () {
         let skill = {};
         skill.name = "刺穿护甲";

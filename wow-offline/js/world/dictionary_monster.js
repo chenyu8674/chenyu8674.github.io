@@ -284,51 +284,6 @@ function new_monster() {
         }
     }// 怒焰裂谷
     {
-        monster["迪菲亚掘地工"] = {species: 1, type: 6, rare: 4}
-        monster["迪菲亚匪徒"] = {species: 1, type: 1, rare: 4, skills: "盾牌猛击", effect: ["block_chance_final+=50"]}
-        monster["亡灵挖掘者"] = {species: 3, type: 5, rare: 4}
-        monster["亡灵爆破者"] = {species: 3, type: 9, rare: 4, skills: "火法"}
-        monster["地精工程师"] = {species: 1, type: 2, rare: 4}
-        monster["地精工匠"] = {species: 1, type: 9, rare: 4, skills: "火法"}
-        monster["活火"] = {species: 5, type: 5, rare: 4, skills: "火攻"}
-        monster["迈赫米死神原型机"] = {species: 7, type: 1, rare: 4, skills: "多重射击"}
-        monster["迪菲亚哨兵"] = {species: 1, type: 6, rare: 4}
-        monster["迪菲亚法师"] = {species: 1, type: 9, rare: 4, skills: "冰法"}
-        monster["迪菲亚恶棍"] = {species: 1, type: 1, rare: 4, skills: "多重射击"}
-        monster["迪菲亚塑风师"] = {species: 1, type: 4, rare: 4, skills: ["治疗波", "电法"]}
-
-        monster["格拉布托克"] = {
-            ui: "ui-ej-boss-glubtok", species: 1, type: 4, rare: 5, skills: ["烈焰之拳", "寒冰之拳", "烈焰绽放", "寒冰绽放"],
-            effect: ["health_percent+=40"], drop: [5444, 5195, 2169, 151064],
-            detail: "只是一阵心血来潮，格拉布托克就释放出强大的魔法力量，把他的食人魔山夷为了平地。听到这个消息，迪菲亚立刻雇佣了这位食人魔法师作为死亡矿井的工头，借助他毁灭性的天赋来监督那些劳工。"
-        }
-        monster["赫利克斯·破甲"] = {
-            ui: "ui-ej-boss-helix-gearbreaker", species: 1, type: 2, rare: 5, skills: "黏性炸弹", drop: [5191, 132556, 5443, 151062, 5199, 151063, 5200],
-            detail: "赫利克斯从前是锈水财阀的工匠，可之后他收到了迪菲亚兄弟会的一笔款项，足以让他那样的无名部落工程师所做的一切都一文不值。就像所有精明的地精会做的那样，他迅速接下了这份工作，声称不再对前任雇主效忠。"
-        }
-        monster["死神5000"] = {
-            ui: "ui-ej-boss-foe-reaper-5000", species: 7, type: 2, rare: 5, skills: ["挥砍", "安全限制离线"],
-            effect: ["attack_power_percent-=20"], drop: [5201, 151065, 5187, 151066, 1937],
-            detail: "迪菲亚的工程师们在死神4000的基础上，日以继夜地想要完善出一种新型号的收割机。兄弟会相信，只要完工，这台恐怖的机械就能像割麦子一样从暴风城的武装士兵中杀出一条路来。"
-        }
-        monster["撕心狼将军"] = {
-            ui: "ui-ej-boss-admiral-ripsnarl", species: 1, type: 6, rare: 5, skills: ["撕心", "直取要害"], drop: ["5196+30", "872+30", "1156+40"],
-            detail: "詹姆斯·哈林顿身中狼人的诅咒后，在一个刺骨的寒夜里毁掉了钟爱的家庭和他的远洋航海生涯。在那之后，他改名为撕心狼，逃到了西部荒野，之后更是接受了任命，指挥迪菲亚兄弟会可怖的无畏舰。"
-        }
-        monster["“船长”曲奇"] = {
-            ui: "ui-ej-boss-captain-cookie", species: 1, type: 5, rare: 5, skills: ["火攻", "冰攻", "电攻", "火法", "冰法", "电法", "治疗波"],
-            drop: [5202, 5197, 5198, 5192, 5193],
-            detail: "随着迪菲亚兄弟会前任无畏舰指挥官的死亡，曲奇自封为船长。尽管他在主厨的工作上仍然尽职尽责，但若是有谁质疑其船长的头衔来得是否光明磊落，那人就会因为严重的食物中毒而倒地不起。"
-        }
-        monster["梵妮莎·范克里夫"] = {
-            ui: "ui-ej-boss-vanessa-vancleef", species: 1, type: 6, rare: 5, appear: 50, skills: ["多重射击", "闪避", "炽热火焰"],
-            effect: ["health_percent+=20"], drop: [63478, 63485, 65178, 63479, 63486, 63482, 63483],
-            say_start: "希望？难道那是我眼睁睁地看到你们这些贵族的走狗砍下我父亲的头颅时应该满怀的感觉吗？希望于我来说只是这个冷酷的世界当中一个恶毒的玩笑罢了！",
-            say_end: "你们这些贵族的走狗，我们的事业是正义的！",
-            detail: "当梵妮莎还是一个小女孩的时候，她亲眼目睹了父亲艾德温·范克里夫的悲惨下场。作为前任迪菲亚兄弟会领袖之女，她接过父亲领袖的衣钵，在迪菲亚兄弟会据点死亡矿井的黑暗回廊里厉兵秣马，谋划着对暴风城的复仇。"
-        }
-    }// 死亡矿井
-    {
         monster["大型软浆怪"] = {species: 5, type: 5, rare: 4, effect: ["health_percent+=50"]}
         monster["噩梦软浆怪"] = {species: 5, type: 6, rare: 4, effect: ["health_percent+=80"]}
         monster["变异巨蟒"] = {species: 2, type: 2, rare: 4, skills: "毒药"}
@@ -386,6 +341,51 @@ function new_monster() {
         }
     }// 哀嚎洞穴
     {
+        monster["迪菲亚掘地工"] = {species: 1, type: 6, rare: 4}
+        monster["迪菲亚匪徒"] = {species: 1, type: 1, rare: 4, skills: "盾牌猛击", effect: ["block_chance_final+=50"]}
+        monster["亡灵挖掘者"] = {species: 3, type: 5, rare: 4}
+        monster["亡灵爆破者"] = {species: 3, type: 9, rare: 4, skills: "火法"}
+        monster["地精工程师"] = {species: 1, type: 2, rare: 4}
+        monster["地精工匠"] = {species: 1, type: 9, rare: 4, skills: "火法"}
+        monster["活火"] = {species: 5, type: 5, rare: 4, skills: "火攻"}
+        monster["迈赫米死神原型机"] = {species: 7, type: 1, rare: 4, skills: "多重射击"}
+        monster["迪菲亚哨兵"] = {species: 1, type: 6, rare: 4}
+        monster["迪菲亚法师"] = {species: 1, type: 9, rare: 4, skills: "冰法"}
+        monster["迪菲亚恶棍"] = {species: 1, type: 1, rare: 4, skills: "多重射击"}
+        monster["迪菲亚塑风师"] = {species: 1, type: 4, rare: 4, skills: ["治疗波", "电法"]}
+
+        monster["格拉布托克"] = {
+            ui: "ui-ej-boss-glubtok", species: 1, type: 4, rare: 5, skills: ["烈焰之拳", "寒冰之拳", "烈焰绽放", "寒冰绽放"],
+            effect: ["health_percent+=40"], drop: [5444, 5195, 2169, 151064],
+            detail: "只是一阵心血来潮，格拉布托克就释放出强大的魔法力量，把他的食人魔山夷为了平地。听到这个消息，迪菲亚立刻雇佣了这位食人魔法师作为死亡矿井的工头，借助他毁灭性的天赋来监督那些劳工。"
+        }
+        monster["赫利克斯·破甲"] = {
+            ui: "ui-ej-boss-helix-gearbreaker", species: 1, type: 2, rare: 5, skills: "黏性炸弹", drop: [5191, 132556, 5443, 151062, 5199, 151063, 5200],
+            detail: "赫利克斯从前是锈水财阀的工匠，可之后他收到了迪菲亚兄弟会的一笔款项，足以让他那样的无名部落工程师所做的一切都一文不值。就像所有精明的地精会做的那样，他迅速接下了这份工作，声称不再对前任雇主效忠。"
+        }
+        monster["死神5000"] = {
+            ui: "ui-ej-boss-foe-reaper-5000", species: 7, type: 2, rare: 5, skills: ["挥砍", "安全限制离线"],
+            effect: ["attack_power_percent-=20"], drop: [5201, 151065, 5187, 151066, 1937],
+            detail: "迪菲亚的工程师们在死神4000的基础上，日以继夜地想要完善出一种新型号的收割机。兄弟会相信，只要完工，这台恐怖的机械就能像割麦子一样从暴风城的武装士兵中杀出一条路来。"
+        }
+        monster["撕心狼将军"] = {
+            ui: "ui-ej-boss-admiral-ripsnarl", species: 1, type: 6, rare: 5, skills: ["撕心", "直取要害"], drop: ["5196+30", "872+30", "1156+40"],
+            detail: "詹姆斯·哈林顿身中狼人的诅咒后，在一个刺骨的寒夜里毁掉了钟爱的家庭和他的远洋航海生涯。在那之后，他改名为撕心狼，逃到了西部荒野，之后更是接受了任命，指挥迪菲亚兄弟会可怖的无畏舰。"
+        }
+        monster["“船长”曲奇"] = {
+            ui: "ui-ej-boss-captain-cookie", species: 1, type: 5, rare: 5, skills: ["火攻", "冰攻", "电攻", "火法", "冰法", "电法", "治疗波"],
+            drop: [5202, 5197, 5198, 5192, 5193],
+            detail: "随着迪菲亚兄弟会前任无畏舰指挥官的死亡，曲奇自封为船长。尽管他在主厨的工作上仍然尽职尽责，但若是有谁质疑其船长的头衔来得是否光明磊落，那人就会因为严重的食物中毒而倒地不起。"
+        }
+        monster["梵妮莎·范克里夫"] = {
+            ui: "ui-ej-boss-vanessa-vancleef", species: 1, type: 6, rare: 5, appear: 50, skills: ["多重射击", "闪避", "炽热火焰"],
+            effect: ["health_percent+=20"], drop: [63478, 63485, 65178, 63479, 63486, 63482, 63483],
+            say_start: "希望？难道那是我眼睁睁地看到你们这些贵族的走狗砍下我父亲的头颅时应该满怀的感觉吗？希望于我来说只是这个冷酷的世界当中一个恶毒的玩笑罢了！",
+            say_end: "你们这些贵族的走狗，我们的事业是正义的！",
+            detail: "当梵妮莎还是一个小女孩的时候，她亲眼目睹了父亲艾德温·范克里夫的悲惨下场。作为前任迪菲亚兄弟会领袖之女，她接过父亲领袖的衣钵，在迪菲亚兄弟会据点死亡矿井的黑暗回廊里厉兵秣马，谋划着对暴风城的复仇。"
+        }
+    }// 死亡矿井
+    {
         monster["食尸者"] = {species: 3, type: 1, rare: 4, skills: "吸血"}
 
         monster["无脑的恐魔"] = {species: 3, type: 2, rare: 4, skills: "战争践踏", effect: ["health_percent+=50"]}
@@ -441,5 +441,32 @@ function new_monster() {
             detail: "身为吉尔尼斯贵族及被遗忘者的眼线，狡猾而又多智的高弗雷勋爵擅使双枪，麾下还有大批残忍嗜血的食尸鬼。"
         }
     }// 影牙城堡
+    {
+        monster["捣乱分子"] = {species: 1, type: 5, rare: 4, skills: "凿击"}
+        monster["狡猾的盗贼"] = {species: 1, type: 3, rare: 4, skills: "毒药"}
+        monster["残忍的暴徒"] = {species: 1, type: 1, rare: 4, skills: "冲锋"}
+        monster["河爪斗殴者"] = {species: 1, type: 2, rare: 4, skills: "雷霆一击"}
+        monster["河爪杀戮者"] = {species: 1, type: 1, rare: 4, skills: "挥砍"}
+        monster["河爪偷猎者"] = {species: 1, type: 6, rare: 4, skills: "多重射击"}
+        monster["冰霜元素"] = {species: 5, type: 5, rare: 4, skills: "冰攻"}
+        monster["滚石元素"] = {species: 5, type: 4, rare: 4, skills: "电攻"}
+        monster["被激怒的火元素"] = {species: 5, type: 9, rare: 4, skills: "火法"}
+
+        monster["兰多菲·摩洛克"] = {
+            ui: "ui-ej-boss-randolph-moloch", species: 1, type: 3, rare: 5, skills: "狂野穿刺",
+            effect: ["health_percent+=20"], drop: [63344, 63345, 63346, 132570, 151077],
+            detail: "罪犯#AC317——罪名：侵吞钱款、诈骗、偷窃以及杀人。<br/>摩洛克已被认定是造成监狱暴动的罪魁祸首。但考虑到他的贵族身份，在制服这名罪犯时不得使用致命手段。"
+        }
+        monster["霍格 "] = {
+            ui: "ui-ej-boss-hogger", species: 1, type: 1, rare: 5, skills: "恶意切割",
+            effect: ["attack_power-=20", "health_percent+=20"], drop: [2168, 1934, 1959, 132569, 151074],
+            detail: "罪犯#SC55——罪名：不计其数。<br/>关押河爪首领的代价很是高昂，典狱官甚至落得个半盲的下场。因担心霍格越狱，塞尔沃特下令对这只豺狼人严加看管。"
+        }
+        monster["灼热勋爵"] = {
+            ui: "ui-ej-boss-lord-overheat", species: 5, type: 9, rare: 5, skills: ["火法", "献祭"],
+            effect: ["magic_power+=30", "health_percent+=50"], drop: [4676, 1929, 5967, 151076, 151075],
+            detail: "罪犯#NA——罪名：杀人（多起）。<br/>由大灾变引起的自然灾害，使元素纷纷涌入监狱，它们到来时杀死了一半囚犯。只有尽快消灭这些暴徒，才能恢复监狱的秩序。"
+        }
+    }// 监狱
     return monster;
 }

@@ -64,6 +64,41 @@ function calculate_skill(
 }
 
 /**
+ * 计算定值伤害施放结果
+ */
+function calculate_flat_damage(attacker, target, skill_name, damage_value, attack_type, element_type) {
+    // 使用深拷贝对象进行计算
+    let calculate_target = copy_role(target);
+    calculate_role_before(attacker, calculate_target);
+    if (damage_value < 0) {
+        damage_value = 0;
+    }
+    // 数值取整
+    damage_value = Math.round(damage_value);
+    // 生成结果
+    let result_obj = {};
+    result_obj.attacker_name = attacker.name;
+    result_obj.target_name = target.name;
+    result_obj.skill_name = skill_name;
+    result_obj.attack_type = attack_type;
+    result_obj.element_type = element_type;
+    result_obj.is_hit = true;
+    result_obj.is_critical = false;
+    result_obj.damage_value = damage_value;
+    result_obj.block_value = false;
+    result_obj.absorb_value = false;
+    // 输出日志
+    damage_log(result_obj);
+    // 设置血量和护盾值
+    target.current_health_value -= result_obj.damage_value;
+    if (target.current_health_value < 0) {
+        target.current_health_value = 0;
+    }
+    target.current_shield_value -= result_obj.absorb_value;
+    return result_obj;
+}
+
+/**
  * 计算DOT施放结果
  */
 function calculate_dot(attacker, target, skill_name, damage_percent, attack_type, element_type) {
