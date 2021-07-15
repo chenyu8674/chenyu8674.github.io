@@ -122,9 +122,7 @@ function show_battle_view(info) {
         refresh_random_monster();
     } else {
         // 副本地图
-        if (is_in_local_mode()) {
-            show_dungeon_guide();
-        }
+        show_dungeon_guide();
         $("#auto_battle").hide();
         $("#monster_area").hide();
         player_x = map_info.area[0][0];
