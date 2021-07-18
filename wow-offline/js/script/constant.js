@@ -53,7 +53,7 @@ let MULTIPLE_12 = 0.75;  // 靴子属性系数
 let MULTIPLE_13 = 0.6;   // 戒指属性系数
 let MULTIPLE_14 = 1;     // 饰物属性系数
 let MULTIPLE_15_1 = 0.6;// 单手属性系数
-let MULTIPLE_15_2 = 1;   // 双手属性系数
+let MULTIPLE_15_2 = 1.2;   // 双手属性系数
 let MULTIPLE_16 = 0.6;   // 副手属性系数
 
 let WEAPON_ATTACK_1 = 4;// 单手强度系数
@@ -97,6 +97,15 @@ color_rare_3 = "#1eff00";
 color_rare_2 = "#ffffff";
 color_rare_1 = "#9d9d9d";
 
+/* 阶级系数 */
+let multiple_coefficient = [];
+multiple_coefficient[1] = 0.5;
+multiple_coefficient[2] = 1;
+multiple_coefficient[3] = 1.1;
+multiple_coefficient[4] = 1.2;
+multiple_coefficient[5] = 1.3;
+multiple_coefficient[6] = 1.5;
+
 /** 主属性对其他属性的转化值 **/
 
 let str_to_attack_power = 2;
@@ -120,10 +129,10 @@ let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/
 
-let hit_coefficient = 2;        // 命中等级转化系数
-let dodge_coefficient = 2.5;    // 躲闪等级转化系数
-let critical_coefficient = 2;   // 暴击等级转化系数
-let block_coefficient = 2.5;    // 格挡等级转化系数
+let hit_coefficient = 4.5;        // 命中等级转化系数
+let dodge_coefficient = 5;    // 躲闪等级转化系数
+let critical_coefficient = 4.5;   // 暴击等级转化系数
+let block_coefficient = 10;      // 格挡等级转化系数
 let resilient_coefficient = 4;  // 韧性等级转化系数（DOT）
 let resilient_multiple = 2;     // 韧性等级转化系数（暴击）
 let mastery_per_lvl = 5;        // 每级附加精通等级

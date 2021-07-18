@@ -520,5 +520,32 @@ function new_buff() {
         return debuff;
     }
 
+    buff.dodge = function (x) {
+        let buff = {};
+        buff.name = "闪避";
+        buff.T = -1;
+        buff.X = x;
+        buff.icon = "spell_shadow_shadowward";
+        buff.detail = "闪避率提高" + buff.X + "%";
+        buff.effect = [
+            "dodge_chance_final+=" + buff.X
+        ];
+        return buff;
+    }
+
+    buff.turtle_shell = function (x) {
+        let buff = {};
+        buff.name = "甲壳护盾";
+        buff.T = -1;
+        buff.X = x;
+        buff.icon = "ability_hunter_pet_turtle";
+        buff.detail = "受到攻击时必定格挡，格挡值提高" + buff.X + "%";
+        buff.effect = [
+            "block_chance_final+=100",
+            "block_value_percent+=" + buff.X
+        ];
+        return buff;
+    }
+
     return buff;
 }

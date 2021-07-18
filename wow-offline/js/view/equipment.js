@@ -239,7 +239,7 @@ function refresh_current_status_1() {
             "格挡目标技能的几率<br/>受到双方等级的影响"
         );
         create_status_line("盾格挡值：" + role_battle_1.block_value,
-            role_battle_1.str * str_to_block_value + "+" + role_status_1.block_value + " (" + role_status_1.block_value_percent + "%)<br/>"
+            Math.round(role_battle_1.str * str_to_block_value) + "+" + role_status_1.block_value + " (" + role_status_1.block_value_percent + "%)<br/>"
             + "格挡目标技能时减少受到的伤害"
         );
     }

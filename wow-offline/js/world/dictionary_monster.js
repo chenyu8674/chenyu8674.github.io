@@ -313,7 +313,7 @@ function new_monster() {
         }
         monster["克雷什"] = {
             ui: "ui-ej-boss-kresh", species: 2, type: 1, rare: 5, skills: "撕咬",
-            effect: ["health_percent-=50", "block_chance_final+=100", "block_value+=30"], drop: [6447, 13245, 151430],
+            buffs: [new_buff().rage(), new_buff().turtle_shell(50)], effect: ["health_percent-=50"], drop: [6447, 13245, 151430],
             detail: "这只巨龟是哀嚎洞穴的古老住民，终日在地下洞穴间游荡，顽强的心智丝毫没有受到纳拉雷克斯无情噩梦的影响。别被他乐天的性情给骗了，克雷什已经将许多妄图偷取他巨大龟壳的冒险者打得落荒而逃。"
         }
         monster["斯卡姆"] = {
@@ -321,8 +321,8 @@ function new_monster() {
             detail: "斯卡姆原本只是为了逃避贫瘠之地的恶劣环境才前往哀嚎洞穴的。与洞内的许多其它住民一样，他也很快就遭到腐化。如今在他周身流淌着黑暗能量，他已经无可挽回地变成了一只强大凶残的野兽。"
         }
         monster["变异精灵龙"] = {
-            species: 6, type: 6, rare: 3, skills: ["致盲", "闪避"],
-            effect: ["attr_percent+=100", "health_percent+=50"], drop: [5243, 6632]
+            species: 6, type: 6, rare: 3, skills: ["奥攻", "致盲"],
+            buffs: [new_buff().rage(), new_buff().dodge(30)], effect: ["attr_percent+=100", "health_percent+=50"], drop: [5243, 6632]
         }
         monster["瑟芬迪斯"] = {
             ui: "ui-ej-boss-lord-serpentis", species: 1, type: 5, rare: 5, skills: ["电法", "自疗", "回春"],

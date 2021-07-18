@@ -96,13 +96,13 @@ function new_affix_suffix() {
     affix["精通韧性"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
 
     affix[50] = function(surely) {return surely || Math.random() <= 0 ? "闪避格挡" : null};
-    affix["闪避格挡"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.15, lvl, rare, multiple), "block_value+=" + get_effect_value(0.15, lvl, rare, multiple)]}
+    affix["闪避格挡"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[51] = function(surely) {return surely || Math.random() <= 0 ? "精通格挡" : null};
-    affix["精通格挡"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.15, lvl, rare, multiple), "block_value+=" + get_effect_value(0.15, lvl, rare, multiple)]}
+    affix["精通格挡"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[52] = function(surely) {return surely || Math.random() <= 0 ? "韧性格挡" : null};
-    affix["韧性格挡"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.15, lvl, rare, multiple), "block_value+=" + get_effect_value(0.15, lvl, rare, multiple)]}
+    affix["韧性格挡"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
 
     affix[100] = function(surely) {return surely || Math.random() <= 0.2 ? "坚守" : null};
-    affix["坚守"] = affix["格挡"] = function (lvl, rare, multiple) {return ["block_rate+=" + get_effect_value(0.3, lvl, rare, multiple), "block_value+=" + get_effect_value(0.3, lvl, rare, multiple)]}
+    affix["坚守"] = affix["格挡"] = function (lvl, rare, multiple) {return ["block_rate+=" + get_effect_value(0.2, lvl, rare, multiple), "block_value+=" + get_effect_value(0.4, lvl, rare, multiple)]}
     return affix;
 }

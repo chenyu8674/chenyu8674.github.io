@@ -170,6 +170,9 @@ function show_dungeon_guide() {
             let monster = dictionary_monster[monster_info.name];
             if (monster.rare === 3 || monster.rare === 5 || monster.rare === 6) {
                 monster.name = monster_info.name;
+                if (monster_info.percent != null) {
+                    monster.percent = monster_info.percent;
+                }
                 dungeon_guide_list.push(monster);
             }
         }
@@ -209,6 +212,7 @@ function show_dungeon_content(index) {
     let dungeon_content = $("#dungeon_content");
     dungeon_content.empty();
     let monster = dungeon_guide_list[index];
+    // console.log(monster);
 
     let detail = monster.detail;
     if (detail != null) {
@@ -216,7 +220,20 @@ function show_dungeon_content(index) {
         title1.addClass("dungeon_content_title");
         dungeon_content.append(title1);
 
+        if (monster.percent != null) {
+            let dungeon_content_detail = $("<div>出现几率：" + monster.percent + "%</div>");
+            dungeon_content_detail.addClass("dungeon_content_detail");
+            dungeon_content.append(dungeon_content_detail);
+        }
         let dungeon_content_detail = $("<div>" + detail + "</div>");
+        dungeon_content_detail.addClass("dungeon_content_detail");
+        dungeon_content.append(dungeon_content_detail);
+    } else if (monster.percent != null) {
+        let title1 = $("<div>介绍</div>");
+        title1.addClass("dungeon_content_title");
+        dungeon_content.append(title1);
+
+        let dungeon_content_detail = $("<div>出现几率：" + monster.percent + "%</div>");
         dungeon_content_detail.addClass("dungeon_content_detail");
         dungeon_content.append(dungeon_content_detail);
     }
@@ -230,16 +247,34 @@ function show_dungeon_content(index) {
     dungeon_content_view.css("margin-bottom", "-15px");
     dungeon_content.append(dungeon_content_view);
 
-    let rage = dictionary_buff.rage();
-    let item = $("<div></div>");
-    item.addClass("dungeon_content_item");
-    item.css("background-image", "url(./img/icon/" + rage.icon + ".jpg)");
-    item.hover(function () {
-        show_skill_info($(this), rage);
-    }, function () {
-        hide_info();
-    });
-    dungeon_content_view.append(item);
+    if (monster.buffs != null && monster.buffs.length > 0) {
+        for (let i = 0; i < monster.buffs.length; i++) {
+            let buff = monster.buffs[i];
+            if (buff.name == null) {
+                continue;
+            }
+            let item = $("<div></div>");
+            item.addClass("dungeon_content_item");
+            item.css("background-image", "url(./img/icon/" + buff.icon + ".jpg)");
+            item.hover(function () {
+                show_skill_info($(this), buff);
+            }, function () {
+                hide_info();
+            });
+            dungeon_content_view.append(item);
+        }
+    } else {
+        let rage = new_buff().rage();
+        let item = $("<div></div>");
+        item.addClass("dungeon_content_item");
+        item.css("background-image", "url(./img/icon/" + rage.icon + ".jpg)");
+        item.hover(function () {
+            show_skill_info($(this), rage);
+        }, function () {
+            hide_info();
+        });
+        dungeon_content_view.append(item);
+    }
 
     let skills = monster.skills;
     if (typeof skills === "string") {
@@ -793,7 +828,7 @@ function on_battle_end(index) {
             refresh_player_point();
         }
         // 计算经验/金钱
-        let exp = MONSTER_EXP[monster.lvl - 1] * get_multiple_by_rare(monster.rare);
+        let exp = MONSTER_EXP[monster.lvl - 1] * multiple_coefficient[monster.rare];
         exp *= role_battle_1.speed_resource / 100;
         let money = exp;
         switch (monster.rare) {

@@ -30,8 +30,8 @@ function new_job() {
 
     // 职业：怪物
     job.monster = 0;
-    job.base_property[job.monster] = [10, 10, 10, 10, 10];
-    job.upgrade_property[job.monster] = [2, 2, 4, 2, 2];
+    job.base_property[job.monster] = [10, 10, 20, 10, 10];
+    job.upgrade_property[job.monster] = [1.0, 1.0, 2.0, 1.0, 1.0];
 
     // 职业：战士
     job.warrior = 10;
@@ -43,7 +43,7 @@ function new_job() {
     job.job_name[job.warrior] = "战士";
     job.job_flag[job.warrior] = "warrior";
     job.base_property[job.warrior] = [18, 8, 16, 4, 4];
-    job.upgrade_property[job.warrior] = [3.6, 1.6, 3.2, 0.8, 0.8];
+    job.upgrade_property[job.warrior] = [1.8, 0.8, 1.6, 0.4, 0.4];
 
     job.job_name[job.warrior_1] = "武器战士";
     job.job_info[job.warrior_1] = "久经沙场的武器大师，移动灵活，攻击充满压制性。";
@@ -68,7 +68,7 @@ function new_job() {
     job.job_name[job.paladin] = "圣骑士";
     job.job_flag[job.paladin] = "paladin";
     job.base_property[job.paladin] = [14, 6, 14, 14, 10];
-    job.upgrade_property[job.paladin] = [2.8, 1.2, 2.8, 2.8, 2];
+    job.upgrade_property[job.paladin] = [1.4, 0.6, 1.4, 1.4, 1.0];
 
     job.job_name[job.paladin_1] = "神圣圣骑士";
     job.job_info[job.paladin_1] = "唤起圣光之力来保护和治疗盟友并驱逐邪恶。";
@@ -93,7 +93,7 @@ function new_job() {
     job.job_name[job.hunter] = "猎人";
     job.job_flag[job.hunter] = "hunter";
     job.base_property[job.hunter] = [14, 18, 10, 4, 4];
-    job.upgrade_property[job.hunter] = [2.8, 3.6, 2, 0.8, 0.8];
+    job.upgrade_property[job.hunter] = [1.4, 1.8, 1.0, 0.4, 0.4];
 
     job.job_name[job.hunter_1] = "兽王猎人";
     job.job_info[job.hunter_1] = "对荒野了如指掌，驯服多种多样的野兽来协助作战。";
@@ -118,7 +118,7 @@ function new_job() {
     job.job_name[job.shaman] = "萨满";
     job.job_flag[job.shaman] = "shaman";
     job.base_property[job.shaman] = [10, 14, 10, 14, 10];
-    job.upgrade_property[job.shaman] = [2, 2.8, 2, 2.8, 2];
+    job.upgrade_property[job.shaman] = [1.0, 1.4, 1.0, 1.4, 1.0];
 
     job.job_name[job.shaman_1] = "元素萨满";
     job.job_info[job.shaman_1] = "驾驭元素的施法者，使用自然的毁灭之力打击敌人。";
@@ -144,7 +144,7 @@ function new_job() {
     job.job_name[job.druid] = "德鲁伊";
     job.job_flag[job.druid] = "druid";
     job.base_property[job.druid] = [12, 12, 12, 12, 12];
-    job.upgrade_property[job.druid] = [2.4, 2.4, 2.4, 2.4, 2.4];
+    job.upgrade_property[job.druid] = [1.2, 1.2, 1.2, 1.2, 1.2];
 
     job.job_name[job.druid_1] = "平衡德鲁伊";
     job.job_info[job.druid_1] = "变形为强大的枭兽，释放奥术和自然的平衡之力。";
@@ -173,7 +173,7 @@ function new_job() {
     job.job_name[job.rogue] = "盗贼";
     job.job_flag[job.rogue] = "rogue";
     job.base_property[job.rogue] = [16, 16, 10, 4, 4];
-    job.upgrade_property[job.rogue] = [3.2, 3.2, 2, 0.8, 0.8];
+    job.upgrade_property[job.rogue] = [1.6, 1.6, 1.0, 0.4, 0.4];
 
     job.job_name[job.rogue_1] = "刺杀盗贼";
     job.job_info[job.rogue_1] = "致命的使毒高手，能用匕首迅速而冷酷地除掉敌人。";
@@ -198,7 +198,7 @@ function new_job() {
     job.job_name[job.priest] = "牧师";
     job.job_flag[job.priest] = "priest";
     job.base_property[job.priest] = [4, 4, 10, 16, 18];
-    job.upgrade_property[job.priest] = [0.8, 0.8, 2, 3.2, 3.6];
+    job.upgrade_property[job.priest] = [0.4, 0.4, 1.0, 1.6, 1.8];
 
     job.job_name[job.priest_1] = "戒律牧师";
     job.job_info[job.priest_1] = "使用魔法护盾保护盟友，也能治愈他们的伤口。";
@@ -222,8 +222,8 @@ function new_job() {
     job.job_color[job.warlock] = "#9382C9";
     job.job_name[job.warlock] = "术士";
     job.job_flag[job.warlock] = "warlock";
-    job.base_property[job.warlock] = [8, 4, 14, 14, 10];
-    job.upgrade_property[job.warlock] = [1.6, 0.8, 2.8, 2.8, 2];
+    job.base_property[job.warlock] = [4, 4, 16, 16, 10];
+    job.upgrade_property[job.warlock] = [0.4, 0.4, 1.6, 1.6, 1.0];
 
     job.job_name[job.warlock_1] = "痛苦术士";
     job.job_info[job.warlock_1] = "暗影魔法大师，擅长吸取能量和持续伤害法术。";
@@ -248,7 +248,7 @@ function new_job() {
     job.job_name[job.mage] = "法师";
     job.job_flag[job.mage] = "mage";
     job.base_property[job.mage] = [4, 6, 10, 18, 12];
-    job.upgrade_property[job.mage] = [0.8, 1.2, 2, 3.6, 2.4];
+    job.upgrade_property[job.mage] = [0.4, 0.6, 1.0, 1.8, 1.2];
 
     job.job_name[job.mage_1] = "奥术法师";
     job.job_info[job.mage_1] = "操纵奥术之力，以压倒性的能量毁灭敌人。";
