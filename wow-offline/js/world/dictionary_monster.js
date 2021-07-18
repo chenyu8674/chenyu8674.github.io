@@ -348,7 +348,7 @@ function new_monster() {
         monster["地精工程师"] = {species: 1, type: 2, rare: 4}
         monster["地精工匠"] = {species: 1, type: 9, rare: 4, skills: "火法"}
         monster["活火"] = {species: 5, type: 5, rare: 4, skills: "火攻"}
-        monster["迈赫米死神原型机"] = {species: 7, type: 1, rare: 4, skills: "多重射击"}
+        monster["迈赫米死神原型机"] = {species: 7, type: 1, rare: 4, skills: "多重射击", effect: ["health_percent+=30"]}
         monster["迪菲亚哨兵"] = {species: 1, type: 6, rare: 4}
         monster["迪菲亚法师"] = {species: 1, type: 9, rare: 4, skills: "冰法"}
         monster["迪菲亚恶棍"] = {species: 1, type: 1, rare: 4, skills: "多重射击"}
@@ -387,26 +387,20 @@ function new_monster() {
     }// 死亡矿井
     {
         monster["食尸者"] = {species: 3, type: 1, rare: 4, skills: "吸血"}
-
         monster["无脑的恐魔"] = {species: 3, type: 2, rare: 4, skills: "战争践踏", effect: ["health_percent+=50"]}
         monster["鬼怪仆从"] = {species: 3, type: 6, rare: 4}
         monster["阴影仆从"] = {species: 3, type: 9, rare: 4, skills: "暗法"}
-
         monster["幽灵厨师"] = {species: 3, type: 1, rare: 4, skills: "挥砍"}
-
         monster["哀嚎的卫兵"] = {species: 3, type: 2, rare: 4}
         monster["痛苦的军官"] = {species: 3, type: 1, rare: 4, effect: ["block_chance_final+=30", "block_value+=50"]}
-
         monster["巫术骷髅"] = {species: 3, type: 9, rare: 4, skills: "冰法"}
         monster["臭气食尸鬼"] = {species: 3, type: 3, rare: 4, skills: "毒药"}
         monster["石头沉睡者"] = {species: 3, type: 6, rare: 4, effect: ["armor_all_percent+=100"]}
-
         monster["黑暗潜伏者"] = {species: 3, type: 3, rare: 4, skills: "暗攻"}
         monster["怨骨守护者"] = {
             species: 3, type: 1, rare: 4, skills: "英勇打击",
             effect: ["health_percent+=30", "block_chance_final+=30", "block_value+=50"]
         }
-
         monster["怨骨掠夺者"] = {species: 3, type: 1, rare: 4, skills: "痛击", effect: ["health_percent+=50"]}
         monster["脓疮畸体"] = {species: 3, type: 2, rare: 4, skills: "毒药", effect: ["health_percent+=50"]}
         monster["恐惧占星师"] = {species: 3, type: 8, rare: 4, skills: ["冰法", "冰霜新星"]}
