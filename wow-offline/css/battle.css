@@ -38,6 +38,23 @@
     box-shadow: 0 0 20px goldenrod;
 }
 
+#auto_battle {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: 5px;
+    left: 5px;
+    border-radius: 5px;
+    background-size: 100%;
+    background-position: center;
+    background-image: url("../img/icon/inv_misc_pocketwatch_01.jpg");
+    border: 2px solid gray;
+}
+
+#auto_battle:hover {
+    box-shadow: 0 0 20px goldenrod;
+}
+
 #self_heal {
     position: absolute;
     width: 40px;
@@ -69,23 +86,6 @@
 }
 
 #attack_next:hover {
-    box-shadow: 0 0 20px goldenrod;
-}
-
-#auto_battle {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    bottom: 5px;
-    right: 105px;
-    border-radius: 5px;
-    background-size: 100%;
-    background-position: center;
-    background-image: url("../img/icon/inv_misc_pocketwatch_01.jpg");
-    border: 2px solid gray;
-}
-
-#auto_battle:hover {
     box-shadow: 0 0 20px goldenrod;
 }
 
