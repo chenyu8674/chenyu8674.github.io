@@ -248,7 +248,7 @@ function new_buff() {
         let buff = {};
         buff.name = "猎豹形态";
         buff.T = -1;
-        buff.X = 40;
+        buff.X = 50;
         buff.Y = 25;
         buff.icon = "ability_druid_catform";
         buff.detail = "移动速度+" + buff.X + "%，敏捷+" + buff.Y + "%";
@@ -265,7 +265,7 @@ function new_buff() {
         let buff = {};
         buff.name = "巨熊形态";
         buff.T = -1;
-        buff.X = 200;
+        buff.X = 150;
         buff.Y = 25;
         buff.icon = "ability_racial_bearform";
         buff.detail = "所有护甲+" + buff.X + "%，耐力+" + buff.Y + "%";

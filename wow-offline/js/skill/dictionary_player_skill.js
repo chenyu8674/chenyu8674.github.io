@@ -678,8 +678,8 @@ function new_player_skill() {
         let skill = {};
         skill.name = "扫击";
         skill.type = type_attack;
-        skill.X = 40;
-        skill.Y = 30;
+        skill.X = 50;
+        skill.Y = 20;
         skill.T = 3;
         skill.icon = "ability_druid_disembowel";
         skill.detail = "撕裂目标，造成" + skill.X + "%攻击强度的物理伤害，并使其每回合受到" + skill.Y + "%攻击强度的物理伤害，持续" + skill.T + "回合。命中时获得一个连击点。";
@@ -703,14 +703,14 @@ function new_player_skill() {
         skill.first_turn = 4;
         skill.priority = 30;
         skill.X = 100;
-        skill.Y = 30;
+        skill.Y = 50;
         skill.icon = "ability_druid_ferociousbite";
         skill.detail = "终结技，撕咬目标造成" + skill.X + "%攻击强度的物理伤害。每个消耗的连击点使总伤害提高" + skill.Y + "%。";
         skill.cast = function (attacker, target) {
             // 计算连击加成
             let damage_count = get_skill_point(attacker);
             let mastery_percent = calculate_original_mastery(attacker);
-            let damage_obj = calculate_skill(attacker, target, skill.name + "(" + damage_count + ")", skill.X + (skill.Y + mastery_percent) * damage_count, skill.type, element_physical);
+            let damage_obj = calculate_skill(attacker, target, skill.name + "(" + damage_count + ")", skill.X + skill.Y * damage_count, skill.type, element_physical, 0, mastery_percent * damage_count);
             set_skill_point(attacker, 0);
             return skill_cast_result(damage_obj);
         };
@@ -735,12 +735,12 @@ function new_player_skill() {
                     if (get_skill_point(attacker) > 100) {
                         set_skill_point(attacker, 100);
                     }
-                    damage_obj.skill_name += "(" + get_skill_point(attacker) + ")";
                 }
                 let mastery_percent = calculate_original_mastery(attacker);
                 let shield_value = Math.round(damage_obj.damage_value * mastery_percent / 100);
                 shield_obj = [calculate_flat_shield(attacker, attacker, skill.name, shield_value)];
             }
+            battle_log("当前怒气：" + get_skill_point(attacker));
             return skill_cast_result(damage_obj, null, shield_obj);
         };
         return skill;
@@ -766,8 +766,8 @@ function new_player_skill() {
         skill.cast = function (attacker, target) {
             // 计算怒气加成
             let damage_count = get_skill_point(attacker);
-            let heal_value = target.max_health_value * damage_count * skill.X / 100;
-            let heal_obj = calculate_flat_heal(attacker, attacker, skill.name, Math.round(heal_value));
+            let heal_value = attacker.max_health_value * damage_count * skill.X / 100;
+            let heal_obj = calculate_flat_heal(attacker, attacker, skill.name + "(" + get_skill_point(attacker) + ")", Math.round(heal_value));
             set_skill_point(attacker, 0);
             heal_obj.skill_name += "(" + damage_count + ")";
             return skill_cast_result(null, heal_obj);

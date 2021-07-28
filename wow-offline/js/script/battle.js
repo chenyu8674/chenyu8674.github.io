@@ -252,6 +252,12 @@ function get_winner(log = false) {
         }
         return 2;
     }
+    if (role_battle_1.current_health_value <= 0) {
+        if (log) {
+            battle_log(role_battle_1.name + " 战败");
+        }
+        return 2;
+    }
     return 0;
 }
 

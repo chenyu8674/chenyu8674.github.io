@@ -304,8 +304,10 @@ function new_monster_skill() {
             let damage_list = [];
             let damage_obj = calculate_skill(attacker, target, skill.name_2, skill.X, skill.type, element_physical);
             damage_list.push(damage_obj);
-            let damage_obj_2 = calculate_flat_damage(attacker, target, skill.name, Math.round(target.max_health_value * skill.Y / 100), skill.type, element_physical)
-            damage_list.push(damage_obj_2);
+            if (damage_obj.is_hit) {
+                let damage_obj_2 = calculate_flat_damage(attacker, target, skill.name, Math.round(target.max_health_value * skill.Y / 100), skill.type, element_chaos)
+                damage_list.push(damage_obj_2);
+            }
             return skill_cast_result(damage_list);
         };
         return skill;

@@ -290,7 +290,7 @@ function get_mastery_html() {
         case 51:
             return "月火术和阳炎术造成的持续伤害提高" + mastery_percent + "%";
         case 52:
-            return "凶猛撕咬从每个连击点获得的伤害加成提高" + mastery_percent + "%";
+            return "每个连击点使凶猛撕咬的暴击率提高" + mastery_percent + "%";
         case 53:
             return "槌击造成伤害的" + mastery_percent + "%转化为伤害护盾";
         case 54:
