@@ -65,9 +65,9 @@ function new_affix_prefix() {
     affix["多彩"] = function (lvl, rare, multiple) {return [
         "str+=" + get_effect_value(0.12, lvl, rare, multiple),
         "agi+=" + get_effect_value(0.12, lvl, rare, multiple),
+        "sta+=" + get_effect_value(0.12, lvl, rare, multiple),
         "spr+=" + get_effect_value(0.12, lvl, rare, multiple),
-        "int+=" + get_effect_value(0.12, lvl, rare, multiple),
-        "sta+=" + get_effect_value(0.12, lvl, rare, multiple)
+        "int+=" + get_effect_value(0.12, lvl, rare, multiple)
     ]}
 
     return affix;

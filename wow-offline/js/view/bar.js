@@ -33,10 +33,11 @@ function hide_all_view() {
 }
 
 function is_front_view_show() {
-    return view_equipment.is(":visible") || view_shop.is(":visible") || view_bank.is(":visible") || view_talent.is(":visible");
+    return view_dungeon.is(":visible") ||  view_equipment.is(":visible") || view_shop.is(":visible") || view_bank.is(":visible") || view_talent.is(":visible");
 }
 
 function hide_front_view() {
+    hide_view_dungeon();
     hide_view_equipment();
     hide_view_shop();
     hide_view_bank();

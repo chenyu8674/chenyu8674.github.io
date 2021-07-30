@@ -2,7 +2,7 @@
 
 let view_battle;
 let battle_map;
-let dungeon_view;
+let view_dungeon;
 let map_info;
 let kill_count;
 
@@ -11,7 +11,7 @@ let is_auto_battle;
 $(document).ready(function () {
     view_battle = $("#view_battle");
     battle_map = $("#battle_map");
-    dungeon_view = $("#dungeon_view");
+    view_dungeon = $("#view_dungeon");
     set_key_listener();
 });
 
@@ -19,7 +19,7 @@ function show_view_battle() {
     is_auto_battle = false;
     kill_count = 0;
     view_battle.show();
-    dungeon_view.hide();
+    view_dungeon.hide();
     $("#attack_next").show();
     refresh_battle_status(false);
 }
@@ -135,6 +135,20 @@ function show_battle_view(info) {
 
 let dungeon_guide_list = [];
 
+function show_view_dungeon() {
+    view_dungeon.show();
+    $(".monster_point").hide();
+    $(".player_point").hide();
+    $(".passing_point").hide();
+}
+
+function hide_view_dungeon() {
+    view_dungeon.hide();
+    $(".monster_point").show();
+    $(".player_point").show();
+    $(".passing_point").show();
+}
+
 /**
  * 生成地下城手册图标
  */
@@ -143,16 +157,10 @@ function show_dungeon_guide() {
     dungeon_guide.show();
     dungeon_guide.unbind("click");
     dungeon_guide.click(function (e) {
-        if (dungeon_view.is(":visible")) {
-            dungeon_view.hide();
-            $(".monster_point").show();
-            $(".player_point").show();
-            $(".passing_point").show();
+        if (view_dungeon.is(":visible")) {
+            hide_view_dungeon();
         } else {
-            dungeon_view.show();
-            $(".monster_point").hide();
-            $(".player_point").hide();
-            $(".passing_point").hide();
+            show_view_dungeon();
         }
         e.stopPropagation();
         return false;
@@ -923,10 +931,8 @@ function on_battle_end(index) {
         $("#self_heal").click();
         refresh_battle_status(false);
     }
-    if (dungeon_view.is(":visible")) {
-        $(".monster_point").hide();
-        $(".player_point").hide();
-        $(".passing_point").hide();
+    if (view_dungeon.is(":visible")) {
+        hide_view_dungeon();
     }
 }
 

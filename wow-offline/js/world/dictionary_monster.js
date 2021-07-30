@@ -336,7 +336,7 @@ function new_monster() {
         }
         monster["吞噬者穆坦努斯"] = {
             ui: "ui-ej-boss-mutanus-the-devourer", species: 1, type: 2, rare: 5, skills: ["电攻", "雷霆一击"],
-            effect: ["attack_power+=30", "health_percent+=30"], drop: [6461, 6627, 6463],
+            effect: ["attack_power+=30", "health_percent+=30"], drop: ["6461+30", "6627+30", "6463+30", "8350+10"],
             detail: "从纳拉雷克斯扭曲心灵最阴暗的角落里，席卷翡翠梦境的腐化之力已体现在德鲁伊的死敌——鱼人的身上。名叫穆坦努斯的怪物来到这个清醒的世界上，吞噬任何想要将纳拉雷克斯从梦魇中解救出来的人。"
         }
     }// 哀嚎洞穴

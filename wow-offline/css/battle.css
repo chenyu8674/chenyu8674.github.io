@@ -89,7 +89,7 @@
     box-shadow: 0 0 20px goldenrod;
 }
 
-#dungeon_view {
+#view_dungeon {
     position: absolute;
     margin: -1px;
     padding: 0;

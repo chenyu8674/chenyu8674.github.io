@@ -104,7 +104,7 @@ multiple_coefficient[2] = 1;
 multiple_coefficient[3] = 1.1;
 multiple_coefficient[4] = 1.2;
 multiple_coefficient[5] = 1.3;
-multiple_coefficient[6] = 1.5;
+multiple_coefficient[6] = 1.45;
 
 /** 主属性对其他属性的转化值 **/
 
@@ -129,10 +129,10 @@ let spr_to_armor_magic = 2;
 
 /** 副属性转化系数 **/
 
-let hit_coefficient = 4.5;        // 命中等级转化系数
-let dodge_coefficient = 5;    // 躲闪等级转化系数
-let critical_coefficient = 4.5;   // 暴击等级转化系数
-let block_coefficient = 10;      // 格挡等级转化系数
+let hit_coefficient = 3.5;      // 命中等级转化系数
+let dodge_coefficient = 4;      // 躲闪等级转化系数
+let critical_coefficient = 3.5; // 暴击等级转化系数
+let block_coefficient = 8;      // 格挡等级转化系数
 let resilient_coefficient = 4;  // 韧性等级转化系数（DOT）
 let resilient_multiple = 2;     // 韧性等级转化系数（暴击）
 let mastery_per_lvl = 5;        // 每级附加精通等级

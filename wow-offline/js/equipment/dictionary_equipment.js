@@ -298,6 +298,10 @@ function new_equipment() {
             name: "变异板甲", rare: 4, c_lvl: 14, icon: "inv_chest_plate08", affix: 4104,
             effect: ["万用", "暴击闪避"]
         };
+        equipment[8350] = {
+            name: "至尊一戒", rare: 6, c_lvl: 14, icon: "inv_jewelry_ring_03", affix: 13199, detail: "“比至尊二戒稍差那么一点”",
+            multiple: 0.1, effect: ["多彩", "命中", "暴击闪避", "精通韧性"]
+        };
     }// 哀嚎洞穴
     {
         // 黑暗迪菲亚
