@@ -209,7 +209,11 @@ function refresh_current_status_1() {
         (role_battle_1.agi * agi_to_hit_rate + role_battle_1.int * int_to_hit_rate) + "+" + role_status_1.hit_rate + " (" + role_status_1.critical_rate_percent + "%)<br/>"
         + "命中几率提高 " + (calculate_original_hit(role_battle_1) - role_battle_1.hit_chance_final).toFixed(2) + "%"
     );
-    create_status_line("命中几率：" + calculate_original_hit(role_battle_1).toFixed(2) + "%",
+    let hit_chance = calculate_original_hit(role_battle_1).toFixed(2);
+    if (has_equip_two_weapons(role_battle_1)) {
+        hit_chance -= TWO_HAND_HIT_DECREASE;
+    }
+    create_status_line("命中几率：" + hit_chance + "%",
         "技能命中目标的基础几率<br/>受到双方等级与目标闪避率的影响<br/>双持武器会使命中额外降低" + TWO_HAND_HIT_DECREASE + "%"
     );
     create_status_line("暴击等级：" + role_battle_1.critical_rate,
@@ -230,6 +234,29 @@ function refresh_current_status_1() {
     create_status_line("闪避几率：" + calculate_original_dodge(role_battle_1).toFixed(2) + "%",
         "闪避目标技能的几率<br/>受到双方等级的影响"
     );
+    create_status_line("急速等级：" + role_battle_1.haste_rate,
+        role_status_1.haste_rate + " (" + role_status_1.haste_rate_percent + "%)<br/>"
+        + "造成的所有伤害和治疗提高 " + calculate_original_haste(role_battle_1).toFixed(2) + "%"
+    );
+    create_status_line("精通等级：" + role_battle_1.mastery_rate,
+        (role_battle_1.lvl * mastery_per_lvl) + "+" + (role_status_1.mastery_rate - role_battle_1.lvl * mastery_per_lvl) + " (" + role_status_1.mastery_rate_percent + "%)<br/>"
+        + get_mastery_html()
+    );
+    create_status_line("", "");
+    let defend_atk = calculate_original_defend_atk(role_battle_1).toFixed(2);
+    let defend_cri = calculate_original_defend_cri(role_battle_1).toFixed(2);
+    create_status_line("防御等级：" + role_battle_1.defend_rate,
+        role_status_1.defend_rate + " (" + role_status_1.defend_rate_percent + "%)<br/>"
+        + "受到的所有直接伤害" + (defend_atk >= 0 ? "减少" : "增加") + " " + (defend_atk >= 0 ? defend_atk : -defend_atk) + "%<br/>"
+        + "受到攻击时被暴击的几率" + (defend_cri >= 0 ? "减少" : "增加") + " " + (defend_cri >= 0 ? defend_cri : -defend_cri) + "%<br/>"
+    );
+    let resilient_dot = calculate_original_resilient_dot(role_battle_1).toFixed(2);
+    let resilient_cri = calculate_original_resilient_cri(role_battle_1).toFixed(2);
+    create_status_line("韧性等级：" + role_battle_1.resilient_rate,
+        role_status_1.resilient_rate + " (" + role_status_1.resilient_rate_percent + "%)<br/>"
+        + "受到的所有持续伤害" + (resilient_dot >= 0 ? "减少" : "增加") + " " + (resilient_dot >= 0 ? resilient_dot : -resilient_dot) + "%<br/>"
+        + "被暴击时受到的额外伤害" + (resilient_cri >= 0 ? "减少" : "增加") + " " + (resilient_cri >= 0 ? resilient_cri : -resilient_cri) + "%<br/>"
+    );
     if (has_equip_shield(current_character)) {
         create_status_line("格挡等级：" + role_battle_1.block_rate,
             role_status_1.block_rate + " (" + role_status_1.block_rate_percent + "%)<br/>"
@@ -243,18 +270,6 @@ function refresh_current_status_1() {
             + "格挡目标技能时减少受到的伤害"
         );
     }
-    create_status_line("", "");
-    create_status_line("精通等级：" + role_battle_1.mastery_rate,
-        (role_battle_1.lvl * mastery_per_lvl) + "+" + (role_status_1.mastery_rate - role_battle_1.lvl * mastery_per_lvl) + " (" + role_status_1.mastery_rate_percent + "%)<br/>"
-        + get_mastery_html()
-    );
-    let resilient_dot = calculate_original_resilient_dot(role_battle_1).toFixed(2);
-    let resilient_cri = calculate_original_resilient_cri(role_battle_1).toFixed(2);
-    create_status_line("韧性等级：" + role_battle_1.resilient_rate,
-        role_status_1.resilient_rate + " (" + role_status_1.resilient_rate_percent + "%)<br/>"
-        + "受到的持续伤害" + (resilient_dot >= 0 ? "减少" : "增加") + " " + (resilient_dot >= 0 ? resilient_dot : -resilient_dot) + "%<br/>"
-        + "被暴击时受到的额外伤害" + (resilient_cri >= 0 ? "减少" : "增加") + " " + (resilient_cri >= 0 ? resilient_cri : -resilient_cri) + "%<br/>"
-    );
 }
 
 /**
@@ -272,7 +287,7 @@ function get_mastery_html() {
         case 21:
             return "神圣震击获得" + mastery_percent + "%治疗强度的伤害加成";
         case 22:
-            return "清算造成神圣伤害的" + mastery_percent + "%转化为生命回复";
+            return "清算造成神圣伤害的" + mastery_percent + "%转化为伤害护盾";
         case 23:
             return "命令圣印的触发几率提高" + mastery_percent + "%";
         case 31:

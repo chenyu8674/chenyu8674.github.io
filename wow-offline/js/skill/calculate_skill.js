@@ -39,6 +39,8 @@ function calculate_skill(
     let is_hit = element_type === element_chaos ? true : random_percent(hit_chance);
     // 是否暴击
     let critical_chance = calculate_critical(attacker, calculate_target) + extra_critical;
+    // 防御减少暴击
+    critical_chance -= calculate_original_defend_cri(calculate_target);
     if (show_critical_percent_in_log) {
         console.log(attacker.name + "->" + calculate_target.name + " " + skill_name + " 暴击率：" + critical_chance);
     }
@@ -109,6 +111,8 @@ function calculate_dot(attacker, target, skill_name, damage_percent, attack_type
     let is_hit = true;
     // 是否暴击
     let critical_chance = calculate_critical(attacker, calculate_target);
+    // 防御减少暴击
+    critical_chance -= calculate_original_defend_cri(calculate_target);
     if (show_critical_percent_in_log) {
         console.log(attacker.name + "->" + calculate_target.name + " " + skill_name + " 暴击率：" + critical_chance);
     }
@@ -242,6 +246,12 @@ function calculate_skill_result(
         } else {
             damage_value *= (100 + lvl_percent) / 100;
         }
+        // 计算急速增伤
+        damage_value = damage_value * (100 + calculate_original_haste(attacker)) / 100;
+        // 计算防御减伤
+        if (!is_dot && element_type !== element_chaos) {
+            damage_value = damage_value * (100 - calculate_original_defend_atk(target)) / 100;
+        }
         // 计算韧性减伤
         if (is_dot && element_type !== element_chaos) {
             damage_value = damage_value * (100 - calculate_original_resilient_dot(target)) / 100;
@@ -364,6 +374,8 @@ function calculate_heal_result(attacker, target, skill_name, heal_percent, attac
     if (is_critical) {
         heal_value *= attacker.critical_damage / 100;
     }
+    // 计算急速增伤
+    heal_value = heal_value * (100 + calculate_original_haste(attacker)) / 100;
     // 计算全局治疗百分比
     heal_value *= target.taken_heal_percent / 100;
     if (heal_value < 0) {
@@ -462,9 +474,6 @@ function calculate_armor_magic(target) {
  */
 function calculate_original_hit(attacker) {
     let original_hit = attacker.hit_rate * hit_coefficient / (attacker.lvl + 5) + attacker.hit_chance_final;
-    if (has_equip_two_weapons(attacker)) {
-        original_hit -= TWO_HAND_HIT_DECREASE;
-    }
     return original_hit;
 }
 
@@ -473,6 +482,9 @@ function calculate_original_hit(attacker) {
  */
 function calculate_hit(attacker, target) {
     let hit_chance = calculate_original_hit(attacker);
+    if (has_equip_two_weapons(attacker)) {
+        hit_chance -= TWO_HAND_HIT_DECREASE;
+    }
     let dodge_chance = calculate_original_dodge(target);
     let lvl_chance = (attacker.lvl - target.lvl) * hit_chance_per_lvl;
     if (lvl_chance > 30) {
@@ -547,10 +559,31 @@ function calculate_block(attacker, target) {
 }
 
 /**
+ * 计算急速倍率
+ */
+function calculate_original_haste(target) {
+    return target.haste_rate * haste_coefficient / (target.lvl + 5);
+}
+
+/**
  * 计算原始精通数值
  */
 function calculate_original_mastery(attacker) {
     return attacker.mastery_rate * mastery_coefficient[attacker.job] / mastery_per_lvl / attacker.lvl;
+}
+
+/**
+ * 计算原始防御数值（伤害）
+ */
+function calculate_original_defend_atk(attacker) {
+    return attacker.defend_rate * defend_coefficient / attacker.lvl;
+}
+
+/**
+ * 计算原始防御数值（暴击）
+ */
+function calculate_original_defend_cri(attacker) {
+    return defend_multiple * attacker.defend_rate * defend_coefficient / attacker.lvl;
 }
 
 /**

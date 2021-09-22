@@ -229,6 +229,12 @@ function refresh_battle_attribute(role_status, role_battle) {
     role_battle.dodge_chance_final = role_status.dodge_chance_final;// 最终闪避率百分比
     role_battle.dodge_rate_percent = 100;
 
+    role_battle.haste_rate = Math.round(role_status.haste_rate * role_status.haste_rate_percent / 100);// 急速等级
+    role_battle.haste_rate_percent = 100;
+
+    role_battle.defend_rate = Math.round(role_status.defend_rate * role_status.defend_rate_percent / 100);// 防御等级
+    role_battle.defend_rate_percent = 100;
+
     role_battle.mastery_rate = Math.round(role_status.mastery_rate * role_status.mastery_rate_percent / 100);// 精通等级
     role_battle.mastery_rate_percent = 100;
 
@@ -344,6 +350,12 @@ function copy_role(role) {
     copy_role.dodge_rate = role.dodge_rate;// 闪避等级
     copy_role.dodge_chance_final = role.dodge_chance_final;// 最终闪避率百分比
     copy_role.dodge_rate_percent = role.dodge_rate_percent;
+
+    copy_role.haste_rate = role.haste_rate;// 急速等级
+    copy_role.haste_rate_percent = role.haste_rate_percent;
+
+    copy_role.defend_rate = role.defend_rate;// 防御等级
+    copy_role.defend_rate_percent = role.defend_rate_percent;
 
     copy_role.mastery_rate = role.mastery_rate;// 精通等级
     copy_role.mastery_rate_percent = role.mastery_rate_percent;

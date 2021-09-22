@@ -45,6 +45,10 @@ function new_attribute_name() {
     name.block_chance_final = "%格挡率";
     name.block_value = "格挡值";
     name.block_value_percent = "%格挡值";
+    name.haste_rate = "急速等级";
+    name.haste_rate_percent = "%急速等级";
+    name.defend_rate = "防御等级";
+    name.defend_rate_percent = "%防御等级";
     name.mastery_rate = "精通等级";
     name.mastery_rate_percent = "%精通等级";
     name.resilient_rate = "韧性等级";

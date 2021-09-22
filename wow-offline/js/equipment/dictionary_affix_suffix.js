@@ -69,13 +69,17 @@ function new_affix_suffix() {
     affix["精准"] = affix["命中"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.2, lvl, rare, multiple)]}
     affix[33] = function(surely) {return surely || Math.random() <= 1 ? "灵巧" : null};
     affix["灵巧"] = affix["闪避"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[34] = function(surely) {return surely || Math.random() <= 1 ? "工匠" : null};
+    affix[34] = function(surely) {return surely || Math.random() <= 1 ? "迅捷" : null};
+    affix["迅捷"] = affix["急速"] = function (lvl, rare, multiple) {return ["haste_rate+=" + get_effect_value(0.2, lvl, rare, multiple)]}
+    affix[35] = function(surely) {return surely || Math.random() <= 1 ? "坚定" : null};
+    affix["坚定"] = affix["防御"] = function (lvl, rare, multiple) {return ["defend_rate+=" + get_effect_value(0.2, lvl, rare, multiple)]}
+    affix[36] = function(surely) {return surely || Math.random() <= 1 ? "工匠" : null};
     affix["工匠"] = affix["精通"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[35] = function(surely) {return surely || Math.random() <= 1 ? "坚韧" : null};
+    affix[37] = function(surely) {return surely || Math.random() <= 1 ? "坚韧" : null};
     affix["坚韧"] = affix["韧性"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.2, lvl, rare, multiple)]}
 
     affix[40] = function(surely) {return surely || Math.random() <= 0 ? "暴击命中" : null};
-    affix["暴击命中"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix["暴击命中"] = affix["暴击全能"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
     affix[41] = function(surely) {return surely || Math.random() <= 0 ? "暴击闪避" : null};
     affix["暴击闪避"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
     affix[42] = function(surely) {return surely || Math.random() <= 0 ? "暴击精通" : null};
@@ -85,7 +89,7 @@ function new_affix_suffix() {
     affix[44] = function(surely) {return surely || Math.random() <= 0 ? "命中闪避" : null};
     affix["命中闪避"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
     affix[45] = function(surely) {return surely || Math.random() <= 0 ? "命中精通" : null};
-    affix["命中精通"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix["命中精通"] = affix["精通全能"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
     affix[46] = function(surely) {return surely || Math.random() <= 0 ? "命中韧性" : null};
     affix["命中韧性"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
     affix[47] = function(surely) {return surely || Math.random() <= 0 ? "闪避精通" : null};
@@ -95,11 +99,39 @@ function new_affix_suffix() {
     affix[49] = function(surely) {return surely || Math.random() <= 0 ? "精通韧性" : null};
     affix["精通韧性"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
 
-    affix[50] = function(surely) {return surely || Math.random() <= 0 ? "闪避格挡" : null};
+    affix[50] = function(surely) {return surely || Math.random() <= 0 ? "暴击急速" : null};
+    affix["暴击急速"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[51] = function(surely) {return surely || Math.random() <= 0 ? "命中急速" : null};
+    affix["命中急速"] = affix["急速全能"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[52] = function(surely) {return surely || Math.random() <= 0 ? "闪避急速" : null};
+    affix["闪避急速"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[53] = function(surely) {return surely || Math.random() <= 0 ? "急速精通" : null};
+    affix["急速精通"] = affix["精通急速"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[54] = function(surely) {return surely || Math.random() <= 0 ? "急速韧性" : null};
+    affix["急速韧性"] = function (lvl, rare, multiple) {return ["haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[55] = function(surely) {return surely || Math.random() <= 0 ? "急速格挡" : null};
+    affix["急速格挡"] = function (lvl, rare, multiple) {return ["haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+= " + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
+    affix[56] = function(surely) {return surely || Math.random() <= 0 ? "急速防御" : null};
+    affix["急速防御"] = function (lvl, rare, multiple) {return ["haste_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+
+    affix[60] = function(surely) {return surely || Math.random() <= 0 ? "暴击防御" : null};
+    affix["暴击防御"] = function (lvl, rare, multiple) {return ["critical_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[61] = function(surely) {return surely || Math.random() <= 0 ? "命中防御" : null};
+    affix["命中防御"] = function (lvl, rare, multiple) {return ["hit_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[62] = function(surely) {return surely || Math.random() <= 0 ? "闪避防御" : null};
+    affix["闪避防御"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[63] = function(surely) {return surely || Math.random() <= 0 ? "防御精通" : null};
+    affix["防御精通"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[64] = function(surely) {return surely || Math.random() <= 0 ? "防御韧性" : null};
+    affix["防御韧性"] = function (lvl, rare, multiple) {return ["defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple)]}
+    affix[65] = function(surely) {return surely || Math.random() <= 0 ? "防御格挡" : null};
+    affix["防御格挡"] = function (lvl, rare, multiple) {return ["defend_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
+
+    affix[80] = function(surely) {return surely || Math.random() <= 0 ? "闪避格挡" : null};
     affix["闪避格挡"] = function (lvl, rare, multiple) {return ["dodge_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[51] = function(surely) {return surely || Math.random() <= 0 ? "精通格挡" : null};
+    affix[81] = function(surely) {return surely || Math.random() <= 0 ? "精通格挡" : null};
     affix["精通格挡"] = function (lvl, rare, multiple) {return ["mastery_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
-    affix[52] = function(surely) {return surely || Math.random() <= 0 ? "韧性格挡" : null};
+    affix[82] = function(surely) {return surely || Math.random() <= 0 ? "韧性格挡" : null};
     affix["韧性格挡"] = function (lvl, rare, multiple) {return ["resilient_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_rate+=" + get_effect_value(0.1, lvl, rare, multiple), "block_value+=" + get_effect_value(0.2, lvl, rare, multiple)]}
 
     affix[100] = function(surely) {return surely || Math.random() <= 0.2 ? "坚守" : null};

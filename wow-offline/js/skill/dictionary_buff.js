@@ -485,11 +485,12 @@ function new_buff() {
         let buff = {};
         buff.name = "首领狂暴";
         buff.T = -1;
-        buff.X = 5;
+        buff.X = 10;
+        buff.Y = 5;
         buff.icon = "ability_racial_bloodrage";
-        buff.detail = "伤害每回合提升" + buff.X + "%";
+        buff.detail = "战斗超过" + buff.X + "回合后，伤害每回合提升" + buff.Y + "%";
         buff.effect = [
-            "damage_all+=battle_turn*" + buff.X
+            "damage_all+=(battle_turn>" + buff.X + ")?((battle_turn-" + buff.X + ")*" + buff.Y + "):0"
         ];
         return buff;
     }

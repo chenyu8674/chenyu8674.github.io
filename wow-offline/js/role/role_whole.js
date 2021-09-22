@@ -67,6 +67,12 @@ function new_role_whole() {
     role_whole.critical_chance_final = 5;// 最终暴击率百分比
     role_whole.critical_damage = 150;// 暴击伤害系数
 
+    role_whole.haste_rate = 0;// 急速等级
+    role_whole.haste_rate_percent = 100;// 急速等级百分比
+
+    role_whole.defend_rate = 0;// 防御等级
+    role_whole.defend_rate_percent = 100;// 防御等级百分比
+
     role_whole.mastery_rate = 0;// 精通等级
     role_whole.mastery_rate_percent = 100;// 精通等级百分比
 

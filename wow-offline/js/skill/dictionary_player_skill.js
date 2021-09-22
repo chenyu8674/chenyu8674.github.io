@@ -221,17 +221,17 @@ function new_player_skill() {
             let damage_obj = calculate_skill(attacker, target, skill.name_2, skill.X, skill.type, element_physical);
             damage_list.push(damage_obj);
             let damage_percent = get_health_lack_percent(attacker);
-            let heal_obj;
+            let shield_obj;
             if (damage_percent > 0) {
                 damage_obj = calculate_skill(attacker, target, skill.name, skill.Y * damage_percent, skill.type, element_holy);
                 damage_list.push(damage_obj);
                 if (damage_obj.is_hit) {
                     let mastery_percent = calculate_original_mastery(attacker);
-                    let heal_value = damage_obj.damage_value * mastery_percent / 100;
-                    heal_obj = calculate_flat_heal(attacker, attacker, skill.name, Math.round(heal_value));
+                    let shield_value = Math.round(damage_obj.damage_value * mastery_percent / 100);
+                    shield_obj = [calculate_flat_shield(attacker, attacker, skill.name, shield_value)];
                 }
             }
-            return skill_cast_result(damage_list, heal_obj);
+            return skill_cast_result(damage_list, shield_obj);
         };
         return skill;
     }
