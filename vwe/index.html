@@ -22,44 +22,41 @@ def extract(filename,index):
     radius=0
 
     with open(filename)as f:
-        f_csv=csv.reader(f)
-        Row=namedtuple('Row',next(f_csv))
+        f_csv=csv.DictReader(f)
 
         counter=0
-        for each_row in f_csv:
-            info=Row(*each_row)
-            
+        for info in f_csv:
             if(counter==0):
-                weight=info.kg
-                tonne=info.tonne
-                speed=info.v
-                tripId=info.tripId
-                tripName=info.tripName
-                deviceId=info.deviceId
-                deviceLocation=info.deviceLocation
-                cargoWeight=info.cargoWeight
-                emptyVehicleWeight=info.emptyVehicleWeight
-                vehicleClass=info.vehicleClass
-                goodsCarried=info.goodsCarried
-                manufactureModel=info.manufactureModel
-                noOfAxles=info.noOfAxles
-                noOfTyres=info.noOfTyres
-                ageOfVehicle=info.ageOfVehicle
-                suspensionType=info.suspensionType
-                category=info.category
+                weight=info['kg']
+                tonne=info['tonne']
+                speed=info['v']
+                tripId=info['tripId']
+                tripName=info['tripName']
+                deviceId=info['deviceId']
+                deviceLocation=info['deviceLocation']
+                cargoWeight=info['cargoWeight']
+                emptyVehicleWeight=info['emptyVehicleWeight']
+                vehicleClass=info['vehicleClass']
+                goodsCarried=info['goodsCarried']
+                manufactureModel=info['manufactureModel']
+                noOfAxles=info['noOfAxles']
+                noOfTyres=info['noOfTyres']
+                ageOfVehicle=info['ageOfVehicle']
+                suspensionType=info['suspensionType']
+                category=info['category']
 
             counter+=1
 
-            if(info.Type=='A'):
-                acc.append(info.z)
-                v.append(info.v)
-                Time_sec.append(info.Time_sec)
+            if(info['Type']=='A'):
+                acc.append(info['z'])
+                v.append(info['v'])
+                Time_sec.append(info['Time.sec'])
             
-            latitude=float(info.latitude)
-            longitude=float(info.longitude)
-            Time=info.Time
-            if(float(info.radius)>radius):
-                radius=float(info.radius)
+            latitude=float(info['latitude'])
+            longitude=float(info['longitude'])
+            Time=info['Time']
+            if(float(info['radius'])>radius):
+                radius=float(info['radius'])
     
     acc=np.array(acc,dtype=dtype)
     v=np.array(v,dtype=dtype)
@@ -82,11 +79,11 @@ def extract(filename,index):
     prpn_loweracc=len(lower_acc)/len(acc)#低值比例
     printdata('prpn_upperacc =',prpn_upperacc)
     printdata('prpn_loweracc =',prpn_loweracc)
-    if prpn_upperacc==0:
+    if len(upper_acc)<=1:
         sd_upperacc=cmath.nan#处理NaN
     else:
         sd_upperacc=np.std(upper_acc,ddof=1)#高值样本标准差
-    if prpn_loweracc==0:
+    if len(lower_acc)<=1:
         sd_loweracc=cmath.nan#处理NaN
     else:
         sd_loweracc=np.std(lower_acc,ddof=1)#低值样本标准差
@@ -159,31 +156,39 @@ def extract(filename,index):
     phasemean_fft=np.mean(phasefft)
     printlog('phasemean_fft =',phasemean_fft)
 
+    weight=float(weight)
+    if weight<=5000:
+        cls=1
+    elif weight<=11000:
+        cls=2
+    else:
+        cls=5
+
     frame_dict={
-        'prpn_upperacc':prpn_upperacc,
-        'prpn_loweracc':prpn_loweracc,
+        'prpn.upperacc':prpn_upperacc,
+        'prpn.loweracc':prpn_loweracc,
         'value':value,
-        'sd_upperacc':sd_upperacc,
-        'sd_loweracc':sd_loweracc,
-        'max_acc':max_acc,
-        'min_acc':min_acc,
-        'sd_acc':sd_acc,
+        'sd.upperacc':sd_upperacc,
+        'sd.loweracc':sd_loweracc,
+        'max.acc':max_acc,
+        'min.acc':min_acc,
+        'sd.acc':sd_acc,
         'energy':energy,
         'MADacc':MADacc,
-        'mean_vel':mean_vel,
-        'Sk_acc':Sk_acc,
-        'Ku_acc':Ku_acc,
-        'var_acc':var_acc,
-        'Q025_acc':Q025_acc,
-        'Q25_acc':Q25_acc,
-        'Q50_acc':Q50_acc,
-        'Q75_acc':Q75_acc,
-        'Q095_acc':Q095_acc,
+        'mean.vel':mean_vel,
+        'Sk.acc':Sk_acc,
+        'Ku.acc':Ku_acc,
+        'var.acc':var_acc,
+        'Q025.acc':Q025_acc,
+        'Q25.acc':Q25_acc,
+        'Q50.acc':Q50_acc,
+        'Q75.acc':Q75_acc,
+        'Q095.acc':Q095_acc,
         'meanFreq':meanFreq,
         'medianFreq':medianFreq,
         'maximaFreq':maximaFreq,
-        'phasemean_fft':phasemean_fft,
-        'mean_Timesec':mean_Timesec,
+        'phasemean.fft':phasemean_fft,
+        'mean.Timesec':mean_Timesec,
         'Time':Time,
         'latitude':latitude,
         'longitude':longitude,
@@ -205,7 +210,7 @@ def extract(filename,index):
         'tonne':tonne,
         'category':category,
         'speed':speed,
-        'class':5
+        'class':cls
     }
     rt=pd.DataFrame(frame_dict,index=[index])
     printlog('rt =',rt)
@@ -233,7 +238,7 @@ def scale_data(df,lower,upper):
     return df
 
 def printdata(obj1,obj2):
-    print(obj1,obj2)
+    # print(obj1,obj2)
     return
 
 def printlog(obj1,obj2):
@@ -246,20 +251,25 @@ time1 = datetime.datetime.now().timestamp()
 
 args=sys.argv
 printlog('args =',args)
-# currentDir=os.path.dirname(__file__)
-# tripSetName='1_1_JINGNF0QF2_2021-09-26_loaded'
 
-currentDir=args[1]
-tripSetName=args[2]
+if len(args)>=3:
+    currentDir=args[1]
+    tripSetName=args[2]
+else:
+    print('parameter error, length=',len(args))
+    os._exit(-1)
+
 printlog('currentDir =',currentDir)
 printlog('tripSetName =',tripSetName)
 
-base_dir=currentDir+'\\..\\output\\'
-base_inputDir=base_dir+'\\segmented_data\\'
-base_outputDir=base_dir+'\\scaled_features_data\\'
+base_dir=currentDir+'/../output'
+base_inputDir=base_dir+'/segmented_data/'
+base_outputDir=base_dir+'/scaled_features_data/'
 
-base_read=base_inputDir+tripSetName+'\\'
+base_read=base_inputDir+tripSetName+'/'
 print('Read Directory - ',base_read)
+base_write=base_outputDir+tripSetName+'/'
+print('Write Directory - ',base_read)
 
 file_names = os.listdir(base_read)
 printlog('file_names =',file_names)
@@ -283,25 +293,6 @@ printlog('dfClean =',dfClean)
 print('Scaling Features - Started')
 dfClean=scale_data(dfClean,0,1)
 print('Scaling Features - Completed')
-
-dfClean.loc[1,'class']=1
-printlog('dfClean =',dfClean)
-
-i=0#行序号
-while(i<dfClean.shape[0]):
-    line=dfClean.iloc[i]
-    weight=float(line.weight)
-    if weight<=5000:
-        dfClean.loc[i,'class']=1
-    elif weight<=11000:
-        dfClean.loc[i,'class']=2
-    else:
-        dfClean.loc[i,'class']=5
-    i+=1
-printlog('dfClean =',dfClean)
-
-base_write=base_outputDir+tripSetName+'\\'
-print('Write Directory - ',base_read)
 
 if False==os.path.exists(base_write):
     os.mkdir(base_write)
