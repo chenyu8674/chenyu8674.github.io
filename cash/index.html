@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>金額拆分計算</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: linear-gradient(135deg, #0b1020, #121a2f);
+      color: #e5e7eb;
+    }
+
+    .card {
+      width: min(92vw, 520px);
+      background: #111827;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #1f2937;
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.55);
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .desc {
+      margin: 0 0 18px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .row {
+      display: flex;
+      margin-bottom: 16px;
+    }
+
+    input {
+      flex: 1;
+      height: 44px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 0 12px;
+      font-size: 16px;
+      background: #0f172a;
+      color: #f3f4f6;
+      outline: none;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.28);
+    }
+
+    .error {
+      min-height: 22px;
+      color: #dc2626;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .result {
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0b1220;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid #1e293b;
+      font-size: 16px;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item strong {
+      color: #f9fafb;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #94a3b8;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>金額拆分計算</h1>
+
+    <div class="row">
+      <input id="amountInput" type="number" min="0" step="1" placeholder="請輸入金額" />
+    </div>
+
+    <div id="errorMsg" class="error"></div>
+
+    <div class="result" id="resultBox">
+      <div class="item"><span>1000 圓</span><strong id="n1000">0 張</strong></div>
+      <div class="item"><span>100 圓</span><strong id="n100">0 張</strong></div>
+      <div class="item"><span>50 圓</span><strong id="n50">0 張</strong></div>
+      <div class="item"><span>10 圓</span><strong id="n10">0 張</strong></div>
+      <div class="item"><span>5 圓</span><strong id="n5">0 張</strong></div>
+      <div class="item"><span>1 圓</span><strong id="n1">0 張</strong></div>
+    </div>
+
+    <div class="hint">預設使用張數最少的拆分方式</div>
+  </div>
+
+  <script>
+    const amountInput = document.getElementById('amountInput')
+    const errorMsg = document.getElementById('errorMsg')
+
+    const denominations = [1000, 100, 50, 10, 5, 1]
+
+    function resetResult() {
+      document.getElementById('n1000').textContent = '0 張'
+      document.getElementById('n100').textContent = '0 張'
+      document.getElementById('n50').textContent = '0 張'
+      document.getElementById('n10').textContent = '0 張'
+      document.getElementById('n5').textContent = '0 張'
+      document.getElementById('n1').textContent = '0 張'
+    }
+
+    function calculate() {
+      errorMsg.textContent = ''
+
+      const raw = amountInput.value.trim()
+      const amount = Number(raw)
+
+      if (raw === '') {
+        errorMsg.textContent = '請輸入金額'
+        resetResult()
+        return
+      }
+
+      if (!Number.isInteger(amount) || amount < 0) {
+        errorMsg.textContent = '請輸入大於等於 0 的整數'
+        resetResult()
+        return
+      }
+
+      let remain = amount
+
+      for (const den of denominations) {
+        const count = Math.floor(remain / den)
+        remain = remain % den
+        document.getElementById(`n${den}`).textContent = `${count} 張`
+      }
+    }
+
+    amountInput.addEventListener('input', calculate)
+
+    amountInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        calculate()
+      }
+    })
+  </script>
+</body>
+</html>
