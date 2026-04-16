@@ -12,19 +12,20 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 5px;
+      padding: 20px;
       font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
       background: linear-gradient(135deg, #0b1020, #121a2f);
       color: #ffffff;
     }
 
     .card {
-      width: 250px;
-      background: #111827;
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid #1f2937;
-      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.55);
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     h1 {
@@ -40,13 +41,26 @@
       font-size: 16px;
     }
 
-    .row {
+    .toolbar {
       display: flex;
+      align-items: flex-start;
+      gap: 8px;
       margin-bottom: 8px;
     }
 
-    input {
+    .toolbarMain {
       flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toolbarMain > .error {
+      margin-bottom: 0;
+    }
+
+    input {
       width: 100%;
       height: 44px;
       border: 1px solid #334155;
@@ -74,6 +88,21 @@
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.28);
     }
 
+    button {
+      height: 44px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #0f172a;
+      color: #f3f4f6;
+      padding: 0 14px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: #475569;
+    }
+
     .error {
       min-height: 22px;
       color: #dc2626;
@@ -81,38 +110,151 @@
       margin-bottom: 8px;
     }
 
-    .amountText {
-      min-height: 24px;
-      margin-bottom: 8px;
-      color: #cbd5e1;
-      font-size: 16px;
+    .listWrap {
+      position: relative;
     }
 
     .result {
       border: 1px solid #334155;
       border-radius: 8px;
-      overflow: hidden;
+      overflow: visible;
       background: #0b1220;
     }
 
-    .item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 14px;
-      font-size: 18px;
+    .recordLine {
+      position: relative;
+      padding: 10px 0 10px 12px;
+      border-bottom: 1px solid #1f2937;
     }
 
-    .item:last-child {
+    #recordList > .recordLine:last-of-type {
       border-bottom: none;
     }
 
-    .item strong {
-      color: #f9fafb;
+    .record {
+      min-width: 0;
+      padding: 0 12px 0 0;
     }
 
-    .item.zero span,
-    .item.zero strong {
+    .recordHead {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .recordTitle {
+      font-size: 16px;
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    button.recordDelete {
+      position: absolute;
+      top: 50%;
+      left: calc(100% + 12px);
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: #dc2626;
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button.recordDelete:hover {
+      background: #b91c1c;
+      border-color: transparent;
+    }
+
+    .chipGroup {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px 4px 6px;
+      color: #f9fafb;
+      font-size: 14px;
+      background: #0f172a;
+    }
+
+    .chip.zero {
       color: #2a2f36;
+    }
+
+    .denIcon {
+      min-width: 32px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1px solid #64748b;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #cbd5e1;
+      padding: 0 8px;
+    }
+
+    .chip.zero .denIcon {
+      border-color: #2a2f36;
+      color: #2a2f36;
+    }
+
+    .denCount {
+      display: inline-block;
+      min-width: 3ch;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    .chip.zero .denCount {
+      color: #2a2f36;
+    }
+
+    .totalRow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px;
+      border-top: 1px solid #334155;
+      background: #152238;
+      border-radius: 0 0 7px 7px;
+    }
+
+    .totalLabel {
+      font-size: 15px;
+      color: #cbd5e1;
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    .totalRow .chipGroup {
+      flex: 1;
+      justify-content: flex-end;
+      margin-left: 0;
+      min-width: 0;
+    }
+
+    .empty {
+      padding: 14px;
+      text-align: center;
+      color: #64748b;
+      font-size: 15px;
     }
 
     .hint {
@@ -127,32 +269,36 @@
   <div class="card">
     <h1>金額拆分計算</h1>
 
-    <div class="row">
-      <input id="amountInput" type="number" min="0" step="1" placeholder="請輸入金額" />
-    </div>
-
-    <div id="amountText" class="amountText"></div>
-    <div id="errorMsg" class="error"></div>
-    <div class="result" id="resultBox">
-      <div class="item" data-den="1000"><span>1000 圓</span><strong id="n1000">0 張</strong></div>
-      <div class="item" data-den="500"><span>500 圓</span><strong id="n500">0 張</strong></div>
-      <div class="item" data-den="100"><span>100 圓</span><strong id="n100">0 張</strong></div>
-      <div class="item" data-den="50"><span>50 圓</span><strong id="n50">0 張</strong></div>
-      <div class="item" data-den="10"><span>10 圓</span><strong id="n10">0 張</strong></div>
-      <div class="item" data-den="5"><span>5 圓</span><strong id="n5">0 張</strong></div>
-      <div class="item" data-den="1"><span>1 圓</span><strong id="n1">0 張</strong></div>
+    <div class="toolbar">
+      <div class="toolbarMain">
+        <input id="amountInput" type="number" min="0" step="1" placeholder="請輸入金額" />
+        <div id="errorMsg" class="error"></div>
+        <div class="listWrap">
+          <div class="result" id="resultBox">
+            <div id="recordList"></div>
+            <div class="totalRow">
+              <div class="totalLabel">總計</div>
+              <div class="chipGroup" id="totalGroup"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="clearAllBtn" type="button">清空</button>
     </div>
   </div>
 
   <script>
     const amountInput = document.getElementById('amountInput')
-    const amountText = document.getElementById('amountText')
     const errorMsg = document.getElementById('errorMsg')
+    const recordList = document.getElementById('recordList')
+    const totalGroup = document.getElementById('totalGroup')
+    const clearAllBtn = document.getElementById('clearAllBtn')
 
     const denominations = [1000, 500, 100, 50, 10, 5, 1]
     const digitMap = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
     const smallUnits = ['', '十', '百', '千']
     const bigUnits = ['', '萬', '億', '兆']
+    const records = []
 
     function convertFourDigits(num) {
       const str = String(num).padStart(4, '0')
@@ -220,58 +366,130 @@
       return result + ' 圓'
     }
 
-    function resetResult() {
+    function getCounts(amount) {
+      const counts = {}
+      let remain = amount
       for (const den of denominations) {
-        const resultElement = document.getElementById(`n${den}`)
-        const resultRow = resultElement.closest('.item')
-        resultElement.textContent = '0 張'
-        resultRow.classList.add('zero')
+        const count = Math.floor(remain / den)
+        counts[den] = count
+        remain = remain % den
+      }
+      return counts
+    }
+
+    function renderChips(counts) {
+      const fragment = document.createDocumentFragment()
+      for (const den of denominations) {
+        const chip = document.createElement('div')
+        chip.className = 'chip'
+        if (counts[den] === 0) {
+          chip.classList.add('zero')
+        }
+        chip.innerHTML = `<span class="denIcon">${den}</span><span class="denCount">${counts[den]}</span>`
+        fragment.appendChild(chip)
+      }
+      return fragment
+    }
+
+    function renderList() {
+      recordList.innerHTML = ''
+      if (records.length === 0) {
+        recordList.innerHTML = '<div class="empty">目前沒有結果</div>'
+        return
+      }
+
+      for (const record of records) {
+        const line = document.createElement('div')
+        line.className = 'recordLine'
+        line.dataset.id = String(record.id)
+        line.innerHTML = `
+          <div class="record">
+            <div class="recordHead">
+              <div class="recordTitle">${record.amount} 圓</div>
+              <div class="chipGroup"></div>
+            </div>
+          </div>
+          <button type="button" class="recordDelete" data-action="delete" aria-label="刪除此筆">×</button>
+        `
+        const chips = line.querySelector('.chipGroup')
+        chips.appendChild(renderChips(record.counts))
+        recordList.appendChild(line)
       }
     }
 
-    function calculate() {
-      errorMsg.textContent = ''
+    function renderTotal() {
+      const totalCounts = {}
+      for (const den of denominations) {
+        totalCounts[den] = 0
+      }
+      for (const record of records) {
+        for (const den of denominations) {
+          totalCounts[den] += record.counts[den]
+        }
+      }
+      totalGroup.innerHTML = ''
+      totalGroup.appendChild(renderChips(totalCounts))
+    }
 
+    function renderAll() {
+      renderList()
+      renderTotal()
+    }
+
+    function addRecord() {
+      errorMsg.textContent = ''
       const raw = amountInput.value.trim()
       const amount = Number(raw)
 
       if (raw === '') {
-        errorMsg.textContent = ''
-        amountText.textContent = ''
-        resetResult()
+        errorMsg.textContent = '請先輸入金額'
         return
       }
 
       if (!Number.isInteger(amount) || amount < 0) {
         errorMsg.textContent = '請輸入大於 0 的整數'
-        amountText.textContent = ''
-        resetResult()
         return
       }
 
-      amountText.textContent = `${toTraditionalAmount(amount)}`
-
-      let remain = amount
-
-      for (const den of denominations) {
-        const count = Math.floor(remain / den)
-        remain = remain % den
-        const resultElement = document.getElementById(`n${den}`)
-        const resultRow = resultElement.closest('.item')
-        resultElement.textContent = `${count} 張`
-        resultRow.classList.toggle('zero', count === 0)
-      }
+      records.push({
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        amount,
+        counts: getCounts(amount)
+      })
+      amountInput.value = ''
+      renderAll()
     }
-
-    amountInput.addEventListener('input', calculate)
 
     amountInput.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
-        calculate()
+        addRecord()
       }
     })
 
-    resetResult()
+    clearAllBtn.addEventListener('click', () => {
+      records.length = 0
+      errorMsg.textContent = ''
+      renderAll()
+    })
+
+    recordList.addEventListener('click', (event) => {
+      const target = event.target
+      if (!target.matches('[data-action="delete"]')) {
+        return
+      }
+      const recordNode = target.closest('.recordLine')
+      if (!recordNode) {
+        return
+      }
+      const recordId = Number(recordNode.dataset.id)
+      const index = records.findIndex((item) => item.id === recordId)
+      if (index >= 0) {
+        records.splice(index, 1)
+        renderAll()
+      }
+    })
+
+    renderAll()
   </script>
 </body>
 </html>
