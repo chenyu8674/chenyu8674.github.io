@@ -461,7 +461,8 @@
     }
 
     amountInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
+      const isEnter = event.key === 'Enter' || event.code === 'Enter' || event.code === 'NumpadEnter'
+      if (isEnter) {
         addRecord()
       }
     })
