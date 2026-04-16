@@ -12,17 +12,16 @@
     body {
       margin: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
+      padding: 5px;
       font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
       background: linear-gradient(135deg, #0b1020, #121a2f);
-      color: #e5e7eb;
+      color: #ffffff;
     }
 
     .card {
-      width: min(92vw, 520px);
+      width: 250px;
       background: #111827;
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 24px;
       border: 1px solid #1f2937;
       box-shadow: 0 14px 34px rgba(2, 6, 23, 0.55);
@@ -30,7 +29,7 @@
 
     h1 {
       margin: 0 0 16px;
-      font-size: 24px;
+      font-size: 28px;
       text-align: center;
     }
 
@@ -38,21 +37,22 @@
       margin: 0 0 18px;
       text-align: center;
       color: #9ca3af;
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .row {
       display: flex;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
     }
 
     input {
       flex: 1;
+      width: 100%;
       height: 44px;
       border: 1px solid #334155;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 0 12px;
-      font-size: 16px;
+      font-size: 18px;
       background: #0f172a;
       color: #f3f4f6;
       outline: none;
@@ -77,13 +77,20 @@
     .error {
       min-height: 22px;
       color: #dc2626;
-      font-size: 14px;
+      font-size: 16px;
       margin-bottom: 8px;
+    }
+
+    .amountText {
+      min-height: 24px;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+      font-size: 16px;
     }
 
     .result {
       border: 1px solid #334155;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
       background: #0b1220;
     }
@@ -92,8 +99,7 @@
       display: flex;
       justify-content: space-between;
       padding: 12px 14px;
-      border-bottom: 1px solid #1e293b;
-      font-size: 16px;
+      font-size: 18px;
     }
 
     .item:last-child {
@@ -104,9 +110,14 @@
       color: #f9fafb;
     }
 
+    .item.zero span,
+    .item.zero strong {
+      color: #2a2f36;
+    }
+
     .hint {
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 15px;
       color: #94a3b8;
       text-align: right;
     }
@@ -120,33 +131,102 @@
       <input id="amountInput" type="number" min="0" step="1" placeholder="請輸入金額" />
     </div>
 
+    <div id="amountText" class="amountText"></div>
     <div id="errorMsg" class="error"></div>
-
     <div class="result" id="resultBox">
-      <div class="item"><span>1000 圓</span><strong id="n1000">0 張</strong></div>
-      <div class="item"><span>100 圓</span><strong id="n100">0 張</strong></div>
-      <div class="item"><span>50 圓</span><strong id="n50">0 張</strong></div>
-      <div class="item"><span>10 圓</span><strong id="n10">0 張</strong></div>
-      <div class="item"><span>5 圓</span><strong id="n5">0 張</strong></div>
-      <div class="item"><span>1 圓</span><strong id="n1">0 張</strong></div>
+      <div class="item" data-den="1000"><span>1000 圓</span><strong id="n1000">0 張</strong></div>
+      <div class="item" data-den="500"><span>500 圓</span><strong id="n500">0 張</strong></div>
+      <div class="item" data-den="100"><span>100 圓</span><strong id="n100">0 張</strong></div>
+      <div class="item" data-den="50"><span>50 圓</span><strong id="n50">0 張</strong></div>
+      <div class="item" data-den="10"><span>10 圓</span><strong id="n10">0 張</strong></div>
+      <div class="item" data-den="5"><span>5 圓</span><strong id="n5">0 張</strong></div>
+      <div class="item" data-den="1"><span>1 圓</span><strong id="n1">0 張</strong></div>
     </div>
-
-    <div class="hint">預設使用張數最少的拆分方式</div>
   </div>
 
   <script>
     const amountInput = document.getElementById('amountInput')
+    const amountText = document.getElementById('amountText')
     const errorMsg = document.getElementById('errorMsg')
 
-    const denominations = [1000, 100, 50, 10, 5, 1]
+    const denominations = [1000, 500, 100, 50, 10, 5, 1]
+    const digitMap = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+    const smallUnits = ['', '十', '百', '千']
+    const bigUnits = ['', '萬', '億', '兆']
+
+    function convertFourDigits(num) {
+      const str = String(num).padStart(4, '0')
+      let result = ''
+      let hasZeroGap = false
+
+      for (let i = 0; i < str.length; i += 1) {
+        const digit = Number(str[i])
+        const unitIndex = str.length - 1 - i
+
+        if (digit === 0) {
+          if (result !== '') {
+            hasZeroGap = true
+          }
+          continue
+        }
+
+        if (hasZeroGap) {
+          result += '零'
+          hasZeroGap = false
+        }
+
+        result += digitMap[digit] + smallUnits[unitIndex]
+      }
+
+      return result
+    }
+
+    function toTraditionalAmount(num) {
+      if (num === 0) {
+        return '零 圓'
+      }
+
+      const groups = []
+      let temp = num
+      while (temp > 0) {
+        groups.push(temp % 10000)
+        temp = Math.floor(temp / 10000)
+      }
+
+      let result = ''
+      let pendingZero = false
+
+      for (let i = groups.length - 1; i >= 0; i -= 1) {
+        const group = groups[i]
+
+        if (group === 0) {
+          if (result !== '') {
+            pendingZero = true
+          }
+          continue
+        }
+
+        if (pendingZero || (result !== '' && group < 1000)) {
+          result += '零'
+        }
+
+        result += convertFourDigits(group) + bigUnits[i]
+        pendingZero = false
+      }
+
+      result = result.replace(/零+/g, '零')
+      result = result.replace(/^一十/, '十')
+
+      return result + ' 圓'
+    }
 
     function resetResult() {
-      document.getElementById('n1000').textContent = '0 張'
-      document.getElementById('n100').textContent = '0 張'
-      document.getElementById('n50').textContent = '0 張'
-      document.getElementById('n10').textContent = '0 張'
-      document.getElementById('n5').textContent = '0 張'
-      document.getElementById('n1').textContent = '0 張'
+      for (const den of denominations) {
+        const resultElement = document.getElementById(`n${den}`)
+        const resultRow = resultElement.closest('.item')
+        resultElement.textContent = '0 張'
+        resultRow.classList.add('zero')
+      }
     }
 
     function calculate() {
@@ -156,23 +236,30 @@
       const amount = Number(raw)
 
       if (raw === '') {
-        errorMsg.textContent = '請輸入金額'
+        errorMsg.textContent = ''
+        amountText.textContent = ''
         resetResult()
         return
       }
 
       if (!Number.isInteger(amount) || amount < 0) {
-        errorMsg.textContent = '請輸入大於等於 0 的整數'
+        errorMsg.textContent = '請輸入大於 0 的整數'
+        amountText.textContent = ''
         resetResult()
         return
       }
+
+      amountText.textContent = `${toTraditionalAmount(amount)}`
 
       let remain = amount
 
       for (const den of denominations) {
         const count = Math.floor(remain / den)
         remain = remain % den
-        document.getElementById(`n${den}`).textContent = `${count} 張`
+        const resultElement = document.getElementById(`n${den}`)
+        const resultRow = resultElement.closest('.item')
+        resultElement.textContent = `${count} 張`
+        resultRow.classList.toggle('zero', count === 0)
       }
     }
 
@@ -183,6 +270,8 @@
         calculate()
       }
     })
+
+    resetResult()
   </script>
 </body>
 </html>
