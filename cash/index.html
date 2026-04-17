@@ -467,6 +467,29 @@
       }
     })
 
+    amountInput.addEventListener('paste', (event) => {
+      const pastedText = event.clipboardData?.getData('text') ?? ''
+      const hasNewline = pastedText.includes('\n') || pastedText.includes('\r')
+      if (!hasNewline) {
+        return
+      }
+
+      const lines = pastedText
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter((line) => line !== '')
+      const isMultiLineNumberInput = lines.length > 1 && lines.every((line) => /^\d+$/.test(line))
+      if (!isMultiLineNumberInput) {
+        return
+      }
+
+      event.preventDefault()
+      for (const line of lines) {
+        amountInput.value = line
+        addRecord()
+      }
+    })
+
     clearAllBtn.addEventListener('click', () => {
       records.length = 0
       errorMsg.textContent = ''
