@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 世界杯预测</title>
+    <link rel="preconnect" href="https://flagcdn.com">
+    <style>
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --border: #e2e6ea;
+    --border-strong: #c8ced6;
+    --border-panel: #a8b2be;
+    --border-card: #b4beca;
+    --text: #1a1f2e;
+    --text-muted: #6b7280;
+    --primary: #006633;
+    --primary-light: #e8f5ee;
+    --gold: #d4a017;
+    --silver: #8b9aab;
+    --bronze: #b87333;
+    --win: #e53935;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --radius: 10px;
+    --team-h: 52px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #004d26 0%, #006633 50%, #008844 100%);
+    color: #fff;
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.trophy {
+    font-size: 2rem;
+}
+
+.header h1 {
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    margin-top: 2px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Buttons */
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+}
+
+.btn-secondary:hover {
+    background: #f7f8fa;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #005528;
+}
+
+.btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-ghost {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* Main layout */
+.main {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 10px;
+    align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .main {
+        grid-template-columns: 1fr;
+    }
+}
+
+.panel {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.panel-header {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-header h2 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+}
+
+.hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.status-text {
+    font-size: 0.82rem;
+    margin-top: 8px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.progress-bar-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+/* Groups */
+.groups-panel {
+    padding-bottom: 18px;
+    border-color: var(--border-panel);
+}
+
+.groups-panel .group-card {
+    border-color: var(--border-card);
+}
+
+.groups-panel .group-title,
+.groups-panel .team-row {
+    border-color: var(--border-card);
+}
+
+.third-place-section .third-slot-item {
+    border-color: var(--border-card);
+}
+
+.step-nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 12px 0 8px;
+    flex-wrap: wrap;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.step-item.done {
+    color: var(--primary);
+}
+
+.step-label {
+    font-weight: 500;
+    padding: 2px 0;
+    border-radius: 999px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.step-item.active .step-label {
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 4px 12px;
+}
+
+.step-item.done .step-label {
+    color: var(--primary);
+}
+
+.step-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    font-size: 0.85rem;
+    color: #004d26;
+    flex-shrink: 0;
+    line-height: 1;
+    user-select: none;
+}
+
+.step-actions {
+    display: flex;
+    gap: 8px;
+    padding: 12px 12px 0;
+}
+
+.step-actions .btn {
+    flex: 1;
+}
+
+.team-row.locked {
+    cursor: default;
+}
+
+.group-card.readonly .team-row {
+    cursor: default;
+}
+
+.third-place-section:not(.hidden) + .groups-grid {
+    max-height: calc(100vh - 420px);
+}
+
+.groups-grid {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-height: calc(100vh - 320px);
+    overflow-y: auto;
+}
+
+.groups-grid .group-title {
+    padding: 5px 6px;
+    font-size: 0.72rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.groups-grid .team-row {
+    gap: 5px;
+    padding: 5px 6px;
+}
+
+.groups-grid .flag-sm {
+    width: 20px;
+    height: 14px;
+}
+
+.groups-grid .team-name {
+    font-size: 0.71rem;
+}
+
+.groups-grid .rank-badge {
+    font-size: 0.6rem;
+    padding: 1px 4px;
+}
+
+.group-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.group-title {
+    background: #f7f8fa;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.group-teams {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
+    user-select: none;
+}
+
+.team-row:last-child {
+    border-bottom: none;
+}
+
+.team-row:hover {
+    background: #f7f9fb;
+}
+
+.team-row.rank-1 {
+    background: #fffbeb;
+    border-left: 3px solid var(--gold);
+}
+
+.team-row.rank-2 {
+    background: #f8fafc;
+    border-left: 3px solid var(--silver);
+}
+
+.team-row.rank-3 {
+    background: #fdf8f3;
+    border-left: 3px solid var(--bronze);
+}
+
+.team-row.rank-out {
+    opacity: 0.55;
+}
+
+.team-row.unpickable {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.team-row.unpickable:hover {
+    background: transparent;
+}
+
+.flag-sm {
+    width: 24px;
+    height: 16px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.team-name {
+    flex: 1;
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rank-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.rank-badge.r1 { background: #fef3c7; color: #92400e; }
+.rank-badge.r2 { background: #e2e8f0; color: #475569; }
+.rank-badge.r3 { background: #fde8d8; color: #9a3412; }
+.rank-badge.rout { background: #f1f5f9; color: #94a3b8; }
+.rank-badge.is-empty {
+    background: transparent;
+    padding: 2px 0;
+    min-width: 1.5em;
+}
+
+/* Third place */
+.third-place-section {
+    padding: 0 12px;
+    margin-top: 4px;
+}
+
+.third-place-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.third-slot-progress {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, auto);
+    gap: 4px;
+}
+
+.third-slot-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 6px;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    background: #fafbfc;
+    min-width: 0;
+}
+
+.third-slot-item > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.third-slot-item .slot-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.third-slot-item.done {
+    color: var(--primary);
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.third-slot-item.done .slot-num {
+    background: var(--primary);
+    color: #fff;
+}
+
+.third-slot-item.active {
+    color: #92400e;
+    background: #fffbeb;
+    border-color: var(--gold);
+    font-weight: 600;
+}
+
+.third-slot-item.active .slot-num {
+    background: var(--gold);
+    color: #fff;
+}
+
+/* Bracket */
+.bracket-panel {
+    min-height: 600px;
+    max-height: calc(100vh - 100px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-color: var(--border-panel);
+}
+
+.bracket-panel .match-card:not(.final-card):not(.third-place-card) {
+    border-color: var(--border-card);
+}
+
+.bracket-panel .match-team + .match-team,
+.bracket-panel .final-trophy,
+.bracket-panel .third-place-trophy {
+    border-color: var(--border-card);
+}
+
+.bracket-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+}
+
+.bracket-wrap {
+    flex: 1;
+    padding: 16px 16px 0 16px;
+    overflow: auto;
+    min-height: 0;
+}
+
+.bracket-flow {
+    --col-gap: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--col-gap);
+    min-width: calc(128px * 5 + var(--col-gap) * 4);
+    min-height: calc(var(--bracket-rows, 16) * var(--bracket-row-h, 68px) + 28px);
+}
+
+.bracket-col {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: relative;
+    width: 128px;
+    overflow: visible;
+}
+
+.bracket-col:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: calc(var(--col-gap, 24px) / -2 - 0.5px);
+    top: calc(28px + var(--vline-top, calc(var(--bracket-row-h, 68px) / 2)) - 3px);
+    height: var(--vline-height, calc((var(--bracket-rows, 16) - 1) * var(--bracket-row-h, 68px)));
+    width: 1px;
+    background: var(--border-strong);
+    z-index: 0;
+}
+
+.bracket-col .round-label {
+    flex-shrink: 0;
+    padding: 0 6px 6px;
+    text-align: center;
+}
+
+.podium-col-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.3;
+}
+
+.bracket-slot-podium {
+    align-items: center;
+}
+
+.bracket-slot-podium-stack {
+    justify-content: center;
+    align-items: center;
+}
+
+.podium-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+}
+
+.bracket-slots {
+    flex: 1;
+    display: grid;
+    grid-template-rows: repeat(var(--bracket-rows), var(--bracket-row-h, 68px));
+    gap: 0;
+    --slot-pad-x: 4px;
+    padding: 0 var(--slot-pad-x);
+    position: relative;
+    overflow: visible;
+}
+
+.bracket-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 0;
+    padding: 1px 0;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.bracket-col:not(:last-child) .bracket-slot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: calc(var(--col-gap, 24px) / -2 - var(--slot-pad-x, 4px));
+    width: calc(var(--col-gap, 24px) / 2 + var(--slot-pad-x, 4px));
+    height: 1px;
+    background: var(--border-strong);
+    z-index: 1;
+}
+
+.bracket-col:not(:first-child) .bracket-slot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc(var(--col-gap, 24px) / -2 - var(--slot-pad-x, 4px));
+    width: calc(var(--col-gap, 24px) / 2 + var(--slot-pad-x, 4px));
+    height: 1px;
+    background: var(--border-strong);
+    z-index: 1;
+}
+
+.bracket-col:last-child .bracket-slot::after {
+    display: none;
+}
+
+.round-label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Match card */
+.match-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    width: 100%;
+    max-width: 120px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.match-card.final-card,
+.match-card.third-place-card {
+    width: 128px;
+    max-width: 128px;
+    min-height: 86px;
+}
+
+.match-card.final-card {
+    border-color: var(--gold);
+    box-shadow: 0 4px 16px rgba(212, 160, 23, 0.2);
+}
+
+.match-card.third-place-card {
+    border-color: #c4956a;
+    box-shadow: 0 2px 10px rgba(196, 149, 106, 0.18);
+}
+
+.final-trophy,
+.third-place-trophy {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 26px;
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 4px;
+    border-bottom: 1px solid var(--border);
+}
+
+.third-place-trophy {
+    background: linear-gradient(180deg, #fdf6ef, #fff);
+}
+
+.final-trophy {
+    background: linear-gradient(180deg, #fffbeb, #fff);
+}
+
+.win-badge.third-badge {
+    background: #c4956a;
+}
+
+.win-badge.second-badge {
+    background: #8a96a8;
+}
+
+.match-team {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 3px 6px;
+    cursor: pointer;
+    transition: background 0.12s;
+    position: relative;
+    min-height: 28px;
+    flex: 1;
+    justify-content: flex-start;
+    gap: 4px;
+}
+
+.match-card.final-card .match-team,
+.match-card.third-place-card .match-team {
+    flex: 1 1 0;
+}
+
+.match-team + .match-team {
+    border-top: 1px solid var(--border);
+}
+
+.match-team:hover:not(.empty):not(.locked) {
+    background: #f0f7f4;
+}
+
+.match-team.winner {
+    background: var(--primary-light);
+}
+
+.match-team.loser {
+    opacity: 0.45;
+}
+
+.match-team.empty {
+    cursor: default;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    justify-content: center;
+}
+
+.match-team.slot-active {
+    background: #fffbeb;
+    color: #92400e;
+    font-weight: 600;
+    box-shadow: inset 0 0 0 2px var(--gold);
+}
+
+.match-team.slot-filled {
+    background: var(--primary-light);
+}
+
+.match-team.locked {
+    cursor: default;
+}
+
+.match-team .flag-md {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.match-team .team-label {
+    font-size: 0.64rem;
+    font-weight: 600;
+    text-align: left;
+    line-height: 1.2;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.win-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--win);
+    color: #fff;
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+}
+
+.match-divider {
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    padding: 2px;
+    background: #fafbfc;
+}
+
+/* Scrollbar */
+.groups-grid::-webkit-scrollbar,
+.bracket-wrap::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.groups-grid::-webkit-scrollbar-thumb,
+.bracket-wrap::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-area">
+                <span class="trophy">🏆</span>
+                <div>
+                    <h1 id="tournament-name">2026 美加墨世界杯</h1>
+                    <p id="tournament-desc" class="subtitle"></p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button type="button" id="btn-random" class="btn btn-ghost">随机预测</button>
+                <button type="button" id="btn-reset" class="btn btn-ghost">重置预测</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <aside class="panel groups-panel">
+            <div class="panel-header">
+                <h2>小组赛</h2>
+                <nav id="step-nav" class="step-nav" aria-label="预测步骤"></nav>
+                <p id="step-hint" class="hint"></p>
+                <div id="group-progress" class="progress-bar-wrap">
+                    <div id="group-progress-fill" class="progress-bar-fill"></div>
+                </div>
+                <p id="group-status" class="status-text"></p>
+            </div>
+            <section id="third-place-section" class="third-place-section hidden">
+                <div id="third-place-grid" class="third-place-grid"></div>
+            </section>
+            <div id="groups-grid" class="groups-grid"></div>
+            <div class="step-actions">
+                <button type="button" id="btn-back" class="btn btn-secondary hidden">上一步</button>
+                <button type="button" id="btn-confirm-step" class="btn btn-primary" disabled>确认</button>
+            </div>
+        </aside>
+
+        <section class="panel bracket-panel">
+            <div id="bracket-empty" class="bracket-empty">
+                <div class="empty-icon">⚽</div>
+                <p id="bracket-empty-text">请先完成小组赛三步预测</p>
+            </div>
+            <div id="bracket-wrap" class="bracket-wrap hidden">
+                <div id="bracket-flow" class="bracket-flow"></div>
+            </div>
+        </section>
+    </main>
+
+    <script type="application/json" id="worldcup-data">{"meta":{"tournament":"2026 FIFA World Cup","name":"2026 美加墨世界杯","host":["美国","加拿大","墨西哥"],"dates":{"start":"2026-06-11","end":"2026-07-19"},"teamsCount":48,"groupsCount":12,"sources":["https://www.fifa.com/en/articles/article-fifa-world-cup-2026-mexico-canada-usa-new-format-tournament-football-soccer","https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/group-stage-permutations-qualify","https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage"],"fetchedAt":"2026-06-16T07:02:57.879Z","flagBaseUrl":"https://flagcdn.com/w80"},"format":{"groupStage":{"description":"12 个小组，每组 4 队，单循环 3 场","advancePerGroup":2,"bestThirdAdvance":8,"totalKnockoutTeams":32},"knockout":{"stages":["roundOf32","roundOf16","quarterfinals","semifinals","final"],"stageLabels":["32强","16强","8强","4强","季军战","决赛"],"description":"自 32 强起为单场淘汰赛，90 分钟平局则加时，仍平则点球"}},"teams":[{"id":"mex","code":"mx","name":"墨西哥","nameEn":"Mexico"},{"id":"rsa","code":"za","name":"南非","nameEn":"South Africa"},{"id":"kor","code":"kr","name":"韩国","nameEn":"Korea Republic"},{"id":"cze","code":"cz","name":"捷克","nameEn":"Czechia"},{"id":"can","code":"ca","name":"加拿大","nameEn":"Canada"},{"id":"sui","code":"ch","name":"瑞士","nameEn":"Switzerland"},{"id":"qat","code":"qa","name":"卡塔尔","nameEn":"Qatar"},{"id":"bih","code":"ba","name":"波黑","nameEn":"Bosnia and Herzegovina"},{"id":"bra","code":"br","name":"巴西","nameEn":"Brazil"},{"id":"mar","code":"ma","name":"摩洛哥","nameEn":"Morocco"},{"id":"hai","code":"ht","name":"海地","nameEn":"Haiti"},{"id":"sco","code":"gb-sct","name":"苏格兰","nameEn":"Scotland"},{"id":"usa","code":"us","name":"美国","nameEn":"United States"},{"id":"par","code":"py","name":"巴拉圭","nameEn":"Paraguay"},{"id":"aus","code":"au","name":"澳大利亚","nameEn":"Australia"},{"id":"tur","code":"tr","name":"土耳其","nameEn":"Türkiye"},{"id":"ger","code":"de","name":"德国","nameEn":"Germany"},{"id":"cuw","code":"cw","name":"库拉索","nameEn":"Curaçao"},{"id":"civ","code":"ci","name":"科特迪瓦","nameEn":"Côte d'Ivoire"},{"id":"ecu","code":"ec","name":"厄瓜多尔","nameEn":"Ecuador"},{"id":"ned","code":"nl","name":"荷兰","nameEn":"Netherlands"},{"id":"jpn","code":"jp","name":"日本","nameEn":"Japan"},{"id":"swe","code":"se","name":"瑞典","nameEn":"Sweden"},{"id":"tun","code":"tn","name":"突尼斯","nameEn":"Tunisia"},{"id":"bel","code":"be","name":"比利时","nameEn":"Belgium"},{"id":"egy","code":"eg","name":"埃及","nameEn":"Egypt"},{"id":"irn","code":"ir","name":"伊朗","nameEn":"Iran"},{"id":"nzl","code":"nz","name":"新西兰","nameEn":"New Zealand"},{"id":"esp","code":"es","name":"西班牙","nameEn":"Spain"},{"id":"cpv","code":"cv","name":"佛得角","nameEn":"Cabo Verde"},{"id":"ksa","code":"sa","name":"沙特","nameEn":"Saudi Arabia"},{"id":"uru","code":"uy","name":"乌拉圭","nameEn":"Uruguay"},{"id":"fra","code":"fr","name":"法国","nameEn":"France"},{"id":"sen","code":"sn","name":"塞内加尔","nameEn":"Senegal"},{"id":"nor","code":"no","name":"挪威","nameEn":"Norway"},{"id":"irq","code":"iq","name":"伊拉克","nameEn":"Iraq"},{"id":"arg","code":"ar","name":"阿根廷","nameEn":"Argentina"},{"id":"alg","code":"dz","name":"阿尔及利亚","nameEn":"Algeria"},{"id":"aut","code":"at","name":"奥地利","nameEn":"Austria"},{"id":"jor","code":"jo","name":"约旦","nameEn":"Jordan"},{"id":"por","code":"pt","name":"葡萄牙","nameEn":"Portugal"},{"id":"col","code":"co","name":"哥伦比亚","nameEn":"Colombia"},{"id":"uzb","code":"uz","name":"乌兹别克斯坦","nameEn":"Uzbekistan"},{"id":"cod","code":"cd","name":"刚果（金）","nameEn":"Congo DR"},{"id":"eng","code":"gb-eng","name":"英格兰","nameEn":"England"},{"id":"cro","code":"hr","name":"克罗地亚","nameEn":"Croatia"},{"id":"gha","code":"gh","name":"加纳","nameEn":"Ghana"},{"id":"pan","code":"pa","name":"巴拿马","nameEn":"Panama"}],"groups":[{"id":"A","name":"A组","teamIds":["mex","rsa","kor","cze"]},{"id":"B","name":"B组","teamIds":["can","sui","qat","bih"]},{"id":"C","name":"C组","teamIds":["bra","mar","hai","sco"]},{"id":"D","name":"D组","teamIds":["usa","par","aus","tur"]},{"id":"E","name":"E组","teamIds":["ger","cuw","civ","ecu"]},{"id":"F","name":"F组","teamIds":["ned","jpn","swe","tun"]},{"id":"G","name":"G组","teamIds":["bel","egy","irn","nzl"]},{"id":"H","name":"H组","teamIds":["esp","cpv","ksa","uru"]},{"id":"I","name":"I组","teamIds":["fra","sen","nor","irq"]},{"id":"J","name":"J组","teamIds":["arg","alg","aut","jor"]},{"id":"K","name":"K组","teamIds":["por","col","uzb","cod"]},{"id":"L","name":"L组","teamIds":["eng","cro","gha","pan"]}],"roundOf32":[{"id":"m73","label":"第73场","home":{"type":"rank","group":"A","rank":2},"away":{"type":"rank","group":"B","rank":2},"half":"upper","order":0},{"id":"m74","label":"第74场","home":{"type":"rank","group":"E","rank":1},"away":{"type":"third","candidates":["A","B","C","D","F"]},"half":"upper","order":1},{"id":"m77","label":"第77场","home":{"type":"rank","group":"I","rank":1},"away":{"type":"third","candidates":["C","D","F","G","H"]},"half":"upper","order":2},{"id":"m75","label":"第75场","home":{"type":"rank","group":"F","rank":1},"away":{"type":"rank","group":"C","rank":2},"half":"upper","order":3},{"id":"m76","label":"第76场","home":{"type":"rank","group":"C","rank":1},"away":{"type":"rank","group":"F","rank":2},"half":"upper","order":4},{"id":"m78","label":"第78场","home":{"type":"rank","group":"E","rank":2},"away":{"type":"rank","group":"I","rank":2},"half":"upper","order":5},{"id":"m79","label":"第79场","home":{"type":"rank","group":"A","rank":1},"away":{"type":"third","candidates":["C","E","F","H","I"]},"half":"upper","order":6},{"id":"m80","label":"第80场","home":{"type":"rank","group":"L","rank":1},"away":{"type":"third","candidates":["E","H","I","J","K"]},"half":"upper","order":7},{"id":"m83","label":"第83场","home":{"type":"rank","group":"K","rank":2},"away":{"type":"rank","group":"L","rank":2},"half":"lower","order":0},{"id":"m84","label":"第84场","home":{"type":"rank","group":"H","rank":1},"away":{"type":"rank","group":"J","rank":2},"half":"lower","order":1},{"id":"m81","label":"第81场","home":{"type":"rank","group":"D","rank":1},"away":{"type":"third","candidates":["B","E","F","I","J"]},"half":"lower","order":2},{"id":"m82","label":"第82场","home":{"type":"rank","group":"G","rank":1},"away":{"type":"third","candidates":["A","E","H","I","J"]},"half":"lower","order":3},{"id":"m86","label":"第86场","home":{"type":"rank","group":"J","rank":1},"away":{"type":"rank","group":"H","rank":2},"half":"lower","order":4},{"id":"m88","label":"第88场","home":{"type":"rank","group":"D","rank":2},"away":{"type":"rank","group":"G","rank":2},"half":"lower","order":5},{"id":"m85","label":"第85场","home":{"type":"rank","group":"B","rank":1},"away":{"type":"third","candidates":["E","F","G","I","J"]},"half":"lower","order":6},{"id":"m87","label":"第87场","home":{"type":"rank","group":"K","rank":1},"away":{"type":"third","candidates":["D","E","I","J","L"]},"half":"lower","order":7}],"knockoutTree":{"r16":[{"id":"m89","home":"m74","away":"m77","half":"upper"},{"id":"m90","home":"m73","away":"m75","half":"upper"},{"id":"m91","home":"m76","away":"m78","half":"upper"},{"id":"m92","home":"m79","away":"m80","half":"upper"},{"id":"m93","home":"m83","away":"m84","half":"lower"},{"id":"m94","home":"m81","away":"m82","half":"lower"},{"id":"m95","home":"m86","away":"m88","half":"lower"},{"id":"m96","home":"m85","away":"m87","half":"lower"}],"qf":[{"id":"m97","home":"m89","away":"m90","half":"upper"},{"id":"m99","home":"m91","away":"m92","half":"upper"},{"id":"m98","home":"m93","away":"m94","half":"lower"},{"id":"m100","home":"m95","away":"m96","half":"lower"}],"sf":[{"id":"m101","home":"m97","away":"m99","half":"upper"},{"id":"m102","home":"m98","away":"m100","half":"lower"}],"final":{"id":"m104","home":"m101","away":"m102"},"thirdPlace":{"id":"m103","home":"m101","away":"m102"}}}</script>
+    <script>
+const RANK_CLASS = { 1: 'rank-1', 2: 'rank-2', 3: 'rank-3', 4: 'rank-out' }
+const STAGE_LABELS = {
+    r32: '32强',
+    r16: '16强',
+    qf: '8强',
+    sf: '4强',
+    thirdPlace: '季军战',
+    final: '决赛'
+}
+
+const BRACKET_ROWS = 16
+const BRACKET_ROW_H = 68
+
+const BRACKET_ORDER = {
+    r32: [
+        'm73', 'm75', 'm74', 'm77', 'm76', 'm78', 'm79', 'm80',
+        'm83', 'm84', 'm81', 'm82', 'm86', 'm88', 'm85', 'm87'
+    ],
+    r16: ['m90', 'm89', 'm91', 'm92', 'm93', 'm94', 'm95', 'm96'],
+    qf: ['m97', 'm99', 'm98', 'm100'],
+    sf: ['m101', 'm102'],
+    final: ['m104']
+}
+
+const STEPS = [
+    { id: 'first', label: '小组第一', hint: '点击各组球队，选出小组头名（每组 1 支）' },
+    { id: 'second', label: '小组第二', hint: '点击各组球队，选出小组第二名（每组 1 支，头名不可选）' },
+    { id: 'third', label: '最佳第三', hint: '点击球队按选中顺序补位；再次点击取消' },
+    { id: 'knockout', label: '淘汰赛', hint: '出线球队已确定' }
+]
+
+let data = null
+let groupRanks = {}
+let thirdFillOrder = []
+let currentStep = 'first'
+let winners = {}
+
+function init() {
+    data = JSON.parse(document.getElementById('worldcup-data').textContent)
+    initMeta()
+    initGroupRanks()
+    renderStepNav()
+    renderUI()
+    bindGlobalEvents()
+}
+
+function initMeta() {
+    document.getElementById('tournament-name').textContent = data.meta.name
+    const knockoutStages = data.format.knockout.stageLabels
+        || ['32强', '16强', '8强', '4强', '季军战', '决赛']
+    document.getElementById('tournament-desc').textContent =
+        `${data.meta.host.join(' · ')} | ${data.format.groupStage.description} → ${knockoutStages.join(' → ')}`
+}
+
+function initGroupRanks() {
+    data.groups.forEach(g => {
+        groupRanks[g.id] = {}
+        g.teamIds.forEach(id => { groupRanks[g.id][id] = 0 })
+    })
+}
+
+function getTeam(id) {
+    return data.teams.find(t => t.id === id)
+}
+
+function flagUrl(team) {
+    return `${data.meta.flagBaseUrl}/${team.code}.png`
+}
+
+function bindGlobalEvents() {
+    document.getElementById('btn-random').addEventListener('click', randomPredictAll)
+    document.getElementById('btn-reset').addEventListener('click', resetAll)
+    document.getElementById('btn-confirm-step').addEventListener('click', confirmStep)
+    document.getElementById('btn-back').addEventListener('click', goBack)
+}
+
+function pickRandom(items) {
+    return items[Math.floor(Math.random() * items.length)]
+}
+
+function randomPredictAll() {
+    initGroupRanks()
+    thirdFillOrder = []
+    winners = {}
+
+    data.groups.forEach(group => {
+        groupRanks[group.id][pickRandom(group.teamIds)] = 1
+    })
+
+    data.groups.forEach(group => {
+        const remaining = group.teamIds.filter(id => groupRanks[group.id][id] !== 1)
+        groupRanks[group.id][pickRandom(remaining)] = 2
+    })
+
+    for (let i = 0; i < 8; i++) {
+        const usedGroups = new Set(thirdFillOrder.map(k => k.split(':')[0]))
+        const candidates = data.groups
+            .filter(g => !usedGroups.has(g.id))
+            .flatMap(group => group.teamIds
+                .filter(teamId => {
+                    const r = groupRanks[group.id][teamId]
+                    return r !== 1 && r !== 2
+                })
+                .map(teamId => ({ groupId: group.id, teamId }))
+            )
+
+        if (!candidates.length) break
+
+        const { groupId, teamId } = pickRandom(candidates)
+        thirdFillOrder.push(`${groupId}:${teamId}`)
+    }
+
+    finalizeThirdRanks()
+    currentStep = 'knockout'
+
+    const matchOrder = [
+        ...BRACKET_ORDER.r32,
+        ...BRACKET_ORDER.r16,
+        ...BRACKET_ORDER.qf,
+        ...BRACKET_ORDER.sf,
+        data.knockoutTree.thirdPlace.id,
+        data.knockoutTree.final.id
+    ]
+
+    matchOrder.forEach(matchId => {
+        const { home, away } = getMatchTeams(matchId)
+        if (home && away) {
+            winners[matchId] = pickRandom([home.id, away.id])
+        }
+    })
+
+    renderStepNav()
+    renderUI()
+    scrollToBracket()
+}
+
+function resetAll() {
+    initGroupRanks()
+    thirdFillOrder = []
+    currentStep = 'first'
+    winners = {}
+    renderStepNav()
+    renderUI()
+    hideBracket()
+}
+
+function clearRank34() {
+    data.groups.forEach(g => {
+        g.teamIds.forEach(id => {
+            if (groupRanks[g.id][id] === 3 || groupRanks[g.id][id] === 4) {
+                groupRanks[g.id][id] = 0
+            }
+        })
+    })
+}
+
+function goBack() {
+    if (currentStep === 'second') {
+        data.groups.forEach(g => {
+            g.teamIds.forEach(id => {
+                if (groupRanks[g.id][id] === 2) groupRanks[g.id][id] = 0
+            })
+        })
+        currentStep = 'first'
+    } else if (currentStep === 'third') {
+        thirdFillOrder = []
+        currentStep = 'second'
+    } else if (currentStep === 'knockout') {
+        clearRank34()
+        currentStep = 'third'
+    }
+    renderStepNav()
+    renderUI()
+}
+
+function confirmStep() {
+    if (currentStep === 'knockout') {
+        clearRank34()
+        currentStep = 'third'
+        renderStepNav()
+        renderUI()
+        return
+    }
+    if (currentStep === 'first') {
+        currentStep = 'second'
+    } else if (currentStep === 'second') {
+        currentStep = 'third'
+        thirdFillOrder = []
+    } else if (currentStep === 'third') {
+        finalizeThirdRanks()
+        currentStep = 'knockout'
+        winners = {}
+        scrollToBracket()
+    }
+    renderStepNav()
+    renderUI()
+}
+
+function finalizeThirdRanks() {
+    const advancedKeys = new Set(thirdFillOrder)
+
+    data.groups.forEach(group => {
+        const remaining = group.teamIds.filter(id => {
+            const r = groupRanks[group.id][id]
+            return r !== 1 && r !== 2
+        })
+        const picked = remaining.find(id => advancedKeys.has(`${group.id}:${id}`))
+
+        if (picked) {
+            groupRanks[group.id][picked] = 3
+            remaining.filter(id => id !== picked).forEach(id => {
+                groupRanks[group.id][id] = 4
+            })
+        } else if (remaining.length === 2) {
+            groupRanks[group.id][remaining[0]] = 3
+            groupRanks[group.id][remaining[1]] = 4
+        } else if (remaining.length === 1) {
+            groupRanks[group.id][remaining[0]] = 4
+        }
+    })
+}
+
+function getThirdSlotsInBracketOrder() {
+    const slots = []
+
+    BRACKET_ORDER.r32.forEach(matchId => {
+        const m = data.roundOf32.find(x => x.id === matchId)
+        if (m.home.type === 'third') {
+            slots.push({
+                matchId: m.id,
+                side: 'home',
+                slotKey: `${m.id}:home`,
+                candidates: m.home.candidates,
+                label: m.label
+            })
+        }
+        if (m.away.type === 'third') {
+            slots.push({
+                matchId: m.id,
+                side: 'away',
+                slotKey: `${m.id}:away`,
+                candidates: m.away.candidates,
+                label: m.label
+            })
+        }
+    })
+
+    return slots
+}
+
+function getThirdAssignment() {
+    const slots = getThirdSlotsInBracketOrder()
+    const result = {}
+
+    thirdFillOrder.forEach((key, i) => {
+        const [group, teamId] = key.split(':')
+        result[slots[i].slotKey] = { group, teamId, key }
+    })
+
+    return result
+}
+
+function getThirdSlotIndex(matchId, side) {
+    const slotKey = `${matchId}:${side}`
+    return getThirdSlotsInBracketOrder().findIndex(s => s.slotKey === slotKey)
+}
+
+function isActiveThirdSlot(matchId, side) {
+    if (currentStep !== 'third') return false
+    const idx = thirdFillOrder.length
+    if (idx >= 8) return false
+    const slots = getThirdSlotsInBracketOrder()
+    return slots[idx]?.slotKey === `${matchId}:${side}`
+}
+
+function getThirdPickIndex(key) {
+    return thirdFillOrder.indexOf(key)
+}
+
+function canAddThirdPick(groupId) {
+    if (thirdFillOrder.length >= 8) return false
+    return !thirdFillOrder.some(k => k.startsWith(`${groupId}:`))
+}
+
+function selectThirdTeam(groupId, teamId) {
+    if (currentStep !== 'third') return
+
+    const key = `${groupId}:${teamId}`
+    const existingIdx = thirdFillOrder.indexOf(key)
+
+    if (existingIdx >= 0) {
+        thirdFillOrder.splice(existingIdx, 1)
+        renderUI()
+        return
+    }
+
+    if (thirdFillOrder.length >= 8) return
+    if (groupRanks[groupId][teamId] === 1 || groupRanks[groupId][teamId] === 2) return
+    if (!canAddThirdPick(groupId)) return
+
+    thirdFillOrder.push(key)
+    renderUI()
+}
+
+function countRank(rank) {
+    let n = 0
+    data.groups.forEach(g => {
+        if (Object.values(groupRanks[g.id]).filter(r => r === rank).length === 1) n++
+    })
+    return n
+}
+
+function getStepProgress() {
+    if (currentStep === 'first') return countRank(1) / 12
+    if (currentStep === 'second') return countRank(2) / 12
+    if (currentStep === 'third') return thirdFillOrder.length / 8
+    return 1
+}
+
+function renderStepNav() {
+    const nav = document.getElementById('step-nav')
+    nav.innerHTML = ''
+    const activeIdx = STEPS.findIndex(s => s.id === currentStep)
+
+    STEPS.forEach((step, i) => {
+        const el = document.createElement('div')
+        el.className = 'step-item'
+        if (i < activeIdx) el.classList.add('done')
+        if (i === activeIdx) el.classList.add('active')
+        el.innerHTML = `<span class="step-label">${step.label}</span>`
+
+        nav.appendChild(el)
+
+        if (i < STEPS.length - 1) {
+            const arrow = document.createElement('span')
+            arrow.className = `step-arrow ${i < activeIdx ? 'done' : ''}`
+            arrow.textContent = '→'
+            arrow.setAttribute('aria-hidden', 'true')
+            nav.appendChild(arrow)
+        }
+    })
+}
+
+function renderUI() {
+    const step = STEPS.find(s => s.id === currentStep)
+    document.getElementById('step-hint').textContent = step.hint
+    document.getElementById('group-progress-fill').style.width = `${getStepProgress() * 100}%`
+
+    const thirdSection = document.getElementById('third-place-section')
+    const groupsGrid = document.getElementById('groups-grid')
+
+    if (currentStep === 'third') {
+        groupsGrid.classList.remove('hidden')
+        thirdSection.classList.remove('hidden')
+        renderThirdSlotProgress()
+        renderThirdPlaceGroups()
+        renderBracket()
+    } else if (currentStep === 'knockout') {
+        groupsGrid.classList.remove('hidden')
+        thirdSection.classList.add('hidden')
+        renderGroupsReadonly()
+        renderBracket()
+    } else {
+        groupsGrid.classList.remove('hidden')
+        thirdSection.classList.add('hidden')
+        renderGroups()
+        hideBracket()
+    }
+
+    updateStepControls()
+}
+
+function selectTeam(groupId, teamId) {
+    if (currentStep === 'first') {
+        const ranks = groupRanks[groupId]
+        Object.keys(ranks).forEach(id => {
+            if (ranks[id] === 1) ranks[id] = 0
+        })
+        ranks[teamId] = 1
+    } else if (currentStep === 'second') {
+        if (groupRanks[groupId][teamId] === 1) return
+        const ranks = groupRanks[groupId]
+        Object.keys(ranks).forEach(id => {
+            if (ranks[id] === 2) ranks[id] = 0
+        })
+        ranks[teamId] = 2
+    }
+    renderUI()
+}
+
+function renderGroups() {
+    const grid = document.getElementById('groups-grid')
+    grid.innerHTML = ''
+    const pickRank = currentStep === 'first' ? 1 : 2
+
+    data.groups.forEach(group => {
+        const card = document.createElement('div')
+        card.className = 'group-card'
+        card.innerHTML = `<div class="group-title">${group.name}</div>`
+
+        const teamsEl = document.createElement('div')
+        teamsEl.className = 'group-teams'
+
+        group.teamIds.forEach(teamId => {
+            const team = getTeam(teamId)
+            const rank = groupRanks[group.id][teamId] || 0
+            const isLocked = currentStep === 'second' && rank === 1
+            const isSelected = rank === pickRank
+            const rankClass = rank === 1 ? RANK_CLASS[1] : isSelected ? RANK_CLASS[pickRank] : ''
+
+            const badgeText = isLocked ? '第1' : isSelected ? `第${pickRank}` : ''
+            const badgeClass = isLocked ? 'r1' : isSelected ? `r${pickRank}` : 'is-empty'
+
+            const row = document.createElement('div')
+            row.className = `team-row ${rankClass} ${isLocked ? 'locked' : ''}`
+            row.innerHTML = `
+                <img class="flag-sm" src="${flagUrl(team)}" alt="${team.name}" loading="lazy">
+                <span class="team-name">${team.name}</span>
+                <span class="rank-badge ${badgeClass}">${badgeText}</span>
+            `
+            if (!isLocked) {
+                row.addEventListener('click', () => selectTeam(group.id, teamId))
+            }
+            teamsEl.appendChild(row)
+        })
+
+        card.appendChild(teamsEl)
+        grid.appendChild(card)
+    })
+}
+
+function renderGroupsReadonly() {
+    const grid = document.getElementById('groups-grid')
+    grid.innerHTML = ''
+
+    data.groups.forEach(group => {
+        const card = document.createElement('div')
+        card.className = 'group-card readonly'
+        card.innerHTML = `<div class="group-title">${group.name}</div>`
+
+        const teamsEl = document.createElement('div')
+        teamsEl.className = 'group-teams'
+
+        const sorted = [...group.teamIds].sort((a, b) => {
+            const ra = groupRanks[group.id][a] || 9
+            const rb = groupRanks[group.id][b] || 9
+            return ra - rb
+        })
+
+        sorted.forEach(teamId => {
+            const team = getTeam(teamId)
+            const rank = groupRanks[group.id][teamId] || 0
+            const label = rank === 1 ? '第1' : rank === 2 ? '第2' : rank === 3 ? '第3' : '淘汰'
+
+            const row = document.createElement('div')
+            row.className = `team-row ${RANK_CLASS[rank] || 'rank-out'}`
+            row.innerHTML = `
+                <img class="flag-sm" src="${flagUrl(team)}" alt="${team.name}" loading="lazy">
+                <span class="team-name">${team.name}</span>
+                <span class="rank-badge ${rank <= 3 ? 'r' + rank : 'rout'}">${label}</span>
+            `
+            teamsEl.appendChild(row)
+        })
+
+        card.appendChild(teamsEl)
+        grid.appendChild(card)
+    })
+}
+
+function scrollToBracket() {
+    document.querySelector('.bracket-panel')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+}
+
+function renderThirdSlotProgress() {
+    const grid = document.getElementById('third-place-grid')
+    const slots = getThirdSlotsInBracketOrder()
+    const n = thirdFillOrder.length
+
+    grid.innerHTML = ''
+
+    const progress = document.createElement('div')
+    progress.className = 'third-slot-progress'
+
+    slots.forEach((slot, i) => {
+        const item = document.createElement('div')
+        item.className = 'third-slot-item'
+        if (i < n) item.classList.add('done')
+        if (i === n && n < 8) item.classList.add('active')
+
+        if (i < n) {
+            const team = getTeam(thirdFillOrder[i].split(':')[1])
+            item.innerHTML = `<span class="slot-num">${i + 1}</span><span>${slot.label} · ${team.name}</span>`
+        } else if (i === n && n < 8) {
+            item.innerHTML = `<span class="slot-num">${i + 1}</span><span>${slot.label} · 待选</span>`
+        } else {
+            item.innerHTML = `<span class="slot-num">${i + 1}</span><span>${slot.label}</span>`
+        }
+
+        progress.appendChild(item)
+    })
+
+    grid.appendChild(progress)
+}
+
+function renderThirdPlaceGroups() {
+    const grid = document.getElementById('groups-grid')
+    grid.innerHTML = ''
+
+    data.groups.forEach(group => {
+        const candidates = group.teamIds.filter(teamId => {
+            const r = groupRanks[group.id][teamId]
+            return r !== 1 && r !== 2
+        })
+        if (!candidates.length) return
+
+        const card = document.createElement('div')
+        card.className = 'group-card'
+        card.innerHTML = `<div class="group-title">${group.name}</div>`
+
+        const teamsEl = document.createElement('div')
+        teamsEl.className = 'group-teams'
+
+        candidates.forEach(teamId => {
+            const team = getTeam(teamId)
+            const key = `${group.id}:${teamId}`
+            const pickIdx = getThirdPickIndex(key)
+            const isSelected = pickIdx >= 0
+            const canAdd = canAddThirdPick(group.id)
+            const isDisabled = !isSelected && !canAdd
+
+            const row = document.createElement('div')
+            row.className = `team-row ${isSelected ? 'rank-3' : ''} ${isDisabled ? 'unpickable' : ''}`
+
+            const badgeText = isSelected ? String(pickIdx + 1) : ''
+            const badgeClass = isSelected ? 'r3' : 'is-empty'
+
+            row.innerHTML = `
+                <img class="flag-sm" src="${flagUrl(team)}" alt="${team.name}" loading="lazy">
+                <span class="team-name">${team.name}</span>
+                <span class="rank-badge ${badgeClass}">${badgeText}</span>
+            `
+
+            if (isSelected || canAdd) {
+                row.addEventListener('click', () => selectThirdTeam(group.id, teamId))
+            }
+
+            teamsEl.appendChild(row)
+        })
+
+        card.appendChild(teamsEl)
+        grid.appendChild(card)
+    })
+}
+
+function updateStepControls() {
+    const status = document.getElementById('group-status')
+    const btnConfirm = document.getElementById('btn-confirm-step')
+    const btnBack = document.getElementById('btn-back')
+    const bracketEmptyText = document.getElementById('bracket-empty-text')
+
+    btnBack.classList.toggle('hidden', currentStep === 'first' || currentStep === 'knockout')
+
+    if (currentStep === 'first') {
+        const n = countRank(1)
+        status.textContent = `已选 ${n}/12 组头名`
+        btnConfirm.textContent = '下一步'
+        btnConfirm.disabled = n < 12
+        bracketEmptyText.textContent = '请先完成小组赛三步预测'
+    } else if (currentStep === 'second') {
+        const n = countRank(2)
+        status.textContent = `已选 ${n}/12 组第二名`
+        btnConfirm.textContent = '下一步'
+        btnConfirm.disabled = n < 12
+        bracketEmptyText.textContent = '请先完成小组赛三步预测'
+    } else if (currentStep === 'third') {
+        const n = thirdFillOrder.length
+        const slots = getThirdSlotsInBracketOrder()
+        status.textContent = n < 8
+            ? `已选 ${n}/8 · 下一顺位：${slots[n].label}`
+            : '8 个第三名席位已全部补全'
+        btnConfirm.textContent = '进入淘汰赛'
+        btnConfirm.disabled = n !== 8
+        bracketEmptyText.textContent = ''
+    } else {
+        status.textContent = '小组赛预测已完成，请在右侧选择淘汰赛胜者'
+        btnConfirm.textContent = '重选出线名单'
+        btnConfirm.disabled = false
+        bracketEmptyText.textContent = ''
+    }
+}
+
+function resolveSlot(slot, thirdAssignment, matchId, side) {
+    if (slot.type === 'rank') {
+        const group = data.groups.find(g => g.id === slot.group)
+        const teamId = group.teamIds.find(id => groupRanks[slot.group][id] === slot.rank)
+        return teamId ? getTeam(teamId) : null
+    }
+
+    if (slot.type === 'third') {
+        const adv = thirdAssignment[`${matchId}:${side}`]
+        return adv ? getTeam(adv.teamId) : null
+    }
+
+    return null
+}
+
+function buildRoundOf32Teams() {
+    const thirdAssignment = getThirdAssignment()
+    const matches = {}
+
+    data.roundOf32.forEach(m => {
+        const home = resolveSlot(m.home, thirdAssignment, m.id, 'home')
+        const away = resolveSlot(m.away, thirdAssignment, m.id, 'away')
+        matches[m.id] = { home, away, label: m.label }
+    })
+
+    return matches
+}
+
+function hideBracket() {
+    document.getElementById('bracket-empty').classList.remove('hidden')
+    document.getElementById('bracket-wrap').classList.add('hidden')
+}
+
+function getMatchLoser(matchId) {
+    const winnerId = winners[matchId]
+    if (!winnerId) return null
+
+    const { home, away } = getMatchTeams(matchId)
+    if (!home || !away) return null
+
+    return winnerId === home.id ? away : home
+}
+
+function getMatchTeams(matchId) {
+    const thirdPlace = data.knockoutTree.thirdPlace
+    if (thirdPlace && matchId === thirdPlace.id) {
+        return {
+            home: getMatchLoser(thirdPlace.home),
+            away: getMatchLoser(thirdPlace.away),
+            label: '季军战'
+        }
+    }
+
+    if (matchId.startsWith('m') && parseInt(matchId.slice(1)) <= 88) {
+        const r32 = buildRoundOf32Teams()
+        const m = r32[matchId]
+        if (!m) return { home: null, away: null }
+        return { home: m.home, away: m.away, label: m.label }
+    }
+
+    const findInTree = (id) => {
+        for (const stage of ['r16', 'qf', 'sf']) {
+            const found = data.knockoutTree[stage].find(m => m.id === id)
+            if (found) return found
+        }
+        if (data.knockoutTree.final.id === id) return data.knockoutTree.final
+        if (data.knockoutTree.thirdPlace?.id === id) return data.knockoutTree.thirdPlace
+        return null
+    }
+
+    const def = findInTree(matchId)
+    if (!def) return { home: null, away: null }
+
+    const homeWinner = winners[def.home]
+    const awayWinner = winners[def.away]
+
+    return {
+        home: homeWinner ? getTeam(homeWinner) : null,
+        away: awayWinner ? getTeam(awayWinner) : null,
+        label: matchId
+    }
+}
+
+function selectWinner(matchId, teamId) {
+    const { home, away } = getMatchTeams(matchId)
+    if (!home || !away) return
+
+    const valid = teamId === home.id || teamId === away.id
+    if (!valid) return
+
+    winners[matchId] = teamId
+
+    if (matchId === 'm101' || matchId === 'm102') {
+        const tp = data.knockoutTree.thirdPlace
+        if (tp) delete winners[tp.id]
+    }
+
+    clearDownstream(matchId)
+    renderBracket()
+}
+
+function getParentMatches(matchId) {
+    const parents = []
+    for (const stage of ['r16', 'qf', 'sf']) {
+        data.knockoutTree[stage].forEach(m => {
+            if (m.home === matchId || m.away === matchId) parents.push(m.id)
+        })
+    }
+    const fin = data.knockoutTree.final
+    if (fin.home === matchId || fin.away === matchId) parents.push(fin.id)
+    return parents
+}
+
+function clearDownstream(matchId) {
+    const toClear = new Set()
+    const queue = getParentMatches(matchId)
+
+    while (queue.length) {
+        const id = queue.shift()
+        if (toClear.has(id)) continue
+        toClear.add(id)
+        getParentMatches(id).forEach(p => queue.push(p))
+    }
+
+    toClear.forEach(id => delete winners[id])
+}
+
+function createMatchCard(matchId, opts = {}) {
+    const { home, away } = getMatchTeams(matchId)
+    const winnerId = winners[matchId]
+    const isFinal = opts.isFinal
+    const isThirdPlace = opts.isThirdPlace
+
+    const card = document.createElement('div')
+    card.className = `match-card ${isFinal ? 'final-card' : ''} ${isThirdPlace ? 'third-place-card' : ''}`
+
+    if (isFinal) {
+        card.innerHTML = '<div class="final-trophy">🏆</div>'
+    } else if (isThirdPlace) {
+        card.innerHTML = '<div class="third-place-trophy">🥉</div>'
+    }
+
+    ;[
+        { team: home, side: 'home' },
+        { team: away, side: 'away' }
+    ].forEach(({ team, side }) => {
+        const el = document.createElement('div')
+        const slotIdx = getThirdSlotIndex(matchId, side)
+        const isThirdSlot = slotIdx >= 0
+        const isActive = isActiveThirdSlot(matchId, side)
+
+        if (!team) {
+            el.className = `match-team empty ${isActive ? 'slot-active' : ''}`
+            el.textContent = isActive ? '待选' : '待定'
+        } else {
+            const isWinner = winnerId === team.id
+            const isLoser = winnerId && winnerId !== team.id
+            el.className = `match-team ${isWinner ? 'winner' : ''} ${isLoser ? 'loser' : ''} ${currentStep === 'third' && isThirdSlot && slotIdx < thirdFillOrder.length ? 'slot-filled' : ''}`
+            el.innerHTML = `
+                ${isWinner && isFinal ? '<span class="win-badge">WIN</span>' : ''}
+                ${isLoser && isFinal && winnerId ? '<span class="win-badge second-badge">2ND</span>' : ''}
+                ${isWinner && isThirdPlace ? '<span class="win-badge third-badge">3RD</span>' : ''}
+                <img class="flag-md" src="${flagUrl(team)}" alt="${team.name}">
+                <span class="team-label">${team.name}</span>
+            `
+            if (currentStep === 'knockout') {
+                el.addEventListener('click', () => selectWinner(matchId, team.id))
+            }
+        }
+        card.appendChild(el)
+    })
+
+    return card
+}
+
+function setColumnVline(col, span, matchCount) {
+    const firstCenter = span * BRACKET_ROW_H / 2
+    const lastStart = (matchCount - 1) * span + 1
+    const lastCenter = (lastStart - 1) * BRACKET_ROW_H + span * BRACKET_ROW_H / 2
+    col.style.setProperty('--vline-top', `${firstCenter}px`)
+    col.style.setProperty('--vline-height', `${lastCenter - firstCenter}px`)
+}
+
+function renderBracketColumn(label, matchIds, span) {
+    const col = document.createElement('div')
+    col.className = 'bracket-col'
+
+    const title = document.createElement('div')
+    title.className = 'round-label'
+    title.textContent = label
+    col.appendChild(title)
+
+    setColumnVline(col, span, matchIds.length)
+
+    const slots = document.createElement('div')
+    slots.className = 'bracket-slots'
+    slots.style.setProperty('--bracket-rows', BRACKET_ROWS)
+    slots.style.setProperty('--bracket-row-h', `${BRACKET_ROW_H}px`)
+
+    matchIds.forEach((matchId, i) => {
+        const slot = document.createElement('div')
+        slot.className = 'bracket-slot'
+        const start = i * span + 1
+        slot.style.gridRow = `${start} / ${start + span}`
+        slot.appendChild(createMatchCard(matchId, {
+            isFinal: matchId === data.knockoutTree.final.id
+        }))
+        slots.appendChild(slot)
+    })
+
+    col.appendChild(slots)
+    return col
+}
+
+function renderPodiumColumn() {
+    const col = document.createElement('div')
+    col.className = 'bracket-col bracket-col-podium'
+
+    const title = document.createElement('div')
+    title.className = 'round-label podium-col-label'
+    title.innerHTML = `<span>${STAGE_LABELS.final}</span><span>${STAGE_LABELS.thirdPlace}</span>`
+    col.appendChild(title)
+
+    const slots = document.createElement('div')
+    slots.className = 'bracket-slots'
+    slots.style.setProperty('--bracket-rows', BRACKET_ROWS)
+    slots.style.setProperty('--bracket-row-h', `${BRACKET_ROW_H}px`)
+
+    const slot = document.createElement('div')
+    slot.className = 'bracket-slot bracket-slot-podium bracket-slot-podium-stack'
+    slot.style.gridRow = '7 / 11'
+
+    const stack = document.createElement('div')
+    stack.className = 'podium-stack'
+    stack.appendChild(createMatchCard(data.knockoutTree.final.id, { isFinal: true }))
+    stack.appendChild(createMatchCard(data.knockoutTree.thirdPlace.id, { isThirdPlace: true }))
+    slot.appendChild(stack)
+    slots.appendChild(slot)
+
+    col.appendChild(slots)
+    return col
+}
+
+function renderBracket() {
+    document.getElementById('bracket-empty').classList.add('hidden')
+    document.getElementById('bracket-wrap').classList.remove('hidden')
+
+    const flow = document.getElementById('bracket-flow')
+    flow.innerHTML = ''
+    flow.style.setProperty('--bracket-rows', BRACKET_ROWS)
+    flow.style.setProperty('--bracket-row-h', `${BRACKET_ROW_H}px`)
+
+    const rounds = [
+        { label: STAGE_LABELS.r32, matches: BRACKET_ORDER.r32, span: 1 },
+        { label: STAGE_LABELS.r16, matches: BRACKET_ORDER.r16, span: 2 },
+        { label: STAGE_LABELS.qf, matches: BRACKET_ORDER.qf, span: 4 },
+        { label: STAGE_LABELS.sf, matches: BRACKET_ORDER.sf, span: 8 }
+    ]
+
+    rounds.forEach(round => {
+        flow.appendChild(renderBracketColumn(round.label, round.matches, round.span))
+    })
+
+    flow.appendChild(renderPodiumColumn())
+}
+
+init()
+    </script>
+</body>
+</html>
