@@ -94,6 +94,40 @@ body {
     gap: 12px;
 }
 
+.btn-tip {
+    position: relative;
+}
+
+.btn-tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: max-content;
+    max-width: 240px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.88);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 400;
+    line-height: 1.45;
+    border-radius: 8px;
+    white-space: normal;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s, visibility 0.15s;
+    z-index: 200;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-tip:hover::after,
+.btn-tip:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Buttons */
 .btn {
     border: none;
@@ -147,7 +181,7 @@ body {
     display: grid;
     grid-template-columns: 400px 1fr;
     gap: 10px;
-    align-items: start;
+    align-items: stretch;
 }
 
 @media (max-width: 1100px) {
@@ -507,7 +541,7 @@ body {
 
 /* Bracket */
 .bracket-panel {
-    min-height: 600px;
+    min-height: 0;
     max-height: calc(100vh - 100px);
     overflow: hidden;
     display: flex;
@@ -530,8 +564,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 20px;
+    flex: 1;
+    min-height: 0;
+    padding: 20px;
     color: var(--text-muted);
+    text-align: center;
 }
 
 .empty-icon {
@@ -994,8 +1031,9 @@ body {
                 </div>
             </div>
             <div class="header-actions">
-                <button type="button" id="btn-random" class="btn btn-ghost">随机预测</button>
-                <button type="button" id="btn-reset" class="btn btn-ghost">重置预测</button>
+                <button type="button" id="btn-realistic" class="btn btn-ghost btn-tip" data-tip="按 Elo 模型根据整体分估算胜率：小组赛略宽松，淘汰赛强队优势更大，更接近真实大赛分布。">真实预测</button>
+                <button type="button" id="btn-random" class="btn btn-ghost btn-tip" data-tip="完全随机抽取结果，各队概率相同，不考虑实力差距。">随机预测</button>
+                <button type="button" id="btn-reset" class="btn btn-ghost">重置</button>
             </div>
         </div>
     </header>
@@ -1113,12 +1151,11 @@ function getTeamProfile(teamId) {
     return teamProfilesData?.teams?.[teamId] || null
 }
 
-function renderRatingRow(label, value) {
-    return `<div class="rating-row"><span>${label}</span><div class="rating-bar"><i style="width:${value}%"></i></div><span>${value}</span></div>`
-}
-
-function getTeamProfile(teamId) {
-    return teamProfilesData?.teams?.[teamId] || null
+function getTeamOverallScore(teamId) {
+    const profile = getTeamProfile(teamId)
+    if (!profile) return 50
+    if (profile.overall != null) return profile.overall
+    return Math.round((profile.attack + profile.midfield + profile.defense) / 3)
 }
 
 function renderRatingRow(label, value) {
@@ -1215,28 +1252,63 @@ function flagUrl(team) {
 }
 
 function bindGlobalEvents() {
+    document.getElementById('btn-realistic').addEventListener('click', realisticPredictAll)
     document.getElementById('btn-random').addEventListener('click', randomPredictAll)
     document.getElementById('btn-reset').addEventListener('click', resetAll)
     document.getElementById('btn-confirm-step').addEventListener('click', confirmStep)
     document.getElementById('btn-back').addEventListener('click', goBack)
 }
 
-function pickRandom(items) {
+function pickUniform(items) {
     return items[Math.floor(Math.random() * items.length)]
 }
 
-function randomPredictAll() {
+const ELO_RATING_FACTOR = 20
+const ELO_SCALE_GROUP = 350
+const ELO_SCALE_KNOCKOUT = 300
+
+function getEloWinProb(teamAId, teamBId, scale) {
+    const ratingA = getTeamOverallScore(teamAId) * ELO_RATING_FACTOR
+    const ratingB = getTeamOverallScore(teamBId) * ELO_RATING_FACTOR
+    return 1 / (1 + Math.pow(10, (ratingB - ratingA) / scale))
+}
+
+function pickByElo(items, scale, getTeamId = item => item) {
+    if (!items.length) return null
+    if (items.length === 1) return items[0]
+    if (items.length === 2) {
+        const idA = getTeamId(items[0])
+        const idB = getTeamId(items[1])
+        return Math.random() < getEloWinProb(idA, idB, scale) ? items[0] : items[1]
+    }
+
+    const weights = items.map(item => {
+        const rating = getTeamOverallScore(getTeamId(item)) * ELO_RATING_FACTOR
+        return Math.pow(10, rating / scale)
+    })
+    const total = weights.reduce((sum, w) => sum + w, 0)
+    if (!total) return pickUniform(items)
+
+    let roll = Math.random() * total
+    for (let i = 0; i < items.length; i++) {
+        roll -= weights[i]
+        if (roll <= 0) return items[i]
+    }
+    return items[items.length - 1]
+}
+
+function predictAll(groupPick, knockoutPick) {
     initGroupRanks()
     thirdFillOrder = []
     winners = {}
 
     data.groups.forEach(group => {
-        groupRanks[group.id][pickRandom(group.teamIds)] = 1
+        groupRanks[group.id][groupPick(group.teamIds)] = 1
     })
 
     data.groups.forEach(group => {
         const remaining = group.teamIds.filter(id => groupRanks[group.id][id] !== 1)
-        groupRanks[group.id][pickRandom(remaining)] = 2
+        groupRanks[group.id][groupPick(remaining)] = 2
     })
 
     for (let i = 0; i < 8; i++) {
@@ -1253,8 +1325,8 @@ function randomPredictAll() {
 
         if (!candidates.length) break
 
-        const { groupId, teamId } = pickRandom(candidates)
-        thirdFillOrder.push(`${groupId}:${teamId}`)
+        const picked = groupPick(candidates, candidate => candidate.teamId)
+        thirdFillOrder.push(`${picked.groupId}:${picked.teamId}`)
     }
 
     finalizeThirdRanks()
@@ -1272,13 +1344,27 @@ function randomPredictAll() {
     matchOrder.forEach(matchId => {
         const { home, away } = getMatchTeams(matchId)
         if (home && away) {
-            winners[matchId] = pickRandom([home.id, away.id])
+            winners[matchId] = knockoutPick(home.id, away.id)
         }
     })
 
     renderStepNav()
     renderUI()
     scrollToBracket()
+}
+
+function realisticPredictAll() {
+    predictAll(
+        (items, getTeamId) => pickByElo(items, ELO_SCALE_GROUP, getTeamId),
+        (teamA, teamB) => Math.random() < getEloWinProb(teamA, teamB, ELO_SCALE_KNOCKOUT) ? teamA : teamB
+    )
+}
+
+function randomPredictAll() {
+    predictAll(
+        pickUniform,
+        (teamA, teamB) => pickUniform([teamA, teamB])
+    )
 }
 
 function resetAll() {
