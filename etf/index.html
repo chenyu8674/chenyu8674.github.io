@@ -1,0 +1,4909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF 投资辅助分析</title>
+    <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; }
+
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface-2: #21262d;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --primary: #388bfd;
+            --primary-hover: #1f6feb;
+            --up: #f85149;
+            --up-bg: rgba(248, 81, 73, .15);
+            --down: #3fb950;
+            --down-bg: rgba(63, 185, 80, .15);
+            --red: #f85149;
+            --green: #3fb950;
+            --red-bg: rgba(248, 81, 73, .15);
+            --green-bg: rgba(63, 185, 80, .15);
+            --sidebar-w: 380px;
+            --shadow: 0 1px 0 rgba(255, 255, 255, .04);
+            --chart-bg: #161b22;
+            --chart-grid: #30363d;
+            --chart-text: #8b949e;
+            --scrollbar-thumb: #484f58;
+            --scrollbar-thumb-hover: #6e7681;
+            --scrollbar-track: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100%;
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ===== Sidebar ===== */
+        .sidebar {
+            width: var(--sidebar-w);
+            min-width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header p {
+            font-size: .8rem;
+            color: var(--text-muted);
+        }
+
+        .search-form {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-row label {
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        select, input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            font-size: .9rem;
+            background: var(--surface-2);
+            color: var(--text);
+            outline: none;
+            transition: border-color .15s;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-row input { flex: 1; }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            font-size: .875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s, opacity .15s;
+            white-space: nowrap;
+        }
+
+        .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+
+        .btn-success {
+            background: var(--green);
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-success:hover:not(:disabled) { background: #2ea043; }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            font-size: .8rem;
+        }
+
+        .btn-ghost:hover { background: var(--surface-2); }
+
+        .detail-panel,
+        .sim-detail-table-wrap {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+
+        .detail-panel::-webkit-scrollbar,
+        .sim-detail-table-wrap::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .detail-panel::-webkit-scrollbar-track,
+        .sim-detail-table-wrap::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb,
+        .sim-detail-table-wrap::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+        }
+
+        .detail-panel::-webkit-scrollbar-thumb:hover,
+        .sim-detail-table-wrap::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        .detail-panel {
+            flex: 1;
+            padding: 16px 20px 24px;
+            overflow-y: auto;
+        }
+
+        .detail-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 0;
+            font-size: .9rem;
+        }
+
+        .detail-meta {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .market-badge {
+            display: inline-block;
+            padding: 1px 8px;
+            font-size: .7rem;
+            font-weight: 600;
+            background: rgba(56, 139, 253, .15);
+            color: #58a6ff;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .detail-panel .card-stats {
+            flex-wrap: nowrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .detail-panel .card-stat {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stat-item {
+            background: var(--surface-2);
+            padding: 10px 12px;
+        }
+
+        .stat-label {
+            font-size: .7rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat-value.up { color: var(--up); }
+        .stat-value.down { color: var(--down); }
+
+        .signal-badge-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .signal-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            font-size: .75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: default;
+        }
+
+        .signal-badge.add { background: var(--up-bg); color: var(--up); }
+        .signal-badge.hold { background: rgba(139, 148, 158, .18); color: var(--text-muted); }
+        .signal-badge.sell { background: var(--down-bg); color: var(--down); }
+
+        .signal-advice-popup {
+            min-width: 280px;
+            max-width: 360px;
+        }
+
+        .signal-advice-reason {
+            font-size: .78rem;
+            line-height: 1.55;
+            color: var(--text);
+        }
+
+        .card-header .signal-badge-wrap .flow-hover-popup,
+        .detail-meta-row .signal-badge-wrap .flow-hover-popup {
+            top: calc(100% + 4px);
+            bottom: auto;
+            left: auto;
+            right: 0;
+        }
+
+        .detail-meta-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .detail-meta-row .detail-meta {
+            margin-bottom: 0;
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .chart-tab {
+            padding: 4px 14px;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            font-size: .8rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .chart-tab.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .chart-tabs-sm {
+            margin-bottom: 6px;
+        }
+
+        .chart-tabs-sm .chart-tab {
+            padding: 2px 10px;
+            font-size: .7rem;
+        }
+
+        .card-chart-wrap {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .chart-container,
+        .mini-chart {
+            position: relative;
+        }
+
+        .chart-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 12px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: .8rem;
+            line-height: 1.5;
+        }
+
+        .chart-tooltip {
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+            display: none;
+            padding: 8px 10px;
+            background: rgba(13, 17, 23, .95);
+            color: #e6edf3;
+            border: 1px solid var(--border);
+            font-size: .75rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+            white-space: nowrap;
+        }
+
+        .chart-tooltip-date {
+            color: #8b949e;
+            margin-bottom: 2px;
+        }
+
+        .chart-tooltip-value {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .chart-container table a,
+        .mini-chart table a,
+        .chart-container [class*="watermark"],
+        .mini-chart [class*="watermark"] {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            background: var(--chart-bg);
+        }
+
+        .flow-section h3 {
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .flow-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .flow-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: .8rem;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .flow-item:last-child { border-bottom: none; }
+
+        .flow-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .85rem;
+            padding: 8px 0;
+            cursor: default;
+        }
+
+        .flow-summary-label {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .flow-summary-value.up { color: var(--up); font-weight: 600; }
+        .flow-summary-value.down { color: var(--down); font-weight: 600; }
+
+        .flow-hover-trigger {
+            position: relative;
+            display: inline-block;
+            cursor: default;
+        }
+
+        .flow-hover-popup {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: auto;
+            bottom: calc(100% + 6px);
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            z-index: 20;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+        }
+
+        .flow-hover-trigger:hover .flow-hover-popup {
+            display: block;
+        }
+
+        .flow-popup-title {
+            font-size: .75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .flow-popup-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: .8rem;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .flow-popup-item:last-child { border-bottom: none; }
+
+        .intro-text {
+            font-size: .85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            color: var(--text-muted);
+        }
+
+        .loading-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-panda {
+            width: 20px;
+            height: 20px;
+            animation: loading-panda-spin 1s linear infinite;
+            image-rendering: pixelated;
+            flex-shrink: 0;
+        }
+
+        @keyframes loading-panda-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .error-msg {
+            background: var(--red-bg);
+            color: var(--red);
+            padding: 10px 14px;
+            font-size: .85rem;
+            margin-bottom: 12px;
+            border: 1px solid rgba(248, 81, 73, .3);
+        }
+
+        /* ===== Main ===== */
+        .main {
+            flex: 1;
+            min-height: 0;
+            padding: 24px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .main::-webkit-scrollbar {
+            display: none;
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+
+        .main-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .main-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .watchlist-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .watchlist-empty svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 12px;
+            opacity: .3;
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 20px;
+            position: relative;
+            container-type: inline-size;
+            container-name: watchlist-card;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .card-left {
+            flex: 0 0 300px;
+            width: 300px;
+            min-width: 0;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            z-index: 2;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s, color .15s;
+        }
+
+        .remove-btn:hover {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        .hold-position-wrap {
+            position: relative;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .hold-position-check {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .hold-position-check input {
+            width: 14px;
+            height: 14px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: var(--primary);
+            vertical-align: middle;
+        }
+
+        .hold-position-wrap .flow-hover-popup {
+            top: calc(100% + 4px);
+            bottom: auto;
+            left: 0;
+            right: auto;
+            min-width: auto;
+            white-space: nowrap;
+            padding: 6px 10px;
+            font-size: .72rem;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .detail-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-header-main {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .card-symbol {
+            font-size: .8rem;
+            color: var(--text-muted);
+        }
+
+        .card-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card-stat .label {
+            font-size: .7rem;
+            color: var(--text-muted);
+        }
+
+        .card-stat .value {
+            font-size: .95rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .card-stat .value.up { color: var(--up); }
+        .card-stat .value.down { color: var(--down); }
+
+        .card-flow {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .card-flow .flow-summary {
+            justify-content: flex-start;
+            gap: 12px;
+            padding: 2px 0;
+        }
+
+        .card-flow .flow-popup-item {
+            justify-content: flex-start;
+            gap: 12px;
+        }
+
+        .card-flow .flow-hover-popup {
+            top: calc(100% + 4px);
+            bottom: auto;
+            min-width: 220px;
+        }
+
+        .card-sim {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-top: 0;
+        }
+
+        .card-actual {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-top: 0;
+        }
+
+        .card-actual .flow-summary {
+            justify-content: flex-start;
+            gap: 12px;
+            padding: 2px 0;
+        }
+
+        .card-sim .sim-summary-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 12px;
+            width: 100%;
+            padding: 2px 0;
+        }
+
+        .card-sim .sim-detail-btn {
+            margin-left: auto;
+            padding: 2px 10px;
+            font-size: .72rem;
+            line-height: 1.4;
+        }
+
+        .card-sim .flow-hover-popup {
+            top: calc(100% + 4px);
+            bottom: auto;
+            min-width: 240px;
+        }
+
+        .sim-popup-row {
+            font-size: .78rem;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sim-popup-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .sim-popup-hint {
+            font-size: .7rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .chart-tabs-mini {
+            margin-bottom: 0;
+        }
+
+        .chart-tabs-mini .chart-tab {
+            padding: 2px 10px;
+            font-size: .7rem;
+        }
+
+        .card-right {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .card-right .chart-tabs {
+            padding-right: 32px;
+        }
+
+        .card-right .mini-chart {
+            width: calc(100% + 8px);
+            margin-right: -8px;
+        }
+
+        @container watchlist-card (max-width: 599px) {
+            .card-body {
+                flex-direction: column;
+            }
+
+            .card-left {
+                flex: none;
+                width: 100%;
+            }
+        }
+
+        .card.card-narrow .card-body {
+            flex-direction: column;
+        }
+
+        .card.card-narrow .card-left {
+            flex: none;
+            width: 100%;
+        }
+
+        .card.card-narrow .card-right .mini-chart {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        .mini-chart {
+            width: 100%;
+            height: 150px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            background: var(--chart-bg);
+        }
+
+        .card-loading {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: .85rem;
+            padding: 20px 0;
+        }
+
+        .card-error {
+            color: var(--red);
+            font-size: .85rem;
+        }
+
+        .confirm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, .65);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .confirm-overlay.show {
+            display: flex;
+        }
+
+        .confirm-dialog {
+            background: var(--surface);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .5);
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+            border: 1px solid var(--border);
+        }
+
+        .confirm-dialog p {
+            font-size: .95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .confirm-actions .btn-cancel {
+            background: var(--surface-2);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .confirm-actions .btn-cancel:hover {
+            background: var(--border);
+        }
+
+        .confirm-actions .btn-danger {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .confirm-actions .btn-danger:hover {
+            background: #da3633;
+        }
+
+        .sim-detail-dialog {
+            background: var(--surface);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .5);
+            padding: 20px 24px 24px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 80vh;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sim-detail-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .sim-detail-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .sim-detail-hint {
+            font-size: .75rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .sim-detail-table-wrap {
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .sim-detail-table {
+            width: 100%;
+            font-size: .78rem;
+            border-collapse: collapse;
+        }
+
+        .sim-detail-table th,
+        .sim-detail-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .sim-detail-table th {
+            position: sticky;
+            top: 0;
+            background: var(--surface-2);
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .sim-detail-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sim-detail-empty {
+            padding: 24px 12px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: .85rem;
+        }
+
+        .sim-detail-table .action-buy { color: var(--up); font-weight: 600; }
+        .sim-detail-table .action-sell { color: var(--down); font-weight: 600; }
+
+        .sim-price-delta {
+            margin-left: 6px;
+            font-size: .72rem;
+            font-weight: 600;
+        }
+
+        .sim-price-delta.up { color: var(--up); }
+        .sim-price-delta.down { color: var(--down); }
+        .sim-price-delta.muted { color: var(--text-muted); font-weight: 400; }
+
+        .strategy-dialog {
+            background: var(--surface);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .5);
+            padding: 20px 24px 24px;
+            width: 100%;
+            max-width: 760px;
+            max-height: 85vh;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .strategy-dialog h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .strategy-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .strategy-tab {
+            padding: 8px 16px;
+            font-size: .85rem;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .strategy-tab.active {
+            color: var(--text);
+            border-bottom-color: var(--primary);
+        }
+
+        .strategy-panel {
+            display: none;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .strategy-panel.active {
+            display: block;
+        }
+
+        .strategy-panel,
+        .strategy-dialog {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+
+        .strategy-panel::-webkit-scrollbar,
+        .strategy-dialog::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .strategy-panel::-webkit-scrollbar-track,
+        .strategy-dialog::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+
+        .strategy-panel::-webkit-scrollbar-thumb,
+        .strategy-dialog::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+        }
+
+        .strategy-panel::-webkit-scrollbar-thumb:hover,
+        .strategy-dialog::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        .strategy-field {
+            display: grid;
+            grid-template-columns: 132px 88px minmax(0, 1fr);
+            align-items: center;
+            column-gap: 12px;
+            row-gap: 4px;
+            margin-bottom: 10px;
+        }
+
+        .strategy-field label {
+            font-size: .75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .strategy-toggle-group {
+            margin-bottom: 14px;
+        }
+
+        .strategy-toggle-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .strategy-toggle-head input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            margin: 0;
+            padding: 0;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .strategy-toggle-fields {
+            padding-left: 22px;
+        }
+
+        .strategy-toggle-fields .strategy-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .strategy-field input[type="number"] {
+            width: 100%;
+            min-width: 0;
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            font-size: .875rem;
+            background: var(--surface-2);
+            color: var(--text);
+        }
+
+        .strategy-field .field-hint {
+            font-size: .7rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .strategy-note {
+            font-size: .72rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 900px) {
+            body { overflow: auto; }
+            .app {
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+            }
+            .sidebar {
+                width: 100%;
+                min-width: unset;
+                height: auto;
+                position: relative;
+            }
+            .main {
+                min-height: auto;
+                overflow-y: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>ETF 辅助分析</h1>
+            </div>
+            <form class="search-form" id="searchForm">
+                <div class="form-row">
+                    <label for="marketSelect">所在市场</label>
+                    <select id="marketSelect"></select>
+                </div>
+                <div class="form-row">
+                    <label for="symbolInput">ETF 代码</label>
+                    <div class="search-row">
+                        <input type="text" id="symbolInput" autocomplete="off">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">搜索</button>
+                    </div>
+                </div>
+            </form>
+            <div class="detail-panel" id="detailPanel">
+                <div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="main-header">
+                <h2>我的关注</h2>
+                <div class="main-header-actions">
+                    <button type="button" class="btn btn-ghost" id="strategyBtn">交易策略</button>
+                    <button type="button" class="btn btn-ghost" id="refreshBtn">刷新全部</button>
+                </div>
+            </div>
+            <div id="watchlistContainer">
+                <div class="watchlist-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                    <p>暂无关注 ETF，搜索后点击「加入关注」</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay" role="dialog" aria-modal="true" aria-labelledby="confirmMessage">
+        <div class="confirm-dialog">
+            <p id="confirmMessage"></p>
+            <div class="confirm-actions">
+                <button type="button" class="btn btn-cancel" id="confirmCancel">取消</button>
+                <button type="button" class="btn btn-danger" id="confirmOk">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="simDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="simDetailTitle">
+        <div class="sim-detail-dialog">
+            <div class="sim-detail-header">
+                <h3 id="simDetailTitle">模拟操作详情</h3>
+            </div>
+            <div class="sim-detail-hint" id="simDetailHint"></div>
+            <div class="sim-detail-table-wrap" id="simDetailBody"></div>
+            <div class="confirm-actions">
+                <button type="button" class="btn btn-cancel" id="simDetailClose">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="strategyOverlay" role="dialog" aria-modal="true" aria-labelledby="strategyDialogTitle">
+        <div class="strategy-dialog">
+            <h3 id="strategyDialogTitle">交易策略</h3>
+            <div class="strategy-tabs" id="strategyTabs"></div>
+            <div id="strategyPanels"></div>
+            <div class="confirm-actions" style="margin-top:16px">
+                <button type="button" class="btn btn-cancel" id="strategyReset">恢复默认</button>
+                <button type="button" class="btn btn-cancel" id="strategyCancel">取消</button>
+                <button type="button" class="btn btn-primary" id="strategySave">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        'use strict'
+
+        /* ===== 常量 ===== */
+        // 可选：自建 Cloudflare Worker 代理，格式如 'https://xxx.workers.dev/?url='
+        var CUSTOM_PROXY_URL = ''
+        var LOCAL_DEV_PROXY_URL = 'http://localhost:8787/proxy?url='
+        // 可选：FinMind 注册 token，可将限额提升至 600 次/小时，见 https://finmindtrade.com/
+        var FINMIND_TOKEN = ''
+        var TW_CACHE_TTL_LIGHT = 300000
+        var TW_CACHE_TTL_FULL = 600000
+        var STORAGE_KEY = 'etf_watchlist'
+        var STRATEGY_STORAGE_KEY = 'etf_trade_strategy'
+        var HOLD_POSITION_STORAGE_KEY = 'etf_hold_position'
+        var REFRESH_INTERVAL = 60000
+        var HISTORY_DAYS = 260
+        var CHART_30DAYS = 30
+        var MARKET_LABELS = { cn: '大陆', tw: '台湾' }
+
+        function isTraditionalChineseLocale() {
+            var langs = navigator.languages && navigator.languages.length
+                ? Array.prototype.slice.call(navigator.languages)
+                : [navigator.language || navigator.userLanguage || 'zh-CN']
+            var i, lang, seenZh = false
+            for (i = 0; i < langs.length; i++) {
+                lang = String(langs[i] || '').toLowerCase()
+                if (lang.indexOf('zh-hant') >= 0 || lang.indexOf('zh-tw') >= 0 ||
+                    lang.indexOf('zh-hk') >= 0 || lang.indexOf('zh-mo') >= 0) {
+                    return true
+                }
+                if (lang.indexOf('zh-hans') >= 0 || lang.indexOf('zh-cn') >= 0 ||
+                    lang.indexOf('zh-sg') >= 0 || lang.indexOf('zh-my') >= 0) {
+                    return false
+                }
+                if (lang === 'zh' || lang.indexOf('zh-') === 0) {
+                    seenZh = true
+                }
+            }
+            var docLang = (document.documentElement.lang || '').toLowerCase()
+            if (docLang.indexOf('hant') >= 0 || docLang.indexOf('tw') >= 0 ||
+                docLang.indexOf('hk') >= 0 || docLang.indexOf('mo') >= 0) {
+                return true
+            }
+            if (docLang.indexOf('hans') >= 0 || docLang.indexOf('cn') >= 0) {
+                return false
+            }
+            return false
+        }
+
+        function initMarketSelect() {
+            var order = isTraditionalChineseLocale() ? ['tw', 'cn'] : ['cn', 'tw']
+            marketSelect.innerHTML = order.map(function (m) {
+                return '<option value="' + m + '">' + MARKET_LABELS[m] + '</option>'
+            }).join('')
+        }
+
+        /* ===== 状态 ===== */
+        var currentDetail = null
+        var detailChart = null
+        var detailChartMode = 'day30'
+        var miniCharts = {}
+        var cardChartModes = {}
+        var watchlistDataCache = {}
+        var watchlistPriceCache = {}
+        var watchlistIntradayCache = {}
+        var watchlistMetaCache = {}
+        var watchlistMutualFundCache = {}
+        var watchlistMarketCache = {}
+        var watchlistSimCache = {}
+        var refreshTimer = null
+        // corsproxy.io 免费开发源前缀，见 https://corsproxy.io/
+        var CORS_PROXY_IO_PREFIX = 'https://corsproxy.io/?url='
+        var twDataCache = {}
+
+        /* ===== DOM ===== */
+        var searchForm = document.getElementById('searchForm')
+        var marketSelect = document.getElementById('marketSelect')
+        var symbolInput = document.getElementById('symbolInput')
+        var searchBtn = document.getElementById('searchBtn')
+        var detailPanel = document.getElementById('detailPanel')
+        var watchlistContainer = document.getElementById('watchlistContainer')
+        var refreshBtn = document.getElementById('refreshBtn')
+
+        /* ===== 工具函数 ===== */
+        function formatPrice(val, market) {
+            if (val == null || isNaN(val)) return '--'
+            var decimals = market === 'tw' ? 2 : 3
+            return Number(val).toFixed(decimals)
+        }
+
+        function formatPct(val) {
+            if (val == null || isNaN(val)) return '--'
+            var sign = val >= 0 ? '+' : ''
+            return sign + Number(val).toFixed(2) + '%'
+        }
+
+        function formatFlow(val) {
+            if (val == null || isNaN(val)) return '--'
+            var abs = Math.abs(val)
+            var sign = val >= 0 ? '+' : '-'
+            if (abs >= 1e8) return sign + (abs / 1e8).toFixed(2) + '亿'
+            if (abs >= 1e4) return sign + (abs / 1e4).toFixed(2) + '万'
+            return sign + abs.toFixed(0)
+        }
+
+        function debounce(fn, ms) {
+            var timer
+            return function () {
+                var args = arguments
+                var ctx = this
+                clearTimeout(timer)
+                timer = setTimeout(function () { fn.apply(ctx, args) }, ms)
+            }
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div')
+            div.textContent = str
+            return div.innerHTML
+        }
+
+        /* ===== localStorage ===== */
+        function getWatchlist() {
+            try {
+                var raw = localStorage.getItem(STORAGE_KEY)
+                return raw ? JSON.parse(raw) : []
+            } catch (e) {
+                return []
+            }
+        }
+
+        function saveWatchlist(list) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
+        }
+
+        function addToWatchlist(item) {
+            var list = getWatchlist()
+            if (list.some(function (w) { return w.id === item.id })) return false
+            list.push(item)
+            saveWatchlist(list)
+            return true
+        }
+
+        function removeFromWatchlist(id) {
+            var list = getWatchlist().filter(function (w) { return w.id !== id })
+            saveWatchlist(list)
+            clearHoldPosition(id)
+        }
+
+        function loadHoldPositionMap() {
+            try {
+                var raw = localStorage.getItem(HOLD_POSITION_STORAGE_KEY)
+                return raw ? JSON.parse(raw) : {}
+            } catch (e) {
+                return {}
+            }
+        }
+
+        function saveHoldPositionMap(map) {
+            localStorage.setItem(HOLD_POSITION_STORAGE_KEY, JSON.stringify(map))
+        }
+
+        function getHoldPosition(itemId) {
+            if (!itemId) return { held: false }
+            var map = loadHoldPositionMap()
+            var rec = map[itemId]
+            return { held: !!(rec && rec.held) }
+        }
+
+        function setHoldPosition(itemId, held) {
+            if (!itemId) return
+            var map = loadHoldPositionMap()
+            if (held) {
+                map[itemId] = { held: true }
+            } else {
+                delete map[itemId]
+            }
+            saveHoldPositionMap(map)
+        }
+
+        function clearHoldPosition(itemId) {
+            if (!itemId) return
+            var map = loadHoldPositionMap()
+            if (map[itemId]) {
+                delete map[itemId]
+                saveHoldPositionMap(map)
+            }
+        }
+
+        /* ===== 均线策略（参考信号 / 图表） ===== */
+        function getRefMaDays(market) {
+            var s = getTradeStrategy(market)
+            return market === 'tw' ? s.shortMaDays : s.baseMaDays
+        }
+
+        function getMaLabel(market) {
+            return 'MA' + getRefMaDays(market)
+        }
+
+        function getLatestMa(klines, currentPrice, market, period) {
+            period = Math.max(2, parseInt(period, 10) || 2)
+            if (!klines || klines.length < period - 1) return null
+            market = market || 'cn'
+
+            var lastIdx = klines.length - 1
+            var lastDate = klines[lastIdx].date
+            var marketToday = getMarketDateString(market)
+            var livePrice = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
+            var sessionOpen = isMarketOpen(market)
+
+            if (sessionOpen && livePrice != null) {
+                if (lastDate === marketToday) {
+                    if (klines.length < period) return null
+                    var sumToday = livePrice
+                    for (var i = lastIdx - period + 1; i < lastIdx; i++) sumToday += klines[i].close
+                    return sumToday / period
+                }
+                if (klines.length < period - 1) return null
+                var sumNewDay = livePrice
+                for (var j = lastIdx - (period - 2); j <= lastIdx; j++) sumNewDay += klines[j].close
+                return sumNewDay / period
+            }
+
+            if (klines.length < period) return null
+            return calcMaSeries(klines, period)[lastIdx]
+        }
+
+        function buildDailyMaByDate(klines, currentPrice, market, period) {
+            period = period || getRefMaDays(market)
+            var map = {}
+            var maSeries = calcMaSeries(klines, period)
+            var i
+            for (i = 0; i < klines.length; i++) {
+                if (maSeries[i] != null) map[klines[i].date] = maSeries[i]
+            }
+            var latest = getLatestMa(klines, currentPrice, market, period)
+            if (latest == null) return map
+
+            var lastDate = klines[klines.length - 1].date
+            var marketToday = getMarketDateString(market)
+            if (lastDate === marketToday) {
+                map[lastDate] = latest
+            }
+            return map
+        }
+
+        function calcDiffPct(price, maVal) {
+            if (!price || !maVal) return null
+            return ((price - maVal) / maVal) * 100
+        }
+
+        function getBarEffectiveClose(klines, index, currentPrice, market) {
+            var bar = klines[index]
+            if (!bar || bar.close == null || isNaN(bar.close)) return null
+            if (index !== klines.length - 1) return bar.close
+            var live = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
+            if (live == null) return bar.close
+            var marketToday = getMarketDateString(market)
+            if (bar.date === marketToday || isMarketOpen(market)) return live
+            return bar.close
+        }
+
+        function formatThresholdOffset(threshold) {
+            var pct = (threshold - 1) * 100
+            var sign = pct >= 0 ? '+' : ''
+            return sign + pct.toFixed(2) + '%'
+        }
+
+        function getMarketTimezone(market) {
+            if (market === 'tw') return 'Asia/Taipei'
+            return 'Asia/Shanghai'
+        }
+
+        function getMarketDateString(market) {
+            return new Intl.DateTimeFormat('en-CA', {
+                timeZone: getMarketTimezone(market),
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(new Date())
+        }
+
+        function getMarketClock(market) {
+            var tz = getMarketTimezone(market)
+            var parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: tz,
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+                weekday: 'short'
+            }).formatToParts(new Date())
+            var hour = 0
+            var minute = 0
+            var weekday = ''
+            parts.forEach(function (p) {
+                if (p.type === 'hour') hour = parseInt(p.value, 10)
+                if (p.type === 'minute') minute = parseInt(p.value, 10)
+                if (p.type === 'weekday') weekday = p.value
+            })
+            return { minutes: hour * 60 + minute, weekday: weekday }
+        }
+
+        function isMarketOpen(market) {
+            var clock = getMarketClock(market)
+            if (clock.weekday === 'Sat' || clock.weekday === 'Sun') return false
+            var m = clock.minutes
+            if (market === 'cn') {
+                return m >= 570 && m < 900
+            }
+            if (market === 'tw') {
+                return m >= 540 && m < 810
+            }
+            return false
+        }
+
+        var MARKET_SESSION = {
+            cn: { open: [9, 30], close: [15, 0] },
+            tw: { open: [9, 0], close: [13, 30] }
+        }
+
+        function pad2(n) {
+            return String(n).padStart(2, '0')
+        }
+
+        function getMarketClockAt(market, ms) {
+            var tz = getMarketTimezone(market)
+            var parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: tz,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).formatToParts(new Date(ms))
+            var y = ''
+            var mo = ''
+            var da = ''
+            var hour = 0
+            var minute = 0
+            parts.forEach(function (p) {
+                if (p.type === 'year') y = p.value
+                if (p.type === 'month') mo = p.value
+                if (p.type === 'day') da = p.value
+                if (p.type === 'hour') hour = parseInt(p.value, 10)
+                if (p.type === 'minute') minute = parseInt(p.value, 10)
+            })
+            return {
+                dateStr: y + '-' + mo + '-' + da,
+                hour: hour,
+                minute: minute
+            }
+        }
+
+        function marketLocalTimeToUnix(market, dateStr, hour, minute) {
+            var y = parseInt(dateStr.slice(0, 4), 10)
+            var mo = parseInt(dateStr.slice(5, 7), 10)
+            var da = parseInt(dateStr.slice(8, 10), 10)
+            var target = hour * 60 + minute
+            var guess = Date.UTC(y, mo - 1, da, hour, minute, 0)
+            for (var offset = -14; offset <= 14; offset++) {
+                for (var m = 0; m < 60; m++) {
+                    var t = guess + (offset * 3600000) + (m * 60000)
+                    var clock = getMarketClockAt(market, t)
+                    if (clock.dateStr === dateStr && clock.hour * 60 + clock.minute === target) {
+                        return Math.floor(t / 1000)
+                    }
+                }
+            }
+            return Math.floor(guess / 1000)
+        }
+
+        function formatMarketTimeLabel(market, unixTime) {
+            var clock = getMarketClockAt(market, unixTime * 1000)
+            return pad2(clock.hour) + ':' + pad2(clock.minute)
+        }
+
+        function getSessionUnixBounds(market, tradingDate) {
+            var cfg = MARKET_SESSION[market] || MARKET_SESSION.cn
+            return {
+                start: marketLocalTimeToUnix(market, tradingDate, cfg.open[0], cfg.open[1]),
+                end: marketLocalTimeToUnix(market, tradingDate, cfg.close[0], cfg.close[1])
+            }
+        }
+
+        function getAnnualKlines(klines) {
+            if (!klines || klines.length < 6) return klines || []
+            var cutoff = new Date()
+            cutoff.setFullYear(cutoff.getFullYear() - 1)
+            var cutoffStr = formatDateISO(cutoff)
+            var sliced = klines.filter(function (k) { return k.date >= cutoffStr })
+            if (sliced.length >= 6) return sliced
+            return klines.slice(-Math.min(klines.length, 252))
+        }
+
+        function calcAnnualActualReturn(klines) {
+            var yearKlines = getAnnualKlines(klines)
+            if (!yearKlines || yearKlines.length < 2) return null
+            var firstClose = yearKlines[0].close
+            var lastClose = yearKlines[yearKlines.length - 1].close
+            if (firstClose == null || isNaN(firstClose) || !firstClose) return null
+            if (lastClose == null || isNaN(lastClose)) return null
+            return {
+                returnPct: ((lastClose - firstClose) / firstClose) * 100,
+                startDate: yearKlines[0].date,
+                endDate: yearKlines[yearKlines.length - 1].date
+            }
+        }
+
+        function calcMaSeries(klines, period) {
+            var p = Math.max(2, parseInt(period, 10) || 2)
+            var result = []
+            var i, j, sum
+            for (i = 0; i < klines.length; i++) {
+                if (i < p - 1) {
+                    result.push(null)
+                    continue
+                }
+                sum = 0
+                for (j = i - p + 1; j <= i; j++) sum += klines[j].close
+                result.push(sum / p)
+            }
+            return result
+        }
+
+        function calendarDaysBetween(fromDate, toDate) {
+            var a = new Date(fromDate + 'T00:00:00')
+            var b = new Date(toDate + 'T00:00:00')
+            return Math.round((b.getTime() - a.getTime()) / 86400000)
+        }
+
+        function getDefaultTradeStrategies() {
+            return {
+                tw: {
+                    shortMaDays: 5,
+                    longMaDays: 10,
+                    buyThreshold: 1.005,
+                    sellThreshold: 0.995,
+                    confirmDays: 1,
+                    enableStopLoss: true,
+                    stopLossPct: -3,
+                    enableTrailProfit: true,
+                    trailProfitPct: 5
+                },
+                cn: {
+                    baseMaDays: 10,
+                    buyThreshold: 1.005,
+                    sellThreshold: 0.995,
+                    confirmDays: 2,
+                    enableStopLoss: true,
+                    stopLossPct: -8,
+                    enableTrailProfit: true,
+                    trailProfitPct: 5,
+                    trailMaDays: 20
+                }
+            }
+        }
+
+        function normalizeStrategyNumber(val, fallback) {
+            var n = parseFloat(val)
+            return isNaN(n) ? fallback : n
+        }
+
+        function normalizeStrategyInt(val, fallback, min) {
+            var n = parseInt(val, 10)
+            if (isNaN(n)) return fallback
+            if (min != null && n < min) return min
+            return n
+        }
+
+        function mergeTradeStrategy(raw, defaults) {
+            var out = {}
+            var k
+            for (k in defaults) {
+                if (!Object.prototype.hasOwnProperty.call(defaults, k)) continue
+                var v = raw && raw[k] != null ? raw[k] : defaults[k]
+                if (k.indexOf('Days') >= 0 || k === 'confirmDays') {
+                    out[k] = normalizeStrategyInt(v, defaults[k], k === 'confirmDays' ? 1 : 2)
+                } else if (k.indexOf('enable') === 0) {
+                    out[k] = raw && Object.prototype.hasOwnProperty.call(raw, k) ? !!raw[k] : defaults[k]
+                } else if (k.indexOf('Pct') >= 0) {
+                    out[k] = normalizeStrategyNumber(v, defaults[k])
+                } else {
+                    out[k] = normalizeStrategyNumber(v, defaults[k])
+                }
+            }
+            return out
+        }
+
+        function loadTradeStrategies() {
+            var defaults = getDefaultTradeStrategies()
+            try {
+                var raw = localStorage.getItem(STRATEGY_STORAGE_KEY)
+                if (!raw) return defaults
+                var parsed = JSON.parse(raw)
+                return {
+                    tw: mergeTradeStrategy(parsed.tw, defaults.tw),
+                    cn: mergeTradeStrategy(parsed.cn, defaults.cn)
+                }
+            } catch (e) {
+                return defaults
+            }
+        }
+
+        function saveTradeStrategies(strategies) {
+            localStorage.setItem(STRATEGY_STORAGE_KEY, JSON.stringify(strategies))
+        }
+
+        function getTradeStrategy(market) {
+            var all = loadTradeStrategies()
+            return all[market] || all.cn
+        }
+
+        function isStopLossEnabled(strategy) {
+            return strategy.enableStopLoss !== false
+        }
+
+        function isTrailProfitEnabled(strategy) {
+            return strategy.enableTrailProfit !== false
+        }
+
+        function shouldUseTrailProfit(strategy, pnlPct) {
+            return isTrailProfitEnabled(strategy) && pnlPct > strategy.trailProfitPct
+        }
+
+        function getStrategySummaryText(market) {
+            var s = getTradeStrategy(market)
+            var stopPart = isStopLossEnabled(s) ? ' · 止损' + s.stopLossPct + '%' : ''
+            var trailPart = isTrailProfitEnabled(s) ? ' · 移动止盈+' + s.trailProfitPct + '%' : ''
+            if (market === 'tw') {
+                return 'MA' + s.shortMaDays + '/MA' + s.longMaDays +
+                    ' · 确认' + s.confirmDays + '日 · 当日收盘成交' + stopPart + trailPart
+            }
+            return 'MA' + s.baseMaDays + '/MA' + s.trailMaDays +
+                ' · 确认' + s.confirmDays + '日 · T+1买入' + stopPart + trailPart
+        }
+
+        function buildHoldPositionCheckboxHtml(itemId, market, checked) {
+            return '<span class="hold-position-wrap flow-hover-trigger">' +
+                '<label class="hold-position-check">' +
+                    '<input type="checkbox" class="hold-position-input" data-item-id="' + escapeHtml(itemId) + '"' +
+                        ' data-market="' + escapeHtml(market) + '"' + (checked ? ' checked' : '') + '>' +
+                '</label>' +
+                '<div class="flow-hover-popup">勾选视为已持有</div>' +
+            '</span>'
+        }
+
+        function replayTwBuySignalsBeforeToday(klines, strategy) {
+            var n = klines.length
+            if (n < 2) return { pendingBuy: false, buyStreak: 0, inPosition: false, entryPrice: null }
+            var shortMa = calcMaSeries(klines, strategy.shortMaDays)
+            var longMa = calcMaSeries(klines, strategy.longMaDays)
+            var inPosition = false
+            var entryPrice = 0
+            var pendingBuy = false
+            var buyStreak = 0
+            var i, close, pnlPct, useTrail, sellMa, shouldSell
+
+            for (i = 0; i < n - 1; i++) {
+                close = klines[i].close
+                if (close == null || isNaN(close)) continue
+
+                if (pendingBuy && !inPosition) {
+                    inPosition = true
+                    entryPrice = close
+                    pendingBuy = false
+                }
+                if (inPosition) {
+                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
+                    shouldSell = false
+                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                        shouldSell = true
+                    } else {
+                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
+                        sellMa = useTrail ? longMa[i] : shortMa[i]
+                        if (sellMa != null && close < sellMa * strategy.sellThreshold) {
+                            shouldSell = true
+                        }
+                    }
+                    if (shouldSell) inPosition = false
+                }
+                if (!inPosition && !pendingBuy && shortMa[i] != null) {
+                    if (close > shortMa[i] * strategy.buyThreshold) {
+                        buyStreak++
+                    } else {
+                        buyStreak = 0
+                    }
+                    if (buyStreak >= strategy.confirmDays) {
+                        pendingBuy = true
+                        buyStreak = 0
+                    }
+                }
+            }
+            return {
+                pendingBuy: pendingBuy,
+                buyStreak: buyStreak,
+                inPosition: inPosition,
+                entryPrice: inPosition ? entryPrice : null
+            }
+        }
+
+        function replayCnBuySignalsBeforeToday(klines, strategy) {
+            var n = klines.length
+            if (n < 2) return { pendingBuy: false, buyStreak: 0, inPosition: false, entryPrice: null }
+            var baseMa = calcMaSeries(klines, strategy.baseMaDays)
+            var trailMa = calcMaSeries(klines, strategy.trailMaDays)
+            var inPosition = false
+            var entryPrice = 0
+            var pendingBuy = false
+            var buyStreak = 0
+            var i, close, pnlPct, useTrail, sellMa, shouldSell
+
+            for (i = 0; i < n - 1; i++) {
+                close = klines[i].close
+                if (close == null || isNaN(close)) continue
+
+                if (pendingBuy && !inPosition) {
+                    inPosition = true
+                    entryPrice = close
+                    pendingBuy = false
+                }
+                if (inPosition) {
+                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
+                    shouldSell = false
+                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                        shouldSell = true
+                    } else {
+                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
+                        sellMa = useTrail ? trailMa[i] : baseMa[i]
+                        if (sellMa != null && close < sellMa * strategy.sellThreshold) {
+                            shouldSell = true
+                        }
+                    }
+                    if (shouldSell) inPosition = false
+                }
+                if (!inPosition && !pendingBuy && baseMa[i] != null) {
+                    if (close > baseMa[i] * strategy.buyThreshold) {
+                        buyStreak++
+                    } else {
+                        buyStreak = 0
+                    }
+                    if (buyStreak >= strategy.confirmDays) {
+                        pendingBuy = true
+                        buyStreak = 0
+                    }
+                }
+            }
+            return {
+                pendingBuy: pendingBuy,
+                buyStreak: buyStreak,
+                inPosition: inPosition,
+                entryPrice: inPosition ? entryPrice : null
+            }
+        }
+
+        function getHeldPositionAdvice(close, market, strategy, sellMaConfig, simEntry) {
+            var priceStr = formatPrice(close, market)
+            var useTrail = false
+            var pnlPct = null
+            var sellMaVal, sellMaLabel, sellLine, holdReason, hasSimEntry
+
+            hasSimEntry = simEntry != null && simEntry > 0
+            if (hasSimEntry) {
+                pnlPct = ((close - simEntry) / simEntry) * 100
+                useTrail = shouldUseTrailProfit(strategy, pnlPct)
+                if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                    return {
+                        action: 'sell',
+                        label: '建议抛出',
+                        reason: '当前价 ' + priceStr + ' 触发紧急止损线 ' + strategy.stopLossPct + '%。'
+                    }
+                }
+            }
+
+            sellMaVal = useTrail ? sellMaConfig.trailMa : sellMaConfig.baseMa
+            sellMaLabel = useTrail ? sellMaConfig.trailLabel : sellMaConfig.baseLabel
+            if (sellMaVal != null) {
+                sellLine = sellMaVal * strategy.sellThreshold
+                if (close < sellLine) {
+                    return {
+                        action: 'sell',
+                        label: '建议抛出',
+                        reason: useTrail
+                            ? '盈利已超过 +' + strategy.trailProfitPct + '% 移动止盈线，按 ' + sellMaLabel +
+                                ' 判断：当前价 ' + priceStr + ' 低于 ' + sellMaLabel + '×' + strategy.sellThreshold +
+                                '（' + formatPrice(sellLine, market) + '）。'
+                            : '当前价 ' + priceStr + ' 低于 ' + sellMaLabel + '×' + strategy.sellThreshold +
+                                '（' + formatPrice(sellLine, market) + '），满足卖出条件。'
+                    }
+                }
+            }
+            holdReason = '当前价 ' + priceStr + ' 仍高于卖出线 ' + sellMaLabel + '×' + strategy.sellThreshold +
+                '（' + formatPrice(sellLine, market) + '），暂不满足卖出。'
+            if (isTrailProfitEnabled(strategy)) {
+                if (hasSimEntry && useTrail) {
+                    holdReason += '盈利已过 +' + strategy.trailProfitPct + '% 移动止盈线，止盈参考已改用 ' +
+                        sellMaConfig.trailLabel + '（原为 ' + sellMaConfig.baseLabel + '）。'
+                } else if (hasSimEntry) {
+                    holdReason += '盈利未达 +' + strategy.trailProfitPct + '% 移动止盈线，止盈参考仍为 ' +
+                        sellMaConfig.baseLabel + '。'
+                } else {
+                    holdReason += '止盈参考 ' + sellMaConfig.baseLabel + '。'
+                }
+            } else {
+                holdReason += '移动止盈已关闭，仅按 ' + sellMaConfig.baseLabel + ' 均线信号判断。'
+            }
+            return { action: 'hold', label: '建议持有', reason: holdReason }
+        }
+
+        function getTwTradeAdvice(klines, currentPrice, market, strategy, position) {
+            if (!klines || klines.length < strategy.shortMaDays + 1) {
+                return {
+                    action: 'unknown',
+                    label: '数据不足',
+                    reason: '历史数据不足，无法根据 MA' + strategy.shortMaDays + ' 策略判断。'
+                }
+            }
+            var state = replayTwBuySignalsBeforeToday(klines, strategy)
+            var lastIdx = klines.length - 1
+            var close = getBarEffectiveClose(klines, lastIdx, currentPrice, market)
+            if (close == null) {
+                return { action: 'unknown', label: '数据不足', reason: '暂无有效价格。' }
+            }
+            var shortMa = getLatestMa(klines, currentPrice, market, strategy.shortMaDays)
+            var longMa = getLatestMa(klines, currentPrice, market, strategy.longMaDays)
+            var maShortLabel = 'MA' + strategy.shortMaDays
+            var priceStr = formatPrice(close, market)
+            var buyLine, streak, todayMeetsBuy
+
+            if (position && position.held) {
+                return getHeldPositionAdvice(close, market, strategy, {
+                    baseMa: shortMa,
+                    trailMa: longMa,
+                    baseLabel: maShortLabel,
+                    trailLabel: 'MA' + strategy.longMaDays
+                }, state.inPosition ? state.entryPrice : null)
+            }
+
+            if (state.pendingBuy) {
+                return {
+                    action: 'add',
+                    label: '建议买入',
+                    reason: '前 ' + strategy.confirmDays + ' 个交易日已连续满足买入条件，今日收盘确认买入。'
+                }
+            }
+
+            buyLine = shortMa != null ? shortMa * strategy.buyThreshold : null
+            streak = state.buyStreak
+            todayMeetsBuy = shortMa != null && close > buyLine
+            if (todayMeetsBuy) {
+                streak++
+            } else {
+                streak = 0
+            }
+
+            if (streak >= strategy.confirmDays) {
+                return {
+                    action: 'none',
+                    label: '',
+                    reason: '空仓。已连续 ' + strategy.confirmDays + ' 日收盘价高于 ' + maShortLabel + '×' + strategy.buyThreshold +
+                        '（' + formatThresholdOffset(strategy.buyThreshold) + '），今日收盘后将触发买入信号，明日收盘确认买入。'
+                }
+            }
+            if (streak > 0) {
+                return {
+                    action: 'none',
+                    label: '',
+                    reason: '空仓。已连续 ' + streak + ' 日满足买入条件（需连续 ' + strategy.confirmDays + ' 日）。当前价 ' + priceStr +
+                        ' > ' + maShortLabel + '×' + strategy.buyThreshold + '（' + formatPrice(buyLine, market) + '）。'
+                }
+            }
+            return {
+                action: 'none',
+                label: '',
+                reason: '空仓。当前价 ' + priceStr + (shortMa != null
+                    ? ' 未连续满足买入条件（需收盘价 > ' + maShortLabel + '×' + strategy.buyThreshold +
+                        ' 并连续 ' + strategy.confirmDays + ' 日确认）。'
+                    : '，均线数据不足。')
+            }
+        }
+
+        function getCnTradeAdvice(klines, currentPrice, market, strategy, position) {
+            if (!klines || klines.length < strategy.baseMaDays + 1) {
+                return {
+                    action: 'unknown',
+                    label: '数据不足',
+                    reason: '历史数据不足，无法根据 MA' + strategy.baseMaDays + ' 策略判断。'
+                }
+            }
+            var state = replayCnBuySignalsBeforeToday(klines, strategy)
+            var lastIdx = klines.length - 1
+            var close = getBarEffectiveClose(klines, lastIdx, currentPrice, market)
+            if (close == null) {
+                return { action: 'unknown', label: '数据不足', reason: '暂无有效价格。' }
+            }
+            var baseMa = getLatestMa(klines, currentPrice, market, strategy.baseMaDays)
+            var trailMa = getLatestMa(klines, currentPrice, market, strategy.trailMaDays)
+            var maBaseLabel = 'MA' + strategy.baseMaDays
+            var maTrailLabel = 'MA' + strategy.trailMaDays
+            var priceStr = formatPrice(close, market)
+            var buyLine, streak, todayMeetsBuy
+
+            if (position && position.held) {
+                return getHeldPositionAdvice(close, market, strategy, {
+                    baseMa: baseMa,
+                    trailMa: trailMa,
+                    baseLabel: maBaseLabel,
+                    trailLabel: maTrailLabel
+                }, state.inPosition ? state.entryPrice : null)
+            }
+
+            if (state.pendingBuy) {
+                return {
+                    action: 'add',
+                    label: '建议买入',
+                    reason: '前 ' + strategy.confirmDays + ' 个交易日已连续满足买入条件，今日为 T+1 确认买入日。'
+                }
+            }
+
+            buyLine = baseMa != null ? baseMa * strategy.buyThreshold : null
+            streak = state.buyStreak
+            todayMeetsBuy = baseMa != null && close > buyLine
+            if (todayMeetsBuy) {
+                streak++
+            } else {
+                streak = 0
+            }
+
+            if (streak >= strategy.confirmDays) {
+                return {
+                    action: 'none',
+                    label: '',
+                    reason: '空仓。已连续 ' + strategy.confirmDays + ' 日收盘价高于 ' + maBaseLabel + '×' + strategy.buyThreshold +
+                        '（' + formatThresholdOffset(strategy.buyThreshold) + '），今日收盘后将触发买入信号，明日 T+1 确认买入。'
+                }
+            }
+            if (streak > 0) {
+                return {
+                    action: 'none',
+                    label: '',
+                    reason: '空仓。已连续 ' + streak + ' 日满足买入条件（需连续 ' + strategy.confirmDays + ' 日）。当前价 ' + priceStr +
+                        ' > ' + maBaseLabel + '×' + strategy.buyThreshold + '（' + formatPrice(buyLine, market) + '）。'
+                }
+            }
+            return {
+                action: 'none',
+                label: '',
+                reason: '空仓。当前价 ' + priceStr + (baseMa != null
+                    ? ' 未连续满足买入条件（需收盘价 > ' + maBaseLabel + '×' + strategy.buyThreshold +
+                        ' 并连续 ' + strategy.confirmDays + ' 日确认）。'
+                    : '，均线数据不足。')
+            }
+        }
+
+        function getTradeAdvice(klines, currentPrice, market, itemId) {
+            var strategy = getTradeStrategy(market)
+            if (!klines || klines.length < 5) {
+                return { action: 'unknown', label: '数据不足', reason: '历史数据不足，无法判断。' }
+            }
+            var position = getHoldPosition(itemId)
+            if (market === 'tw') return getTwTradeAdvice(klines, currentPrice, market, strategy, position)
+            return getCnTradeAdvice(klines, currentPrice, market, strategy, position)
+        }
+
+        function buildSignalAdviceHtml(advice) {
+            if (!advice || advice.action === 'unknown' || advice.action === 'none') return ''
+            return '<span class="signal-badge-wrap flow-hover-trigger">' +
+                '<span class="signal-badge ' + escapeHtml(advice.action) + '">' + escapeHtml(advice.label) + '</span>' +
+                '<div class="flow-hover-popup signal-advice-popup">' +
+                    '<div class="flow-popup-title">' + escapeHtml(advice.label) + '</div>' +
+                    '<div class="signal-advice-reason">' + escapeHtml(advice.reason) + '</div>' +
+                '</div>' +
+            '</span>'
+        }
+
+        function pushSimOperation(operations, date, action, price, startEquity, equity, note) {
+            operations.push({
+                date: date,
+                action: action,
+                price: price,
+                valuePct: startEquity ? (equity / startEquity) * 100 : 100,
+                note: note || ''
+            })
+        }
+
+        function finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations) {
+            if (!equityCurve.length) return null
+            var startEquity = equityCurve[0].equity
+            var finalEquity = equityCurve[equityCurve.length - 1].equity
+            var returnPct = startEquity ? ((finalEquity - startEquity) / startEquity) * 100 : 0
+            var maxProfitPoint = { date: equityCurve[0].date, returnPct: 0 }
+            var maxDrawdownPoint = { date: equityCurve[0].date, returnPct: 0 }
+            var i
+            for (i = 0; i < equityCurve.length; i++) {
+                var point = equityCurve[i]
+                var retFromStart = startEquity ? ((point.equity - startEquity) / startEquity) * 100 : 0
+                if (retFromStart > maxProfitPoint.returnPct) {
+                    maxProfitPoint = { date: point.date, returnPct: retFromStart }
+                }
+                if (retFromStart < maxDrawdownPoint.returnPct) {
+                    maxDrawdownPoint = { date: point.date, returnPct: retFromStart }
+                }
+            }
+            return {
+                returnPct: returnPct,
+                buyCount: buyCount,
+                sellCount: sellCount,
+                maxProfitPoint: maxProfitPoint,
+                maxDrawdownPoint: maxDrawdownPoint,
+                startDate: yearKlines[0].date,
+                endDate: yearKlines[yearKlines.length - 1].date,
+                operations: operations
+            }
+        }
+
+        function simulateTwAnnualReturn(yearKlines, strategy) {
+            var shortMa = calcMaSeries(yearKlines, strategy.shortMaDays)
+            var longMa = calcMaSeries(yearKlines, strategy.longMaDays)
+            var n = yearKlines.length
+            var cash = 1
+            var shares = 0
+            var inPosition = false
+            var entryPrice = 0
+            var buyStreak = 0
+            var pendingBuy = false
+            var buyCount = 0
+            var sellCount = 0
+            var equityCurve = []
+            var operations = []
+            var startEquity = 1
+            var i, bar, close, pnlPct, useTrail, sellMa, sellLine
+
+            for (i = 0; i < n; i++) {
+                bar = yearKlines[i]
+                close = bar.close
+                if (close == null || isNaN(close)) continue
+
+                if (pendingBuy && !inPosition && cash > 0) {
+                    shares = cash / close
+                    cash = 0
+                    inPosition = true
+                    entryPrice = close
+                    pendingBuy = false
+                    buyCount++
+                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, '确认买入')
+                }
+
+                if (inPosition && shares > 0) {
+                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
+                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                        cash = shares * close
+                        shares = 0
+                        inPosition = false
+                        sellCount++
+                        pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash, '止损')
+                    } else {
+                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
+                        sellMa = useTrail ? longMa[i] : shortMa[i]
+                        if (sellMa != null) {
+                            sellLine = sellMa * strategy.sellThreshold
+                            if (close < sellLine) {
+                                cash = shares * close
+                                shares = 0
+                                inPosition = false
+                                sellCount++
+                                pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash,
+                                    useTrail ? '移动止盈' : '信号')
+                            }
+                        }
+                    }
+                }
+
+                if (!inPosition && !pendingBuy && shortMa[i] != null) {
+                    if (close > shortMa[i] * strategy.buyThreshold) {
+                        buyStreak++
+                    } else {
+                        buyStreak = 0
+                    }
+                    if (buyStreak >= strategy.confirmDays) {
+                        pendingBuy = true
+                        buyStreak = 0
+                    }
+                }
+
+                equityCurve.push({
+                    date: bar.date,
+                    equity: inPosition ? shares * close : cash
+                })
+            }
+
+            return finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations)
+        }
+
+        function simulateCnAnnualReturn(yearKlines, strategy) {
+            var baseMa = calcMaSeries(yearKlines, strategy.baseMaDays)
+            var trailMa = calcMaSeries(yearKlines, strategy.trailMaDays)
+            var n = yearKlines.length
+            var cash = 1
+            var shares = 0
+            var inPosition = false
+            var entryPrice = 0
+            var entryDate = null
+            var buyStreak = 0
+            var pendingBuy = false
+            var buyCount = 0
+            var sellCount = 0
+            var equityCurve = []
+            var operations = []
+            var startEquity = 1
+            var i, bar, close, pnlPct, useTrail, sellMa, sellLine
+
+            for (i = 0; i < n; i++) {
+                bar = yearKlines[i]
+                close = bar.close
+                if (close == null || isNaN(close)) continue
+
+                if (pendingBuy && !inPosition && cash > 0) {
+                    shares = cash / close
+                    cash = 0
+                    inPosition = true
+                    entryPrice = close
+                    entryDate = bar.date
+                    pendingBuy = false
+                    buyCount++
+                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, 'T+1确认')
+                }
+
+                if (inPosition && shares > 0) {
+                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
+                    var shouldSell = false
+                    var sellNote = '信号'
+                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                        shouldSell = true
+                        sellNote = '止损'
+                    } else {
+                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
+                        sellMa = useTrail ? trailMa[i] : baseMa[i]
+                        if (sellMa != null && close < sellMa * strategy.sellThreshold) {
+                            shouldSell = true
+                            sellNote = useTrail ? '移动止盈' : '信号'
+                        }
+                    }
+                    if (shouldSell) {
+                        cash = shares * close
+                        shares = 0
+                        inPosition = false
+                        entryDate = null
+                        sellCount++
+                        pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash, sellNote)
+                    }
+                }
+
+                if (!inPosition && !pendingBuy && baseMa[i] != null) {
+                    if (close > baseMa[i] * strategy.buyThreshold) {
+                        buyStreak++
+                    } else {
+                        buyStreak = 0
+                    }
+                    if (buyStreak >= strategy.confirmDays) {
+                        pendingBuy = true
+                        buyStreak = 0
+                    }
+                }
+
+                equityCurve.push({
+                    date: bar.date,
+                    equity: inPosition ? shares * close : cash
+                })
+            }
+
+            return finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations)
+        }
+
+        function simulateAnnualReturn(klines, market) {
+            var yearKlines = getAnnualKlines(klines)
+            if (!yearKlines || yearKlines.length < 10) return null
+            var strategy = getTradeStrategy(market)
+            if (market === 'tw') return simulateTwAnnualReturn(yearKlines, strategy)
+            return simulateCnAnnualReturn(yearKlines, strategy)
+        }
+
+        /* ===== Fetch 层 ===== */
+        function isPrivateLanHost(host) {
+            if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(host)) return true
+            if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(host)) return true
+            if (/^172\.(1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3}$/.test(host)) return true
+            return false
+        }
+
+        function isCorsProxyFreeOrigin() {
+            var host = (location.hostname || '').toLowerCase()
+            var proto = (location.protocol || '').toLowerCase()
+            if (!host && proto !== 'file:') return false
+            if (host === 'localhost' || host === '127.0.0.1') return true
+            if (isPrivateLanHost(host)) return true
+            if (proto === 'capacitor:' || proto === 'ionic:') return true
+
+            var freeSuffixes = [
+                '.github.io', '.github.dev',
+                '.codesandbox.io', '.csb.app',
+                '.stackblitz.io', '.stackblitz.com',
+                '.replit.dev', '.repl.co',
+                '.glitch.me',
+                '.gitpod.io',
+                '.codepen.io', '.codepen.dev',
+                '.jsfiddle.net',
+                '.vscode.dev', '.codeanywhere.com'
+            ]
+            var i
+            for (i = 0; i < freeSuffixes.length; i++) {
+                var suffix = freeSuffixes[i]
+                if (host === suffix.slice(1) || host.slice(-suffix.length) === suffix) return true
+            }
+            if (host.indexOf('ngrok') >= 0 || host.indexOf('trycloudflare.com') >= 0) return true
+            return false
+        }
+
+        function buildCorsProxyUrls(targetUrl) {
+            var urls = []
+            if (CUSTOM_PROXY_URL) {
+                urls.push(CUSTOM_PROXY_URL + encodeURIComponent(targetUrl))
+            }
+            var host = location.hostname
+            if (host === 'localhost' || host === '127.0.0.1') {
+                urls.push(LOCAL_DEV_PROXY_URL + encodeURIComponent(targetUrl))
+            }
+            if (isCorsProxyFreeOrigin()) {
+                urls.push(CORS_PROXY_IO_PREFIX + encodeURIComponent(targetUrl))
+            }
+            return urls
+        }
+
+        async function fetchRemote(url, options) {
+            options = options || {}
+            var fetchOpts = {}
+            if (options.headers) fetchOpts.headers = options.headers
+            var asJson = options.asJson === true
+            var allowHtml = options.allowHtml === true
+
+            async function parseResponse(resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status)
+                var text = await resp.text()
+                if (!allowHtml && text.trim().charAt(0) === '<') {
+                    throw new Error('接口返回异常')
+                }
+                return asJson ? JSON.parse(text) : text
+            }
+
+            var lastErr = null
+            try {
+                return await parseResponse(await fetch(url, fetchOpts))
+            } catch (e) {
+                lastErr = e
+            }
+
+            var proxies = buildCorsProxyUrls(url)
+            for (var i = 0; i < proxies.length; i++) {
+                try {
+                    return await parseResponse(await fetch(proxies[i], fetchOpts))
+                } catch (e) {
+                    lastErr = e
+                }
+            }
+
+            if (lastErr && lastErr.message === 'Failed to fetch') {
+                throw new Error('网络请求失败，请检查网络连接后重试')
+            }
+            throw lastErr || new Error('网络请求失败')
+        }
+
+        async function fetchJSON(url, options) {
+            options = options || {}
+            options.asJson = true
+            return fetchRemote(url, options)
+        }
+
+        async function fetchText(url, options) {
+            options = options || {}
+            options.asJson = false
+            return fetchRemote(url, options)
+        }
+
+        async function fetchFundText(url) {
+            var opts = { headers: { Referer: 'https://fund.eastmoney.com/' } }
+            try {
+                if (isCorsProxyFreeOrigin()) {
+                    return await fetchText(url, opts)
+                }
+                var resp = await fetch(url, opts)
+                if (!resp.ok) return null
+                return await resp.text()
+            } catch (e) {
+                return null
+            }
+        }
+
+        async function fetchDirectJSON(url) {
+            return fetchJSON(url)
+        }
+
+        function isFinMindRateLimitError(err) {
+            var msg = (err && err.message) || String(err || '')
+            return msg.indexOf('402') >= 0 ||
+                msg.indexOf('FINMIND_RATE_LIMIT') >= 0 ||
+                msg.indexOf('upper limit') >= 0 ||
+                msg.indexOf('Requests reach') >= 0
+        }
+
+        async function fetchFinMindJSON(url) {
+            var opts = {}
+            if (FINMIND_TOKEN) {
+                opts.headers = { Authorization: 'Bearer ' + FINMIND_TOKEN }
+            }
+            try {
+                return await fetchJSON(url, opts)
+            } catch (e) {
+                if (isFinMindRateLimitError(e)) {
+                    throw new Error('FINMIND_RATE_LIMIT')
+                }
+                throw e
+            }
+        }
+
+        function mapFinMindRowsToKlines(rows) {
+            return rows.map(function (row) {
+                return {
+                    date: row.date,
+                    open: row.open,
+                    close: row.close,
+                    high: row.max,
+                    low: row.min,
+                    volume: row.Trading_Volume,
+                    changePct: row.spread
+                }
+            })
+        }
+
+        function mergeTWKlines(existing, incoming) {
+            var byDate = {}
+            existing.forEach(function (k) { byDate[k.date] = k })
+            incoming.forEach(function (k) { byDate[k.date] = k })
+            return Object.keys(byDate).sort().map(function (d) { return byDate[d] }).slice(-HISTORY_DAYS)
+        }
+
+        async function fetchFinMindTWKlines(code, startDate, endDate) {
+            var url = 'https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=' +
+                encodeURIComponent(code) + '&start_date=' + startDate
+            if (endDate) url += '&end_date=' + endDate
+            var priceData = await fetchFinMindJSON(url)
+            if (!priceData || !priceData.data || !priceData.data.length) {
+                throw new Error('未找到该 ETF，请检查代码是否正确（如 0050、00685L）')
+            }
+            return mapFinMindRowsToKlines(priceData.data)
+        }
+
+        function fetchFundJSONP(baseUrl) {
+            return new Promise(function (resolve, reject) {
+                var cbName = 'fundjp_' + Date.now() + '_' + Math.floor(Math.random() * 10000)
+                var timer = setTimeout(function () {
+                    cleanup()
+                    reject(new Error('JSONP 超时'))
+                }, 10000)
+                var script = document.createElement('script')
+
+                function cleanup() {
+                    clearTimeout(timer)
+                    try { delete window[cbName] } catch (e) { window[cbName] = undefined }
+                    if (script.parentNode) script.parentNode.removeChild(script)
+                }
+
+                window[cbName] = function (data) {
+                    cleanup()
+                    resolve(data)
+                }
+
+                script.onerror = function () {
+                    cleanup()
+                    reject(new Error('JSONP 加载失败'))
+                }
+
+                var sep = baseUrl.indexOf('?') >= 0 ? '&' : '?'
+                script.src = baseUrl + sep + 'callback=' + encodeURIComponent(cbName) + '&_=' + Date.now()
+                document.head.appendChild(script)
+            })
+        }
+
+        function loadPingZhongDataScript(code) {
+            return new Promise(function (resolve, reject) {
+                var timer = setTimeout(function () {
+                    cleanup()
+                    reject(new Error('脚本超时'))
+                }, 12000)
+                var script = document.createElement('script')
+
+                function cleanup() {
+                    clearTimeout(timer)
+                    if (script.parentNode) script.parentNode.removeChild(script)
+                }
+
+                script.onload = function () {
+                    var name = window.fS_name || code
+                    var trend = window.Data_netWorthTrend
+                    cleanup()
+                    if (!trend || !trend.length) {
+                        reject(new Error('无净值趋势'))
+                        return
+                    }
+                    resolve({ name: name, trend: trend })
+                }
+
+                script.onerror = function () {
+                    cleanup()
+                    reject(new Error('脚本加载失败'))
+                }
+
+                script.src = 'https://fund.eastmoney.com/pingzhongdata/' + encodeURIComponent(code) + '.js?_=' + Date.now()
+                document.head.appendChild(script)
+            })
+        }
+
+        function getTencentCNSymbol(code) {
+            var first = code.charAt(0)
+            return (first === '5' || first === '6' ? 'sh' : 'sz') + code
+        }
+
+        async function fetchTencentText(url) {
+            var resp = await fetch(url)
+            if (!resp.ok) throw new Error('HTTP ' + resp.status)
+            var buf = await resp.arrayBuffer()
+            try {
+                return new TextDecoder('gb18030').decode(buf)
+            } catch (e) {
+                return new TextDecoder('utf-8').decode(buf)
+            }
+        }
+
+        function parseTencentQuoteText(text, key) {
+            var marker = 'v_' + key + '="'
+            var idx = text.indexOf(marker)
+            if (idx < 0) return null
+            var start = idx + marker.length
+            var end = text.indexOf('"', start)
+            if (end < 0) return null
+            var parts = text.slice(start, end).split('~')
+            if (parts.length < 5) return null
+            var price = parseFloat(parts[3])
+            var preClose = parseFloat(parts[4])
+            var changePct = 0
+            if (!isNaN(price) && !isNaN(preClose) && preClose) {
+                changePct = ((price - preClose) / preClose) * 100
+            }
+            return {
+                name: parts[1] || key,
+                code: parts[2] || key,
+                price: price,
+                preClose: preClose,
+                changePct: changePct
+            }
+        }
+
+        function parseTencentKlineRows(rows) {
+            return rows.map(function (row, idx, arr) {
+                var close = parseFloat(row[2])
+                var prevClose = idx > 0 ? parseFloat(arr[idx - 1][2]) : close
+                var changePct = prevClose ? ((close - prevClose) / prevClose) * 100 : 0
+                return {
+                    date: row[0],
+                    open: parseFloat(row[1]),
+                    close: close,
+                    high: parseFloat(row[3]),
+                    low: parseFloat(row[4]),
+                    volume: parseFloat(row[5]) || 0,
+                    changePct: changePct
+                }
+            })
+        }
+
+        async function fetchTencentKlineBlock(tencentSymbol) {
+            var param = tencentSymbol + ',day,,' + HISTORY_DAYS + ',qfq'
+            var url = 'https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=' + encodeURIComponent(param) + '&_=' + Date.now()
+            var json = await fetchDirectJSON(url)
+            if (!json || !json.data || !json.data[tencentSymbol]) return null
+            return json.data[tencentSymbol]
+        }
+
+        async function fetchTencentPackage(tencentSymbol, market, displaySymbol, flowLabel) {
+            try {
+                var block = await fetchTencentKlineBlock(tencentSymbol)
+                if (!block) return null
+                var rows = block.qfqday || block.day || []
+                if (!rows.length) return null
+
+                var klines = parseTencentKlineRows(rows).slice(-HISTORY_DAYS)
+                var quote = null
+                try {
+                    var quoteText = await fetchTencentText('https://qt.gtimg.cn/q=' + encodeURIComponent(tencentSymbol))
+                    quote = parseTencentQuoteText(quoteText, tencentSymbol)
+                } catch (e) { /* ignore */ }
+
+                if (!quote) {
+                    var qt = block.qt && block.qt[tencentSymbol]
+                    if (qt && qt.length >= 5) {
+                        var qPrice = parseFloat(qt[3])
+                        var qPreClose = parseFloat(qt[4])
+                        var qChangePct = 0
+                        if (!isNaN(qPrice) && !isNaN(qPreClose) && qPreClose) {
+                            qChangePct = ((qPrice - qPreClose) / qPreClose) * 100
+                        }
+                        quote = {
+                            name: qt[1] || displaySymbol,
+                            code: qt[2] || displaySymbol,
+                            price: qPrice,
+                            changePct: qChangePct
+                        }
+                    }
+                }
+
+                var last = klines[klines.length - 1]
+                var price = quote && !isNaN(quote.price) ? quote.price : last.close
+                var changePct = quote && !isNaN(quote.changePct) ? quote.changePct : (last.changePct || 0)
+                var name = (quote && quote.name) || displaySymbol
+
+                return enrichWithIntraday({
+                    market: market,
+                    symbol: quote && quote.code ? quote.code : displaySymbol,
+                    name: name,
+                    price: price,
+                    changePct: changePct,
+                    klines: klines,
+                    flow: [],
+                    flowLabel: flowLabel || '量能参考',
+                    tencentSymbol: tencentSymbol
+                })
+            } catch (e) {
+                return null
+            }
+        }
+
+        function normalizeTWSymbol(symbol) {
+            var s = symbol.trim().toUpperCase()
+            if (s.endsWith('.TW')) s = s.slice(0, -3)
+            return s.replace(/[^A-Z0-9]/g, '')
+        }
+
+        function formatDateISO(d) {
+            return d.getFullYear() + '-' +
+                String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                String(d.getDate()).padStart(2, '0')
+        }
+
+        function parseEMKlines(data) {
+            if (!data || !data.data || !data.data.klines) return { name: '', klines: [] }
+            var klines = data.data.klines.map(function (row) {
+                var p = row.split(',')
+                return {
+                    date: p[0],
+                    open: parseFloat(p[1]),
+                    close: parseFloat(p[2]),
+                    high: parseFloat(p[3]),
+                    low: parseFloat(p[4]),
+                    volume: parseFloat(p[5]),
+                    amount: parseFloat(p[6]),
+                    changePct: parseFloat(p[8])
+                }
+            })
+            return { name: data.data.name || '', klines: klines }
+        }
+
+        function getCNSecids(symbol) {
+            var s = symbol.replace(/[^\d]/g, '')
+            var first = s.charAt(0)
+            if (first === '5' || first === '6') return ['1.' + s, '0.' + s]
+            var secids = ['0.' + s, '1.' + s]
+            if (first === '0' || first === '2') secids.push('150.' + s)
+            return secids
+        }
+
+        function isLikelyCNMutualFundCode(s) {
+            if (!/^\d{6}$/.test(s)) return false
+            var first = s.charAt(0)
+            if (first === '5' || first === '6' || first === '1' || first === '3') return false
+            return first === '0' || first === '2'
+        }
+
+        function isCNFundSecid(secid) {
+            return secid && secid.indexOf('150.') === 0
+        }
+
+        function fetchCNMutualFundEstimateJSONP(code) {
+            return new Promise(function (resolve) {
+                var timer = setTimeout(function () { cleanup(); resolve(null) }, 8000)
+                var script = document.createElement('script')
+                var prevJsonpgz = window.jsonpgz
+
+                function cleanup() {
+                    clearTimeout(timer)
+                    window.jsonpgz = prevJsonpgz
+                    if (script.parentNode) script.parentNode.removeChild(script)
+                }
+
+                window.jsonpgz = function (data) {
+                    cleanup()
+                    if (!data) {
+                        resolve(null)
+                        return
+                    }
+                    var price = parseFloat(data.gsz)
+                    if (isNaN(price)) price = parseFloat(data.dwjz)
+                    if (isNaN(price)) {
+                        resolve(null)
+                        return
+                    }
+                    var changePct = parseFloat(data.gszzl)
+                    if (isNaN(changePct)) changePct = 0
+                    resolve({
+                        name: data.name || code,
+                        price: price,
+                        changePct: changePct,
+                        navDate: data.jzrq || ''
+                    })
+                }
+
+                script.onerror = function () { cleanup(); resolve(null) }
+                script.src = 'https://fundgz.1234567.com.cn/js/' + encodeURIComponent(code) + '.js?_=' + Date.now()
+                document.head.appendChild(script)
+            })
+        }
+
+        async function fetchCNMutualFundEstimate(code) {
+            var jsonpResult = await fetchCNMutualFundEstimateJSONP(code)
+            if (jsonpResult) return jsonpResult
+
+            try {
+                var text = await fetchFundText('https://fundgz.1234567.com.cn/js/' + encodeURIComponent(code) + '.js?_=' + Date.now())
+                if (!text) return null
+                var match = text.match(/jsonpgz\(\s*(\{[\s\S]*\})\s*\)/)
+                if (!match) return null
+                var data = JSON.parse(match[1])
+                var price = parseFloat(data.gsz)
+                if (isNaN(price)) price = parseFloat(data.dwjz)
+                if (isNaN(price)) return null
+                var changePct = parseFloat(data.gszzl)
+                if (isNaN(changePct)) changePct = 0
+                return {
+                    name: data.name || code,
+                    price: price,
+                    changePct: changePct,
+                    navDate: data.jzrq || ''
+                }
+            } catch (e) {
+                return null
+            }
+        }
+
+        async function fetchCNMutualFundPingZhongData(code) {
+            try {
+                var loaded = await loadPingZhongDataScript(code)
+                var name = loaded.name || code
+                var trend = loaded.trend
+                if (!trend || !trend.length) return null
+
+                var klines = trend.map(function (item) {
+                    var d = new Date(item.x)
+                    var dateStr = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate())
+                    return {
+                        date: dateStr,
+                        open: item.y,
+                        close: item.y,
+                        high: item.y,
+                        low: item.y,
+                        volume: 0,
+                        changePct: item.equityReturn != null ? item.equityReturn : 0
+                    }
+                }).slice(-HISTORY_DAYS)
+
+                var last = klines[klines.length - 1]
+                return {
+                    name: name,
+                    price: last.close,
+                    changePct: last.changePct || 0,
+                    klines: klines
+                }
+            } catch (e) {
+                return null
+            }
+        }
+
+        async function fetchCNMutualFundNavHistory(code) {
+            var ping = await fetchCNMutualFundPingZhongData(code)
+            if (ping && ping.klines.length) return ping.klines
+
+            var all = []
+            var page = 1
+            var pageSize = 20
+            var fundHeaders = { Referer: 'https://fundf10.eastmoney.com/' }
+
+            while (all.length < HISTORY_DAYS && page <= 40) {
+                var url = 'https://api.fund.eastmoney.com/f10/lsjz?fundCode=' + encodeURIComponent(code) +
+                    '&pageIndex=' + page + '&pageSize=' + pageSize + '&startDate=&endDate='
+                var data = null
+                try {
+                    data = await fetchFundJSONP(url)
+                } catch (e) {
+                    try {
+                        data = await fetchJSON(url, { headers: fundHeaders })
+                    } catch (e2) {
+                        break
+                    }
+                }
+                var list = data && data.Data && data.Data.LSJZList
+                if (!list || !list.length) break
+                all = all.concat(list)
+                if (list.length < pageSize) break
+                page++
+            }
+
+            if (!all.length) return []
+
+            return all.map(function (row) {
+                var nav = parseFloat(row.DWJZ)
+                var changePct = parseFloat(row.JZZZL)
+                return {
+                    date: row.FSRQ,
+                    open: nav,
+                    close: nav,
+                    high: nav,
+                    low: nav,
+                    volume: 0,
+                    changePct: isNaN(changePct) ? 0 : changePct
+                }
+            }).reverse().slice(-HISTORY_DAYS)
+        }
+
+        async function enrichCNMutualFundPayload(payload, code) {
+            var ping = await fetchCNMutualFundPingZhongData(code)
+            var estimate = await fetchCNMutualFundEstimate(code)
+
+            if (ping && ping.klines.length) payload.klines = ping.klines
+            if (estimate) {
+                payload.price = estimate.price
+                payload.changePct = estimate.changePct
+                payload.name = estimate.name || payload.name
+            } else if (ping) {
+                payload.price = ping.price
+                payload.changePct = ping.changePct
+                payload.name = ping.name || payload.name
+            }
+
+            if (!payload.klines || !payload.klines.length) {
+                payload.klines = await fetchCNMutualFundNavHistory(code)
+            }
+            if (!payload.klines || !payload.klines.length) return null
+
+            if (payload.price == null || isNaN(payload.price)) {
+                payload.price = payload.klines[payload.klines.length - 1].close
+            }
+
+            payload.flow = []
+            payload.flowLabel = '场外基金（无主力流向）'
+            payload.isMutualFund = true
+            return payload
+        }
+
+        async function fetchCNMutualFundPackage(code) {
+            var ping = await fetchCNMutualFundPingZhongData(code)
+            var estimate = await fetchCNMutualFundEstimate(code)
+            var klines = ping && ping.klines.length ? ping.klines : await fetchCNMutualFundNavHistory(code)
+            if (!klines.length) return null
+
+            var last = klines[klines.length - 1]
+            var price = estimate ? estimate.price : last.close
+            var changePct = estimate ? estimate.changePct : (last.changePct || 0)
+            var name = (estimate && estimate.name) || (ping && ping.name) || code
+            if (price == null || isNaN(price)) return null
+
+            return enrichWithIntraday({
+                market: 'cn',
+                symbol: code,
+                name: name,
+                price: price,
+                changePct: changePct,
+                klines: klines,
+                flow: [],
+                flowLabel: '场外基金（无主力流向）',
+                secid: '150.' + code,
+                isMutualFund: true
+            })
+        }
+
+        async function fetchEMQuote(secid) {
+            try {
+                var url = 'https://push2.eastmoney.com/api/qt/stock/get?secid=' + secid +
+                    '&fields=f57,f58,f43,f44,f45,f46,f47,f48,f60,f169,f170,f171,f168,f162,f167&ut=fa5fd1943c7b386f172d6893dbfba107&fltt=2&invt=2&_=' + Date.now()
+                var data = await fetchDirectJSON(url)
+                if (!data || !data.data || data.data.f43 == null || data.data.f43 === '') return null
+                var d = data.data
+                return {
+                    symbol: d.f57,
+                    name: d.f58,
+                    price: d.f43,
+                    changePct: d.f170,
+                    secid: secid
+                }
+            } catch (e) {
+                return null
+            }
+        }
+
+        async function fetchEMKline(secid, limit) {
+            var url = 'https://push2his.eastmoney.com/api/qt/stock/kline/get?fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61' +
+                '&klt=101&fqt=1&secid=' + secid + '&beg=0&end=20500101&lmt=' + (limit || HISTORY_DAYS) + '&_=' + Date.now()
+            try {
+                var data = await fetchJSON(url)
+                return parseEMKlines(data)
+            } catch (e) {
+                return { name: '', klines: [] }
+            }
+        }
+
+        async function fetchEMFlow(secid) {
+            var url = 'https://push2.eastmoney.com/api/qt/stock/fflow/daykline/get?lmt=5&klt=101&secid=' + secid +
+                '&fields1=f1,f2,f3,f7&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65&_=' + Date.now()
+            try {
+                var data = await fetchDirectJSON(url)
+                if (!data || !data.data || !data.data.klines) return []
+                return data.data.klines.map(function (row) {
+                    var p = row.split(',')
+                    return { date: p[0], mainNet: parseFloat(p[1]) }
+                })
+            } catch (e) {
+                return []
+            }
+        }
+
+        function getIntradayPreClose(klines, market) {
+            if (!klines || !klines.length) return null
+            var last = klines[klines.length - 1]
+            var today = getMarketDateString(market)
+            if (last.date === today && klines.length > 1) {
+                return klines[klines.length - 2].close
+            }
+            return last.close
+        }
+
+        async function fetchTencentIntraday(tencentSymbol, market) {
+            try {
+                var url = 'https://web.ifzq.gtimg.cn/appstock/app/minute/query?code=' + encodeURIComponent(tencentSymbol) + '&_=' + Date.now()
+                var json = await fetchDirectJSON(url)
+                if (!json || !json.data || !json.data[tencentSymbol]) return null
+                var block = json.data[tencentSymbol]
+                var series = block.data && block.data.data
+                if (!series || !series.length) return null
+
+                var qt = block.qt && block.qt[tencentSymbol]
+                var preClose = qt && qt.length >= 5 ? parseFloat(qt[4]) : null
+                var tradingDate = getMarketDateString(market)
+                if (qt && qt.length >= 31 && qt[30]) {
+                    var ds = String(qt[30])
+                    if (ds.length >= 8) {
+                        tradingDate = ds.slice(0, 4) + '-' + ds.slice(4, 6) + '-' + ds.slice(6, 8)
+                    }
+                }
+
+                var points = []
+                series.forEach(function (row) {
+                    var chunks = String(row).trim().split(/\s+/)
+                    if (chunks.length < 2) return
+                    var hm = chunks[0]
+                    var hour = parseInt(hm.slice(0, 2), 10)
+                    var minute = parseInt(hm.slice(2, 4), 10)
+                    var price = parseFloat(chunks[1])
+                    if (isNaN(hour) || isNaN(minute) || isNaN(price)) return
+                    points.push({
+                        time: marketLocalTimeToUnix(market, tradingDate, hour, minute),
+                        price: price,
+                        label: pad2(hour) + ':' + pad2(minute)
+                    })
+                })
+                if (!points.length) return null
+                points.sort(function (a, b) { return a.time - b.time })
+                return { tradingDate: tradingDate, preClose: preClose, points: points }
+            } catch (e) {
+                return null
+            }
+        }
+
+        function aggregateFinMindTicksToMinutes(ticks, market, tradingDate) {
+            var byMinute = {}
+            ticks.forEach(function (row) {
+                var timeStr = row.Time || ''
+                var parts = timeStr.split(':')
+                if (parts.length < 2) return
+                var hour = parseInt(parts[0], 10)
+                var minute = parseInt(parts[1], 10)
+                var price = parseFloat(row.deal_price)
+                if (isNaN(hour) || isNaN(minute) || isNaN(price)) return
+                var key = pad2(hour) + ':' + pad2(minute)
+                byMinute[key] = { hour: hour, minute: minute, price: price }
+            })
+            var points = Object.keys(byMinute).sort().map(function (key) {
+                var p = byMinute[key]
+                return {
+                    time: marketLocalTimeToUnix(market, tradingDate, p.hour, p.minute),
+                    price: p.price,
+                    label: key
+                }
+            })
+            points.sort(function (a, b) { return a.time - b.time })
+            return points
+        }
+
+        async function fetchFinMindTWIntraday(code, preClose) {
+            try {
+                var tradingDate = getMarketDateString('tw')
+                var url = 'https://api.finmindtrade.com/api/v3/data?dataset=TaiwanStockPriceMinute&stock_id=' +
+                    encodeURIComponent(code) + '&date=' + tradingDate
+                var json = await fetchFinMindJSON(url)
+                if (!json || !json.data || !json.data.length) return null
+                var points = aggregateFinMindTicksToMinutes(json.data, 'tw', tradingDate)
+                if (!points.length) return null
+                return { tradingDate: tradingDate, preClose: preClose, points: points }
+            } catch (e) {
+                return null
+            }
+        }
+
+        async function fetchIntradayForPayload(data) {
+            if (!data || data.isMutualFund) return null
+            var preClose = getIntradayPreClose(data.klines, data.market)
+            if (data.tencentSymbol) {
+                var tencent = await fetchTencentIntraday(data.tencentSymbol, data.market)
+                if (tencent) return tencent
+            }
+            if (data.market === 'tw') {
+                var tw = await fetchFinMindTWIntraday(data.symbol, preClose)
+                if (tw) return tw
+            }
+            return null
+        }
+
+        async function enrichWithIntraday(data) {
+            if (!data) return data
+            data.intraday = await fetchIntradayForPayload(data)
+            return data
+        }
+
+        async function fetchEMBySecids(secids, market, symbol, flowLabel) {
+            var quote = null
+            var secid = secids[0]
+            for (var i = 0; i < secids.length; i++) {
+                quote = await fetchEMQuote(secids[i])
+                if (quote && quote.price) {
+                    secid = secids[i]
+                    break
+                }
+            }
+            if (!quote || !quote.price) return null
+
+            var klineData = await fetchEMKline(secid, HISTORY_DAYS)
+            var flow = await fetchEMFlow(secid)
+            if (klineData.name) quote.name = klineData.name
+
+            var payload = {
+                market: market,
+                symbol: quote.symbol || symbol,
+                name: quote.name || symbol,
+                price: quote.price,
+                changePct: quote.changePct,
+                klines: klineData.klines,
+                flow: flow,
+                flowLabel: flowLabel || '主力净流入',
+                secid: secid
+            }
+            if (market === 'cn' && isCNFundSecid(secid)) {
+                var enriched = await enrichCNMutualFundPayload(payload, symbol.replace(/[^\d]/g, ''))
+                if (enriched) return enriched
+            }
+            return enrichWithIntraday(payload)
+        }
+
+        async function fetchCNData(symbol) {
+            var s = symbol.replace(/[^\d]/g, '')
+            if (isLikelyCNMutualFundCode(s)) {
+                var mutualFirst = await fetchCNMutualFundPackage(s)
+                if (mutualFirst) return mutualFirst
+            }
+            var tencentSym = getTencentCNSymbol(s)
+            var tencentData = await fetchTencentPackage(tencentSym, 'cn', s, '量能参考')
+            if (tencentData) return tencentData
+
+            var data = await fetchEMBySecids(getCNSecids(s), 'cn', s, '主力净流入')
+            if (data) return data
+            var mutual = await fetchCNMutualFundPackage(s)
+            if (mutual) return mutual
+            throw new Error('未找到该 ETF/基金，请检查代码是否正确（如 510300、016185）')
+        }
+
+        async function fetchFinMindTWData(symbol, options) {
+            options = options || {}
+            var code = normalizeTWSymbol(symbol)
+            if (!code) throw new Error('请输入有效的台湾 ETF 代码，如 0050 或 00685L')
+
+            var endDate = formatDateISO(new Date())
+            var start = new Date()
+            start.setFullYear(start.getFullYear() - 1)
+            var startDate = formatDateISO(start)
+            var klines
+
+            if (options.lightweight && options.cachedData && options.cachedData.klines && options.cachedData.klines.length) {
+                var shortStart = new Date()
+                shortStart.setDate(shortStart.getDate() - 14)
+                try {
+                    var recentRows = await fetchFinMindTWKlines(code, formatDateISO(shortStart), endDate)
+                    klines = mergeTWKlines(options.cachedData.klines, recentRows)
+                } catch (e) {
+                    if (isFinMindRateLimitError(e)) throw e
+                    klines = options.cachedData.klines
+                }
+            } else {
+                klines = await fetchFinMindTWKlines(code, startDate, endDate)
+            }
+
+            var last = klines[klines.length - 1]
+            var name = (options.cachedData && options.cachedData.name) || code
+
+            if (!options.lightweight) {
+                try {
+                    var infoUrl = 'https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInfo&data_id=' +
+                        encodeURIComponent(code)
+                    var infoData = await fetchFinMindJSON(infoUrl)
+                    if (infoData && infoData.data && infoData.data[0] && infoData.data[0].stock_name) {
+                        name = infoData.data[0].stock_name
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
+            var flow = []
+            var flowLabel = '成交量（量能参考）'
+            if (options.lightweight && options.cachedData && options.cachedData.flow && options.cachedData.flow.length) {
+                flow = options.cachedData.flow
+                flowLabel = options.cachedData.flowLabel || flowLabel
+            } else if (!options.lightweight) {
+                try {
+                    var flowStart = new Date()
+                    flowStart.setDate(flowStart.getDate() - 40)
+                    var flowUrl = 'https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInstitutionalInvestorsBuySell&data_id=' +
+                        encodeURIComponent(code) + '&start_date=' + formatDateISO(flowStart) + '&end_date=' + endDate
+                    var flowData = await fetchFinMindJSON(flowUrl)
+                    if (flowData && flowData.data && flowData.data.length) {
+                        var byDate = {}
+                        flowData.data.forEach(function (row) {
+                            if (!byDate[row.date]) byDate[row.date] = 0
+                            byDate[row.date] += (row.buy || 0) - (row.sell || 0)
+                        })
+                        flow = Object.keys(byDate).sort().slice(-10).map(function (date) {
+                            return { date: date, mainNet: byDate[date] }
+                        })
+                        if (flow.length) flowLabel = '机构资金流向'
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
+            if (!flow.length) {
+                for (var j = Math.max(0, klines.length - 5); j < klines.length; j++) {
+                    flow.push({ date: klines[j].date, mainNet: klines[j].volume || 0 })
+                }
+            }
+
+            var payload = {
+                market: 'tw',
+                symbol: code,
+                name: name,
+                price: last.close,
+                changePct: last.changePct,
+                klines: klines,
+                flow: flow,
+                flowLabel: flowLabel,
+                secid: null
+            }
+
+            if (options.skipIntraday) return payload
+            return enrichWithIntraday(payload)
+        }
+
+        async function fetchYahooTWData(symbol, options) {
+            options = options || {}
+            var code = normalizeTWSymbol(symbol)
+            var ySymbol = code + '.TW'
+            var url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + encodeURIComponent(ySymbol) +
+                '?interval=1d&range=1y&includePrePost=false'
+            var data = await fetchJSON(url)
+            if (!data || !data.chart || !data.chart.result || !data.chart.result[0]) {
+                throw new Error('未找到该 ETF，请检查代码是否正确（如 0050、00685L）')
+            }
+
+            var result = data.chart.result[0]
+            var meta = result.meta
+            var timestamps = result.timestamp || []
+            var q = result.indicators.quote[0]
+            var klines = []
+
+            for (var i = 0; i < timestamps.length; i++) {
+                if (q.close[i] == null) continue
+                var d = new Date(timestamps[i] * 1000)
+                var dateStr = d.getFullYear() + '-' +
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0')
+                var prevClose = i > 0 && q.close[i - 1] != null ? q.close[i - 1] : q.close[i]
+                var changePct = prevClose ? ((q.close[i] - prevClose) / prevClose) * 100 : 0
+                klines.push({
+                    date: dateStr,
+                    open: q.open[i],
+                    close: q.close[i],
+                    high: q.high[i],
+                    low: q.low[i],
+                    volume: q.volume[i],
+                    changePct: changePct
+                })
+            }
+
+            if (!klines.length) throw new Error('暂无 K 线数据')
+
+            var last = klines[klines.length - 1]
+            var flow = []
+            for (var j = Math.max(0, klines.length - 5); j < klines.length; j++) {
+                flow.push({ date: klines[j].date, mainNet: klines[j].volume || 0 })
+            }
+
+            var payload = {
+                market: 'tw',
+                symbol: code,
+                name: meta.longName || meta.shortName || code,
+                price: meta.regularMarketPrice || last.close,
+                changePct: last.changePct,
+                klines: klines.slice(-HISTORY_DAYS),
+                flow: flow,
+                flowLabel: '成交量（量能参考）',
+                secid: null
+            }
+
+            if (options.skipIntraday) return payload
+            return enrichWithIntraday(payload)
+        }
+
+        async function fetchTWData(symbol, options) {
+            options = options || {}
+            var code = normalizeTWSymbol(symbol)
+            if (!code) throw new Error('请输入有效的台湾 ETF 代码，如 0050 或 00685L')
+
+            var cached = twDataCache[code]
+            if (options.useCache !== false && cached && cached.data) {
+                var ttl = options.lightweight ? TW_CACHE_TTL_LIGHT : TW_CACHE_TTL_FULL
+                if (Date.now() - cached.ts < ttl) {
+                    return cached.data
+                }
+            }
+
+            if (options.lightweight && cached && cached.data) {
+                try {
+                    var lightData = await fetchFinMindTWData(code, {
+                        lightweight: true,
+                        cachedData: cached.data,
+                        skipIntraday: true
+                    })
+                    twDataCache[code] = { data: lightData, ts: Date.now() }
+                    return lightData
+                } catch (e) {
+                    if (cached.data) return cached.data
+                }
+            }
+
+            try {
+                var finData = await fetchFinMindTWData(code, {
+                    skipIntraday: !!options.skipIntraday
+                })
+                twDataCache[code] = { data: finData, ts: Date.now() }
+                return finData
+            } catch (finErr) {
+                try {
+                    var yahooData = await fetchYahooTWData(code, {
+                        skipIntraday: !!options.skipIntraday
+                    })
+                    twDataCache[code] = { data: yahooData, ts: Date.now() }
+                    return yahooData
+                } catch (yahooErr) {
+                    if (cached && cached.data) return cached.data
+                    if (isFinMindRateLimitError(finErr)) {
+                        throw new Error('台湾 ETF 数据请求已达 FinMind 上限（约 300 次/小时），请稍后再试或使用备用源')
+                    }
+                    if (finErr.message === 'Failed to fetch' || yahooErr.message === 'Failed to fetch') {
+                        throw new Error('台湾 ETF 数据加载失败，请检查网络连接后重试')
+                    }
+                    throw finErr
+                }
+            }
+        }
+
+        async function fetchETFData(market, symbol, options) {
+            if (market === 'cn') return fetchCNData(symbol)
+            if (market === 'tw') return fetchTWData(symbol, options)
+            throw new Error('暂不支持该市场')
+        }
+
+        function aggregateKlinesBy5Days(klines) {
+            var result = []
+            for (var i = 0; i < klines.length; i += 5) {
+                var chunk = klines.slice(i, i + 5)
+                if (!chunk.length) continue
+                var high = chunk[0].high
+                var low = chunk[0].low
+                for (var j = 1; j < chunk.length; j++) {
+                    if (chunk[j].high > high) high = chunk[j].high
+                    if (chunk[j].low < low) low = chunk[j].low
+                }
+                result.push({
+                    date: chunk[chunk.length - 1].date,
+                    open: chunk[0].open,
+                    close: chunk[chunk.length - 1].close,
+                    high: high,
+                    low: low,
+                    volume: chunk.reduce(function (sum, k) { return sum + (k.volume || 0) }, 0)
+                })
+            }
+            return result
+        }
+
+        var SERIES_LABEL_OPTS = {
+            priceLineVisible: false,
+            lastValueVisible: false,
+            title: ''
+        }
+
+        var CHART_UP_COLOR = '#f85149'
+        var CHART_DOWN_COLOR = '#3fb950'
+        var CHART_LINE_COLOR = '#388bfd'
+        var CHART_MA5_COLOR = '#f0883e'
+
+        function buildChartTabsHtml(mode, cardId) {
+            var cls = cardId ? ' chart-tabs-sm' : ''
+            var idAttr = cardId ? ' data-card-id="' + escapeHtml(cardId) + '"' : ''
+            return '<div class="chart-tabs' + cls + '"' + idAttr + '>' +
+                '<button type="button" class="chart-tab' + (mode === 'day30' ? ' active' : '') + '" data-mode="day30">近30日</button>' +
+                '<button type="button" class="chart-tab' + (mode === 'year5d' ? ' active' : '') + '" data-mode="year5d">近1年</button>' +
+                '<button type="button" class="chart-tab' + (mode === 'today' ? ' active' : '') + '" data-mode="today">今日</button>' +
+            '</div>'
+        }
+
+        function formatCrosshairTime(time) {
+            if (typeof time === 'string') return time
+            if (time && time.year) {
+                return time.year + '-' +
+                    String(time.month).padStart(2, '0') + '-' +
+                    String(time.day).padStart(2, '0')
+            }
+            return ''
+        }
+
+        function showChartEmpty(container, message) {
+            container.innerHTML = '<div class="chart-empty">' + escapeHtml(message) + '</div>'
+            return null
+        }
+
+        function showChartLoading(container, message) {
+            container.innerHTML = '<div class="chart-empty">' + buildLoadingHtml(message) + '</div>'
+            return null
+        }
+
+        function attachIntradayTooltip(chart, container, intraday, market) {
+            var tooltip = document.createElement('div')
+            tooltip.className = 'chart-tooltip'
+            container.appendChild(tooltip)
+
+            chart.subscribeCrosshairMove(function (param) {
+                if (!param.time || !param.point ||
+                    param.point.x < 0 || param.point.y < 0 ||
+                    param.point.x > container.clientWidth ||
+                    param.point.y > container.clientHeight) {
+                    tooltip.style.display = 'none'
+                    return
+                }
+
+                var price = null
+                if (param.seriesData) {
+                    param.seriesData.forEach(function (v) {
+                        if (v && v.value != null && !isNaN(v.value)) price = v.value
+                    })
+                }
+                if (price == null) {
+                    tooltip.style.display = 'none'
+                    return
+                }
+
+                var ts = typeof param.time === 'number' ? param.time : null
+                if (!ts) {
+                    tooltip.style.display = 'none'
+                    return
+                }
+
+                tooltip.innerHTML =
+                    '<div class="chart-tooltip-date">' + escapeHtml(formatMarketTimeLabel(market, ts)) + '</div>' +
+                    '<div class="chart-tooltip-value">价格：' + formatPrice(price, market) + '</div>'
+                tooltip.style.display = 'block'
+
+                var pad = 10
+                var maxX = container.clientWidth - tooltip.offsetWidth - pad
+                var maxY = container.clientHeight - tooltip.offsetHeight - pad
+                var x = param.point.x + 14
+                var y = param.point.y + 14
+                if (x > maxX) x = param.point.x - tooltip.offsetWidth - 14
+                if (y > maxY) y = param.point.y - tooltip.offsetHeight - 14
+                tooltip.style.left = Math.max(pad, x) + 'px'
+                tooltip.style.top = Math.max(pad, y) + 'px'
+            })
+        }
+
+        function renderTodayChart(container, intraday, market, opts) {
+            opts = opts || {}
+            var compact = !!opts.compact
+            if (opts.isMutualFund) {
+                return showChartEmpty(container, '场外基金无场内分时，请查看近30日净值走势')
+            }
+            if (!intraday || !intraday.points || !intraday.points.length) {
+                return showChartEmpty(container, '暂无当日分时数据（非交易日或数据源暂不可用）')
+            }
+
+            var tradingDate = intraday.tradingDate || getMarketDateString(market)
+            var bounds = getSessionUnixBounds(market, tradingDate)
+            var lineData = intraday.points.map(function (p) {
+                return { time: p.time, value: p.price }
+            })
+
+            var chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth,
+                height: container.clientHeight,
+                layout: {
+                    background: { color: '#161b22' },
+                    textColor: '#8b949e',
+                    attributionLogo: false
+                },
+                grid: {
+                    vertLines: { color: '#30363d', visible: !compact },
+                    horzLines: { color: '#30363d' }
+                },
+                rightPriceScale: compact ? {
+                    borderColor: '#30363d',
+                    borderVisible: false,
+                    minimumWidth: 42
+                } : {
+                    borderColor: '#30363d',
+                    borderVisible: true
+                },
+                timeScale: {
+                    borderColor: '#30363d',
+                    timeVisible: true,
+                    visible: true,
+                    fixLeftEdge: true,
+                    fixRightEdge: true,
+                    tickMarkFormatter: function (time) {
+                        return formatMarketTimeLabel(market, time)
+                    }
+                },
+                localization: {
+                    timeFormatter: function (time) {
+                        return formatMarketTimeLabel(market, time)
+                    }
+                },
+                crosshair: {
+                    vertLine: { labelVisible: false },
+                    horzLine: { labelVisible: false }
+                },
+                handleScroll: false,
+                handleScale: false
+            })
+
+            var lineSeries = chart.addLineSeries(Object.assign({
+                color: CHART_LINE_COLOR,
+                lineWidth: compact ? 1.5 : 2
+            }, SERIES_LABEL_OPTS))
+            lineSeries.setData(lineData)
+
+            if (intraday.preClose != null && !isNaN(intraday.preClose)) {
+                lineSeries.createPriceLine({
+                    price: intraday.preClose,
+                    color: '#8b949e',
+                    lineWidth: 1,
+                    lineStyle: 2,
+                    axisLabelVisible: false
+                })
+            }
+
+            chart.timeScale().setVisibleRange({ from: bounds.start, to: bounds.end })
+            attachIntradayTooltip(chart, container, intraday, market)
+            container._chartInstance = chart
+            return chart
+        }
+
+        function attachChartTooltip(chart, container, mode, valueByDate, market, maLabel) {
+            maLabel = maLabel || getMaLabel(market)
+            var tooltip = document.createElement('div')
+            tooltip.className = 'chart-tooltip'
+            container.appendChild(tooltip)
+
+            chart.subscribeCrosshairMove(function (param) {
+                if (!param.time || !param.point ||
+                    param.point.x < 0 || param.point.y < 0 ||
+                    param.point.x > container.clientWidth ||
+                    param.point.y > container.clientHeight) {
+                    tooltip.style.display = 'none'
+                    return
+                }
+
+                var dateStr = formatCrosshairTime(param.time)
+                var entry = valueByDate[dateStr]
+                var html = ''
+
+                if (mode === 'day30') {
+                    if (!entry || entry.close == null || isNaN(entry.close)) {
+                        tooltip.style.display = 'none'
+                        return
+                    }
+                    html = '<div class="chart-tooltip-date">' + escapeHtml(dateStr) + '</div>' +
+                        '<div class="chart-tooltip-value">收盘价：' + formatPrice(entry.close, market) + '</div>'
+                    if (entry.ma != null && !isNaN(entry.ma)) {
+                        html += '<div class="chart-tooltip-value">' + escapeHtml(maLabel) + '：' + formatPrice(entry.ma, market) + '</div>'
+                    }
+                } else {
+                    if (entry == null || isNaN(entry)) {
+                        tooltip.style.display = 'none'
+                        return
+                    }
+                    html = '<div class="chart-tooltip-date">' + escapeHtml(dateStr) + '</div>' +
+                        '<div class="chart-tooltip-value">' + escapeHtml(maLabel) + '：' + formatPrice(entry, market) + '</div>'
+                }
+
+                tooltip.innerHTML = html
+                tooltip.style.display = 'block'
+
+                var pad = 10
+                var maxX = container.clientWidth - tooltip.offsetWidth - pad
+                var maxY = container.clientHeight - tooltip.offsetHeight - pad
+                var x = param.point.x + 14
+                var y = param.point.y + 14
+                if (x > maxX) x = param.point.x - tooltip.offsetWidth - 14
+                if (y > maxY) y = param.point.y - tooltip.offsetHeight - 14
+                tooltip.style.left = Math.max(pad, x) + 'px'
+                tooltip.style.top = Math.max(pad, y) + 'px'
+            })
+        }
+
+        function buildValueByDate(mode, klines, currentPrice, market) {
+            var map = {}
+            var maPeriod = getRefMaDays(market)
+            var maLabel = getMaLabel(market)
+            var dailyMaByDate = buildDailyMaByDate(klines, currentPrice, market, maPeriod)
+            if (mode === 'year5d') {
+                var dailyYear = klines.slice(-HISTORY_DAYS)
+                var aggKlines = aggregateKlinesBy5Days(dailyYear)
+                aggKlines.forEach(function (k) {
+                    if (dailyMaByDate[k.date] != null) {
+                        map[k.date] = dailyMaByDate[k.date]
+                    }
+                })
+            } else {
+                var daily30 = klines.slice(-CHART_30DAYS)
+                var marketToday = getMarketDateString(market)
+                var livePrice = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
+                var sessionOpen = isMarketOpen(market)
+                daily30.forEach(function (k) {
+                    var close = k.close
+                    if (sessionOpen && livePrice != null && k.date === marketToday) {
+                        close = livePrice
+                    }
+                    map[k.date] = {
+                        close: close,
+                        ma: dailyMaByDate[k.date] != null ? dailyMaByDate[k.date] : null
+                    }
+                })
+            }
+            map._maLabel = maLabel
+            return map
+        }
+
+        /* ===== 图表 ===== */
+        function destroyChart(chart) {
+            if (chart) {
+                try { chart.remove() } catch (e) { /* ignore */ }
+            }
+        }
+
+        function renderChart(container, klines, mode, opts) {
+            opts = opts || {}
+            var compact = !!opts.compact
+            var disableWheel = !!opts.disableWheel
+            var market = opts.market || 'cn'
+
+            destroyChart(container._chartInstance)
+            container.innerHTML = ''
+
+            if (mode === 'today') {
+                return renderTodayChart(container, opts.intraday, market, opts)
+            }
+
+            if (!klines || klines.length === 0) return null
+
+            var handleScroll = false
+            var handleScale = false
+            if (!compact) {
+                if (disableWheel) {
+                    handleScroll = {
+                        mouseWheel: false,
+                        pressedMouseMove: true,
+                        horzTouchDrag: true,
+                        vertTouchDrag: false
+                    }
+                    handleScale = {
+                        mouseWheel: false,
+                        pinch: false,
+                        axisPressedMouseMove: true,
+                        axisDoubleClickReset: true
+                    }
+                } else {
+                    handleScroll = true
+                    handleScale = true
+                }
+            }
+
+            var chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth,
+                height: container.clientHeight,
+                layout: {
+                    background: { color: '#161b22' },
+                    textColor: '#8b949e',
+                    attributionLogo: false
+                },
+                grid: {
+                    vertLines: { color: '#30363d', visible: !compact },
+                    horzLines: { color: '#30363d' }
+                },
+                rightPriceScale: compact ? {
+                    borderColor: '#30363d',
+                    borderVisible: false,
+                    minimumWidth: 42
+                } : {
+                    borderColor: '#30363d',
+                    borderVisible: true
+                },
+                timeScale: { borderColor: '#30363d', timeVisible: !compact, visible: !compact },
+                crosshair: {
+                    vertLine: { labelVisible: false },
+                    horzLine: { labelVisible: false }
+                },
+                handleScroll: handleScroll,
+                handleScale: handleScale
+            })
+
+            var currentPrice = opts.currentPrice
+            var valueByDate = buildValueByDate(mode, klines, currentPrice, market)
+
+            if (mode === 'year5d') {
+                var dailyYear = klines.slice(-HISTORY_DAYS)
+                var aggKlines = aggregateKlinesBy5Days(dailyYear)
+
+                var candleSeries = chart.addCandlestickSeries(Object.assign({
+                    upColor: CHART_UP_COLOR,
+                    downColor: CHART_DOWN_COLOR,
+                    borderUpColor: CHART_UP_COLOR,
+                    borderDownColor: CHART_DOWN_COLOR,
+                    wickUpColor: CHART_UP_COLOR,
+                    wickDownColor: CHART_DOWN_COLOR
+                }, SERIES_LABEL_OPTS))
+                candleSeries.setData(aggKlines.map(function (k) {
+                    return { time: k.date, open: k.open, high: k.high, low: k.low, close: k.close }
+                }))
+            } else {
+                var daily30 = klines.slice(-CHART_30DAYS)
+                var maPeriod = getRefMaDays(market)
+                var dailyMaByDate = buildDailyMaByDate(klines, currentPrice, market, maPeriod)
+
+                var lineSeries = chart.addLineSeries(Object.assign({
+                    color: CHART_LINE_COLOR,
+                    lineWidth: compact ? 1.5 : 2
+                }, SERIES_LABEL_OPTS))
+                lineSeries.setData(daily30.map(function (k) {
+                    return { time: k.date, value: k.close }
+                }))
+
+                var maLine = chart.addLineSeries(Object.assign({
+                    color: CHART_MA5_COLOR,
+                    lineWidth: compact ? 1.5 : 2
+                }, SERIES_LABEL_OPTS))
+                var maData = []
+                for (var d = 0; d < daily30.length; d++) {
+                    var dateKey = daily30[d].date
+                    if (dailyMaByDate[dateKey] != null) {
+                        maData.push({ time: dateKey, value: dailyMaByDate[dateKey] })
+                    }
+                }
+                maLine.setData(maData)
+            }
+
+            chart.timeScale().fitContent()
+            var maLabel = valueByDate._maLabel || getMaLabel(market)
+            attachChartTooltip(chart, container, mode, valueByDate, market, maLabel)
+            container._chartInstance = chart
+            return chart
+        }
+
+        /* ===== UI：搜索详情 ===== */
+        function buildLoadingHtml(text) {
+            return '<span class="loading-indicator">' +
+                '<img class="loading-panda" src="panda.png" alt="" width="20" height="20">' +
+                '<span>' + escapeHtml(text) + '</span></span>'
+        }
+
+        function formatLoadingLabel(market, symbol) {
+            var marketLabel = MARKET_LABELS[market] || market
+            return '加载 ' + marketLabel + ' ' + String(symbol).trim() + ' …'
+        }
+
+        function showDetailLoading(market, symbol) {
+            detailPanel.innerHTML = '<div class="loading">' + buildLoadingHtml(formatLoadingLabel(market, symbol)) + '</div>'
+        }
+
+        function showDetailError(msg) {
+            detailPanel.innerHTML = '<div class="error-msg">' + escapeHtml(msg) + '</div>'
+        }
+
+        function resetSearchPanel() {
+            symbolInput.value = ''
+            currentDetail = null
+            detailChartMode = 'day30'
+            if (detailChart) {
+                destroyChart(detailChart)
+                detailChart = null
+            }
+            detailPanel.innerHTML = '<div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>'
+        }
+
+        function buildDetailFlowHtml(data) {
+            if (!data.flow || !data.flow.length) return ''
+            var rows = data.flow.slice(-5).reverse()
+            var itemsHtml = rows.map(function (f) {
+                var cls = f.mainNet >= 0 ? 'up' : 'down'
+                return '<div class="flow-item"><span>' + escapeHtml(f.date) + '</span>' +
+                    '<span class="stat-value ' + cls + '">' + formatFlow(f.mainNet) + '</span></div>'
+            }).join('')
+            return '<div class="flow-section"><h3>' + escapeHtml(data.flowLabel) + '</h3><div class="flow-list">' +
+                itemsHtml + '</div></div>'
+        }
+
+        function buildCardFlowHtml(data) {
+            if (!data.flow || !data.flow.length) return ''
+            var latest = data.flow[data.flow.length - 1]
+            var latestCls = latest.mainNet >= 0 ? 'up' : 'down'
+            var rows = data.flow.slice().reverse()
+            var popupHtml = rows.map(function (f) {
+                var cls = f.mainNet >= 0 ? 'up' : 'down'
+                return '<div class="flow-popup-item"><span>' + escapeHtml(f.date) + '</span>' +
+                    '<span class="stat-value ' + cls + '">' + formatFlow(f.mainNet) + '</span></div>'
+            }).join('')
+            return '<div class="card-flow">' +
+                '<div class="flow-summary">' +
+                    '<span class="flow-summary-label">' + escapeHtml(data.flowLabel) + '</span>' +
+                    '<span class="flow-hover-trigger">' +
+                        '<span class="flow-summary-value ' + latestCls + '">' + formatFlow(latest.mainNet) + '</span>' +
+                        '<div class="flow-hover-popup">' +
+                            '<div class="flow-popup-title">' + escapeHtml(data.flowLabel) + '</div>' +
+                            '<div class="flow-popup-list">' + popupHtml + '</div>' +
+                        '</div>' +
+                    '</span>' +
+                '</div>' +
+            '</div>'
+        }
+
+        function buildCardActualHtml(data) {
+            if (!data.klines || data.klines.length < 2) return ''
+            var actual = calcAnnualActualReturn(data.klines)
+            if (!actual) return ''
+            var cls = actual.returnPct >= 0 ? 'up' : 'down'
+            return '<div class="card-actual">' +
+                '<div class="flow-summary">' +
+                    '<span class="flow-summary-label">全年实际涨幅</span>' +
+                    '<span class="flow-summary-value ' + cls + '">' + formatPct(actual.returnPct) + '</span>' +
+                '</div>' +
+            '</div>'
+        }
+
+        function buildCardSimHtml(item, data) {
+            if (!data.klines || data.klines.length < 10) return ''
+            var sim = simulateAnnualReturn(data.klines, data.market)
+            if (!sim) return ''
+            var summary = getStrategySummaryText(data.market)
+            watchlistSimCache[item.id] = {
+                sim: sim,
+                market: data.market,
+                name: data.name || item.name,
+                symbol: data.symbol || item.symbol,
+                summary: summary
+            }
+            var cls = sim.returnPct >= 0 ? 'up' : 'down'
+            var maxEqCls = sim.maxProfitPoint.returnPct >= 0 ? 'up' : 'down'
+            var ddCls = sim.maxDrawdownPoint.returnPct >= 0 ? 'up' : 'down'
+            return '<div class="card-sim">' +
+                '<div class="sim-summary-row">' +
+                    '<span class="flow-summary-label">全年模拟收益</span>' +
+                    '<span class="flow-hover-trigger">' +
+                        '<span class="flow-summary-value ' + cls + '">' + formatPct(sim.returnPct) + '</span>' +
+                        '<div class="flow-hover-popup">' +
+                            '<div class="flow-popup-title">' + escapeHtml(summary) + '</div>' +
+                            '<div class="sim-popup-row">买入 ' + sim.buyCount + ' 次 · 卖出 ' + sim.sellCount + ' 次</div>' +
+                            '<div class="sim-popup-row">最大收益点：' + escapeHtml(sim.maxProfitPoint.date) +
+                                ' <span class="flow-summary-value ' + maxEqCls + '">' + formatPct(sim.maxProfitPoint.returnPct) + '</span></div>' +
+                            '<div class="sim-popup-row">最大回撤点：' + escapeHtml(sim.maxDrawdownPoint.date) +
+                                ' <span class="flow-summary-value ' + ddCls + '">' + formatPct(sim.maxDrawdownPoint.returnPct) + '</span></div>' +
+                            '<div class="sim-popup-hint">模拟时间段：' + escapeHtml(sim.startDate) + ' ~ ' + escapeHtml(sim.endDate) + '</div>' +
+                        '</div>' +
+                    '</span>' +
+                    '<button type="button" class="sim-detail-btn btn-ghost" data-item-id="' + escapeHtml(item.id) + '">操作详情</button>' +
+                '</div>' +
+            '</div>'
+        }
+
+        function formatSimValuePct(valuePct) {
+            if (valuePct == null || isNaN(valuePct)) return '--'
+            return Number(valuePct).toFixed(2) + '%'
+        }
+
+        function buildSimDetailTableHtml(cached) {
+            var sim = cached.sim
+            var market = cached.market
+            var ops = sim.operations || []
+            if (!ops.length) {
+                return '<div class="sim-detail-empty">模拟期内无买卖操作</div>'
+            }
+            var rows = ''
+            var prevPrice = null
+            ops.forEach(function (op) {
+                var actionCls = op.action === 'buy' ? 'action-buy' : 'action-sell'
+                var actionLabel = op.action === 'buy' ? '买入' : '卖出'
+                var valueCls = op.valuePct >= 100 ? 'up' : 'down'
+                var priceDeltaHtml = ''
+                if (prevPrice != null && prevPrice > 0) {
+                    var priceChg = ((op.price - prevPrice) / prevPrice) * 100
+                    var deltaCls
+                    if (op.action === 'buy') {
+                        deltaCls = priceChg >= 0 ? 'down' : 'up'
+                    } else {
+                        deltaCls = priceChg >= 0 ? 'up' : 'down'
+                    }
+                    priceDeltaHtml = '<span class="sim-price-delta ' + deltaCls + '">(' + formatPct(priceChg) + ')</span>'
+                } else {
+                    priceDeltaHtml = '<span class="sim-price-delta muted">(--)</span>'
+                }
+                prevPrice = op.price
+                rows += '<tr>' +
+                    '<td>' + escapeHtml(op.date) + '</td>' +
+                    '<td class="' + actionCls + '">' + actionLabel + (op.note ? ' · ' + escapeHtml(op.note) : '') + '</td>' +
+                    '<td>' + formatPrice(op.price, market) + priceDeltaHtml + '</td>' +
+                    '<td class="' + valueCls + '">' + formatSimValuePct(op.valuePct) + '</td>' +
+                '</tr>'
+            })
+            return '<table class="sim-detail-table">' +
+                '<thead><tr><th>日期</th><th>操作</th><th>成交价</th><th>账户净值</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody>' +
+            '</table>'
+        }
+
+        function showSimDetailDialog(itemId) {
+            var cached = watchlistSimCache[itemId]
+            var overlay = document.getElementById('simDetailOverlay')
+            var titleEl = document.getElementById('simDetailTitle')
+            var hintEl = document.getElementById('simDetailHint')
+            var bodyEl = document.getElementById('simDetailBody')
+            if (!cached || !overlay || !titleEl || !hintEl || !bodyEl) return
+
+            var sim = cached.sim
+            var summary = cached.summary || getStrategySummaryText(cached.market)
+            titleEl.textContent = (cached.name || cached.symbol) + ' · 模拟操作详情'
+            hintEl.textContent = summary + ' · ' + sim.startDate + ' ~ ' + sim.endDate +
+                ' · 账户净值以期初 100% 为基准'
+            bodyEl.innerHTML = buildSimDetailTableHtml(cached)
+            overlay.classList.add('show')
+        }
+
+        function closeSimDetailDialog() {
+            var overlay = document.getElementById('simDetailOverlay')
+            if (overlay) overlay.classList.remove('show')
+        }
+
+        function bindSimDetailDialog() {
+            watchlistContainer.addEventListener('click', function (e) {
+                var btn = e.target.closest('.sim-detail-btn')
+                if (!btn) return
+                e.preventDefault()
+                e.stopPropagation()
+                showSimDetailDialog(btn.dataset.itemId)
+            })
+
+            var overlay = document.getElementById('simDetailOverlay')
+            var closeBtn = document.getElementById('simDetailClose')
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeSimDetailDialog)
+            }
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeSimDetailDialog()
+                })
+            }
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Escape') return
+                var strategyOverlay = document.getElementById('strategyOverlay')
+                if (strategyOverlay && strategyOverlay.classList.contains('show')) {
+                    closeStrategyDialog()
+                    return
+                }
+                closeSimDetailDialog()
+            })
+        }
+
+        var STRATEGY_SHARED_LABELS = {
+            primaryMa: '基准均线 MA',
+            buyThreshold: '买入阈值',
+            sellThreshold: '卖出阈值',
+            enableStopLoss: '启用止损',
+            stopLossPct: '紧急止损线 (%)',
+            enableTrailProfit: '启用移动止盈',
+            trailProfitPct: '移动止盈触发线 (%)',
+            trailMa: '止盈均线 MA',
+            confirmDays: '确认天数'
+        }
+
+        var STRATEGY_SHARED_HINTS = {
+            primaryMa: '买入与默认卖出所参考的收盘价简单移动平均天数',
+            buyThreshold: '收盘价 > 基准MA × 此值',
+            sellThreshold: '持仓卖出：默认收盘价 < 基准MA × 此值；移动止盈触发后改为止盈均线',
+            stopLossPct: '持仓亏损达此比例时触发卖出',
+            trailProfitPct: '浮盈超过此值后，卖出参考切换为止盈均线',
+            trailMa: '移动止盈触发后改用的均线天数',
+            confirmDays: '信号条件连续满足该天数后才执行买卖'
+        }
+
+        var STRATEGY_PANEL_DEFS = {
+            tw: [
+                { type: 'field', key: 'shortMaDays', label: STRATEGY_SHARED_LABELS.primaryMa, step: '1', hint: STRATEGY_SHARED_HINTS.primaryMa },
+                { type: 'field', key: 'buyThreshold', label: STRATEGY_SHARED_LABELS.buyThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.buyThreshold },
+                { type: 'field', key: 'sellThreshold', label: STRATEGY_SHARED_LABELS.sellThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.sellThreshold },
+                { type: 'field', key: 'confirmDays', label: STRATEGY_SHARED_LABELS.confirmDays, step: '1', hint: STRATEGY_SHARED_HINTS.confirmDays },
+                {
+                    type: 'toggle',
+                    enableKey: 'enableStopLoss',
+                    label: STRATEGY_SHARED_LABELS.enableStopLoss,
+                    fields: [
+                        { key: 'stopLossPct', label: STRATEGY_SHARED_LABELS.stopLossPct, step: '0.1', hint: STRATEGY_SHARED_HINTS.stopLossPct }
+                    ]
+                },
+                {
+                    type: 'toggle',
+                    enableKey: 'enableTrailProfit',
+                    label: STRATEGY_SHARED_LABELS.enableTrailProfit,
+                    fields: [
+                        { key: 'trailProfitPct', label: STRATEGY_SHARED_LABELS.trailProfitPct, step: '0.1', hint: STRATEGY_SHARED_HINTS.trailProfitPct },
+                        { key: 'longMaDays', label: STRATEGY_SHARED_LABELS.trailMa, step: '1', hint: STRATEGY_SHARED_HINTS.trailMa }
+                    ]
+                }
+            ],
+            cn: [
+                { type: 'field', key: 'baseMaDays', label: STRATEGY_SHARED_LABELS.primaryMa, step: '1', hint: STRATEGY_SHARED_HINTS.primaryMa },
+                { type: 'field', key: 'buyThreshold', label: STRATEGY_SHARED_LABELS.buyThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.buyThreshold },
+                { type: 'field', key: 'sellThreshold', label: STRATEGY_SHARED_LABELS.sellThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.sellThreshold },
+                { type: 'field', key: 'confirmDays', label: STRATEGY_SHARED_LABELS.confirmDays, step: '1', hint: STRATEGY_SHARED_HINTS.confirmDays },
+                {
+                    type: 'toggle',
+                    enableKey: 'enableStopLoss',
+                    label: STRATEGY_SHARED_LABELS.enableStopLoss,
+                    fields: [
+                        { key: 'stopLossPct', label: STRATEGY_SHARED_LABELS.stopLossPct, step: '0.1', hint: STRATEGY_SHARED_HINTS.stopLossPct }
+                    ]
+                },
+                {
+                    type: 'toggle',
+                    enableKey: 'enableTrailProfit',
+                    label: STRATEGY_SHARED_LABELS.enableTrailProfit,
+                    fields: [
+                        { key: 'trailProfitPct', label: STRATEGY_SHARED_LABELS.trailProfitPct, step: '0.1', hint: STRATEGY_SHARED_HINTS.trailProfitPct },
+                        { key: 'trailMaDays', label: STRATEGY_SHARED_LABELS.trailMa, step: '1', hint: STRATEGY_SHARED_HINTS.trailMa }
+                    ]
+                }
+            ]
+        }
+
+        var STRATEGY_MARKET_NOTES = {
+            tw: '台股 ETF：周一至周五 9:00–13:30，信号与成交均为当日收盘价；款券 T+2 交割。',
+            cn: '大陆场外 C 类联接：交易日 15:00 净值成交；买入 T+1 确认份额，卖出按当日净值。'
+        }
+
+        var strategyDialogMarket = 'cn'
+        var strategyDialogInitialized = false
+
+        function buildStrategyFieldHtml(market, field, strategy) {
+            var value = strategy[field.key]
+            return '<div class="strategy-field">' +
+                '<label for="strategy-' + market + '-' + field.key + '">' + escapeHtml(field.label) + '</label>' +
+                '<input type="number" id="strategy-' + market + '-' + field.key + '" ' +
+                    'data-market="' + market + '" data-key="' + field.key + '" ' +
+                    'step="' + field.step + '" value="' + escapeHtml(String(value)) + '">' +
+                '<div class="field-hint">' + escapeHtml(field.hint) + '</div>' +
+            '</div>'
+        }
+
+        function buildStrategyToggleGroupHtml(market, group, strategy) {
+            var enabled = strategy[group.enableKey] !== false
+            var fieldsHtml = group.fields.map(function (f) {
+                return buildStrategyFieldHtml(market, f, strategy)
+            }).join('')
+            return '<div class="strategy-toggle-group">' +
+                '<label class="strategy-toggle-head">' +
+                    '<input type="checkbox" data-key="' + group.enableKey + '"' + (enabled ? ' checked' : '') + '>' +
+                    '<span>' + escapeHtml(group.label) + '</span>' +
+                '</label>' +
+                '<div class="strategy-toggle-fields">' + fieldsHtml + '</div>' +
+            '</div>'
+        }
+
+        function buildStrategyPanelHtml(market, strategy) {
+            return STRATEGY_PANEL_DEFS[market].map(function (item) {
+                if (item.type === 'toggle') {
+                    return buildStrategyToggleGroupHtml(market, item, strategy)
+                }
+                return buildStrategyFieldHtml(market, item, strategy)
+            }).join('')
+        }
+
+        function initStrategyDialogDom() {
+            if (strategyDialogInitialized) return
+            strategyDialogInitialized = true
+            var tabsEl = document.getElementById('strategyTabs')
+            var panelsEl = document.getElementById('strategyPanels')
+            if (!tabsEl || !panelsEl) return
+
+            var order = isTraditionalChineseLocale() ? ['tw', 'cn'] : ['cn', 'tw']
+            strategyDialogMarket = order[0]
+
+            tabsEl.innerHTML = order.map(function (m) {
+                return '<button type="button" class="strategy-tab' + (m === strategyDialogMarket ? ' active' : '') +
+                    '" data-market="' + m + '">' + MARKET_LABELS[m] + '</button>'
+            }).join('')
+
+            var strategies = loadTradeStrategies()
+            panelsEl.innerHTML = order.map(function (m) {
+                var s = strategies[m]
+                var fieldsHtml = buildStrategyPanelHtml(m, s)
+                return '<div class="strategy-panel' + (m === strategyDialogMarket ? ' active' : '') +
+                    '" data-market="' + m + '" id="strategyPanel-' + m + '">' +
+                    fieldsHtml +
+                    '<div class="strategy-note">' + escapeHtml(STRATEGY_MARKET_NOTES[m]) + '</div>' +
+                '</div>'
+            }).join('')
+
+            tabsEl.addEventListener('click', function (e) {
+                var tab = e.target.closest('.strategy-tab[data-market]')
+                if (!tab) return
+                switchStrategyTab(tab.dataset.market)
+            })
+        }
+
+        function switchStrategyTab(market) {
+            strategyDialogMarket = market
+            var tabsEl = document.getElementById('strategyTabs')
+            var panelsEl = document.getElementById('strategyPanels')
+            if (!tabsEl || !panelsEl) return
+            tabsEl.querySelectorAll('.strategy-tab').forEach(function (t) {
+                t.classList.toggle('active', t.dataset.market === market)
+            })
+            panelsEl.querySelectorAll('.strategy-panel').forEach(function (p) {
+                p.classList.toggle('active', p.dataset.market === market)
+            })
+        }
+
+        function readStrategyFormMarket(market) {
+            var defaults = getDefaultTradeStrategies()[market]
+            var panel = document.getElementById('strategyPanel-' + market)
+            if (!panel) return defaults
+            var raw = {}
+            panel.querySelectorAll('input[data-key]').forEach(function (input) {
+                if (input.type === 'checkbox') {
+                    raw[input.dataset.key] = input.checked
+                } else {
+                    raw[input.dataset.key] = input.value
+                }
+            })
+            return mergeTradeStrategy(raw, defaults)
+        }
+
+        function fillStrategyForm(strategies) {
+            var markets = ['cn', 'tw']
+            markets.forEach(function (m) {
+                var s = strategies[m]
+                var panel = document.getElementById('strategyPanel-' + m)
+                if (!panel || !s) return
+                panel.querySelectorAll('input[data-key]').forEach(function (input) {
+                    var key = input.dataset.key
+                    if (input.type === 'checkbox') {
+                        input.checked = s[key] !== false
+                    } else if (s[key] != null) {
+                        input.value = s[key]
+                    }
+                })
+            })
+        }
+
+        function openStrategyDialog() {
+            initStrategyDialogDom()
+            fillStrategyForm(loadTradeStrategies())
+            var order = isTraditionalChineseLocale() ? ['tw', 'cn'] : ['cn', 'tw']
+            switchStrategyTab(order[0])
+            var overlay = document.getElementById('strategyOverlay')
+            if (overlay) overlay.classList.add('show')
+        }
+
+        function closeStrategyDialog() {
+            var overlay = document.getElementById('strategyOverlay')
+            if (overlay) overlay.classList.remove('show')
+        }
+
+        function buildWatchlistDataFromCache(item) {
+            var meta = watchlistMetaCache[item.id] || {}
+            var klines = watchlistDataCache[item.id] || meta.klines
+            if (!klines) return null
+            return {
+                market: item.market,
+                symbol: meta.symbol || item.symbol,
+                name: meta.name || item.name,
+                price: watchlistPriceCache[item.id],
+                changePct: meta.changePct,
+                klines: klines,
+                flow: meta.flow,
+                flowLabel: meta.flowLabel,
+                isMutualFund: !!watchlistMutualFundCache[item.id]
+            }
+        }
+
+        async function refreshWatchlistAfterStrategySave() {
+            var list = getWatchlist()
+            if (list.length) {
+                for (var i = 0; i < list.length; i++) {
+                    var item = list[i]
+                    var cardEl = document.getElementById('card-' + item.id)
+                    if (!cardEl) continue
+                    var data = buildWatchlistDataFromCache(item)
+                    if (!data) continue
+                    updateWatchlistCardSilent(cardEl, item, data)
+                }
+            }
+            if (currentDetail && currentDetail.klines) {
+                renderDetailPanel(currentDetail)
+            }
+        }
+
+        function bindHoldPositionCheckbox() {
+            document.addEventListener('change', function (e) {
+                var input = e.target.closest('.hold-position-input')
+                if (!input) return
+                var itemId = input.dataset.itemId
+                var cardEl = input.closest('.card')
+
+                setHoldPosition(itemId, input.checked)
+
+                if (cardEl) {
+                    var list = getWatchlist()
+                    var item = null
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i].id === itemId) {
+                            item = list[i]
+                            break
+                        }
+                    }
+                    if (item) {
+                        var data = buildWatchlistDataFromCache(item)
+                        if (data) updateWatchlistCardSilent(cardEl, item, data)
+                    }
+                } else if (currentDetail && (currentDetail.market + '-' + currentDetail.symbol) === itemId) {
+                    renderDetailPanel(currentDetail)
+                }
+            })
+        }
+
+        function bindStrategyDialog() {
+            var strategyBtn = document.getElementById('strategyBtn')
+            if (strategyBtn) {
+                strategyBtn.addEventListener('click', openStrategyDialog)
+            }
+
+            var overlay = document.getElementById('strategyOverlay')
+            var cancelBtn = document.getElementById('strategyCancel')
+            var saveBtn = document.getElementById('strategySave')
+            var resetBtn = document.getElementById('strategyReset')
+
+            if (cancelBtn) cancelBtn.addEventListener('click', closeStrategyDialog)
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeStrategyDialog()
+                })
+            }
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function () {
+                    var defaults = getDefaultTradeStrategies()
+                    fillStrategyForm(defaults)
+                    switchStrategyTab(strategyDialogMarket)
+                })
+            }
+
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function () {
+                    var strategies = {
+                        cn: readStrategyFormMarket('cn'),
+                        tw: readStrategyFormMarket('tw')
+                    }
+                    saveTradeStrategies(strategies)
+                    closeStrategyDialog()
+                    refreshWatchlistAfterStrategySave()
+                })
+            }
+        }
+
+        function renderDetailPanel(data) {
+            currentDetail = data
+            var maPeriod = getRefMaDays(data.market)
+            var maLabel = getMaLabel(data.market)
+            var maVal = getLatestMa(data.klines, data.price, data.market, maPeriod)
+            var diffPct = calcDiffPct(data.price, maVal)
+            var changeCls = (data.changePct || 0) >= 0 ? 'up' : 'down'
+
+            var flowHtml = buildDetailFlowHtml(data)
+            var detailItemId = data.market + '-' + data.symbol
+            var holdPos = getHoldPosition(detailItemId)
+            var advice = getTradeAdvice(data.klines, data.price, data.market, detailItemId)
+            var adviceHtml = buildSignalAdviceHtml(advice)
+            var holdCheckHtml = buildHoldPositionCheckboxHtml(detailItemId, data.market, holdPos.held)
+
+            detailPanel.innerHTML =
+                '<div class="detail-name">' + holdCheckHtml + escapeHtml(data.name) + '</div>' +
+                '<div class="detail-meta-row">' +
+                    '<div class="detail-meta"><span class="market-badge">' + MARKET_LABELS[data.market] + '</span> ' + escapeHtml(data.symbol) + '</div>' +
+                    adviceHtml +
+                '</div>' +
+                '<div class="card-stats">' +
+                    '<div class="card-stat"><div class="label">当前价格</div><div class="value ' + changeCls + '">' + formatPrice(data.price, data.market) + '</div></div>' +
+                    '<div class="card-stat"><div class="label">今日涨跌</div><div class="value ' + changeCls + '">' + formatPct(data.changePct) + '</div></div>' +
+                    '<div class="card-stat"><div class="label">' + escapeHtml(maLabel) + '</div><div class="value">' + formatPrice(maVal, data.market) + '</div></div>' +
+                    '<div class="card-stat"><div class="label">相对' + escapeHtml(maLabel) + '</div><div class="value ' + (diffPct >= 0 ? 'up' : 'down') + '">' + formatPct(diffPct) + '</div></div>' +
+                '</div>' +
+                '<div class="chart-container" id="detailChart"></div>' +
+                flowHtml +
+                '<button class="btn btn-success" id="addWatchBtn">加入关注</button>'
+
+            var chartEl = document.getElementById('detailChart')
+            var chartOpts = {
+                disableWheel: true,
+                market: data.market,
+                currentPrice: data.price,
+                intraday: data.intraday,
+                isMutualFund: !!data.isMutualFund
+            }
+            detailChartMode = 'day30'
+            detailChart = renderChart(chartEl, data.klines, 'day30', chartOpts)
+
+            document.getElementById('addWatchBtn').addEventListener('click', function () {
+                var item = {
+                    id: data.market + '-' + data.symbol,
+                    market: data.market,
+                    symbol: data.symbol,
+                    name: data.name,
+                    addedAt: Date.now()
+                }
+                if (addToWatchlist(item)) {
+                    appendWatchlistCard(item)
+                    resetSearchPanel()
+                } else {
+                    this.textContent = '已在关注中'
+                    this.disabled = true
+                }
+            })
+
+            var list = getWatchlist()
+            if (list.some(function (w) { return w.id === data.market + '-' + data.symbol })) {
+                var btn = document.getElementById('addWatchBtn')
+                btn.textContent = '已在关注中'
+                btn.disabled = true
+            }
+        }
+
+        async function handleSearch(e) {
+            e.preventDefault()
+            var market = marketSelect.value
+            var symbol = symbolInput.value.trim()
+            if (!symbol) return
+
+            searchBtn.disabled = true
+            showDetailLoading(market, symbol)
+
+            try {
+                var data = await fetchETFData(market, symbol)
+                detailChartMode = 'day30'
+                renderDetailPanel(data)
+            } catch (err) {
+                showDetailError(err.message || '加载失败，请检查网络后重试')
+            } finally {
+                searchBtn.disabled = false
+            }
+        }
+
+        /* ===== UI：关注卡片 ===== */
+        function buildRemoveBtn(item) {
+            var label = item.name || item.symbol
+            return '<button type="button" class="remove-btn" data-id="' + escapeHtml(item.id) +
+                '" data-name="' + escapeHtml(label) + '" title="移除" aria-label="移除">✕</button>'
+        }
+
+        var removeDelegationBound = false
+        var chartTabDelegationBound = false
+        var confirmDialogOpen = false
+
+        function confirmRemoveWatchlistItem(name) {
+            return new Promise(function (resolve) {
+                if (confirmDialogOpen) {
+                    resolve(false)
+                    return
+                }
+                var overlay = document.getElementById('confirmOverlay')
+                var messageEl = document.getElementById('confirmMessage')
+                var okBtn = document.getElementById('confirmOk')
+                var cancelBtn = document.getElementById('confirmCancel')
+                if (!overlay || !messageEl || !okBtn || !cancelBtn) {
+                    resolve(window.confirm('确定从关注移除「' + name + '」吗？'))
+                    return
+                }
+
+                confirmDialogOpen = true
+                messageEl.textContent = '确定从关注移除「' + name + '」吗？'
+                overlay.classList.add('show')
+
+                function cleanup(result) {
+                    confirmDialogOpen = false
+                    overlay.classList.remove('show')
+                    okBtn.removeEventListener('click', onOk)
+                    cancelBtn.removeEventListener('click', onCancel)
+                    overlay.removeEventListener('click', onOverlayClick)
+                    document.removeEventListener('keydown', onKeydown)
+                    resolve(result)
+                }
+
+                function onOk() { cleanup(true) }
+                function onCancel() { cleanup(false) }
+                function onOverlayClick(e) {
+                    if (e.target === overlay) cleanup(false)
+                }
+                function onKeydown(e) {
+                    if (e.key === 'Escape') cleanup(false)
+                }
+
+                okBtn.addEventListener('click', onOk)
+                cancelBtn.addEventListener('click', onCancel)
+                overlay.addEventListener('click', onOverlayClick)
+                document.addEventListener('keydown', onKeydown)
+                cancelBtn.focus()
+            })
+        }
+
+        async function loadCardData(item, options) {
+            if (item.market !== 'cn' && item.market !== 'tw') {
+                return { error: '已移除美国市场，请移除此关注' }
+            }
+            try {
+                var fetchOpts = item.market === 'tw' ? {
+                    lightweight: !!(options && options.silent),
+                    useCache: true,
+                    skipIntraday: !!(options && options.silent)
+                } : undefined
+                return await fetchETFData(item.market, item.symbol, fetchOpts)
+            } catch (e) {
+                return { error: e.message }
+            }
+        }
+
+        function buildWatchlistCardLeftInner(item, data) {
+            if (data.error) {
+                return '<div class="card-header">' +
+                    '<div class="card-header-main">' +
+                        '<div class="card-title">' + escapeHtml(item.name) + '</div>' +
+                        '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
+                    '</div></div>' +
+                    '<div class="card-error">加载失败：' + escapeHtml(data.error) + '</div>'
+            }
+
+            var maPeriod = getRefMaDays(item.market)
+            var maLabel = getMaLabel(item.market)
+            var maVal = getLatestMa(data.klines, data.price, data.market, maPeriod)
+            var diffPct = calcDiffPct(data.price, maVal)
+            var changeCls = (data.changePct || 0) >= 0 ? 'up' : 'down'
+
+            var flowHtml = buildCardFlowHtml(data)
+            var actualHtml = buildCardActualHtml(data)
+            var simHtml = buildCardSimHtml(item, data)
+            var holdPos = getHoldPosition(item.id)
+            var advice = getTradeAdvice(data.klines, data.price, data.market, item.id)
+            var adviceHtml = buildSignalAdviceHtml(advice)
+            var holdCheckHtml = buildHoldPositionCheckboxHtml(item.id, item.market, holdPos.held)
+
+            return '<div class="card-header">' +
+                    '<div class="card-header-main">' +
+                        '<div class="card-title">' + holdCheckHtml + escapeHtml(data.name || item.name) + '</div>' +
+                        '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
+                    '</div>' +
+                    adviceHtml +
+                '</div>' +
+                '<div class="card-stats">' +
+                    '<div class="card-stat"><div class="label">当前价格</div><div class="value ' + changeCls + '">' + formatPrice(data.price, item.market) + '</div></div>' +
+                    '<div class="card-stat"><div class="label">今日涨跌</div><div class="value ' + changeCls + '">' + formatPct(data.changePct) + '</div></div>' +
+                    '<div class="card-stat"><div class="label">' + escapeHtml(maLabel) + '</div><div class="value">' + formatPrice(maVal, item.market) + '</div></div>' +
+                    '<div class="card-stat"><div class="label">相对' + escapeHtml(maLabel) + '</div><div class="value ' + (diffPct >= 0 ? 'up' : 'down') + '">' + formatPct(diffPct) + '</div></div>' +
+                '</div>' +
+                flowHtml +
+                actualHtml +
+                simHtml
+        }
+
+        function renderWatchlistCard(item, data) {
+            var cardId = 'card-' + item.id
+
+            if (data.error) {
+                return '<div class="card" id="' + cardId + '">' +
+                    buildRemoveBtn(item) +
+                    '<div class="card-body"><div class="card-left">' + buildWatchlistCardLeftInner(item, data) + '</div></div></div>'
+            }
+
+            var chartMode = cardChartModes[item.id] || 'day30'
+
+            return '<div class="card" id="' + cardId + '">' +
+                buildRemoveBtn(item) +
+                '<div class="card-body">' +
+                '<div class="card-left">' + buildWatchlistCardLeftInner(item, data) + '</div>' +
+                '<div class="card-right">' +
+                    buildChartTabsHtml(chartMode, item.id) +
+                    '<div class="mini-chart" id="mini-' + escapeHtml(item.id) + '"></div>' +
+                '</div>' +
+                '</div>' +
+            '</div>'
+        }
+
+        function mountWatchlistCardChart(item, data) {
+            if (data.error || !data.klines) return
+
+            watchlistDataCache[item.id] = data.klines
+            watchlistPriceCache[item.id] = data.price
+            watchlistIntradayCache[item.id] = data.intraday || null
+            watchlistMetaCache[item.id] = {
+                market: item.market,
+                symbol: data.symbol || item.symbol,
+                name: data.name || item.name,
+                changePct: data.changePct,
+                flow: data.flow,
+                flowLabel: data.flowLabel,
+                tencentSymbol: data.tencentSymbol,
+                secid: data.secid,
+                isMutualFund: !!data.isMutualFund,
+                klines: data.klines
+            }
+            watchlistMutualFundCache[item.id] = !!data.isMutualFund
+            watchlistMarketCache[item.id] = item.market
+            var mode = cardChartModes[item.id] || 'day30'
+            var miniEl = document.getElementById('mini-' + item.id)
+            if (miniEl) {
+                miniCharts[item.id] = renderChart(miniEl, data.klines, mode, {
+                    compact: true,
+                    market: item.market,
+                    currentPrice: data.price,
+                    intraday: data.intraday,
+                    isMutualFund: !!data.isMutualFund
+                })
+            }
+        }
+
+        function replaceWatchlistCardElement(cardEl, item, data) {
+            var temp = document.createElement('div')
+            temp.innerHTML = renderWatchlistCard(item, data)
+            cardEl.replaceWith(temp.firstElementChild)
+            mountWatchlistCardChart(item, data)
+            var newCard = document.getElementById('card-' + item.id)
+            if (newCard) updateCardLayout(newCard)
+        }
+
+        var CARD_LAYOUT_BREAKPOINT = 600
+        var cardLayoutObserver = null
+
+        function updateCardLayout(card) {
+            if (!card || !card.classList.contains('card')) return
+            if (!card.querySelector('.card-body')) return
+            card.classList.toggle('card-narrow', card.clientWidth < CARD_LAYOUT_BREAKPOINT)
+            var cardId = card.id.replace(/^card-/, '')
+            if (!cardId) return
+            var miniEl = document.getElementById('mini-' + cardId)
+            var chart = miniCharts[cardId]
+            if (miniEl && chart && chart.applyOptions) {
+                chart.applyOptions({ width: miniEl.clientWidth })
+            }
+        }
+
+        function initCardLayoutObserver() {
+            if (cardLayoutObserver || !window.ResizeObserver) return
+            cardLayoutObserver = new ResizeObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    updateCardLayout(entry.target)
+                })
+            })
+        }
+
+        function observeWatchlistCards() {
+            initCardLayoutObserver()
+            watchlistContainer.querySelectorAll('.card').forEach(function (card) {
+                updateCardLayout(card)
+                if (cardLayoutObserver && !card.dataset.layoutObserved) {
+                    card.dataset.layoutObserved = '1'
+                    cardLayoutObserver.observe(card)
+                }
+            })
+        }
+
+        function ensureCardBody(cardEl) {
+            var bodyEl = cardEl.querySelector('.card-body')
+            if (bodyEl) return bodyEl
+            bodyEl = document.createElement('div')
+            bodyEl.className = 'card-body'
+            var leftEl = cardEl.querySelector('.card-left')
+            if (leftEl) {
+                cardEl.insertBefore(bodyEl, leftEl)
+                bodyEl.appendChild(leftEl)
+            } else {
+                cardEl.appendChild(bodyEl)
+            }
+            return bodyEl
+        }
+
+        function updateWatchlistCardSilent(cardEl, item, data) {
+            var bodyEl = ensureCardBody(cardEl)
+            var leftEl = bodyEl.querySelector('.card-left')
+            if (!leftEl) {
+                leftEl = document.createElement('div')
+                leftEl.className = 'card-left'
+                bodyEl.insertBefore(leftEl, bodyEl.firstChild)
+            }
+
+            leftEl.innerHTML = buildWatchlistCardLeftInner(item, data)
+
+            if (data.error) {
+                var rightEl = bodyEl.querySelector('.card-right')
+                if (rightEl) rightEl.remove()
+                if (miniCharts[item.id]) {
+                    destroyChart(miniCharts[item.id])
+                    delete miniCharts[item.id]
+                }
+                delete watchlistDataCache[item.id]
+                delete watchlistPriceCache[item.id]
+                delete watchlistIntradayCache[item.id]
+                delete watchlistMetaCache[item.id]
+                delete watchlistMutualFundCache[item.id]
+                delete watchlistMarketCache[item.id]
+                updateCardLayout(cardEl)
+                return
+            }
+
+            var rightEl = bodyEl.querySelector('.card-right')
+            var chartMode = cardChartModes[item.id] || 'day30'
+            if (!rightEl) {
+                var temp = document.createElement('div')
+                temp.innerHTML = '<div class="card-right">' +
+                    buildChartTabsHtml(chartMode, item.id) +
+                    '<div class="mini-chart" id="mini-' + escapeHtml(item.id) + '"></div>' +
+                '</div>'
+                bodyEl.appendChild(temp.firstElementChild)
+            } else {
+                var tabsEl = rightEl.querySelector('.chart-tabs')
+                if (tabsEl) {
+                    tabsEl.outerHTML = buildChartTabsHtml(chartMode, item.id)
+                }
+            }
+
+            watchlistIntradayCache[item.id] = data.intraday || null
+            watchlistMetaCache[item.id] = {
+                market: item.market,
+                symbol: data.symbol || item.symbol,
+                name: data.name || item.name,
+                changePct: data.changePct,
+                flow: data.flow,
+                flowLabel: data.flowLabel,
+                tencentSymbol: data.tencentSymbol,
+                secid: data.secid,
+                isMutualFund: !!data.isMutualFund,
+                klines: data.klines
+            }
+
+            mountWatchlistCardChart(item, data)
+            updateCardLayout(cardEl)
+        }
+
+        function clearWatchlistItemCache(id) {
+            if (miniCharts[id]) {
+                destroyChart(miniCharts[id])
+                delete miniCharts[id]
+            }
+            delete watchlistDataCache[id]
+            delete watchlistPriceCache[id]
+            delete watchlistIntradayCache[id]
+            delete watchlistMetaCache[id]
+            delete watchlistMutualFundCache[id]
+            delete watchlistMarketCache[id]
+            delete watchlistSimCache[id]
+        }
+
+        function getWatchlistEmptyHtml() {
+            return '<div class="watchlist-empty">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>' +
+                '<p>暂无关注 ETF，搜索后点击「加入关注」</p></div>'
+        }
+
+        async function loadAndMountWatchlistCard(item, options) {
+            options = options || {}
+            var cardEl = document.getElementById('card-' + item.id)
+            if (!cardEl) return
+            var data = await loadCardData(item, options)
+            cardEl = document.getElementById('card-' + item.id)
+            if (!cardEl) return
+            if (options.silent && cardEl.querySelector('.card-right')) {
+                updateWatchlistCardSilent(cardEl, item, data)
+            } else {
+                replaceWatchlistCardElement(cardEl, item, data)
+            }
+        }
+
+        async function appendWatchlistCard(item) {
+            var list = getWatchlist()
+            if (list.length === 0) return
+            if (list.length === 1) {
+                await renderWatchlist()
+                return
+            }
+            syncWatchlistCardsContainer(list)
+            await loadAndMountWatchlistCard(item)
+            observeWatchlistCards()
+        }
+
+        function removeWatchlistCardFromUi(id) {
+            removeFromWatchlist(id)
+            clearWatchlistItemCache(id)
+            var list = getWatchlist()
+            if (list.length === 0) {
+                clearWatchlistCharts()
+                watchlistContainer.innerHTML = getWatchlistEmptyHtml()
+                return
+            }
+            syncWatchlistCardsContainer(list)
+            observeWatchlistCards()
+        }
+
+        function clearWatchlistCharts() {
+            Object.keys(miniCharts).forEach(function (k) {
+                destroyChart(miniCharts[k])
+            })
+            miniCharts = {}
+            watchlistDataCache = {}
+            watchlistPriceCache = {}
+            watchlistIntradayCache = {}
+            watchlistMetaCache = {}
+            watchlistMutualFundCache = {}
+            watchlistMarketCache = {}
+            watchlistSimCache = {}
+        }
+
+        function syncWatchlistCardsContainer(list) {
+            var cardsEl = watchlistContainer.querySelector('.cards')
+            if (!cardsEl) {
+                watchlistContainer.innerHTML = '<div class="cards"></div>'
+                cardsEl = watchlistContainer.querySelector('.cards')
+            }
+
+            var listIds = {}
+            list.forEach(function (item) { listIds[item.id] = true })
+
+            cardsEl.querySelectorAll('.card').forEach(function (card) {
+                var id = card.id.replace(/^card-/, '')
+                if (!listIds[id]) {
+                    clearWatchlistItemCache(id)
+                    card.remove()
+                }
+            })
+
+            list.forEach(function (item) {
+                if (!document.getElementById('card-' + item.id)) {
+                    var card = document.createElement('div')
+                    card.className = 'card'
+                    card.id = 'card-' + item.id
+                    card.innerHTML = buildRemoveBtn(item) +
+                        '<div class="card-left"><div class="card-loading">' + buildLoadingHtml(formatLoadingLabel(item.market, item.symbol)) + '</div></div>'
+                    cardsEl.appendChild(card)
+                }
+            })
+
+            return cardsEl
+        }
+
+        async function renderWatchlist(options) {
+            options = options || {}
+            var silent = !!options.silent
+            var list = getWatchlist()
+
+            if (list.length === 0) {
+                clearWatchlistCharts()
+                watchlistContainer.innerHTML = getWatchlistEmptyHtml()
+                return
+            }
+
+            if (silent) {
+                syncWatchlistCardsContainer(list)
+            } else {
+                clearWatchlistCharts()
+                watchlistContainer.innerHTML = '<div class="cards">' +
+                    list.map(function (item) {
+                        return '<div class="card" id="card-' + item.id + '"><div class="card-loading">' + buildLoadingHtml(formatLoadingLabel(item.market, item.symbol)) + '</div></div>'
+                    }).join('') +
+                '</div>'
+            }
+
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i]
+                var cardEl = document.getElementById('card-' + item.id)
+                if (!cardEl) continue
+
+                if (silent && cardEl.querySelector('.card-right')) {
+                    var data = await loadCardData(item, options)
+                    cardEl = document.getElementById('card-' + item.id)
+                    if (!cardEl) continue
+                    updateWatchlistCardSilent(cardEl, item, data)
+                } else {
+                    await loadAndMountWatchlistCard(item, options)
+                }
+            }
+
+            observeWatchlistCards()
+        }
+
+        function bindChartTabDelegation() {
+            if (chartTabDelegationBound) return
+            chartTabDelegationBound = true
+            watchlistContainer.addEventListener('click', function (e) {
+                var tab = e.target.closest('.chart-tabs[data-card-id] .chart-tab[data-mode]')
+                if (!tab) return
+                var tabsEl = tab.closest('.chart-tabs[data-card-id]')
+                if (!tabsEl) return
+                var cardId = tabsEl.dataset.cardId
+                var mode = tab.dataset.mode
+                cardChartModes[cardId] = mode
+                tabsEl.querySelectorAll('.chart-tab[data-mode]').forEach(function (t) {
+                    t.classList.toggle('active', t.dataset.mode === mode)
+                })
+                var miniEl = document.getElementById('mini-' + cardId)
+                if (!miniEl) return
+                var meta = watchlistMetaCache[cardId] || {}
+                var chartOpts = {
+                    compact: true,
+                    market: watchlistMarketCache[cardId] || 'cn',
+                    currentPrice: watchlistPriceCache[cardId],
+                    intraday: watchlistIntradayCache[cardId],
+                    isMutualFund: !!watchlistMutualFundCache[cardId]
+                }
+                if (mode === 'today' && !chartOpts.isMutualFund &&
+                    (!chartOpts.intraday || !chartOpts.intraday.points || !chartOpts.intraday.points.length)) {
+                    showChartLoading(miniEl, '加载分时…')
+                    fetchIntradayForPayload(meta).then(function (intraday) {
+                        watchlistIntradayCache[cardId] = intraday
+                        chartOpts.intraday = intraday
+                        miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+                    })
+                    return
+                }
+                miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+            })
+        }
+
+        function bindRemoveButtonDelegation() {
+            if (removeDelegationBound) return
+            removeDelegationBound = true
+            watchlistContainer.addEventListener('click', function (e) {
+                var btn = e.target.closest('.remove-btn')
+                if (!btn) return
+                e.preventDefault()
+                e.stopPropagation()
+                var id = btn.dataset.id
+                var name = btn.dataset.name || id
+                confirmRemoveWatchlistItem(name).then(function (ok) {
+                    if (!ok) return
+                    removeWatchlistCardFromUi(id)
+                })
+            })
+        }
+
+        /* ===== 初始化 ===== */
+        function startAutoRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer)
+            refreshTimer = setInterval(function () {
+                if (getWatchlist().length > 0) renderWatchlist({ silent: true })
+            }, REFRESH_INTERVAL)
+        }
+
+        searchForm.addEventListener('submit', handleSearch)
+        refreshBtn.addEventListener('click', function () {
+            renderWatchlist({ silent: true })
+        })
+
+        window.addEventListener('resize', debounce(function () {
+            observeWatchlistCards()
+            if (detailChart && document.getElementById('detailChart')) {
+                var el = document.getElementById('detailChart')
+                detailChart.applyOptions({ width: el.clientWidth })
+            }
+        }, 200))
+
+        bindRemoveButtonDelegation()
+        bindChartTabDelegation()
+        bindSimDetailDialog()
+        bindStrategyDialog()
+        bindHoldPositionCheckbox()
+        initMarketSelect()
+        renderWatchlist()
+        startAutoRefresh()
+    })()
+    </script>
+</body>
+</html>
