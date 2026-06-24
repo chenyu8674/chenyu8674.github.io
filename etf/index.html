@@ -316,13 +316,29 @@
             font-size: .75rem;
             font-weight: 700;
             white-space: nowrap;
-            cursor: default;
         }
 
         .signal-badge.add { background: var(--up-bg); color: var(--up); }
         .signal-badge.hold { background: rgba(139, 148, 158, .18); color: var(--text-muted); }
         .signal-badge.watch { background: rgba(139, 148, 158, .18); color: var(--text-muted); }
         .signal-badge.sell { background: var(--down-bg); color: var(--down); }
+
+        .signal-advice-refs {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .signal-ref-row {
+            font-size: .78rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.4;
+        }
+
+        .signal-ref-row.up { color: var(--up); }
+        .signal-ref-row.down { color: var(--down); }
 
         .signal-advice-popup {
             min-width: 280px;
@@ -482,7 +498,17 @@
         .flow-hover-trigger {
             position: relative;
             display: inline-block;
-            cursor: default;
+            cursor: zoom-in;
+        }
+
+        .flow-hover-trigger * {
+            cursor: zoom-in;
+        }
+
+        .flow-hover-trigger button,
+        .flow-hover-trigger .sim-detail-btn,
+        .sim-detail-btn {
+            cursor: pointer;
         }
 
         .flow-hover-popup {
@@ -981,6 +1007,7 @@
             padding: 2px 10px;
             font-size: .72rem;
             line-height: 1.4;
+            cursor: pointer;
         }
 
         .card-sim .flow-hover-popup {
@@ -1177,6 +1204,40 @@
             font-size: .75rem;
             color: var(--text-muted);
             margin-bottom: 12px;
+        }
+
+        .sim-detail-controls {
+            margin-bottom: 12px;
+        }
+
+        .sim-detail-entry-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sim-detail-entry-label {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .sim-detail-entry-input {
+            padding: 6px 10px;
+            font-size: .78rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            min-width: 148px;
+            cursor: pointer;
+        }
+
+        .sim-detail-entry-input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .sim-detail-table-wrap {
@@ -1480,6 +1541,7 @@
                 <h3 id="simDetailTitle">模拟操作记录</h3>
             </div>
             <div class="sim-detail-hint" id="simDetailHint"></div>
+            <div class="sim-detail-controls" id="simDetailControls"></div>
             <div class="sim-detail-table-wrap" id="simDetailBody"></div>
             <div class="confirm-actions">
                 <button type="button" class="btn btn-cancel" id="simDetailClose">关闭</button>
@@ -1588,6 +1650,7 @@
         // corsproxy.io 免费开发源前缀，见 https://corsproxy.io/
         var CORS_PROXY_IO_PREFIX = 'https://corsproxy.io/?url='
         var twDataCache = {}
+        var twSplitEventCache = {}
 
         /* ===== DOM ===== */
         var searchForm = document.getElementById('searchForm')
@@ -2050,9 +2113,63 @@
             var cutoff = new Date()
             cutoff.setFullYear(cutoff.getFullYear() - 1)
             var cutoffStr = formatDateISO(cutoff)
-            var sliced = klines.filter(function (k) { return k.date >= cutoffStr })
-            if (sliced.length >= 6) return sliced
-            return klines.slice(-Math.min(klines.length, 252))
+            var sliced = klines.filter(function (k) { return normalizeTradeDate(k.date) >= cutoffStr })
+            if (sliced.length >= 6) return sortKlinesByDate(sliced)
+            return sortKlinesByDate(klines.slice(-Math.min(klines.length, 252)))
+        }
+
+        function normalizeTradeDate(dateStr) {
+            if (!dateStr) return ''
+            var s = String(dateStr).trim()
+            if (/^\d{8}$/.test(s)) {
+                return s.slice(0, 4) + '-' + s.slice(4, 6) + '-' + s.slice(6, 8)
+            }
+            var parts = s.split(/[-/T]/)
+            if (parts.length >= 3) {
+                var y = parts[0]
+                var m = String(parseInt(parts[1], 10))
+                var d = String(parseInt(parts[2], 10))
+                if (m.length === 1) m = '0' + m
+                if (d.length === 1) d = '0' + d
+                return y + '-' + m + '-' + d
+            }
+            return s.slice(0, 10)
+        }
+
+        function sortKlinesByDate(klines) {
+            if (!klines || !klines.length) return []
+            return klines.slice().sort(function (a, b) {
+                return normalizeTradeDate(a.date).localeCompare(normalizeTradeDate(b.date))
+            })
+        }
+
+        function getSimEntryDateBounds(klines) {
+            var sorted = sortKlinesByDate(klines)
+            if (!sorted.length) return { minDate: '', maxDate: '' }
+            var minDate = normalizeTradeDate(sorted[0].date)
+            var maxDate = normalizeTradeDate(sorted[sorted.length - 1].date)
+            var today = formatDateISO(new Date())
+            if (maxDate > today) maxDate = today
+            if (minDate > maxDate) {
+                var tmp = minDate
+                minDate = maxDate
+                maxDate = tmp
+            }
+            return { minDate: minDate, maxDate: maxDate }
+        }
+
+        function getSimTradingDates(klines) {
+            var bounds = getSimEntryDateBounds(klines)
+            if (!bounds.minDate || !bounds.maxDate) return []
+            var seen = {}
+            var dates = []
+            sortKlinesByDate(klines).forEach(function (k) {
+                var d = normalizeTradeDate(k.date)
+                if (!d || d < bounds.minDate || d > bounds.maxDate || seen[d]) return
+                seen[d] = true
+                dates.push(d)
+            })
+            return dates
         }
 
         function calcAnnualActualReturn(klines) {
@@ -2408,6 +2525,56 @@
             return '卖出信号'
         }
 
+        function buildSellAdviceRefPrices(sellReason, strategy, sellMaConfig, simEntry, close) {
+            var refs = []
+            var hasSimEntry = simEntry != null && simEntry > 0
+            var pnlPct = hasSimEntry ? ((close - simEntry) / simEntry) * 100 : null
+            var useTrail = hasSimEntry && shouldUseTrailProfit(strategy, pnlPct)
+
+            if (sellReason === 'stop' && hasSimEntry && isStopLossEnabled(strategy)) {
+                refs.push({
+                    label: '止损',
+                    op: 'lt',
+                    price: simEntry * (1 + strategy.stopLossPct / 100)
+                })
+                return refs
+            }
+
+            var sellMaVal = (sellReason === 'trail' || useTrail) ? sellMaConfig.trailMa : sellMaConfig.baseMa
+            var sellLine = sellMaVal != null ? sellMaVal * strategy.sellThreshold : null
+            if (sellLine != null) {
+                refs.push({
+                    label: sellReason === 'trail' || useTrail ? '止盈' : '卖',
+                    op: 'lt',
+                    price: sellLine
+                })
+            }
+            return refs
+        }
+
+        function buildHoldAdviceRefPrices(strategy, sellMaConfig, simEntry, useTrail, sellLine) {
+            var refs = []
+            var hasSimEntry = simEntry != null && simEntry > 0
+            if (sellLine != null) {
+                refs.push({ label: useTrail ? '止盈' : '卖', op: 'lt', price: sellLine })
+            }
+            if (hasSimEntry && isStopLossEnabled(strategy)) {
+                refs.push({
+                    label: '止损',
+                    op: 'lt',
+                    price: simEntry * (1 + strategy.stopLossPct / 100)
+                })
+            }
+            if (hasSimEntry && isTrailProfitEnabled(strategy) && !useTrail) {
+                refs.push({
+                    label: '止盈+' + strategy.trailProfitPct + '%',
+                    op: 'gt',
+                    price: simEntry * (1 + strategy.trailProfitPct / 100)
+                })
+            }
+            return refs
+        }
+
         function getHeldPositionAdvice(close, market, strategy, sellMaConfig, simEntry) {
             var priceStr = formatPrice(close, market)
             var useTrail = false
@@ -2424,13 +2591,15 @@
                         action: 'sell',
                         label: '建议止损',
                         reason: '当前价 ' + priceStr + ' 相对成本 ' + formatPrice(simEntry, market) +
-                            ' 亏损 ' + formatPct(pnlPct) + '，触发止损线 ' + strategy.stopLossPct + '%。' + delayNote
+                            ' 亏损 ' + formatPct(pnlPct) + '，触发止损线 ' + strategy.stopLossPct + '%。' + delayNote,
+                        refPrices: buildSellAdviceRefPrices('stop', strategy, sellMaConfig, simEntry, close)
                     }
                 }
             }
 
             sellMaVal = useTrail ? sellMaConfig.trailMa : sellMaConfig.baseMa
             sellMaLabel = useTrail ? sellMaConfig.trailLabel : sellMaConfig.baseLabel
+            sellLine = null
             if (sellMaVal != null) {
                 sellLine = sellMaVal * strategy.sellThreshold
                 if (close < sellLine) {
@@ -2442,16 +2611,19 @@
                                 ' 判断：当前价 ' + priceStr + ' 低于 ' + sellMaLabel + '×' + strategy.sellThreshold +
                                 '（' + formatPrice(sellLine, market) + '）。' + delayNote
                             : '当前价 ' + priceStr + ' 低于 ' + sellMaLabel + '×' + strategy.sellThreshold +
-                                '（' + formatPrice(sellLine, market) + '），满足卖出条件。' + delayNote
+                                '（' + formatPrice(sellLine, market) + '），满足卖出条件。' + delayNote,
+                        refPrices: buildSellAdviceRefPrices(useTrail ? 'trail' : 'signal', strategy, sellMaConfig, simEntry, close)
                     }
                 }
             }
-            holdReason = '当前价 ' + priceStr + ' 仍高于卖出线 ' + sellMaLabel + '×' + strategy.sellThreshold +
-                '（' + formatPrice(sellLine, market) + '），暂不满足卖出。'
+            holdReason = sellLine != null
+                ? '当前价 ' + priceStr + ' 仍高于卖出线 ' + sellMaLabel + '×' + strategy.sellThreshold +
+                    '（' + formatPrice(sellLine, market) + '），暂不满足卖出。'
+                : '当前价 ' + priceStr + '，暂不满足卖出条件。'
             if (isTrailProfitEnabled(strategy)) {
                 if (hasSimEntry && useTrail) {
                     holdReason += '盈利已过 +' + strategy.trailProfitPct + '% 移动止盈线，止盈参考已改用 ' +
-                        sellMaConfig.trailLabel + '（原为 ' + sellMaConfig.baseLabel + '）。'
+                        sellMaConfig.trailLabel + '。'
                 } else if (hasSimEntry) {
                     holdReason += '盈利未达 +' + strategy.trailProfitPct + '% 移动止盈线，止盈参考仍为 ' +
                         sellMaConfig.baseLabel + '。'
@@ -2461,7 +2633,8 @@
             } else {
                 holdReason += '移动止盈已关闭，仅按 ' + sellMaConfig.baseLabel + ' 均线信号判断。'
             }
-            return { action: 'hold', label: '建议持有', reason: holdReason }
+            var refPrices = buildHoldAdviceRefPrices(strategy, sellMaConfig, simEntry, useTrail, sellLine)
+            return { action: 'hold', label: '建议持有', reason: holdReason, refPrices: refPrices }
         }
 
         function getCnHeldPositionAdvice(close, market, strategy, sellMaConfig, simEntry) {
@@ -2496,7 +2669,13 @@
                     return {
                         action: 'sell',
                         label: sellLabel,
-                        reason: formatTradeDelayPendingNote(strategy, sellLabel)
+                        reason: formatTradeDelayPendingNote(strategy, sellLabel),
+                        refPrices: buildSellAdviceRefPrices(state.pendingSellReason || 'signal', strategy, {
+                            baseMa: baseMa,
+                            trailMa: trailMa,
+                            baseLabel: maBaseLabel,
+                            trailLabel: maTrailLabel
+                        }, position.costPrice, close)
                     }
                 }
                 return getHeldPositionAdvice(close, market, strategy, {
@@ -2508,10 +2687,12 @@
             }
 
             if (state.pendingBuy) {
+                buyLine = baseMa != null ? baseMa * strategy.buyThreshold : null
                 return {
                     action: 'add',
                     label: '建议买入',
-                    reason: formatTradeDelayPendingNote(strategy, '买入')
+                    reason: formatTradeDelayPendingNote(strategy, '买入'),
+                    refPrices: buyLine != null ? [{ label: '买', op: 'gt', price: buyLine }] : []
                 }
             }
 
@@ -2531,7 +2712,8 @@
                     label: delay > 0 ? '建议观望' : '建议买入',
                     reason: '已连续 ' + strategy.confirmDays + ' 日收盘价高于 ' + maBaseLabel + '×' + strategy.buyThreshold +
                         '（' + formatThresholdOffset(strategy.buyThreshold) + '），' +
-                        formatTradeDelayAdviceNote(strategy, '买入')
+                        formatTradeDelayAdviceNote(strategy, '买入'),
+                    refPrices: buyLine != null ? [{ label: '买', op: 'gt', price: buyLine }] : []
                 }
             }
             if (streak > 0) {
@@ -2539,7 +2721,8 @@
                     action: 'watch',
                     label: '建议观望',
                     reason: '空仓。已连续 ' + streak + ' 日满足买入条件（需连续 ' + strategy.confirmDays + ' 日）。当前价 ' + priceStr +
-                        ' > ' + maBaseLabel + '×' + strategy.buyThreshold + '（' + formatPrice(buyLine, market) + '）。'
+                        ' > ' + maBaseLabel + '×' + strategy.buyThreshold + '（' + formatPrice(buyLine, market) + '）。',
+                    refPrices: buyLine != null ? [{ label: '买', op: 'gt', price: buyLine }] : []
                 }
             }
             return {
@@ -2547,8 +2730,9 @@
                 label: '建议观望',
                 reason: '空仓。当前价 ' + priceStr + (baseMa != null
                     ? ' 未连续满足买入条件（需收盘价 > ' + maBaseLabel + '×' + strategy.buyThreshold +
-                        ' 并连续 ' + strategy.confirmDays + ' 日确认）。'
-                    : '，均线数据不足。')
+                        '，即 ' + formatPrice(buyLine, market) + '，并连续 ' + strategy.confirmDays + ' 日确认）。'
+                    : '，均线数据不足。'),
+                refPrices: buyLine != null ? [{ label: '买', op: 'gt', price: buyLine }] : []
             }
         }
 
@@ -2566,12 +2750,31 @@
             return '<span class="fund-name-text" title="' + escapeHtml(text) + '">' + escapeHtml(text) + '</span>'
         }
 
-        function buildSignalAdviceHtml(advice) {
+        function buildAdviceRefPricesHtml(advice, market) {
+            if (!advice) return ''
+            var refs = advice.refPrices
+            if (!refs || !refs.length) return ''
+            var html = '<div class="signal-advice-refs">'
+            refs.forEach(function (ref) {
+                if (!ref || ref.price == null || ref.price <= 0) return
+                var op = ref.op === 'gt' ? '>' : '<'
+                var cls = ref.op === 'gt' ? 'up' : 'down'
+                var label = ref.label || (ref.op === 'gt' ? '买' : '卖')
+                html += '<div class="signal-ref-row ' + cls + '">' + escapeHtml(label) +
+                    ' ' + op + ' ' + formatPrice(ref.price, market) + '</div>'
+            })
+            html += '</div>'
+            return html
+        }
+
+        function buildSignalAdviceHtml(advice, market) {
             if (!advice || advice.action === 'unknown' || advice.action === 'none') return ''
+            var refHtml = buildAdviceRefPricesHtml(advice, market)
             return '<span class="signal-badge-wrap flow-hover-trigger">' +
                 '<span class="signal-badge ' + escapeHtml(advice.action) + '">' + escapeHtml(advice.label) + '</span>' +
                 '<div class="flow-hover-popup signal-advice-popup">' +
                     '<div class="flow-popup-title">' + escapeHtml(advice.label) + '</div>' +
+                    refHtml +
                     '<div class="signal-advice-reason">' + escapeHtml(advice.reason) + '</div>' +
                 '</div>' +
             '</span>'
@@ -2623,10 +2826,55 @@
                 result.holdPrice = endState.holdPrice
                 result.holdValuePct = endState.holdValuePct
             }
+            if (endState && endState.entryStartDate) {
+                result.entryStartDate = endState.entryStartDate
+                result.startDate = endState.entryStartDate
+            }
             return result
         }
 
-        function simulateStrategyAnnualReturn(yearKlines, strategy, market) {
+        function findKlineIndexByDate(klines, dateStr) {
+            if (!klines || !klines.length || !dateStr) return -1
+            dateStr = normalizeTradeDate(dateStr)
+            var i
+            for (i = 0; i < klines.length; i++) {
+                if (normalizeTradeDate(klines[i].date) >= dateStr) return i
+            }
+            return -1
+        }
+
+        function findKlineIndexOnOrBeforeDate(klines, dateStr) {
+            if (!klines || !klines.length || !dateStr) return -1
+            dateStr = normalizeTradeDate(dateStr)
+            var i, last = -1
+            for (i = 0; i < klines.length; i++) {
+                var d = normalizeTradeDate(klines[i].date)
+                if (d > dateStr) break
+                last = i
+            }
+            return last
+        }
+
+        function normalizeSimEntryDate(klines, dateStr) {
+            if (!klines || !klines.length) return dateStr
+            var bounds = getSimEntryDateBounds(klines)
+            dateStr = normalizeTradeDate(dateStr)
+            if (!dateStr || dateStr > bounds.maxDate) dateStr = bounds.maxDate
+            if (dateStr < bounds.minDate) dateStr = bounds.minDate
+            var sorted = sortKlinesByDate(klines)
+            var idx = findKlineIndexOnOrBeforeDate(sorted, dateStr)
+            if (idx < 0) return normalizeTradeDate(sorted[0].date)
+            return normalizeTradeDate(sorted[idx].date)
+        }
+
+        function simulateStrategyAnnualReturn(yearKlines, strategy, market, options) {
+            options = options || {}
+            yearKlines = sortKlinesByDate(yearKlines)
+            var bounds = getSimEntryDateBounds(yearKlines)
+            var entryStartDate = options.entryStartDate || bounds.minDate
+            var entryIdx = findKlineIndexOnOrBeforeDate(yearKlines, entryStartDate)
+            if (entryIdx < 0) entryIdx = 0
+            entryStartDate = normalizeTradeDate(yearKlines[entryIdx].date)
             var maPeriods = resolveStrategyMaPeriods(strategy, market)
             var baseMa = calcMaSeries(yearKlines, maPeriods.baseMaDays)
             var trailMa = calcMaSeries(yearKlines, maPeriods.trailMaDays)
@@ -2654,6 +2902,12 @@
                 close = bar.close
                 if (close == null || isNaN(close)) continue
                 lastClose = close
+
+                if (i < entryIdx) {
+                    equityCurve.push({ date: bar.date, equity: startEquity })
+                    continue
+                }
+
                 tradedToday = false
 
                 if (!initialBuyApplied && cash > 0 && !inPosition) {
@@ -2662,7 +2916,8 @@
                     inPosition = true
                     entryPrice = close
                     buyCount++
-                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, '首日买入')
+                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close,
+                        entryIdx === 0 ? '首日买入' : '建仓买入')
                     initialBuyApplied = true
                     tradedToday = true
                 } else if (delay > 0) {
@@ -2741,15 +2996,30 @@
             return finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations, {
                 holdingAtEnd: inPosition && shares > 0,
                 holdPrice: lastClose,
-                holdValuePct: startEquity ? (finalEquity / startEquity) * 100 : 100
+                holdValuePct: startEquity ? (finalEquity / startEquity) * 100 : 100,
+                entryStartDate: entryStartDate
             })
         }
 
-        function simulateAnnualReturn(klines, market) {
+        function simulateAnnualReturn(klines, market, options) {
             var yearKlines = getAnnualKlines(klines)
             if (!yearKlines || yearKlines.length < 10) return null
             var strategy = getTradeStrategy(market)
-            return simulateStrategyAnnualReturn(yearKlines, strategy, market)
+            return simulateStrategyAnnualReturn(yearKlines, strategy, market, options)
+        }
+
+        function rerunSimDetail(itemId, entryStartDate) {
+            var cached = watchlistSimCache[itemId]
+            if (!cached || !cached.klines || !cached.klines.length) return null
+            var strategy = getTradeStrategy(cached.market)
+            var normalized = normalizeSimEntryDate(cached.klines, entryStartDate || cached.klines[0].date)
+            var sim = simulateStrategyAnnualReturn(cached.klines, strategy, cached.market, {
+                entryStartDate: normalized
+            })
+            if (!sim) return null
+            cached.entryStartDate = normalized
+            cached.detailSim = sim
+            return sim
         }
 
         /* ===== Fetch 层 ===== */
@@ -2916,6 +3186,68 @@
             existing.forEach(function (k) { byDate[k.date] = k })
             incoming.forEach(function (k) { byDate[k.date] = k })
             return Object.keys(byDate).sort().map(function (d) { return byDate[d] }).slice(-HISTORY_DAYS)
+        }
+
+        function parseTWSplitEvents(rows, code) {
+            return (rows || []).filter(function (row) {
+                return !code || !row.stock_id || row.stock_id === code
+            }).map(function (row) {
+                var before = row.before_price
+                var after = row.after_price
+                if (!before || !after || before <= 0 || after <= 0) return null
+                return {
+                    date: row.date,
+                    factor: before / after,
+                    type: row.type || ''
+                }
+            }).filter(Boolean).sort(function (a, b) {
+                return a.date.localeCompare(b.date)
+            })
+        }
+
+        function getTWSplitFactorBeforeDate(splitEvents, date) {
+            var factor = 1
+            splitEvents.forEach(function (sp) {
+                if (date < sp.date) factor *= sp.factor
+            })
+            return factor
+        }
+
+        function applyTWSplitAdjustments(klines, splitEvents) {
+            if (!klines.length || !splitEvents.length) return klines
+            return klines.map(function (k) {
+                var factor = getTWSplitFactorBeforeDate(splitEvents, k.date)
+                if (factor === 1) return k
+                return {
+                    date: k.date,
+                    open: k.open / factor,
+                    close: k.close / factor,
+                    high: k.high / factor,
+                    low: k.low / factor,
+                    volume: k.volume != null ? k.volume * factor : k.volume,
+                    changePct: k.changePct
+                }
+            })
+        }
+
+        async function fetchFinMindTWSplitEvents(code) {
+            if (twSplitEventCache[code]) return twSplitEventCache[code]
+            try {
+                var url = 'https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockSplitPrice&data_id=' +
+                    encodeURIComponent(code)
+                var json = await fetchFinMindJSON(url)
+                var events = parseTWSplitEvents(json && json.data, code)
+                twSplitEventCache[code] = events
+                return events
+            } catch (e) {
+                twSplitEventCache[code] = []
+                return []
+            }
+        }
+
+        async function adjustTWKlinesForSplits(code, klines) {
+            var splitEvents = await fetchFinMindTWSplitEvents(code)
+            return applyTWSplitAdjustments(klines, splitEvents)
         }
 
         async function fetchFinMindTWKlines(code, startDate, endDate) {
@@ -3581,19 +3913,28 @@
             start.setFullYear(start.getFullYear() - 1)
             var startDate = formatDateISO(start)
             var klines
+            var splitEvents = await fetchFinMindTWSplitEvents(code)
 
             if (options.lightweight && options.cachedData && options.cachedData.klines && options.cachedData.klines.length) {
                 var shortStart = new Date()
                 shortStart.setDate(shortStart.getDate() - 14)
                 try {
                     var recentRows = await fetchFinMindTWKlines(code, formatDateISO(shortStart), endDate)
+                    recentRows = applyTWSplitAdjustments(recentRows, splitEvents)
                     klines = mergeTWKlines(options.cachedData.klines, recentRows)
+                    if (!options.cachedData.splitAdjusted) {
+                        klines = applyTWSplitAdjustments(klines, splitEvents)
+                    }
                 } catch (e) {
                     if (isFinMindRateLimitError(e)) throw e
                     klines = options.cachedData.klines
+                    if (!options.cachedData.splitAdjusted) {
+                        klines = applyTWSplitAdjustments(klines, splitEvents)
+                    }
                 }
             } else {
                 klines = await fetchFinMindTWKlines(code, startDate, endDate)
+                klines = applyTWSplitAdjustments(klines, splitEvents)
             }
 
             var last = klines[klines.length - 1]
@@ -3651,7 +3992,8 @@
                 klines: klines,
                 flow: flow,
                 flowLabel: flowLabel,
-                secid: null
+                secid: null,
+                splitAdjusted: true
             }
 
             if (options.skipIntraday) return payload
@@ -3696,6 +4038,8 @@
 
             if (!klines.length) throw new Error('暂无 K 线数据')
 
+            klines = await adjustTWKlinesForSplits(code, klines)
+
             var last = klines[klines.length - 1]
             var flow = []
             for (var j = Math.max(0, klines.length - 5); j < klines.length; j++) {
@@ -3711,7 +4055,8 @@
                 klines: klines.slice(-HISTORY_DAYS),
                 flow: flow,
                 flowLabel: '成交量（量能参考）',
-                secid: null
+                secid: null,
+                splitAdjusted: true
             }
 
             if (options.skipIntraday) return payload
@@ -4498,11 +4843,16 @@
 
         function buildCardSimHtml(item, data) {
             if (!data.klines || data.klines.length < 10) return ''
+            var yearKlines = sortKlinesByDate(getAnnualKlines(data.klines))
             var sim = simulateAnnualReturn(data.klines, data.market)
             if (!sim) return ''
             var summary = getStrategySummaryText(data.market)
+            var entryBounds = getSimEntryDateBounds(yearKlines)
             watchlistSimCache[item.id] = {
                 sim: sim,
+                detailSim: sim,
+                klines: yearKlines,
+                entryStartDate: sim.entryStartDate || entryBounds.minDate,
                 market: data.market,
                 name: data.name || item.name,
                 symbol: data.symbol || item.symbol,
@@ -4540,7 +4890,7 @@
         function formatSimOperationLabel(op, index) {
             if (op.action === 'holding') return '持仓中'
             if (op.action === 'buy') {
-                if (index === 0 || (op.note && op.note.indexOf('首日') >= 0)) return '建仓'
+                if (index === 0 || (op.note && (op.note.indexOf('首日') >= 0 || op.note.indexOf('建仓') >= 0))) return '建仓'
                 return '买入信号'
             }
             var note = op.note || ''
@@ -4586,8 +4936,31 @@
             }
         }
 
+        function buildSimDetailControlsHtml(itemId, cached) {
+            var klines = cached.klines || []
+            var tradingDates = getSimTradingDates(klines)
+            if (!tradingDates.length) return ''
+            var bounds = getSimEntryDateBounds(klines)
+            var entryDate = normalizeSimEntryDate(klines, cached.entryStartDate || bounds.minDate)
+            cached.entryStartDate = entryDate
+            var options = ''
+            var i
+            for (i = tradingDates.length - 1; i >= 0; i--) {
+                var d = tradingDates[i]
+                options += '<option value="' + escapeHtml(d) + '"' + (d === entryDate ? ' selected' : '') + '>' +
+                    escapeHtml(d) + '</option>'
+            }
+            return '<div class="sim-detail-entry-row">' +
+                '<label class="sim-detail-entry-label" for="simEntryDateSelect">买入时间</label>' +
+                '<select class="sim-detail-entry-input" id="simEntryDateSelect"' +
+                    ' data-item-id="' + escapeHtml(itemId) + '">' +
+                    options +
+                '</select>' +
+            '</div>'
+        }
+
         function buildSimDetailTableHtml(cached) {
-            var sim = cached.sim
+            var sim = cached.detailSim || cached.sim
             var market = cached.market
             var ops = sim.operations || []
             if (!ops.length && !sim.holdingAtEnd) {
@@ -4620,19 +4993,34 @@
             '</table>'
         }
 
+        function renderSimDetailContent(itemId) {
+            var cached = watchlistSimCache[itemId]
+            var controlsEl = document.getElementById('simDetailControls')
+            var bodyEl = document.getElementById('simDetailBody')
+            if (!cached || !controlsEl || !bodyEl) return
+            controlsEl.innerHTML = buildSimDetailControlsHtml(itemId, cached)
+            bodyEl.innerHTML = buildSimDetailTableHtml(cached)
+        }
+
         function showSimDetailDialog(itemId) {
             var cached = watchlistSimCache[itemId]
             var overlay = document.getElementById('simDetailOverlay')
             var titleEl = document.getElementById('simDetailTitle')
             var hintEl = document.getElementById('simDetailHint')
-            var bodyEl = document.getElementById('simDetailBody')
-            if (!cached || !overlay || !titleEl || !hintEl || !bodyEl) return
+            if (!cached || !overlay || !titleEl || !hintEl) return
 
-            var sim = cached.sim
+            if (!cached.detailSim) cached.detailSim = cached.sim
+            var bounds = getSimEntryDateBounds(cached.klines || [])
+            cached.entryStartDate = normalizeSimEntryDate(
+                cached.klines,
+                cached.entryStartDate || cached.sim.entryStartDate || cached.sim.startDate || bounds.minDate
+            )
+            cached.detailSim = rerunSimDetail(itemId, cached.entryStartDate) || cached.detailSim
+
             var summary = cached.summary || getStrategySummaryText(cached.market)
             titleEl.textContent = (cached.name || cached.symbol) + ' · 模拟操作记录'
             hintEl.textContent = summary
-            bodyEl.innerHTML = buildSimDetailTableHtml(cached)
+            renderSimDetailContent(itemId)
             overlay.classList.add('show')
         }
 
@@ -4662,6 +5050,17 @@
                 overlay.addEventListener('click', function (e) {
                     if (e.target === overlay) closeSimDetailDialog()
                 })
+                overlay.addEventListener('change', function (e) {
+                    var input = e.target.closest('.sim-detail-entry-input')
+                    if (!input) return
+                    var itemId = input.dataset.itemId
+                    if (!itemId) return
+                    var sim = rerunSimDetail(itemId, input.value)
+                    if (!sim) return
+                    input.value = watchlistSimCache[itemId].entryStartDate
+                    var bodyEl = document.getElementById('simDetailBody')
+                    if (bodyEl) bodyEl.innerHTML = buildSimDetailTableHtml(watchlistSimCache[itemId])
+                })
             }
             document.addEventListener('keydown', function (e) {
                 if (e.key !== 'Escape') return
@@ -4675,22 +5074,22 @@
         }
 
         var STRATEGY_SHARED_LABELS = {
-            primaryMa: '基准均线 MA',
+            primaryMa: '基准均线MA',
             buyThreshold: '买入阈值',
             sellThreshold: '卖出阈值',
             enableStopLoss: '启用止损',
             stopLossPct: '紧急止损线 (%)',
             enableTrailProfit: '启用移动止盈',
             trailProfitPct: '移动止盈触发线 (%)',
-            trailMa: '止盈均线 MA',
+            trailMa: '止盈均线MA',
             confirmDays: '确认天数',
             tradeDelayDays: '交易延迟 (日)'
         }
 
         var STRATEGY_SHARED_HINTS = {
             primaryMa: '买入与默认卖出所参考的收盘价简单移动平均天数',
-            buyThreshold: '收盘价 > 基准MA × 此值',
-            sellThreshold: '持仓卖出：默认收盘价 < 基准MA × 此值；移动止盈触发后改为止盈均线',
+            buyThreshold: '收盘价 > 基准均线MA × 此值',
+            sellThreshold: '持仓卖出：默认收盘价 < 基准均线MA × 此值；移动止盈触发后改为止盈均线MA',
             stopLossPct: '持仓亏损达此比例时触发卖出',
             trailProfitPct: '浮盈超过此值后，卖出参考切换为止盈均线',
             trailMa: '移动止盈触发后改用的均线天数',
@@ -5005,7 +5404,7 @@
             var simHtml = buildCardSimHtml(detailItem, data)
             var holdPos = getHoldPosition(detailItemId)
             var advice = getTradeAdvice(data.klines, data.price, data.market, detailItemId)
-            var adviceHtml = buildSignalAdviceHtml(advice)
+            var adviceHtml = buildSignalAdviceHtml(advice, data.market)
             var holdRowHtml = buildHoldPositionRowHtml(detailItemId, data.market, holdPos, adviceHtml, 'detail-hold-row')
 
             detailPanel.innerHTML =
@@ -5268,7 +5667,7 @@
             var simHtml = buildCardSimHtml(item, data)
             var holdPos = getHoldPosition(item.id)
             var advice = getTradeAdvice(data.klines, data.price, data.market, item.id)
-            var adviceHtml = buildSignalAdviceHtml(advice)
+            var adviceHtml = buildSignalAdviceHtml(advice, item.market)
             var holdRowHtml = buildHoldPositionRowHtml(item.id, item.market, holdPos, adviceHtml)
 
             return '<div class="card-header">' +
