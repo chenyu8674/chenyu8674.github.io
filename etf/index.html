@@ -73,12 +73,53 @@
         .sidebar-header {
             padding: 20px;
             border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-shrink: 0;
         }
 
         .sidebar-header h1 {
             font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 0;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sidebar-toggle-btn {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s, color .15s, border-color .15s;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .sidebar-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            display: none;
         }
 
         .sidebar-header p {
@@ -127,7 +168,9 @@
             gap: 8px;
         }
 
-        .search-row input { flex: 1; }
+        .search-row input { flex: 1; min-width: 0; }
+
+        .search-row .btn { flex-shrink: 0; }
 
         .btn {
             padding: 8px 16px;
@@ -278,6 +321,7 @@
 
         .signal-badge.add { background: var(--up-bg); color: var(--up); }
         .signal-badge.hold { background: rgba(139, 148, 158, .18); color: var(--text-muted); }
+        .signal-badge.watch { background: rgba(139, 148, 158, .18); color: var(--text-muted); }
         .signal-badge.sell { background: var(--down-bg); color: var(--down); }
 
         .signal-advice-popup {
@@ -292,6 +336,7 @@
         }
 
         .card-header .signal-badge-wrap .flow-hover-popup,
+        .card-meta-row .signal-badge-wrap .flow-hover-popup,
         .detail-meta-row .signal-badge-wrap .flow-hover-popup {
             top: calc(100% + 4px);
             bottom: auto;
@@ -301,18 +346,26 @@
 
         .detail-meta-row {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 12px;
+            min-width: 0;
         }
 
         .detail-meta-row .detail-meta {
             margin-bottom: 0;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .detail-meta-row .signal-badge-wrap {
+            flex-shrink: 0;
         }
 
         .chart-tabs {
             display: flex;
+            flex-wrap: wrap;
             gap: 4px;
             margin-bottom: 8px;
         }
@@ -337,14 +390,18 @@
         }
 
         .chart-tabs-sm .chart-tab {
-            padding: 2px 10px;
-            font-size: .7rem;
+            padding: 2px 8px;
+            font-size: .68rem;
         }
 
         .card-chart-wrap {
             display: flex;
             flex-direction: column;
             min-width: 0;
+        }
+
+        .detail-panel .chart-tab {
+            padding: 4px 9px;
         }
 
         .chart-container,
@@ -406,34 +463,10 @@
             background: var(--chart-bg);
         }
 
-        .flow-section h3 {
-            font-size: .8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .flow-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .flow-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: .8rem;
-            padding: 4px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .flow-item:last-child { border-bottom: none; }
-
         .flow-summary {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: .85rem;
             padding: 8px 0;
             cursor: default;
         }
@@ -532,6 +565,7 @@
         /* ===== Main ===== */
         .main {
             flex: 1;
+            min-width: 0;
             min-height: 0;
             padding: 24px;
             overflow-y: auto;
@@ -552,6 +586,30 @@
             gap: 12px;
         }
 
+        .sidebar-expand-btn {
+            display: none;
+        }
+
+        .app.sidebar-collapsed .sidebar-expand-btn {
+            display: inline-flex;
+            position: fixed;
+            left: 0;
+            top: 24px;
+            z-index: 20;
+            border-left: none;
+        }
+
+        .main-header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .app.sidebar-collapsed .main-header-title {
+            margin-left: 20px;
+        }
+
         .main-header-actions {
             display: flex;
             align-items: center;
@@ -562,6 +620,41 @@
         .main-header h2 {
             font-size: 1.2rem;
             font-weight: 700;
+        }
+
+        .refresh-icon-btn {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            margin-top: 4px;
+            padding: 0;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s, color .15s, border-color .15s;
+        }
+
+        .refresh-icon-btn:hover:not(:disabled) {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .refresh-icon-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .refresh-icon-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .refresh-icon-btn.is-loading svg {
+            animation: loading-panda-spin 1s linear infinite;
         }
 
         .watchlist-empty {
@@ -589,6 +682,8 @@
             border: 1px solid var(--border);
             padding: 20px;
             position: relative;
+            min-width: 0;
+            max-width: 100%;
             container-type: inline-size;
             container-name: watchlist-card;
         }
@@ -596,15 +691,18 @@
         .card-body {
             display: flex;
             flex-direction: row;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             gap: 20px;
             align-items: flex-start;
+            min-width: 0;
+            max-width: 100%;
         }
 
         .card-left {
-            flex: 0 0 300px;
+            flex: 0 0 280px;
             width: 300px;
-            min-width: 0;
+            min-width: 280px;
+            max-width: 280px;
         }
 
         .remove-btn {
@@ -632,6 +730,45 @@
             color: var(--red);
         }
 
+        .card-sort-btns {
+            position: absolute;
+            top: 13px;
+            left: -2px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .card-sort-btn {
+            width: 22px;
+            height: 18px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s, color .15s;
+        }
+
+        .card-sort-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .card-sort-btn:hover:not(:disabled) {
+            background: var(--surface-2);
+            color: var(--text);
+        }
+
+        .card-sort-btn:disabled {
+            opacity: .25;
+            cursor: not-allowed;
+        }
+
         .hold-position-wrap {
             position: relative;
             flex-shrink: 0;
@@ -639,13 +776,30 @@
             align-items: center;
         }
 
+        .card-hold-row,
+        .detail-hold-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
+        .card-hold-row .signal-badge-wrap,
+        .detail-hold-row .signal-badge-wrap {
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
         .hold-position-check {
             display: inline-flex;
             align-items: center;
+            gap: 6px;
             cursor: pointer;
             user-select: none;
             margin: 0;
             line-height: 1;
+            flex-shrink: 0;
         }
 
         .hold-position-check input {
@@ -655,6 +809,41 @@
             cursor: pointer;
             accent-color: var(--primary);
             vertical-align: middle;
+        }
+
+        .hold-position-label {
+            font-size: .8rem;
+            color: var(--text-muted);
+        }
+
+        .hold-cost-field {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .8rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .hold-cost-input {
+            width: 92px;
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            color: var(--text);
+            font-size: .8rem;
+            outline: none;
+        }
+
+        .hold-cost-input:focus {
+            border-color: var(--primary);
+        }
+
+        .hold-cost-input:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            background: var(--surface);
+            color: var(--text-muted);
         }
 
         .hold-position-wrap .flow-hover-popup {
@@ -672,14 +861,24 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            min-width: 0;
             font-size: 1rem;
             font-weight: 700;
+        }
+
+        .fund-name-text {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .detail-name {
             display: flex;
             align-items: center;
             gap: 8px;
+            min-width: 0;
             font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 2px;
@@ -687,15 +886,26 @@
 
         .card-header {
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
+            flex-direction: column;
+            gap: 4px;
             margin-bottom: 12px;
         }
 
-        .card-header-main {
+        .card-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .card-meta-row .card-symbol {
             min-width: 0;
             flex: 1;
+        }
+
+        .card-meta-row .signal-badge-wrap {
+            flex-shrink: 0;
         }
 
         .card-symbol {
@@ -725,12 +935,14 @@
         .card-stat .value.down { color: var(--down); }
 
         .card-flow {
-            font-size: .8rem;
             color: var(--text-muted);
             margin-top: 4px;
         }
 
-        .card-flow .flow-summary {
+        .card-flow .flow-summary,
+        .card-actual .flow-summary,
+        .card-sim .sim-summary-row {
+            font-size: .8rem;
             justify-content: flex-start;
             gap: 12px;
             padding: 2px 0;
@@ -748,30 +960,20 @@
         }
 
         .card-sim {
-            font-size: .8rem;
             color: var(--text-muted);
             margin-top: 0;
         }
 
         .card-actual {
-            font-size: .8rem;
             color: var(--text-muted);
             margin-top: 0;
-        }
-
-        .card-actual .flow-summary {
-            justify-content: flex-start;
-            gap: 12px;
-            padding: 2px 0;
         }
 
         .card-sim .sim-summary-row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 8px 12px;
             width: 100%;
-            padding: 2px 0;
         }
 
         .card-sim .sim-detail-btn {
@@ -818,18 +1020,21 @@
             flex-direction: column;
             gap: 6px;
             min-width: 0;
+            max-width: 100%;
         }
 
         .card-right .chart-tabs {
             padding-right: 32px;
+            min-width: 0;
         }
 
         .card-right .mini-chart {
-            width: calc(100% + 8px);
-            margin-right: -8px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
-        @container watchlist-card (max-width: 599px) {
+        @container watchlist-card (max-width: 679px) {
             .card-body {
                 flex-direction: column;
             }
@@ -837,6 +1042,14 @@
             .card-left {
                 flex: none;
                 width: 100%;
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            .card-right {
+                flex: none;
+                width: 100%;
+                min-width: 0;
             }
         }
 
@@ -847,16 +1060,19 @@
         .card.card-narrow .card-left {
             flex: none;
             width: 100%;
+            min-width: 0;
+            max-width: 100%;
         }
 
-        .card.card-narrow .card-right .mini-chart {
+        .card.card-narrow .card-right {
+            flex: none;
             width: 100%;
-            margin-right: 0;
+            min-width: 0;
         }
 
         .mini-chart {
             width: 100%;
-            height: 150px;
+            height: 180px;
             border: 1px solid var(--border);
             overflow: hidden;
             background: var(--chart-bg);
@@ -1006,6 +1222,9 @@
 
         .sim-detail-table .action-buy { color: var(--up); font-weight: 600; }
         .sim-detail-table .action-sell { color: var(--down); font-weight: 600; }
+        .sim-detail-table .action-trail { color: var(--up); font-weight: 600; }
+        .sim-detail-table .action-stop { color: var(--down); font-weight: 600; }
+        .sim-detail-table .action-hold { color: var(--primary); font-weight: 600; }
 
         .sim-price-delta {
             margin-left: 6px;
@@ -1192,35 +1411,48 @@
     </style>
 </head>
 <body>
-    <div class="app">
-        <aside class="sidebar">
+    <div class="app" id="app">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h1>ETF 辅助分析</h1>
+                <h1>搜索/添加基金</h1>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarCollapseBtn" aria-expanded="true" aria-label="折叠侧边栏" title="折叠">‹</button>
             </div>
-            <form class="search-form" id="searchForm">
-                <div class="form-row">
-                    <label for="marketSelect">所在市场</label>
-                    <select id="marketSelect"></select>
-                </div>
-                <div class="form-row">
-                    <label for="symbolInput">ETF 代码</label>
-                    <div class="search-row">
-                        <input type="text" id="symbolInput" autocomplete="off">
-                        <button type="submit" class="btn btn-primary" id="searchBtn">搜索</button>
+            <div class="sidebar-body" id="sidebarBody">
+                <form class="search-form" id="searchForm">
+                    <div class="form-row">
+                        <label for="marketSelect">所在市场</label>
+                        <select id="marketSelect"></select>
                     </div>
+                    <div class="form-row">
+                        <label for="symbolInput">ETF 代码</label>
+                        <div class="search-row">
+                            <input type="text" id="symbolInput" autocomplete="off">
+                            <button type="submit" class="btn btn-primary" id="searchBtn">搜索</button>
+                            <button type="button" class="btn btn-primary" id="randomSearchBtn">随机</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="detail-panel" id="detailPanel">
+                    <div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>
                 </div>
-            </form>
-            <div class="detail-panel" id="detailPanel">
-                <div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>
             </div>
         </aside>
 
+        <button type="button" class="sidebar-toggle-btn sidebar-expand-btn" id="sidebarExpandBtn" aria-expanded="false" aria-label="展开侧边栏" title="展开">›</button>
+
         <main class="main">
             <div class="main-header">
-                <h2>我的关注</h2>
+                <div class="main-header-title">
+                    <h2>我的关注</h2>
+                    <button type="button" class="refresh-icon-btn" id="refreshBtn" aria-label="刷新全部" title="刷新全部">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 12a9 9 0 1 1-2.64-6.36"></path>
+                            <path d="M21 3v6h-6"></path>
+                        </svg>
+                    </button>
+                </div>
                 <div class="main-header-actions">
                     <button type="button" class="btn btn-ghost" id="strategyBtn">交易策略</button>
-                    <button type="button" class="btn btn-ghost" id="refreshBtn">刷新全部</button>
                 </div>
             </div>
             <div id="watchlistContainer">
@@ -1245,7 +1477,7 @@
     <div class="confirm-overlay" id="simDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="simDetailTitle">
         <div class="sim-detail-dialog">
             <div class="sim-detail-header">
-                <h3 id="simDetailTitle">模拟操作详情</h3>
+                <h3 id="simDetailTitle">模拟操作记录</h3>
             </div>
             <div class="sim-detail-hint" id="simDetailHint"></div>
             <div class="sim-detail-table-wrap" id="simDetailBody"></div>
@@ -1286,7 +1518,21 @@
         var REFRESH_INTERVAL = 60000
         var HISTORY_DAYS = 260
         var CHART_30DAYS = 30
+        var CHART_90DAYS = 90
+        var CHART_180DAYS = 180
         var MARKET_LABELS = { cn: '大陆', tw: '台湾' }
+
+        var RANDOM_SYMBOL_POOLS = {
+            cn: [
+                '510300', '510500', '159915', '512880', '518880', '588000', '512690',
+                '512660', '513050', '512480', '510050', '159922', '512000', '515790',
+                '016185', '110022', '161725', '006327', '512170', '159869'
+            ],
+            tw: [
+                '0050', '0056', '00878', '006208', '00713', '00919', '00929', '00881',
+                '00757', '00892', '00940', '00692', '00712', '00830', '00915', '00685L'
+            ]
+        }
 
         function isTraditionalChineseLocale() {
             var langs = navigator.languages && navigator.languages.length
@@ -1348,9 +1594,49 @@
         var marketSelect = document.getElementById('marketSelect')
         var symbolInput = document.getElementById('symbolInput')
         var searchBtn = document.getElementById('searchBtn')
+        var randomSearchBtn = document.getElementById('randomSearchBtn')
         var detailPanel = document.getElementById('detailPanel')
         var watchlistContainer = document.getElementById('watchlistContainer')
         var refreshBtn = document.getElementById('refreshBtn')
+        var sidebarEl = document.getElementById('sidebar')
+        var appEl = document.getElementById('app')
+        var sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn')
+        var sidebarExpandBtn = document.getElementById('sidebarExpandBtn')
+
+        /* ===== 侧边栏折叠 ===== */
+        function setSidebarCollapsed(collapsed) {
+            if (sidebarEl) sidebarEl.classList.toggle('collapsed', collapsed)
+            if (appEl) appEl.classList.toggle('sidebar-collapsed', collapsed)
+            if (sidebarCollapseBtn) {
+                sidebarCollapseBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true')
+            }
+            if (sidebarExpandBtn) {
+                sidebarExpandBtn.setAttribute('aria-expanded', collapsed ? 'true' : 'false')
+            }
+            scheduleChartLayoutRefresh()
+        }
+
+        function initSidebarCollapse() {
+            setSidebarCollapsed(getWatchlist().length > 0)
+            if (sidebarCollapseBtn) {
+                sidebarCollapseBtn.addEventListener('click', function () {
+                    setSidebarCollapsed(true)
+                })
+            }
+            if (sidebarExpandBtn) {
+                sidebarExpandBtn.addEventListener('click', function () {
+                    setSidebarCollapsed(false)
+                })
+            }
+        }
+
+        function syncSidebarCollapseByWatchlist(prevCount, nextCount) {
+            if (prevCount === 0 && nextCount > 0) {
+                setSidebarCollapsed(true)
+            } else if (prevCount > 0 && nextCount === 0) {
+                setSidebarCollapsed(false)
+            }
+        }
 
         /* ===== 工具函数 ===== */
         function formatPrice(val, market) {
@@ -1418,6 +1704,52 @@
             clearHoldPosition(id)
         }
 
+        function getWatchlistItemIndex(itemId) {
+            var list = getWatchlist()
+            var i
+            for (i = 0; i < list.length; i++) {
+                if (list[i].id === itemId) return i
+            }
+            return -1
+        }
+
+        function moveWatchlistItem(id, direction) {
+            var list = getWatchlist()
+            var index = getWatchlistItemIndex(id)
+            if (index < 0) return false
+            var target = direction === 'up' ? index - 1 : index + 1
+            if (target < 0 || target >= list.length) return false
+            var tmp = list[index]
+            list[index] = list[target]
+            list[target] = tmp
+            saveWatchlist(list)
+            reorderWatchlistDom(list)
+            return true
+        }
+
+        function reorderWatchlistDom(list) {
+            var cardsEl = watchlistContainer.querySelector('.cards')
+            if (!cardsEl) return
+            list.forEach(function (item) {
+                var card = document.getElementById('card-' + item.id)
+                if (card) cardsEl.appendChild(card)
+            })
+            updateAllCardSortBtnStates()
+        }
+
+        function updateAllCardSortBtnStates() {
+            var list = getWatchlist()
+            var total = list.length
+            list.forEach(function (item, index) {
+                var card = document.getElementById('card-' + item.id)
+                if (!card) return
+                var upBtn = card.querySelector('.card-sort-up')
+                var downBtn = card.querySelector('.card-sort-down')
+                if (upBtn) upBtn.disabled = index <= 0
+                if (downBtn) downBtn.disabled = index >= total - 1
+            })
+        }
+
         function loadHoldPositionMap() {
             try {
                 var raw = localStorage.getItem(HOLD_POSITION_STORAGE_KEY)
@@ -1432,21 +1764,80 @@
         }
 
         function getHoldPosition(itemId) {
-            if (!itemId) return { held: false }
+            if (!itemId) return { held: false, costPrice: null }
             var map = loadHoldPositionMap()
             var rec = map[itemId]
-            return { held: !!(rec && rec.held) }
+            if (!rec || !rec.held) return { held: false, costPrice: null }
+            var cost = rec.costPrice
+            return {
+                held: true,
+                costPrice: cost != null && !isNaN(cost) && cost > 0 ? Number(cost) : null
+            }
         }
 
-        function setHoldPosition(itemId, held) {
+        function setHoldPosition(itemId, held, costPrice) {
             if (!itemId) return
             var map = loadHoldPositionMap()
             if (held) {
-                map[itemId] = { held: true }
+                var rec = { held: true }
+                var prevCost = map[itemId] && map[itemId].costPrice
+                var nextCost = costPrice != null && costPrice > 0 ? costPrice : prevCost
+                if (nextCost != null && nextCost > 0) rec.costPrice = Number(nextCost)
+                map[itemId] = rec
             } else {
                 delete map[itemId]
             }
             saveHoldPositionMap(map)
+        }
+
+        function setHoldPositionCost(itemId, costPrice) {
+            if (!itemId) return
+            var map = loadHoldPositionMap()
+            var rec = map[itemId]
+            if (!rec || !rec.held) return
+            if (costPrice != null && costPrice > 0) {
+                rec.costPrice = Number(costPrice)
+            } else {
+                delete rec.costPrice
+            }
+            map[itemId] = rec
+            saveHoldPositionMap(map)
+        }
+
+        function parseHoldCostInput(val, market) {
+            if (val == null || String(val).trim() === '') return null
+            var n = parseFloat(val)
+            if (isNaN(n) || n <= 0) return null
+            var decimals = market === 'tw' ? 2 : 3
+            return Number(n.toFixed(decimals))
+        }
+
+        function getCurrentPriceForItem(itemId) {
+            if (currentDetail && (currentDetail.market + '-' + currentDetail.symbol) === itemId) {
+                return currentDetail.price
+            }
+            if (watchlistPriceCache[itemId] != null) return watchlistPriceCache[itemId]
+            return null
+        }
+
+        function refreshHoldPositionView(itemId) {
+            var cardEl = document.getElementById('card-' + itemId)
+            if (cardEl) {
+                var list = getWatchlist()
+                var item = null
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].id === itemId) {
+                        item = list[i]
+                        break
+                    }
+                }
+                if (item) {
+                    var data = buildWatchlistDataFromCache(item)
+                    if (data) updateWatchlistCardSilent(cardEl, item, data)
+                }
+            } else if (currentDetail && (currentDetail.market + '-' + currentDetail.symbol) === itemId) {
+                renderDetailPanel(currentDetail)
+            }
         }
 
         function clearHoldPosition(itemId) {
@@ -1694,6 +2085,35 @@
             return result
         }
 
+        function resolveMaAtBar(maSeries, klines, index, period, currentPrice, market) {
+            if (index === klines.length - 1) {
+                var latest = getLatestMa(klines, currentPrice, market, period)
+                if (latest != null) return latest
+            }
+            return maSeries[index]
+        }
+
+        function buildStrategyLevelsByDate(klines, market, currentPrice) {
+            if (!klines || !klines.length) return {}
+            var strategy = getTradeStrategy(market)
+            var basePeriod = market === 'tw' ? strategy.shortMaDays : strategy.baseMaDays
+            var baseMaSeries = calcMaSeries(klines, basePeriod)
+            var result = {}
+            var i, baseMa, levels
+
+            for (i = 0; i < klines.length; i++) {
+                baseMa = resolveMaAtBar(baseMaSeries, klines, i, basePeriod, currentPrice, market)
+                levels = { buy: null, sell: null }
+
+                if (baseMa != null) {
+                    levels.buy = baseMa * strategy.buyThreshold
+                    levels.sell = baseMa * strategy.sellThreshold
+                }
+                result[klines[i].date] = levels
+            }
+            return result
+        }
+
         function calendarDaysBetween(fromDate, toDate) {
             var a = new Date(fromDate + 'T00:00:00')
             var b = new Date(toDate + 'T00:00:00')
@@ -1708,6 +2128,7 @@
                     buyThreshold: 1.005,
                     sellThreshold: 0.995,
                     confirmDays: 1,
+                    tradeDelayDays: 0,
                     enableStopLoss: true,
                     stopLossPct: -3,
                     enableTrailProfit: true,
@@ -1718,6 +2139,7 @@
                     buyThreshold: 1.005,
                     sellThreshold: 0.995,
                     confirmDays: 2,
+                    tradeDelayDays: 1,
                     enableStopLoss: true,
                     stopLossPct: -8,
                     enableTrailProfit: true,
@@ -1745,8 +2167,8 @@
             for (k in defaults) {
                 if (!Object.prototype.hasOwnProperty.call(defaults, k)) continue
                 var v = raw && raw[k] != null ? raw[k] : defaults[k]
-                if (k.indexOf('Days') >= 0 || k === 'confirmDays') {
-                    out[k] = normalizeStrategyInt(v, defaults[k], k === 'confirmDays' ? 1 : 2)
+                if (k.indexOf('Days') >= 0 || k === 'confirmDays' || k === 'tradeDelayDays') {
+                    out[k] = normalizeStrategyInt(v, defaults[k], k === 'confirmDays' ? 1 : 0)
                 } else if (k.indexOf('enable') === 0) {
                     out[k] = raw && Object.prototype.hasOwnProperty.call(raw, k) ? !!raw[k] : defaults[k]
                 } else if (k.indexOf('Pct') >= 0) {
@@ -1794,142 +2216,205 @@
             return isTrailProfitEnabled(strategy) && pnlPct > strategy.trailProfitPct
         }
 
+        function getTradeDelayDays(strategy) {
+            return normalizeStrategyInt(strategy && strategy.tradeDelayDays, 0, 0)
+        }
+
+        function resolveStrategyMaPeriods(strategy, market) {
+            if (market === 'tw') {
+                return {
+                    baseMaDays: strategy.shortMaDays,
+                    trailMaDays: strategy.longMaDays
+                }
+            }
+            return {
+                baseMaDays: strategy.baseMaDays,
+                trailMaDays: strategy.trailMaDays
+            }
+        }
+
+        function getStrategyMaSummary(market, strategy) {
+            var ma = resolveStrategyMaPeriods(strategy, market)
+            return 'MA' + ma.baseMaDays + '/MA' + ma.trailMaDays
+        }
+
+        function formatTradeDelaySummary(strategy) {
+            var delay = getTradeDelayDays(strategy)
+            if (delay <= 0) return '收盘确认当日成交'
+            if (delay === 1) return '收盘确认T+1成交'
+            return '收盘确认T+' + delay + '成交'
+        }
+
+        function formatTradeDelayAdviceNote(strategy, actionLabel) {
+            var delay = getTradeDelayDays(strategy)
+            if (delay <= 0) return '今日收盘确认' + actionLabel + '并成交。'
+            if (delay === 1) return '今日收盘确认' + actionLabel + '，明日 T+1 成交。'
+            return '今日收盘确认' + actionLabel + '，' + delay + ' 个交易日后成交。'
+        }
+
+        function formatTradeDelayPendingNote(strategy, actionLabel) {
+            var delay = getTradeDelayDays(strategy)
+            if (delay <= 0) return '今日收盘确认' + actionLabel + '并成交。'
+            if (delay === 1) return '前一日已确认' + actionLabel + '，今日 T+1 成交。'
+            return '前 ' + delay + ' 日已确认' + actionLabel + '，今日按延迟规则成交。'
+        }
+
+        function formatSimTradeConfirmNote(strategy, signalNote) {
+            var delay = getTradeDelayDays(strategy)
+            var note = signalNote || '信号'
+            if (delay <= 0) return note === '确认买入' ? note : note
+            if (delay === 1) return note + ' T+1确认'
+            return note + ' T+' + delay + '确认'
+        }
+
+        function evalStrategySellSignal(strategy, close, entryPrice, baseMaVal, trailMaVal) {
+            var pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
+            if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                return { shouldSell: true, note: '止损', reason: 'stop' }
+            }
+            var useTrail = shouldUseTrailProfit(strategy, pnlPct)
+            var sellMa = useTrail ? trailMaVal : baseMaVal
+            if (sellMa != null && close < sellMa * strategy.sellThreshold) {
+                return {
+                    shouldSell: true,
+                    note: useTrail ? '移动止盈' : '信号',
+                    reason: useTrail ? 'trail' : 'signal'
+                }
+            }
+            return { shouldSell: false, note: '', reason: '' }
+        }
+
         function getStrategySummaryText(market) {
             var s = getTradeStrategy(market)
             var stopPart = isStopLossEnabled(s) ? ' · 止损' + s.stopLossPct + '%' : ''
             var trailPart = isTrailProfitEnabled(s) ? ' · 移动止盈+' + s.trailProfitPct + '%' : ''
-            if (market === 'tw') {
-                return 'MA' + s.shortMaDays + '/MA' + s.longMaDays +
-                    ' · 确认' + s.confirmDays + '日 · 当日收盘成交' + stopPart + trailPart
-            }
-            return 'MA' + s.baseMaDays + '/MA' + s.trailMaDays +
-                ' · 确认' + s.confirmDays + '日 · T+1买入' + stopPart + trailPart
+            return getStrategyMaSummary(market, s) +
+                ' · 确认' + s.confirmDays + '日 · ' + formatTradeDelaySummary(s) + stopPart + trailPart
         }
 
-        function buildHoldPositionCheckboxHtml(itemId, market, checked) {
-            return '<span class="hold-position-wrap flow-hover-trigger">' +
+        function buildHoldPositionRowHtml(itemId, market, holdPos, adviceHtml, rowClass) {
+            var held = !!(holdPos && holdPos.held)
+            var costVal = holdPos && holdPos.costPrice != null ? formatPrice(holdPos.costPrice, market) : ''
+            var step = market === 'tw' ? '0.01' : '0.001'
+            return '<div class="' + (rowClass || 'card-hold-row') + '">' +
                 '<label class="hold-position-check">' +
                     '<input type="checkbox" class="hold-position-input" data-item-id="' + escapeHtml(itemId) + '"' +
-                        ' data-market="' + escapeHtml(market) + '"' + (checked ? ' checked' : '') + '>' +
+                        ' data-market="' + escapeHtml(market) + '"' + (held ? ' checked' : '') + '>' +
+                    '<span class="hold-position-label">已持有</span>' +
                 '</label>' +
-                '<div class="flow-hover-popup">勾选视为已持有</div>' +
-            '</span>'
+                '<label class="hold-cost-field">' +
+                    '<span class="hold-cost-label">成本</span>' +
+                    '<input type="number" class="hold-cost-input" data-item-id="' + escapeHtml(itemId) + '"' +
+                        ' data-market="' + escapeHtml(market) + '" step="' + step + '" min="0"' +
+                        ' value="' + escapeHtml(costVal) + '" placeholder="--"' + (held ? '' : ' disabled') + '>' +
+                '</label>' +
+                (adviceHtml || '') +
+            '</div>'
         }
 
-        function replayTwBuySignalsBeforeToday(klines, strategy) {
+        function replaySignalsBeforeToday(klines, strategy, market) {
+            var empty = {
+                buyStreak: 0,
+                inPosition: false,
+                entryPrice: null,
+                pendingBuy: false,
+                pendingSell: false,
+                pendingSellReason: ''
+            }
             var n = klines.length
-            if (n < 2) return { pendingBuy: false, buyStreak: 0, inPosition: false, entryPrice: null }
-            var shortMa = calcMaSeries(klines, strategy.shortMaDays)
-            var longMa = calcMaSeries(klines, strategy.longMaDays)
+            if (n < 2) return empty
+
+            var maPeriods = resolveStrategyMaPeriods(strategy, market)
+            var baseMa = calcMaSeries(klines, maPeriods.baseMaDays)
+            var trailMa = calcMaSeries(klines, maPeriods.trailMaDays)
+            var delay = getTradeDelayDays(strategy)
             var inPosition = false
             var entryPrice = 0
-            var pendingBuy = false
             var buyStreak = 0
-            var i, close, pnlPct, useTrail, sellMa, shouldSell
+            var pendingBuyWait = -1
+            var pendingSellWait = -1
+            var pendingSellReason = ''
+            var i, close, sellSig, tradedToday
 
             for (i = 0; i < n - 1; i++) {
                 close = klines[i].close
                 if (close == null || isNaN(close)) continue
+                tradedToday = false
 
-                if (pendingBuy && !inPosition) {
-                    inPosition = true
-                    entryPrice = close
-                    pendingBuy = false
+                if (delay > 0) {
+                    if (pendingSellWait > 0) pendingSellWait--
+                    if (pendingBuyWait > 0) pendingBuyWait--
+                    if (pendingSellWait === 0 && inPosition) {
+                        inPosition = false
+                        entryPrice = 0
+                        pendingSellWait = -1
+                        pendingSellReason = ''
+                        tradedToday = true
+                    } else if (pendingBuyWait === 0 && !inPosition) {
+                        inPosition = true
+                        entryPrice = close
+                        pendingBuyWait = -1
+                        tradedToday = true
+                    }
                 }
-                if (inPosition) {
-                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
-                    shouldSell = false
-                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
-                        shouldSell = true
-                    } else {
-                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
-                        sellMa = useTrail ? longMa[i] : shortMa[i]
-                        if (sellMa != null && close < sellMa * strategy.sellThreshold) {
-                            shouldSell = true
+
+                if (!tradedToday && pendingSellWait < 0 && pendingBuyWait < 0) {
+                    if (inPosition) {
+                        sellSig = evalStrategySellSignal(strategy, close, entryPrice, baseMa[i], trailMa[i])
+                        if (sellSig.shouldSell) {
+                            if (delay <= 0) {
+                                inPosition = false
+                                entryPrice = 0
+                                tradedToday = true
+                            } else {
+                                pendingSellWait = delay
+                                pendingSellReason = sellSig.reason
+                            }
                         }
-                    }
-                    if (shouldSell) inPosition = false
-                }
-                if (!inPosition && !pendingBuy && shortMa[i] != null) {
-                    if (close > shortMa[i] * strategy.buyThreshold) {
-                        buyStreak++
-                    } else {
-                        buyStreak = 0
-                    }
-                    if (buyStreak >= strategy.confirmDays) {
-                        pendingBuy = true
-                        buyStreak = 0
+                    } else if (baseMa[i] != null) {
+                        if (close > baseMa[i] * strategy.buyThreshold) {
+                            buyStreak++
+                        } else {
+                            buyStreak = 0
+                        }
+                        if (buyStreak >= strategy.confirmDays) {
+                            if (delay <= 0) {
+                                inPosition = true
+                                entryPrice = close
+                                buyStreak = 0
+                                tradedToday = true
+                            } else {
+                                pendingBuyWait = delay
+                                buyStreak = 0
+                            }
+                        }
                     }
                 }
             }
+
             return {
-                pendingBuy: pendingBuy,
                 buyStreak: buyStreak,
                 inPosition: inPosition,
-                entryPrice: inPosition ? entryPrice : null
+                entryPrice: inPosition ? entryPrice : null,
+                pendingBuy: delay > 0 && pendingBuyWait >= 0,
+                pendingSell: delay > 0 && pendingSellWait >= 0,
+                pendingSellReason: pendingSellReason
             }
         }
 
-        function replayCnBuySignalsBeforeToday(klines, strategy) {
-            var n = klines.length
-            if (n < 2) return { pendingBuy: false, buyStreak: 0, inPosition: false, entryPrice: null }
-            var baseMa = calcMaSeries(klines, strategy.baseMaDays)
-            var trailMa = calcMaSeries(klines, strategy.trailMaDays)
-            var inPosition = false
-            var entryPrice = 0
-            var pendingBuy = false
-            var buyStreak = 0
-            var i, close, pnlPct, useTrail, sellMa, shouldSell
-
-            for (i = 0; i < n - 1; i++) {
-                close = klines[i].close
-                if (close == null || isNaN(close)) continue
-
-                if (pendingBuy && !inPosition) {
-                    inPosition = true
-                    entryPrice = close
-                    pendingBuy = false
-                }
-                if (inPosition) {
-                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
-                    shouldSell = false
-                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
-                        shouldSell = true
-                    } else {
-                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
-                        sellMa = useTrail ? trailMa[i] : baseMa[i]
-                        if (sellMa != null && close < sellMa * strategy.sellThreshold) {
-                            shouldSell = true
-                        }
-                    }
-                    if (shouldSell) inPosition = false
-                }
-                if (!inPosition && !pendingBuy && baseMa[i] != null) {
-                    if (close > baseMa[i] * strategy.buyThreshold) {
-                        buyStreak++
-                    } else {
-                        buyStreak = 0
-                    }
-                    if (buyStreak >= strategy.confirmDays) {
-                        pendingBuy = true
-                        buyStreak = 0
-                    }
-                }
-            }
-            return {
-                pendingBuy: pendingBuy,
-                buyStreak: buyStreak,
-                inPosition: inPosition,
-                entryPrice: inPosition ? entryPrice : null
-            }
+        function getCnSellAdviceLabel(reason) {
+            if (reason === 'stop') return '建议止损'
+            if (reason === 'trail') return '建议止盈'
+            return '卖出信号'
         }
 
         function getHeldPositionAdvice(close, market, strategy, sellMaConfig, simEntry) {
             var priceStr = formatPrice(close, market)
             var useTrail = false
             var pnlPct = null
-            var sellMaVal, sellMaLabel, sellLine, holdReason, hasSimEntry
+            var sellMaVal, sellMaLabel, sellLine, holdReason, hasSimEntry, delayNote
 
+            delayNote = formatTradeDelayAdviceNote(strategy, '卖出')
             hasSimEntry = simEntry != null && simEntry > 0
             if (hasSimEntry) {
                 pnlPct = ((close - simEntry) / simEntry) * 100
@@ -1937,8 +2422,9 @@
                 if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
                     return {
                         action: 'sell',
-                        label: '建议抛出',
-                        reason: '当前价 ' + priceStr + ' 触发紧急止损线 ' + strategy.stopLossPct + '%。'
+                        label: '建议止损',
+                        reason: '当前价 ' + priceStr + ' 相对成本 ' + formatPrice(simEntry, market) +
+                            ' 亏损 ' + formatPct(pnlPct) + '，触发止损线 ' + strategy.stopLossPct + '%。' + delayNote
                     }
                 }
             }
@@ -1950,13 +2436,13 @@
                 if (close < sellLine) {
                     return {
                         action: 'sell',
-                        label: '建议抛出',
+                        label: useTrail ? '建议止盈' : '卖出信号',
                         reason: useTrail
                             ? '盈利已超过 +' + strategy.trailProfitPct + '% 移动止盈线，按 ' + sellMaLabel +
                                 ' 判断：当前价 ' + priceStr + ' 低于 ' + sellMaLabel + '×' + strategy.sellThreshold +
-                                '（' + formatPrice(sellLine, market) + '）。'
+                                '（' + formatPrice(sellLine, market) + '）。' + delayNote
                             : '当前价 ' + priceStr + ' 低于 ' + sellMaLabel + '×' + strategy.sellThreshold +
-                                '（' + formatPrice(sellLine, market) + '），满足卖出条件。'
+                                '（' + formatPrice(sellLine, market) + '），满足卖出条件。' + delayNote
                     }
                 }
             }
@@ -1978,113 +2464,54 @@
             return { action: 'hold', label: '建议持有', reason: holdReason }
         }
 
-        function getTwTradeAdvice(klines, currentPrice, market, strategy, position) {
-            if (!klines || klines.length < strategy.shortMaDays + 1) {
-                return {
-                    action: 'unknown',
-                    label: '数据不足',
-                    reason: '历史数据不足，无法根据 MA' + strategy.shortMaDays + ' 策略判断。'
-                }
-            }
-            var state = replayTwBuySignalsBeforeToday(klines, strategy)
-            var lastIdx = klines.length - 1
-            var close = getBarEffectiveClose(klines, lastIdx, currentPrice, market)
-            if (close == null) {
-                return { action: 'unknown', label: '数据不足', reason: '暂无有效价格。' }
-            }
-            var shortMa = getLatestMa(klines, currentPrice, market, strategy.shortMaDays)
-            var longMa = getLatestMa(klines, currentPrice, market, strategy.longMaDays)
-            var maShortLabel = 'MA' + strategy.shortMaDays
-            var priceStr = formatPrice(close, market)
-            var buyLine, streak, todayMeetsBuy
-
-            if (position && position.held) {
-                return getHeldPositionAdvice(close, market, strategy, {
-                    baseMa: shortMa,
-                    trailMa: longMa,
-                    baseLabel: maShortLabel,
-                    trailLabel: 'MA' + strategy.longMaDays
-                }, state.inPosition ? state.entryPrice : null)
-            }
-
-            if (state.pendingBuy) {
-                return {
-                    action: 'add',
-                    label: '建议买入',
-                    reason: '前 ' + strategy.confirmDays + ' 个交易日已连续满足买入条件，今日收盘确认买入。'
-                }
-            }
-
-            buyLine = shortMa != null ? shortMa * strategy.buyThreshold : null
-            streak = state.buyStreak
-            todayMeetsBuy = shortMa != null && close > buyLine
-            if (todayMeetsBuy) {
-                streak++
-            } else {
-                streak = 0
-            }
-
-            if (streak >= strategy.confirmDays) {
-                return {
-                    action: 'none',
-                    label: '',
-                    reason: '空仓。已连续 ' + strategy.confirmDays + ' 日收盘价高于 ' + maShortLabel + '×' + strategy.buyThreshold +
-                        '（' + formatThresholdOffset(strategy.buyThreshold) + '），今日收盘后将触发买入信号，明日收盘确认买入。'
-                }
-            }
-            if (streak > 0) {
-                return {
-                    action: 'none',
-                    label: '',
-                    reason: '空仓。已连续 ' + streak + ' 日满足买入条件（需连续 ' + strategy.confirmDays + ' 日）。当前价 ' + priceStr +
-                        ' > ' + maShortLabel + '×' + strategy.buyThreshold + '（' + formatPrice(buyLine, market) + '）。'
-                }
-            }
-            return {
-                action: 'none',
-                label: '',
-                reason: '空仓。当前价 ' + priceStr + (shortMa != null
-                    ? ' 未连续满足买入条件（需收盘价 > ' + maShortLabel + '×' + strategy.buyThreshold +
-                        ' 并连续 ' + strategy.confirmDays + ' 日确认）。'
-                    : '，均线数据不足。')
-            }
+        function getCnHeldPositionAdvice(close, market, strategy, sellMaConfig, simEntry) {
+            return getHeldPositionAdvice(close, market, strategy, sellMaConfig, simEntry)
         }
 
-        function getCnTradeAdvice(klines, currentPrice, market, strategy, position) {
-            if (!klines || klines.length < strategy.baseMaDays + 1) {
+        function getMarketTradeAdvice(klines, currentPrice, market, strategy, position) {
+            var maPeriods = resolveStrategyMaPeriods(strategy, market)
+            if (!klines || klines.length < maPeriods.baseMaDays + 1) {
                 return {
                     action: 'unknown',
                     label: '数据不足',
-                    reason: '历史数据不足，无法根据 MA' + strategy.baseMaDays + ' 策略判断。'
+                    reason: '历史数据不足，无法根据 MA' + maPeriods.baseMaDays + ' 策略判断。'
                 }
             }
-            var state = replayCnBuySignalsBeforeToday(klines, strategy)
+            var state = replaySignalsBeforeToday(klines, strategy, market)
             var lastIdx = klines.length - 1
             var close = getBarEffectiveClose(klines, lastIdx, currentPrice, market)
             if (close == null) {
                 return { action: 'unknown', label: '数据不足', reason: '暂无有效价格。' }
             }
-            var baseMa = getLatestMa(klines, currentPrice, market, strategy.baseMaDays)
-            var trailMa = getLatestMa(klines, currentPrice, market, strategy.trailMaDays)
-            var maBaseLabel = 'MA' + strategy.baseMaDays
-            var maTrailLabel = 'MA' + strategy.trailMaDays
+            var baseMa = getLatestMa(klines, currentPrice, market, maPeriods.baseMaDays)
+            var trailMa = getLatestMa(klines, currentPrice, market, maPeriods.trailMaDays)
+            var maBaseLabel = 'MA' + maPeriods.baseMaDays
+            var maTrailLabel = 'MA' + maPeriods.trailMaDays
             var priceStr = formatPrice(close, market)
-            var buyLine, streak, todayMeetsBuy
+            var buyLine, streak, todayMeetsBuy, sellLabel, delay
 
             if (position && position.held) {
+                if (state.pendingSell) {
+                    sellLabel = getCnSellAdviceLabel(state.pendingSellReason)
+                    return {
+                        action: 'sell',
+                        label: sellLabel,
+                        reason: formatTradeDelayPendingNote(strategy, sellLabel)
+                    }
+                }
                 return getHeldPositionAdvice(close, market, strategy, {
                     baseMa: baseMa,
                     trailMa: trailMa,
                     baseLabel: maBaseLabel,
                     trailLabel: maTrailLabel
-                }, state.inPosition ? state.entryPrice : null)
+                }, position.costPrice)
             }
 
             if (state.pendingBuy) {
                 return {
                     action: 'add',
                     label: '建议买入',
-                    reason: '前 ' + strategy.confirmDays + ' 个交易日已连续满足买入条件，今日为 T+1 确认买入日。'
+                    reason: formatTradeDelayPendingNote(strategy, '买入')
                 }
             }
 
@@ -2097,25 +2524,27 @@
                 streak = 0
             }
 
+            delay = getTradeDelayDays(strategy)
             if (streak >= strategy.confirmDays) {
                 return {
-                    action: 'none',
-                    label: '',
-                    reason: '空仓。已连续 ' + strategy.confirmDays + ' 日收盘价高于 ' + maBaseLabel + '×' + strategy.buyThreshold +
-                        '（' + formatThresholdOffset(strategy.buyThreshold) + '），今日收盘后将触发买入信号，明日 T+1 确认买入。'
+                    action: delay > 0 ? 'watch' : 'add',
+                    label: delay > 0 ? '建议观望' : '建议买入',
+                    reason: '已连续 ' + strategy.confirmDays + ' 日收盘价高于 ' + maBaseLabel + '×' + strategy.buyThreshold +
+                        '（' + formatThresholdOffset(strategy.buyThreshold) + '），' +
+                        formatTradeDelayAdviceNote(strategy, '买入')
                 }
             }
             if (streak > 0) {
                 return {
-                    action: 'none',
-                    label: '',
+                    action: 'watch',
+                    label: '建议观望',
                     reason: '空仓。已连续 ' + streak + ' 日满足买入条件（需连续 ' + strategy.confirmDays + ' 日）。当前价 ' + priceStr +
                         ' > ' + maBaseLabel + '×' + strategy.buyThreshold + '（' + formatPrice(buyLine, market) + '）。'
                 }
             }
             return {
-                action: 'none',
-                label: '',
+                action: 'watch',
+                label: '建议观望',
                 reason: '空仓。当前价 ' + priceStr + (baseMa != null
                     ? ' 未连续满足买入条件（需收盘价 > ' + maBaseLabel + '×' + strategy.buyThreshold +
                         ' 并连续 ' + strategy.confirmDays + ' 日确认）。'
@@ -2129,8 +2558,12 @@
                 return { action: 'unknown', label: '数据不足', reason: '历史数据不足，无法判断。' }
             }
             var position = getHoldPosition(itemId)
-            if (market === 'tw') return getTwTradeAdvice(klines, currentPrice, market, strategy, position)
-            return getCnTradeAdvice(klines, currentPrice, market, strategy, position)
+            return getMarketTradeAdvice(klines, currentPrice, market, strategy, position)
+        }
+
+        function buildFundNameHtml(name) {
+            var text = name || ''
+            return '<span class="fund-name-text" title="' + escapeHtml(text) + '">' + escapeHtml(text) + '</span>'
         }
 
         function buildSignalAdviceHtml(advice) {
@@ -2154,7 +2587,7 @@
             })
         }
 
-        function finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations) {
+        function finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations, endState) {
             if (!equityCurve.length) return null
             var startEquity = equityCurve[0].equity
             var finalEquity = equityCurve[equityCurve.length - 1].equity
@@ -2172,7 +2605,7 @@
                     maxDrawdownPoint = { date: point.date, returnPct: retFromStart }
                 }
             }
-            return {
+            var result = {
                 returnPct: returnPct,
                 buyCount: buyCount,
                 sellCount: sellCount,
@@ -2180,174 +2613,143 @@
                 maxDrawdownPoint: maxDrawdownPoint,
                 startDate: yearKlines[0].date,
                 endDate: yearKlines[yearKlines.length - 1].date,
-                operations: operations
+                operations: operations,
+                holdingAtEnd: false,
+                holdPrice: null,
+                holdValuePct: null
             }
+            if (endState && endState.holdingAtEnd) {
+                result.holdingAtEnd = true
+                result.holdPrice = endState.holdPrice
+                result.holdValuePct = endState.holdValuePct
+            }
+            return result
         }
 
-        function simulateTwAnnualReturn(yearKlines, strategy) {
-            var shortMa = calcMaSeries(yearKlines, strategy.shortMaDays)
-            var longMa = calcMaSeries(yearKlines, strategy.longMaDays)
+        function simulateStrategyAnnualReturn(yearKlines, strategy, market) {
+            var maPeriods = resolveStrategyMaPeriods(strategy, market)
+            var baseMa = calcMaSeries(yearKlines, maPeriods.baseMaDays)
+            var trailMa = calcMaSeries(yearKlines, maPeriods.trailMaDays)
+            var delay = getTradeDelayDays(strategy)
             var n = yearKlines.length
             var cash = 1
             var shares = 0
             var inPosition = false
             var entryPrice = 0
             var buyStreak = 0
-            var pendingBuy = false
+            var pendingBuyWait = -1
+            var pendingSellWait = -1
+            var pendingSellNote = ''
             var buyCount = 0
             var sellCount = 0
             var equityCurve = []
             var operations = []
             var startEquity = 1
-            var i, bar, close, pnlPct, useTrail, sellMa, sellLine
+            var i, bar, close, sellSig, tradedToday
+            var initialBuyApplied = false
+            var lastClose = null
 
             for (i = 0; i < n; i++) {
                 bar = yearKlines[i]
                 close = bar.close
                 if (close == null || isNaN(close)) continue
+                lastClose = close
+                tradedToday = false
 
-                if (pendingBuy && !inPosition && cash > 0) {
+                if (!initialBuyApplied && cash > 0 && !inPosition) {
                     shares = cash / close
                     cash = 0
                     inPosition = true
                     entryPrice = close
-                    pendingBuy = false
                     buyCount++
-                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, '确认买入')
-                }
-
-                if (inPosition && shares > 0) {
-                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
-                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
+                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, '首日买入')
+                    initialBuyApplied = true
+                    tradedToday = true
+                } else if (delay > 0) {
+                    if (pendingSellWait > 0) pendingSellWait--
+                    if (pendingBuyWait > 0) pendingBuyWait--
+                    if (pendingSellWait === 0 && inPosition && shares > 0) {
                         cash = shares * close
                         shares = 0
                         inPosition = false
                         sellCount++
-                        pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash, '止损')
-                    } else {
-                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
-                        sellMa = useTrail ? longMa[i] : shortMa[i]
-                        if (sellMa != null) {
-                            sellLine = sellMa * strategy.sellThreshold
-                            if (close < sellLine) {
+                        pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash,
+                            formatSimTradeConfirmNote(strategy, pendingSellNote || '信号'))
+                        pendingSellWait = -1
+                        pendingSellNote = ''
+                        tradedToday = true
+                    } else if (pendingBuyWait === 0 && !inPosition && cash > 0) {
+                        shares = cash / close
+                        cash = 0
+                        inPosition = true
+                        entryPrice = close
+                        buyCount++
+                        pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close,
+                            formatSimTradeConfirmNote(strategy, '确认买入'))
+                        pendingBuyWait = -1
+                        tradedToday = true
+                    }
+                }
+
+                if (!tradedToday && pendingSellWait < 0 && pendingBuyWait < 0) {
+                    if (inPosition && shares > 0) {
+                        sellSig = evalStrategySellSignal(strategy, close, entryPrice, baseMa[i], trailMa[i])
+                        if (sellSig.shouldSell) {
+                            if (delay <= 0) {
                                 cash = shares * close
                                 shares = 0
                                 inPosition = false
                                 sellCount++
-                                pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash,
-                                    useTrail ? '移动止盈' : '信号')
+                                pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash, sellSig.note)
+                                tradedToday = true
+                            } else {
+                                pendingSellWait = delay
+                                pendingSellNote = sellSig.note
+                            }
+                        }
+                    } else if (cash > 0 && baseMa[i] != null) {
+                        if (close > baseMa[i] * strategy.buyThreshold) {
+                            buyStreak++
+                        } else {
+                            buyStreak = 0
+                        }
+                        if (buyStreak >= strategy.confirmDays) {
+                            if (delay <= 0) {
+                                shares = cash / close
+                                cash = 0
+                                inPosition = true
+                                entryPrice = close
+                                buyCount++
+                                pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, '确认买入')
+                                buyStreak = 0
+                                tradedToday = true
+                            } else {
+                                pendingBuyWait = delay
+                                buyStreak = 0
                             }
                         }
                     }
                 }
 
-                if (!inPosition && !pendingBuy && shortMa[i] != null) {
-                    if (close > shortMa[i] * strategy.buyThreshold) {
-                        buyStreak++
-                    } else {
-                        buyStreak = 0
-                    }
-                    if (buyStreak >= strategy.confirmDays) {
-                        pendingBuy = true
-                        buyStreak = 0
-                    }
-                }
-
                 equityCurve.push({
                     date: bar.date,
                     equity: inPosition ? shares * close : cash
                 })
             }
 
-            return finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations)
-        }
-
-        function simulateCnAnnualReturn(yearKlines, strategy) {
-            var baseMa = calcMaSeries(yearKlines, strategy.baseMaDays)
-            var trailMa = calcMaSeries(yearKlines, strategy.trailMaDays)
-            var n = yearKlines.length
-            var cash = 1
-            var shares = 0
-            var inPosition = false
-            var entryPrice = 0
-            var entryDate = null
-            var buyStreak = 0
-            var pendingBuy = false
-            var buyCount = 0
-            var sellCount = 0
-            var equityCurve = []
-            var operations = []
-            var startEquity = 1
-            var i, bar, close, pnlPct, useTrail, sellMa, sellLine
-
-            for (i = 0; i < n; i++) {
-                bar = yearKlines[i]
-                close = bar.close
-                if (close == null || isNaN(close)) continue
-
-                if (pendingBuy && !inPosition && cash > 0) {
-                    shares = cash / close
-                    cash = 0
-                    inPosition = true
-                    entryPrice = close
-                    entryDate = bar.date
-                    pendingBuy = false
-                    buyCount++
-                    pushSimOperation(operations, bar.date, 'buy', close, startEquity, shares * close, 'T+1确认')
-                }
-
-                if (inPosition && shares > 0) {
-                    pnlPct = entryPrice ? ((close - entryPrice) / entryPrice) * 100 : 0
-                    var shouldSell = false
-                    var sellNote = '信号'
-                    if (isStopLossEnabled(strategy) && pnlPct <= strategy.stopLossPct) {
-                        shouldSell = true
-                        sellNote = '止损'
-                    } else {
-                        useTrail = shouldUseTrailProfit(strategy, pnlPct)
-                        sellMa = useTrail ? trailMa[i] : baseMa[i]
-                        if (sellMa != null && close < sellMa * strategy.sellThreshold) {
-                            shouldSell = true
-                            sellNote = useTrail ? '移动止盈' : '信号'
-                        }
-                    }
-                    if (shouldSell) {
-                        cash = shares * close
-                        shares = 0
-                        inPosition = false
-                        entryDate = null
-                        sellCount++
-                        pushSimOperation(operations, bar.date, 'sell', close, startEquity, cash, sellNote)
-                    }
-                }
-
-                if (!inPosition && !pendingBuy && baseMa[i] != null) {
-                    if (close > baseMa[i] * strategy.buyThreshold) {
-                        buyStreak++
-                    } else {
-                        buyStreak = 0
-                    }
-                    if (buyStreak >= strategy.confirmDays) {
-                        pendingBuy = true
-                        buyStreak = 0
-                    }
-                }
-
-                equityCurve.push({
-                    date: bar.date,
-                    equity: inPosition ? shares * close : cash
-                })
-            }
-
-            return finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations)
+            var finalEquity = equityCurve.length ? equityCurve[equityCurve.length - 1].equity : startEquity
+            return finalizeSimResult(equityCurve, yearKlines, buyCount, sellCount, operations, {
+                holdingAtEnd: inPosition && shares > 0,
+                holdPrice: lastClose,
+                holdValuePct: startEquity ? (finalEquity / startEquity) * 100 : 100
+            })
         }
 
         function simulateAnnualReturn(klines, market) {
             var yearKlines = getAnnualKlines(klines)
             if (!yearKlines || yearKlines.length < 10) return null
             var strategy = getTradeStrategy(market)
-            if (market === 'tw') return simulateTwAnnualReturn(yearKlines, strategy)
-            return simulateCnAnnualReturn(yearKlines, strategy)
+            return simulateStrategyAnnualReturn(yearKlines, strategy, market)
         }
 
         /* ===== Fetch 层 ===== */
@@ -2494,14 +2896,17 @@
 
         function mapFinMindRowsToKlines(rows) {
             return rows.map(function (row) {
+                var close = row.close
+                var prevClose = close - (row.spread || 0)
+                var changePct = prevClose ? ((row.spread || 0) / prevClose) * 100 : 0
                 return {
                     date: row.date,
                     open: row.open,
-                    close: row.close,
+                    close: close,
                     high: row.max,
                     low: row.min,
                     volume: row.Trading_Volume,
-                    changePct: row.spread
+                    changePct: changePct
                 }
             })
         }
@@ -3405,14 +3810,161 @@
         var CHART_DOWN_COLOR = '#3fb950'
         var CHART_LINE_COLOR = '#388bfd'
         var CHART_MA5_COLOR = '#f0883e'
+        var CHART_STRATEGY_BUY_COLOR = '#f85149'
+        var CHART_STRATEGY_SELL_COLOR = '#3fb950'
+        var CHART_LINE_STYLE_DASHED = 2
+
+        function buildStrategyLevelSeriesData(daily30, levelsByDate, key) {
+            var data = []
+            daily30.forEach(function (k) {
+                var lv = levelsByDate[k.date]
+                if (lv && lv[key] != null && !isNaN(lv[key])) {
+                    data.push({ time: k.date, value: lv[key] })
+                }
+            })
+            return data
+        }
+
+        function addStrategyGuideLineSeries(chart, data, color, lineWidth, lineStyle) {
+            if (!data.length) return
+            var series = chart.addLineSeries(Object.assign({
+                color: color,
+                lineWidth: lineWidth,
+                lineStyle: lineStyle
+            }, SERIES_LABEL_OPTS))
+            series.setData(data)
+        }
+
+        function addStrategyGuideLines(chart, daily30, levelsByDate, compact) {
+            var lw = compact ? 1 : 1.5
+            addStrategyGuideLineSeries(
+                chart,
+                buildStrategyLevelSeriesData(daily30, levelsByDate, 'buy'),
+                CHART_STRATEGY_BUY_COLOR,
+                lw,
+                CHART_LINE_STYLE_DASHED
+            )
+            addStrategyGuideLineSeries(
+                chart,
+                buildStrategyLevelSeriesData(daily30, levelsByDate, 'sell'),
+                CHART_STRATEGY_SELL_COLOR,
+                lw,
+                CHART_LINE_STYLE_DASHED
+            )
+        }
+
+        function isDailyLineChartMode(mode) {
+            return mode === 'day30' || mode === 'day90' || mode === 'day180' || mode === 'year1'
+        }
+
+        function isYearMaChartMode(mode) {
+            return mode === 'year5d'
+        }
+
+        function getChartSliceDays(mode) {
+            if (mode === 'day90') return CHART_90DAYS
+            if (mode === 'day180') return CHART_180DAYS
+            if (mode === 'year1') return HISTORY_DAYS
+            return CHART_30DAYS
+        }
+
+        function buildFundProductMeta(data) {
+            if (!data) return null
+            return {
+                market: data.market,
+                symbol: data.symbol,
+                secid: data.secid,
+                isMutualFund: !!data.isMutualFund,
+                tencentSymbol: data.tencentSymbol
+            }
+        }
+
+        function buildFundProductMetaFromCache(cardId) {
+            var meta = watchlistMetaCache[cardId] || {}
+            return {
+                market: watchlistMarketCache[cardId] || meta.market || 'cn',
+                symbol: meta.symbol,
+                secid: meta.secid,
+                isMutualFund: !!watchlistMutualFundCache[cardId],
+                tencentSymbol: meta.tencentSymbol
+            }
+        }
+
+        function buildFundProductUrl(meta) {
+            if (!meta) return null
+            if (meta.market === 'tw') {
+                var twCode = normalizeTWSymbol(meta.symbol)
+                if (!twCode) return null
+                return 'https://www.cnyes.com/twstock/' + encodeURIComponent(twCode)
+            }
+            var digits = String(meta.symbol || '').replace(/[^\d]/g, '')
+            if (meta.isMutualFund || isLikelyCNMutualFundCode(digits)) {
+                if (!digits) return null
+                return 'https://fund.eastmoney.com/' + encodeURIComponent(digits) + '.html'
+            }
+            if (meta.secid) {
+                return 'https://quote.eastmoney.com/unify/r/' + encodeURIComponent(meta.secid)
+            }
+            if (meta.tencentSymbol) {
+                return 'https://gu.qq.com/' + encodeURIComponent(meta.tencentSymbol) + '/gp'
+            }
+            if (!digits) return null
+            var prefix = (digits.charAt(0) === '5' || digits.charAt(0) === '6') ? 'sh' : 'sz'
+            return 'https://gu.qq.com/' + prefix + digits + '/gp'
+        }
+
+        function openFundProductPage(meta) {
+            var url = buildFundProductUrl(meta)
+            if (url) window.open(url, '_blank', 'noopener,noreferrer')
+        }
+
+        function hasIntradayChartData(intraday) {
+            return !!(intraday && intraday.points && intraday.points.length)
+        }
+
+        function activateChartTabs(tabsEl, mode) {
+            if (!tabsEl) return
+            tabsEl.querySelectorAll('.chart-tab[data-mode]').forEach(function (t) {
+                t.classList.toggle('active', t.dataset.mode === mode)
+            })
+        }
+
+        function trySwitchToTodayChart(context) {
+            var productMeta = context.productMeta || buildFundProductMeta(context.meta)
+            if (productMeta.isMutualFund || (context.meta && context.meta.isMutualFund)) {
+                openFundProductPage(productMeta)
+                return
+            }
+            if (hasIntradayChartData(context.intraday)) {
+                context.onSuccess(context.intraday)
+                return
+            }
+            showChartLoading(context.chartEl, '加载分时…')
+            fetchIntradayForPayload(context.meta).then(function (fetched) {
+                if (hasIntradayChartData(fetched)) {
+                    context.onSuccess(fetched)
+                } else {
+                    openFundProductPage(productMeta)
+                }
+            })
+        }
 
         function buildChartTabsHtml(mode, cardId) {
             var cls = cardId ? ' chart-tabs-sm' : ''
             var idAttr = cardId ? ' data-card-id="' + escapeHtml(cardId) + '"' : ''
+            var tabs = [
+                { mode: 'day30', label: '30日' },
+                { mode: 'day90', label: '90日' },
+                { mode: 'day180', label: '180日' },
+                { mode: 'year1', label: '年(值)' },
+                { mode: 'year5d', label: '年(MA)' },
+                { mode: 'today', label: '今日' }
+            ]
             return '<div class="chart-tabs' + cls + '"' + idAttr + '>' +
-                '<button type="button" class="chart-tab' + (mode === 'day30' ? ' active' : '') + '" data-mode="day30">近30日</button>' +
-                '<button type="button" class="chart-tab' + (mode === 'year5d' ? ' active' : '') + '" data-mode="year5d">近1年</button>' +
-                '<button type="button" class="chart-tab' + (mode === 'today' ? ' active' : '') + '" data-mode="today">今日</button>' +
+                tabs.map(function (t) {
+                    return '<button type="button" class="chart-tab' + (mode === t.mode ? ' active' : '') +
+                        '" data-mode="' + t.mode + '">' + t.label + '</button>'
+                }).join('') +
             '</div>'
         }
 
@@ -3501,8 +4053,8 @@
             })
 
             var chart = LightweightCharts.createChart(container, {
-                width: container.clientWidth,
-                height: container.clientHeight,
+                width: Math.max(container.clientWidth, 1),
+                height: Math.max(container.clientHeight, 1),
                 layout: {
                     background: { color: '#161b22' },
                     textColor: '#8b949e',
@@ -3584,7 +4136,7 @@
                 var entry = valueByDate[dateStr]
                 var html = ''
 
-                if (mode === 'day30') {
+                if (isDailyLineChartMode(mode)) {
                     if (!entry || entry.close == null || isNaN(entry.close)) {
                         tooltip.style.display = 'none'
                         return
@@ -3593,6 +4145,12 @@
                         '<div class="chart-tooltip-value">收盘价：' + formatPrice(entry.close, market) + '</div>'
                     if (entry.ma != null && !isNaN(entry.ma)) {
                         html += '<div class="chart-tooltip-value">' + escapeHtml(maLabel) + '：' + formatPrice(entry.ma, market) + '</div>'
+                    }
+                    if (entry.buy != null && !isNaN(entry.buy)) {
+                        html += '<div class="chart-tooltip-value chart-tooltip-buy">建议买入：' + formatPrice(entry.buy, market) + '</div>'
+                    }
+                    if (entry.sell != null && !isNaN(entry.sell)) {
+                        html += '<div class="chart-tooltip-value chart-tooltip-sell">建议卖出：' + formatPrice(entry.sell, market) + '</div>'
                     }
                 } else {
                     if (entry == null || isNaN(entry)) {
@@ -3623,7 +4181,7 @@
             var maPeriod = getRefMaDays(market)
             var maLabel = getMaLabel(market)
             var dailyMaByDate = buildDailyMaByDate(klines, currentPrice, market, maPeriod)
-            if (mode === 'year5d') {
+            if (isYearMaChartMode(mode)) {
                 var dailyYear = klines.slice(-HISTORY_DAYS)
                 var aggKlines = aggregateKlinesBy5Days(dailyYear)
                 aggKlines.forEach(function (k) {
@@ -3631,19 +4189,24 @@
                         map[k.date] = dailyMaByDate[k.date]
                     }
                 })
-            } else {
-                var daily30 = klines.slice(-CHART_30DAYS)
+            } else if (isDailyLineChartMode(mode)) {
+                var sliceDays = getChartSliceDays(mode)
+                var dailySlice = klines.slice(-sliceDays)
                 var marketToday = getMarketDateString(market)
                 var livePrice = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
                 var sessionOpen = isMarketOpen(market)
-                daily30.forEach(function (k) {
+                var levelsByDate = buildStrategyLevelsByDate(klines, market, currentPrice)
+                dailySlice.forEach(function (k) {
                     var close = k.close
                     if (sessionOpen && livePrice != null && k.date === marketToday) {
                         close = livePrice
                     }
+                    var lv = levelsByDate[k.date] || {}
                     map[k.date] = {
                         close: close,
-                        ma: dailyMaByDate[k.date] != null ? dailyMaByDate[k.date] : null
+                        ma: dailyMaByDate[k.date] != null ? dailyMaByDate[k.date] : null,
+                        buy: lv.buy,
+                        sell: lv.sell
                     }
                 })
             }
@@ -3652,11 +4215,87 @@
         }
 
         /* ===== 图表 ===== */
+        var chartContainerObserver = null
+
         function destroyChart(chart) {
             if (chart) {
                 try { chart.remove() } catch (e) { /* ignore */ }
             }
         }
+
+        function unobserveChartContainer(container) {
+            if (!container || !chartContainerObserver || !container.dataset.chartObserved) return
+            chartContainerObserver.unobserve(container)
+            delete container.dataset.chartObserved
+        }
+
+        function whenChartContainerReady(container, fn, attempt) {
+            if (!container || !container.isConnected) return
+            attempt = attempt || 0
+            if (container.clientWidth > 0 && container.clientHeight > 0) {
+                fn()
+                return
+            }
+            if (attempt >= 24) return
+            requestAnimationFrame(function () {
+                whenChartContainerReady(container, fn, attempt + 1)
+            })
+        }
+
+        function refreshChartLayout(container) {
+            var chart = container && container._chartInstance
+            if (!chart || !container.isConnected) return
+            var width = container.clientWidth
+            var height = container.clientHeight
+            if (width <= 0 || height <= 0) {
+                whenChartContainerReady(container, function () {
+                    refreshChartLayout(container)
+                })
+                return
+            }
+            try {
+                chart.applyOptions({ width: width, height: height })
+            } catch (e) { /* ignore */ }
+            if (container._chartMode && container._chartMode !== 'today') {
+                try { chart.timeScale().fitContent() } catch (e) { /* ignore */ }
+            }
+        }
+
+        function initChartContainerObserver() {
+            if (chartContainerObserver || !window.ResizeObserver) return
+            chartContainerObserver = new ResizeObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    refreshChartLayout(entry.target)
+                })
+            })
+        }
+
+        function observeChartContainer(container) {
+            if (!container) return
+            initChartContainerObserver()
+            whenChartContainerReady(container, function () {
+                refreshChartLayout(container)
+                if (chartContainerObserver && !container.dataset.chartObserved) {
+                    container.dataset.chartObserved = '1'
+                    chartContainerObserver.observe(container)
+                }
+            })
+        }
+
+        function refreshAllChartLayouts() {
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    observeWatchlistCards()
+                    document.querySelectorAll('.chart-container, .mini-chart').forEach(function (el) {
+                        refreshChartLayout(el)
+                    })
+                })
+            })
+        }
+
+        var scheduleChartLayoutRefresh = debounce(function () {
+            refreshAllChartLayouts()
+        }, 100)
 
         function renderChart(container, klines, mode, opts) {
             opts = opts || {}
@@ -3664,11 +4303,19 @@
             var disableWheel = !!opts.disableWheel
             var market = opts.market || 'cn'
 
+            unobserveChartContainer(container)
             destroyChart(container._chartInstance)
             container.innerHTML = ''
+            delete container._chartInstance
+            delete container._chartMode
 
             if (mode === 'today') {
-                return renderTodayChart(container, opts.intraday, market, opts)
+                var todayChart = renderTodayChart(container, opts.intraday, market, opts)
+                if (todayChart) {
+                    container._chartMode = 'today'
+                    observeChartContainer(container)
+                }
+                return todayChart
             }
 
             if (!klines || klines.length === 0) return null
@@ -3696,8 +4343,8 @@
             }
 
             var chart = LightweightCharts.createChart(container, {
-                width: container.clientWidth,
-                height: container.clientHeight,
+                width: Math.max(container.clientWidth, 1),
+                height: Math.max(container.clientHeight, 1),
                 layout: {
                     background: { color: '#161b22' },
                     textColor: '#8b949e',
@@ -3727,7 +4374,7 @@
             var currentPrice = opts.currentPrice
             var valueByDate = buildValueByDate(mode, klines, currentPrice, market)
 
-            if (mode === 'year5d') {
+            if (isYearMaChartMode(mode)) {
                 var dailyYear = klines.slice(-HISTORY_DAYS)
                 var aggKlines = aggregateKlinesBy5Days(dailyYear)
 
@@ -3742,8 +4389,8 @@
                 candleSeries.setData(aggKlines.map(function (k) {
                     return { time: k.date, open: k.open, high: k.high, low: k.low, close: k.close }
                 }))
-            } else {
-                var daily30 = klines.slice(-CHART_30DAYS)
+            } else if (isDailyLineChartMode(mode)) {
+                var dailySlice = klines.slice(-getChartSliceDays(mode))
                 var maPeriod = getRefMaDays(market)
                 var dailyMaByDate = buildDailyMaByDate(klines, currentPrice, market, maPeriod)
 
@@ -3751,7 +4398,7 @@
                     color: CHART_LINE_COLOR,
                     lineWidth: compact ? 1.5 : 2
                 }, SERIES_LABEL_OPTS))
-                lineSeries.setData(daily30.map(function (k) {
+                lineSeries.setData(dailySlice.map(function (k) {
                     return { time: k.date, value: k.close }
                 }))
 
@@ -3760,19 +4407,24 @@
                     lineWidth: compact ? 1.5 : 2
                 }, SERIES_LABEL_OPTS))
                 var maData = []
-                for (var d = 0; d < daily30.length; d++) {
-                    var dateKey = daily30[d].date
+                for (var d = 0; d < dailySlice.length; d++) {
+                    var dateKey = dailySlice[d].date
                     if (dailyMaByDate[dateKey] != null) {
                         maData.push({ time: dateKey, value: dailyMaByDate[dateKey] })
                     }
                 }
                 maLine.setData(maData)
+
+                var levelsByDate = buildStrategyLevelsByDate(klines, market, currentPrice)
+                addStrategyGuideLines(chart, dailySlice, levelsByDate, compact)
             }
 
             chart.timeScale().fitContent()
             var maLabel = valueByDate._maLabel || getMaLabel(market)
             attachChartTooltip(chart, container, mode, valueByDate, market, maLabel)
             container._chartInstance = chart
+            container._chartMode = mode
+            observeChartContainer(container)
             return chart
         }
 
@@ -3805,18 +4457,6 @@
                 detailChart = null
             }
             detailPanel.innerHTML = '<div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>'
-        }
-
-        function buildDetailFlowHtml(data) {
-            if (!data.flow || !data.flow.length) return ''
-            var rows = data.flow.slice(-5).reverse()
-            var itemsHtml = rows.map(function (f) {
-                var cls = f.mainNet >= 0 ? 'up' : 'down'
-                return '<div class="flow-item"><span>' + escapeHtml(f.date) + '</span>' +
-                    '<span class="stat-value ' + cls + '">' + formatFlow(f.mainNet) + '</span></div>'
-            }).join('')
-            return '<div class="flow-section"><h3>' + escapeHtml(data.flowLabel) + '</h3><div class="flow-list">' +
-                itemsHtml + '</div></div>'
         }
 
         function buildCardFlowHtml(data) {
@@ -3866,7 +4506,8 @@
                 market: data.market,
                 name: data.name || item.name,
                 symbol: data.symbol || item.symbol,
-                summary: summary
+                summary: summary,
+                price: data.price
             }
             var cls = sim.returnPct >= 0 ? 'up' : 'down'
             var maxEqCls = sim.maxProfitPoint.returnPct >= 0 ? 'up' : 'down'
@@ -3886,7 +4527,7 @@
                             '<div class="sim-popup-hint">模拟时间段：' + escapeHtml(sim.startDate) + ' ~ ' + escapeHtml(sim.endDate) + '</div>' +
                         '</div>' +
                     '</span>' +
-                    '<button type="button" class="sim-detail-btn btn-ghost" data-item-id="' + escapeHtml(item.id) + '">操作详情</button>' +
+                    '<button type="button" class="sim-detail-btn btn-ghost" data-item-id="' + escapeHtml(item.id) + '">操作记录</button>' +
                 '</div>' +
             '</div>'
         }
@@ -3896,42 +4537,85 @@
             return Number(valuePct).toFixed(2) + '%'
         }
 
+        function formatSimOperationLabel(op, index) {
+            if (op.action === 'holding') return '持仓中'
+            if (op.action === 'buy') {
+                if (index === 0 || (op.note && op.note.indexOf('首日') >= 0)) return '建仓'
+                return '买入信号'
+            }
+            var note = op.note || ''
+            if (note.indexOf('止损') >= 0) return '止损'
+            if (note.indexOf('止盈') >= 0) return '止盈'
+            return '卖出信号'
+        }
+
+        function formatSimOperationClass(op, index) {
+            var label = formatSimOperationLabel(op, index)
+            if (label === '持仓中' || label === '建仓') return 'action-hold'
+            if (label === '买入信号') return 'action-buy'
+            if (label === '止盈') return 'action-trail'
+            if (label === '止损') return 'action-stop'
+            return 'action-sell'
+        }
+
+        function appendSimDetailRow(op, index, market, prevPrice) {
+            var actionCls = formatSimOperationClass(op, index)
+            var actionLabel = formatSimOperationLabel(op, index)
+            var valueCls = op.valuePct >= 100 ? 'up' : 'down'
+            var priceDeltaHtml = ''
+            if (prevPrice != null && prevPrice > 0) {
+                var priceChg = ((op.price - prevPrice) / prevPrice) * 100
+                var deltaCls
+                if (op.action === 'buy') {
+                    deltaCls = priceChg >= 0 ? 'down' : 'up'
+                } else {
+                    deltaCls = priceChg >= 0 ? 'up' : 'down'
+                }
+                priceDeltaHtml = '<span class="sim-price-delta ' + deltaCls + '">(' + formatPct(priceChg) + ')</span>'
+            } else {
+                priceDeltaHtml = '<span class="sim-price-delta muted">(--)</span>'
+            }
+            return {
+                html: '<tr>' +
+                    '<td>' + escapeHtml(op.date) + '</td>' +
+                    '<td class="' + actionCls + '">' + actionLabel + '</td>' +
+                    '<td>' + formatPrice(op.price, market) + priceDeltaHtml + '</td>' +
+                    '<td class="' + valueCls + '">' + formatSimValuePct(op.valuePct) + '</td>' +
+                '</tr>',
+                prevPrice: op.price
+            }
+        }
+
         function buildSimDetailTableHtml(cached) {
             var sim = cached.sim
             var market = cached.market
             var ops = sim.operations || []
-            if (!ops.length) {
+            if (!ops.length && !sim.holdingAtEnd) {
                 return '<div class="sim-detail-empty">模拟期内无买卖操作</div>'
             }
             var rows = ''
             var prevPrice = null
-            ops.forEach(function (op) {
-                var actionCls = op.action === 'buy' ? 'action-buy' : 'action-sell'
-                var actionLabel = op.action === 'buy' ? '买入' : '卖出'
-                var valueCls = op.valuePct >= 100 ? 'up' : 'down'
-                var priceDeltaHtml = ''
-                if (prevPrice != null && prevPrice > 0) {
-                    var priceChg = ((op.price - prevPrice) / prevPrice) * 100
-                    var deltaCls
-                    if (op.action === 'buy') {
-                        deltaCls = priceChg >= 0 ? 'down' : 'up'
-                    } else {
-                        deltaCls = priceChg >= 0 ? 'up' : 'down'
-                    }
-                    priceDeltaHtml = '<span class="sim-price-delta ' + deltaCls + '">(' + formatPct(priceChg) + ')</span>'
-                } else {
-                    priceDeltaHtml = '<span class="sim-price-delta muted">(--)</span>'
-                }
-                prevPrice = op.price
-                rows += '<tr>' +
-                    '<td>' + escapeHtml(op.date) + '</td>' +
-                    '<td class="' + actionCls + '">' + actionLabel + (op.note ? ' · ' + escapeHtml(op.note) : '') + '</td>' +
-                    '<td>' + formatPrice(op.price, market) + priceDeltaHtml + '</td>' +
-                    '<td class="' + valueCls + '">' + formatSimValuePct(op.valuePct) + '</td>' +
-                '</tr>'
+            ops.forEach(function (op, index) {
+                var row = appendSimDetailRow(op, index, market, prevPrice)
+                rows += row.html
+                prevPrice = row.prevPrice
             })
+            if (sim.holdingAtEnd) {
+                var markPrice = cached.price != null && !isNaN(cached.price) ? cached.price : sim.holdPrice
+                var holdValuePct = sim.holdValuePct
+                if (markPrice != null && sim.holdPrice > 0 && markPrice !== sim.holdPrice) {
+                    holdValuePct = sim.holdValuePct * (markPrice / sim.holdPrice)
+                }
+                var holdRow = appendSimDetailRow({
+                    date: formatDateISO(new Date()),
+                    action: 'holding',
+                    price: markPrice,
+                    valuePct: holdValuePct
+                }, ops.length, market, prevPrice)
+                rows += holdRow.html
+            }
             return '<table class="sim-detail-table">' +
-                '<thead><tr><th>日期</th><th>操作</th><th>成交价</th><th>账户净值</th></tr></thead>' +
+                '<thead><tr><th>交易日期</th><th>操作</th><th>成交价</th><th>账户净值</th></tr></thead>' +
                 '<tbody>' + rows + '</tbody>' +
             '</table>'
         }
@@ -3946,9 +4630,8 @@
 
             var sim = cached.sim
             var summary = cached.summary || getStrategySummaryText(cached.market)
-            titleEl.textContent = (cached.name || cached.symbol) + ' · 模拟操作详情'
-            hintEl.textContent = summary + ' · ' + sim.startDate + ' ~ ' + sim.endDate +
-                ' · 账户净值以期初 100% 为基准'
+            titleEl.textContent = (cached.name || cached.symbol) + ' · 模拟操作记录'
+            hintEl.textContent = summary
             bodyEl.innerHTML = buildSimDetailTableHtml(cached)
             overlay.classList.add('show')
         }
@@ -3959,13 +4642,16 @@
         }
 
         function bindSimDetailDialog() {
-            watchlistContainer.addEventListener('click', function (e) {
+            function onSimDetailClick(e) {
                 var btn = e.target.closest('.sim-detail-btn')
                 if (!btn) return
                 e.preventDefault()
                 e.stopPropagation()
                 showSimDetailDialog(btn.dataset.itemId)
-            })
+            }
+
+            watchlistContainer.addEventListener('click', onSimDetailClick)
+            if (detailPanel) detailPanel.addEventListener('click', onSimDetailClick)
 
             var overlay = document.getElementById('simDetailOverlay')
             var closeBtn = document.getElementById('simDetailClose')
@@ -3997,7 +4683,8 @@
             enableTrailProfit: '启用移动止盈',
             trailProfitPct: '移动止盈触发线 (%)',
             trailMa: '止盈均线 MA',
-            confirmDays: '确认天数'
+            confirmDays: '确认天数',
+            tradeDelayDays: '交易延迟 (日)'
         }
 
         var STRATEGY_SHARED_HINTS = {
@@ -4007,11 +4694,13 @@
             stopLossPct: '持仓亏损达此比例时触发卖出',
             trailProfitPct: '浮盈超过此值后，卖出参考切换为止盈均线',
             trailMa: '移动止盈触发后改用的均线天数',
-            confirmDays: '信号条件连续满足该天数后才执行买卖'
+            confirmDays: '信号条件连续满足该天数后，于收盘确认信号',
+            tradeDelayDays: '信号确认后延迟几个交易日成交；0 表示当日收盘成交'
         }
 
         var STRATEGY_PANEL_DEFS = {
             tw: [
+                { type: 'field', key: 'tradeDelayDays', label: STRATEGY_SHARED_LABELS.tradeDelayDays, step: '1', hint: STRATEGY_SHARED_HINTS.tradeDelayDays },
                 { type: 'field', key: 'shortMaDays', label: STRATEGY_SHARED_LABELS.primaryMa, step: '1', hint: STRATEGY_SHARED_HINTS.primaryMa },
                 { type: 'field', key: 'buyThreshold', label: STRATEGY_SHARED_LABELS.buyThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.buyThreshold },
                 { type: 'field', key: 'sellThreshold', label: STRATEGY_SHARED_LABELS.sellThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.sellThreshold },
@@ -4035,6 +4724,7 @@
                 }
             ],
             cn: [
+                { type: 'field', key: 'tradeDelayDays', label: STRATEGY_SHARED_LABELS.tradeDelayDays, step: '1', hint: STRATEGY_SHARED_HINTS.tradeDelayDays },
                 { type: 'field', key: 'baseMaDays', label: STRATEGY_SHARED_LABELS.primaryMa, step: '1', hint: STRATEGY_SHARED_HINTS.primaryMa },
                 { type: 'field', key: 'buyThreshold', label: STRATEGY_SHARED_LABELS.buyThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.buyThreshold },
                 { type: 'field', key: 'sellThreshold', label: STRATEGY_SHARED_LABELS.sellThreshold, step: '0.001', hint: STRATEGY_SHARED_HINTS.sellThreshold },
@@ -4060,8 +4750,8 @@
         }
 
         var STRATEGY_MARKET_NOTES = {
-            tw: '台股 ETF：周一至周五 9:00–13:30，信号与成交均为当日收盘价；款券 T+2 交割。',
-            cn: '大陆场外 C 类联接：交易日 15:00 净值成交；买入 T+1 确认份额，卖出按当日净值。'
+            tw: '台股 ETF：每日收盘后确认买入或卖出信号（互斥）；交易延迟 0 日即当日收盘成交。',
+            cn: '大陆场外 C 类联接：每日收盘后确认买入或卖出信号（互斥）；默认交易延迟 1 日（T+1）按收盘价成交。'
         }
 
         var strategyDialogMarket = 'cn'
@@ -4227,31 +4917,32 @@
             }
         }
 
-        function bindHoldPositionCheckbox() {
+        function bindHoldPositionControls() {
             document.addEventListener('change', function (e) {
                 var input = e.target.closest('.hold-position-input')
-                if (!input) return
-                var itemId = input.dataset.itemId
-                var cardEl = input.closest('.card')
-
-                setHoldPosition(itemId, input.checked)
-
-                if (cardEl) {
-                    var list = getWatchlist()
-                    var item = null
-                    for (var i = 0; i < list.length; i++) {
-                        if (list[i].id === itemId) {
-                            item = list[i]
-                            break
+                if (input) {
+                    var itemId = input.dataset.itemId
+                    var market = input.dataset.market
+                    var costPrice = null
+                    if (input.checked) {
+                        var holdPos = getHoldPosition(itemId)
+                        costPrice = holdPos.costPrice
+                        if (costPrice == null) {
+                            costPrice = getCurrentPriceForItem(itemId)
                         }
                     }
-                    if (item) {
-                        var data = buildWatchlistDataFromCache(item)
-                        if (data) updateWatchlistCardSilent(cardEl, item, data)
-                    }
-                } else if (currentDetail && (currentDetail.market + '-' + currentDetail.symbol) === itemId) {
-                    renderDetailPanel(currentDetail)
+                    setHoldPosition(itemId, input.checked, costPrice)
+                    refreshHoldPositionView(itemId)
+                    return
                 }
+
+                var costInput = e.target.closest('.hold-cost-input')
+                if (!costInput || costInput.disabled) return
+                var costItemId = costInput.dataset.itemId
+                var costMarket = costInput.dataset.market
+                var parsedCost = parseHoldCostInput(costInput.value, costMarket)
+                setHoldPositionCost(costItemId, parsedCost)
+                refreshHoldPositionView(costItemId)
             })
         }
 
@@ -4302,39 +4993,44 @@
             var diffPct = calcDiffPct(data.price, maVal)
             var changeCls = (data.changePct || 0) >= 0 ? 'up' : 'down'
 
-            var flowHtml = buildDetailFlowHtml(data)
             var detailItemId = data.market + '-' + data.symbol
+            var detailItem = {
+                id: detailItemId,
+                market: data.market,
+                symbol: data.symbol,
+                name: data.name
+            }
+            var flowHtml = buildCardFlowHtml(data)
+            var actualHtml = buildCardActualHtml(data)
+            var simHtml = buildCardSimHtml(detailItem, data)
             var holdPos = getHoldPosition(detailItemId)
             var advice = getTradeAdvice(data.klines, data.price, data.market, detailItemId)
             var adviceHtml = buildSignalAdviceHtml(advice)
-            var holdCheckHtml = buildHoldPositionCheckboxHtml(detailItemId, data.market, holdPos.held)
+            var holdRowHtml = buildHoldPositionRowHtml(detailItemId, data.market, holdPos, adviceHtml, 'detail-hold-row')
 
             detailPanel.innerHTML =
-                '<div class="detail-name">' + holdCheckHtml + escapeHtml(data.name) + '</div>' +
+                '<div class="detail-name">' + buildFundNameHtml(data.name) + '</div>' +
                 '<div class="detail-meta-row">' +
                     '<div class="detail-meta"><span class="market-badge">' + MARKET_LABELS[data.market] + '</span> ' + escapeHtml(data.symbol) + '</div>' +
-                    adviceHtml +
                 '</div>' +
+                holdRowHtml +
                 '<div class="card-stats">' +
                     '<div class="card-stat"><div class="label">当前价格</div><div class="value ' + changeCls + '">' + formatPrice(data.price, data.market) + '</div></div>' +
                     '<div class="card-stat"><div class="label">今日涨跌</div><div class="value ' + changeCls + '">' + formatPct(data.changePct) + '</div></div>' +
                     '<div class="card-stat"><div class="label">' + escapeHtml(maLabel) + '</div><div class="value">' + formatPrice(maVal, data.market) + '</div></div>' +
                     '<div class="card-stat"><div class="label">相对' + escapeHtml(maLabel) + '</div><div class="value ' + (diffPct >= 0 ? 'up' : 'down') + '">' + formatPct(diffPct) + '</div></div>' +
                 '</div>' +
-                '<div class="chart-container" id="detailChart"></div>' +
+                '<div class="card-chart-wrap">' +
+                    buildChartTabsHtml(detailChartMode) +
+                    '<div class="chart-container" id="detailChart"></div>' +
+                '</div>' +
                 flowHtml +
+                actualHtml +
+                simHtml +
                 '<button class="btn btn-success" id="addWatchBtn">加入关注</button>'
 
-            var chartEl = document.getElementById('detailChart')
-            var chartOpts = {
-                disableWheel: true,
-                market: data.market,
-                currentPrice: data.price,
-                intraday: data.intraday,
-                isMutualFund: !!data.isMutualFund
-            }
             detailChartMode = 'day30'
-            detailChart = renderChart(chartEl, data.klines, 'day30', chartOpts)
+            mountDetailChart('day30')
 
             document.getElementById('addWatchBtn').addEventListener('click', function () {
                 var item = {
@@ -4344,7 +5040,9 @@
                     name: data.name,
                     addedAt: Date.now()
                 }
+                var prevCount = getWatchlist().length
                 if (addToWatchlist(item)) {
+                    syncSidebarCollapseByWatchlist(prevCount, prevCount + 1)
                     appendWatchlistCard(item)
                     resetSearchPanel()
                 } else {
@@ -4361,13 +5059,77 @@
             }
         }
 
-        async function handleSearch(e) {
-            e.preventDefault()
-            var market = marketSelect.value
-            var symbol = symbolInput.value.trim()
+        function mountDetailChart(mode) {
+            if (!currentDetail) return
+            var chartEl = document.getElementById('detailChart')
+            if (!chartEl) return
+            var chartOpts = {
+                disableWheel: true,
+                market: currentDetail.market,
+                currentPrice: currentDetail.price,
+                intraday: currentDetail.intraday,
+                isMutualFund: !!currentDetail.isMutualFund,
+                productMeta: buildFundProductMeta(currentDetail)
+            }
+            detailChart = renderChart(chartEl, currentDetail.klines, mode, chartOpts)
+        }
+
+        function handleDetailChartTabClick(mode) {
+            if (!currentDetail || mode === detailChartMode) return
+            var tabsEl = document.getElementById('detailChartTabs')
+            if (!tabsEl) {
+                tabsEl = document.querySelector('#detailPanel .chart-tabs')
+            }
+            var chartEl = document.getElementById('detailChart')
+            if (!chartEl) return
+
+            if (mode === 'today') {
+                trySwitchToTodayChart({
+                    meta: currentDetail,
+                    intraday: currentDetail.intraday,
+                    chartEl: chartEl,
+                    productMeta: buildFundProductMeta(currentDetail),
+                    onSuccess: function (intraday) {
+                        currentDetail.intraday = intraday
+                        detailChartMode = mode
+                        activateChartTabs(tabsEl, mode)
+                        mountDetailChart(mode)
+                    }
+                })
+                return
+            }
+
+            detailChartMode = mode
+            activateChartTabs(tabsEl, mode)
+            mountDetailChart(mode)
+        }
+
+        var detailChartTabBound = false
+        function bindDetailChartTabDelegation() {
+            if (detailChartTabBound) return
+            detailChartTabBound = true
+            detailPanel.addEventListener('click', function (e) {
+                var tab = e.target.closest('#detailPanel .chart-tabs .chart-tab[data-mode]')
+                if (!tab) return
+                handleDetailChartTabClick(tab.dataset.mode)
+            })
+        }
+
+        function pickRandomSymbolForMarket(market) {
+            var pool = RANDOM_SYMBOL_POOLS[market]
+            if (!pool || !pool.length) return ''
+            return pool[Math.floor(Math.random() * pool.length)]
+        }
+
+        function setSearchControlsDisabled(disabled) {
+            searchBtn.disabled = disabled
+            if (randomSearchBtn) randomSearchBtn.disabled = disabled
+        }
+
+        async function performSearch(market, symbol) {
             if (!symbol) return
 
-            searchBtn.disabled = true
+            setSearchControlsDisabled(true)
             showDetailLoading(market, symbol)
 
             try {
@@ -4377,8 +5139,21 @@
             } catch (err) {
                 showDetailError(err.message || '加载失败，请检查网络后重试')
             } finally {
-                searchBtn.disabled = false
+                setSearchControlsDisabled(false)
             }
+        }
+
+        async function handleSearch(e) {
+            e.preventDefault()
+            await performSearch(marketSelect.value, symbolInput.value.trim())
+        }
+
+        function handleRandomSearch() {
+            var market = marketSelect.value
+            var symbol = pickRandomSymbolForMarket(market)
+            if (!symbol) return
+            symbolInput.value = symbol
+            performSearch(market, symbol)
         }
 
         /* ===== UI：关注卡片 ===== */
@@ -4388,7 +5163,24 @@
                 '" data-name="' + escapeHtml(label) + '" title="移除" aria-label="移除">✕</button>'
         }
 
+        var CARD_SORT_UP_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>'
+        var CARD_SORT_DOWN_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>'
+
+        function buildCardSortBtns(item) {
+            var index = getWatchlistItemIndex(item.id)
+            var total = getWatchlist().length
+            var upDisabled = index <= 0 ? ' disabled' : ''
+            var downDisabled = index < 0 || index >= total - 1 ? ' disabled' : ''
+            return '<div class="card-sort-btns">' +
+                '<button type="button" class="card-sort-btn card-sort-up" data-id="' + escapeHtml(item.id) +
+                    '" data-dir="up" title="上移" aria-label="上移"' + upDisabled + '>' + CARD_SORT_UP_SVG + '</button>' +
+                '<button type="button" class="card-sort-btn card-sort-down" data-id="' + escapeHtml(item.id) +
+                    '" data-dir="down" title="下移" aria-label="下移"' + downDisabled + '>' + CARD_SORT_DOWN_SVG + '</button>' +
+            '</div>'
+        }
+
         var removeDelegationBound = false
+        var sortDelegationBound = false
         var chartTabDelegationBound = false
         var confirmDialogOpen = false
 
@@ -4457,10 +5249,11 @@
         function buildWatchlistCardLeftInner(item, data) {
             if (data.error) {
                 return '<div class="card-header">' +
-                    '<div class="card-header-main">' +
-                        '<div class="card-title">' + escapeHtml(item.name) + '</div>' +
-                        '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
-                    '</div></div>' +
+                        '<div class="card-title">' + buildFundNameHtml(item.name) + '</div>' +
+                        '<div class="card-meta-row">' +
+                            '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
+                        '</div>' +
+                    '</div>' +
                     '<div class="card-error">加载失败：' + escapeHtml(data.error) + '</div>'
             }
 
@@ -4476,14 +5269,14 @@
             var holdPos = getHoldPosition(item.id)
             var advice = getTradeAdvice(data.klines, data.price, data.market, item.id)
             var adviceHtml = buildSignalAdviceHtml(advice)
-            var holdCheckHtml = buildHoldPositionCheckboxHtml(item.id, item.market, holdPos.held)
+            var holdRowHtml = buildHoldPositionRowHtml(item.id, item.market, holdPos, adviceHtml)
 
             return '<div class="card-header">' +
-                    '<div class="card-header-main">' +
-                        '<div class="card-title">' + holdCheckHtml + escapeHtml(data.name || item.name) + '</div>' +
+                    '<div class="card-title">' + buildFundNameHtml(data.name || item.name) + '</div>' +
+                    '<div class="card-meta-row">' +
                         '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
                     '</div>' +
-                    adviceHtml +
+                    holdRowHtml +
                 '</div>' +
                 '<div class="card-stats">' +
                     '<div class="card-stat"><div class="label">当前价格</div><div class="value ' + changeCls + '">' + formatPrice(data.price, item.market) + '</div></div>' +
@@ -4501,6 +5294,7 @@
 
             if (data.error) {
                 return '<div class="card" id="' + cardId + '">' +
+                    buildCardSortBtns(item) +
                     buildRemoveBtn(item) +
                     '<div class="card-body"><div class="card-left">' + buildWatchlistCardLeftInner(item, data) + '</div></div></div>'
             }
@@ -4508,6 +5302,7 @@
             var chartMode = cardChartModes[item.id] || 'day30'
 
             return '<div class="card" id="' + cardId + '">' +
+                buildCardSortBtns(item) +
                 buildRemoveBtn(item) +
                 '<div class="card-body">' +
                 '<div class="card-left">' + buildWatchlistCardLeftInner(item, data) + '</div>' +
@@ -4542,12 +5337,15 @@
             var mode = cardChartModes[item.id] || 'day30'
             var miniEl = document.getElementById('mini-' + item.id)
             if (miniEl) {
-                miniCharts[item.id] = renderChart(miniEl, data.klines, mode, {
+                var chartOpts = {
                     compact: true,
                     market: item.market,
                     currentPrice: data.price,
                     intraday: data.intraday,
                     isMutualFund: !!data.isMutualFund
+                }
+                whenChartContainerReady(miniEl, function () {
+                    miniCharts[item.id] = renderChart(miniEl, data.klines, mode, chartOpts)
                 })
             }
         }
@@ -4561,20 +5359,45 @@
             if (newCard) updateCardLayout(newCard)
         }
 
-        var CARD_LAYOUT_BREAKPOINT = 600
+        var CARD_LAYOUT_BREAKPOINT = 680
         var cardLayoutObserver = null
+        var cardRightLayoutObserver = null
+
+        function shouldStackCardLayout(card) {
+            var w = card.clientWidth
+            if (w <= 0) return true
+            return w < CARD_LAYOUT_BREAKPOINT
+        }
 
         function updateCardLayout(card) {
             if (!card || !card.classList.contains('card')) return
             if (!card.querySelector('.card-body')) return
-            card.classList.toggle('card-narrow', card.clientWidth < CARD_LAYOUT_BREAKPOINT)
+            card.classList.toggle('card-narrow', shouldStackCardLayout(card))
             var cardId = card.id.replace(/^card-/, '')
             if (!cardId) return
             var miniEl = document.getElementById('mini-' + cardId)
-            var chart = miniCharts[cardId]
-            if (miniEl && chart && chart.applyOptions) {
-                chart.applyOptions({ width: miniEl.clientWidth })
-            }
+            if (!miniEl) return
+            whenChartContainerReady(miniEl, function () {
+                refreshChartLayout(miniEl)
+            })
+        }
+
+        function initCardRightLayoutObserver() {
+            if (cardRightLayoutObserver || !window.ResizeObserver) return
+            cardRightLayoutObserver = new ResizeObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    var right = entry.target
+                    var card = right.closest('.card')
+                    if (!card) return
+                    var cardId = card.id.replace(/^card-/, '')
+                    if (!cardId) return
+                    var miniEl = document.getElementById('mini-' + cardId)
+                    if (!miniEl) return
+                    requestAnimationFrame(function () {
+                        refreshChartLayout(miniEl)
+                    })
+                })
+            })
         }
 
         function initCardLayoutObserver() {
@@ -4588,11 +5411,17 @@
 
         function observeWatchlistCards() {
             initCardLayoutObserver()
+            initCardRightLayoutObserver()
             watchlistContainer.querySelectorAll('.card').forEach(function (card) {
                 updateCardLayout(card)
                 if (cardLayoutObserver && !card.dataset.layoutObserved) {
                     card.dataset.layoutObserved = '1'
                     cardLayoutObserver.observe(card)
+                }
+                var right = card.querySelector('.card-right')
+                if (right && cardRightLayoutObserver && !right.dataset.layoutObserved) {
+                    right.dataset.layoutObserved = '1'
+                    cardRightLayoutObserver.observe(right)
                 }
             })
         }
@@ -4721,9 +5550,11 @@
         }
 
         function removeWatchlistCardFromUi(id) {
+            var prevCount = getWatchlist().length
             removeFromWatchlist(id)
             clearWatchlistItemCache(id)
             var list = getWatchlist()
+            syncSidebarCollapseByWatchlist(prevCount, list.length)
             if (list.length === 0) {
                 clearWatchlistCharts()
                 watchlistContainer.innerHTML = getWatchlistEmptyHtml()
@@ -4776,6 +5607,7 @@
                 }
             })
 
+            reorderWatchlistDom(list)
             return cardsEl
         }
 
@@ -4796,7 +5628,9 @@
                 clearWatchlistCharts()
                 watchlistContainer.innerHTML = '<div class="cards">' +
                     list.map(function (item) {
-                        return '<div class="card" id="card-' + item.id + '"><div class="card-loading">' + buildLoadingHtml(formatLoadingLabel(item.market, item.symbol)) + '</div></div>'
+                        return '<div class="card" id="card-' + item.id + '">' +
+                            buildRemoveBtn(item) +
+                            '<div class="card-loading">' + buildLoadingHtml(formatLoadingLabel(item.market, item.symbol)) + '</div></div>'
                     }).join('') +
                 '</div>'
             }
@@ -4817,6 +5651,7 @@
             }
 
             observeWatchlistCards()
+            updateAllCardSortBtnStates()
         }
 
         function bindChartTabDelegation() {
@@ -4829,31 +5664,57 @@
                 if (!tabsEl) return
                 var cardId = tabsEl.dataset.cardId
                 var mode = tab.dataset.mode
-                cardChartModes[cardId] = mode
-                tabsEl.querySelectorAll('.chart-tab[data-mode]').forEach(function (t) {
-                    t.classList.toggle('active', t.dataset.mode === mode)
-                })
+                if (mode === (cardChartModes[cardId] || 'day30')) return
                 var miniEl = document.getElementById('mini-' + cardId)
                 if (!miniEl) return
                 var meta = watchlistMetaCache[cardId] || {}
                 var chartOpts = {
                     compact: true,
-                    market: watchlistMarketCache[cardId] || 'cn',
+                    market: watchlistMarketCache[cardId] || meta.market || 'cn',
                     currentPrice: watchlistPriceCache[cardId],
                     intraday: watchlistIntradayCache[cardId],
-                    isMutualFund: !!watchlistMutualFundCache[cardId]
+                    isMutualFund: !!watchlistMutualFundCache[cardId],
+                    productMeta: buildFundProductMetaFromCache(cardId)
                 }
-                if (mode === 'today' && !chartOpts.isMutualFund &&
-                    (!chartOpts.intraday || !chartOpts.intraday.points || !chartOpts.intraday.points.length)) {
-                    showChartLoading(miniEl, '加载分时…')
-                    fetchIntradayForPayload(meta).then(function (intraday) {
-                        watchlistIntradayCache[cardId] = intraday
-                        chartOpts.intraday = intraday
-                        miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+
+                if (mode === 'today') {
+                    trySwitchToTodayChart({
+                        meta: Object.assign({}, meta, {
+                            market: chartOpts.market,
+                            isMutualFund: chartOpts.isMutualFund
+                        }),
+                        intraday: chartOpts.intraday,
+                        chartEl: miniEl,
+                        productMeta: chartOpts.productMeta,
+                        onSuccess: function (intraday) {
+                            cardChartModes[cardId] = mode
+                            activateChartTabs(tabsEl, mode)
+                            watchlistIntradayCache[cardId] = intraday
+                            chartOpts.intraday = intraday
+                            miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+                        }
                     })
                     return
                 }
+
+                cardChartModes[cardId] = mode
+                activateChartTabs(tabsEl, mode)
                 miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+            })
+        }
+
+        function bindSortButtonDelegation() {
+            if (sortDelegationBound) return
+            sortDelegationBound = true
+            watchlistContainer.addEventListener('click', function (e) {
+                var btn = e.target.closest('.card-sort-btn')
+                if (!btn || btn.disabled) return
+                e.preventDefault()
+                e.stopPropagation()
+                var id = btn.dataset.id
+                var dir = btn.dataset.dir
+                if (!id || !dir) return
+                moveWatchlistItem(id, dir)
             })
         }
 
@@ -4883,24 +5744,28 @@
         }
 
         searchForm.addEventListener('submit', handleSearch)
+        if (randomSearchBtn) randomSearchBtn.addEventListener('click', handleRandomSearch)
         refreshBtn.addEventListener('click', function () {
-            renderWatchlist({ silent: true })
+            if (refreshBtn.disabled || getWatchlist().length === 0) return
+            refreshBtn.disabled = true
+            refreshBtn.classList.add('is-loading')
+            renderWatchlist().finally(function () {
+                refreshBtn.disabled = false
+                refreshBtn.classList.remove('is-loading')
+            })
         })
 
-        window.addEventListener('resize', debounce(function () {
-            observeWatchlistCards()
-            if (detailChart && document.getElementById('detailChart')) {
-                var el = document.getElementById('detailChart')
-                detailChart.applyOptions({ width: el.clientWidth })
-            }
-        }, 200))
+        window.addEventListener('resize', scheduleChartLayoutRefresh)
 
+        bindSortButtonDelegation()
         bindRemoveButtonDelegation()
         bindChartTabDelegation()
+        bindDetailChartTabDelegation()
         bindSimDetailDialog()
         bindStrategyDialog()
-        bindHoldPositionCheckbox()
+        bindHoldPositionControls()
         initMarketSelect()
+        initSidebarCollapse()
         renderWatchlist()
         startAutoRefresh()
     })()
