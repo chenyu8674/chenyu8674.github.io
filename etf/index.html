@@ -252,6 +252,10 @@
         }
 
         .detail-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
             font-size: .8rem;
             color: var(--text-muted);
             margin-bottom: 12px;
@@ -449,12 +453,56 @@
             font-size: .75rem;
             line-height: 1.5;
             box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
-            white-space: nowrap;
+            white-space: normal;
+            min-width: 148px;
         }
 
         .chart-tooltip-date {
             color: #8b949e;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
+        }
+
+        .chart-tooltip-op {
+            font-weight: 600;
+            font-size: .72rem;
+            margin-bottom: 6px;
+        }
+
+        .chart-tooltip-op.op-buy {
+            color: var(--up);
+        }
+
+        .chart-tooltip-op.op-sell {
+            color: var(--down);
+        }
+
+        .chart-tooltip-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .chart-tooltip-row:first-of-type {
+            margin-top: 0;
+        }
+
+        .chart-tooltip-tag {
+            flex-shrink: 0;
+            width: 3.5rem;
+            min-width: 3.5rem;
+            padding: 1px 4px;
+            font-size: .68rem;
+            font-weight: 600;
+            border: 1px solid;
+            line-height: 1.35;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .chart-tooltip-val {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
 
         .chart-tooltip-value {
@@ -935,8 +983,22 @@
         }
 
         .card-symbol {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
             font-size: .8rem;
             color: var(--text-muted);
+        }
+
+        .symbol-code {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .data-update-time {
+            font-size: .75rem;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
         }
 
         .card-stats {
@@ -1178,9 +1240,9 @@
             background: var(--surface);
             box-shadow: 0 8px 32px rgba(0, 0, 0, .5);
             padding: 20px 24px 24px;
-            width: 100%;
-            max-width: 520px;
-            max-height: 80vh;
+            width: min(calc(100vw - 32px), 1280px);
+            max-width: min(calc(100vw - 32px), 1280px);
+            max-height: 85vh;
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
@@ -1208,6 +1270,41 @@
 
         .sim-detail-controls {
             margin-bottom: 12px;
+        }
+
+        .sim-detail-body {
+            display: flex;
+            gap: 16px;
+            flex: 1;
+            min-height: 0;
+            margin-bottom: 16px;
+        }
+
+        .sim-detail-table-wrap {
+            overflow-y: auto;
+            overflow-x: auto;
+            flex: 0 0 auto;
+            width: max-content;
+            max-width: min(100%, 400px);
+            min-height: 280px;
+            max-height: 52vh;
+            border: 1px solid var(--border);
+        }
+
+        .sim-detail-chart-wrap {
+            flex: 1 1 0;
+            min-width: 240px;
+            min-height: 280px;
+            max-height: 52vh;
+            border: 1px solid var(--border);
+            background: #161b22;
+            position: relative;
+        }
+
+        .sim-detail-chart {
+            width: 100%;
+            height: 100%;
+            min-height: 278px;
         }
 
         .sim-detail-entry-row {
@@ -1240,14 +1337,6 @@
             border-color: var(--primary);
         }
 
-        .sim-detail-table-wrap {
-            overflow-y: auto;
-            flex: 1;
-            min-height: 0;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-        }
-
         .sim-detail-table {
             width: 100%;
             font-size: .78rem;
@@ -1274,6 +1363,14 @@
             border-bottom: none;
         }
 
+        .sim-detail-table tbody tr[data-sim-row] {
+            cursor: default;
+        }
+
+        .sim-detail-table tbody tr.sim-detail-row-active td {
+            background: rgba(56, 139, 253, .12);
+        }
+
         .sim-detail-empty {
             padding: 24px 12px;
             text-align: center;
@@ -1283,7 +1380,7 @@
 
         .sim-detail-table .action-buy { color: var(--up); font-weight: 600; }
         .sim-detail-table .action-sell { color: var(--down); font-weight: 600; }
-        .sim-detail-table .action-trail { color: var(--up); font-weight: 600; }
+        .sim-detail-table .action-trail { color: var(--down); font-weight: 600; }
         .sim-detail-table .action-stop { color: var(--down); font-weight: 600; }
         .sim-detail-table .action-hold { color: var(--primary); font-weight: 600; }
 
@@ -1542,7 +1639,12 @@
             </div>
             <div class="sim-detail-hint" id="simDetailHint"></div>
             <div class="sim-detail-controls" id="simDetailControls"></div>
-            <div class="sim-detail-table-wrap" id="simDetailBody"></div>
+            <div class="sim-detail-body">
+                <div class="sim-detail-table-wrap" id="simDetailBody"></div>
+                <div class="sim-detail-chart-wrap">
+                    <div class="sim-detail-chart" id="simDetailChart"></div>
+                </div>
+            </div>
             <div class="confirm-actions">
                 <button type="button" class="btn btn-cancel" id="simDetailClose">关闭</button>
             </div>
@@ -1574,6 +1676,7 @@
         var FINMIND_TOKEN = ''
         var TW_CACHE_TTL_LIGHT = 300000
         var TW_CACHE_TTL_FULL = 600000
+        var TW_QUOTE_REFRESH_MS = 5000
         var STORAGE_KEY = 'etf_watchlist'
         var STRATEGY_STORAGE_KEY = 'etf_trade_strategy'
         var HOLD_POSITION_STORAGE_KEY = 'etf_hold_position'
@@ -1712,6 +1815,93 @@
             if (val == null || isNaN(val)) return '--'
             var sign = val >= 0 ? '+' : ''
             return sign + Number(val).toFixed(2) + '%'
+        }
+
+        function formatQuoteTime(ts, market) {
+            if (ts == null || isNaN(ts)) return ''
+            var tz = getMarketTimezone(market)
+            var parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: tz,
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).formatToParts(new Date(ts))
+            var mo = ''
+            var da = ''
+            var hour = 0
+            var minute = 0
+            var second = 0
+            parts.forEach(function (p) {
+                if (p.type === 'month') mo = p.value
+                if (p.type === 'day') da = p.value
+                if (p.type === 'hour') hour = parseInt(p.value, 10)
+                if (p.type === 'minute') minute = parseInt(p.value, 10)
+                if (p.type === 'second') second = parseInt(p.value, 10)
+            })
+            return mo + '/' + da + ' ' + pad2(hour) + ':' + pad2(minute) + ':' + pad2(second)
+        }
+
+        function buildSymbolMetaHtml(market, symbol, quoteTime) {
+            var html = '<span class="market-badge">' + MARKET_LABELS[market] + '</span>' +
+                '<span class="symbol-code">' + escapeHtml(symbol) + '</span>'
+            if (quoteTime) {
+                html += '<span class="data-update-time">行情时间：' +
+                    escapeHtml(formatQuoteTime(quoteTime, market)) + '</span>'
+            }
+            return html
+        }
+
+        function parseMarketTimestampString(raw, market) {
+            if (raw == null || raw === '') return null
+            var s = String(raw).trim()
+            if (!/^\d{12,14}$/.test(s)) return null
+            var dateStr = s.slice(0, 4) + '-' + s.slice(4, 6) + '-' + s.slice(6, 8)
+            var hour = parseInt(s.slice(8, 10), 10)
+            var minute = parseInt(s.slice(10, 12), 10)
+            if (isNaN(hour) || isNaN(minute)) return null
+            return marketLocalTimeToUnix(market, dateStr, hour, minute) * 1000
+        }
+
+        function quoteTimeFromNavDate(navDate, market) {
+            var dateStr = normalizeTradeDate(navDate)
+            if (!dateStr) return null
+            return marketLocalTimeToUnix(market || 'cn', dateStr, 15, 0) * 1000
+        }
+
+        function resolveQuoteTime(data) {
+            if (!data || data.quoteTime != null) return data
+            if (data.market === 'tw' && needsTWLiveQuote(data)) {
+                return data
+            }
+            if (data.intraday && data.intraday.points && data.intraday.points.length) {
+                var lastPoint = data.intraday.points[data.intraday.points.length - 1]
+                if (lastPoint.time) {
+                    data.quoteTime = lastPoint.time * 1000
+                    return data
+                }
+            }
+            if (data.klines && data.klines.length) {
+                var lastBar = data.klines[data.klines.length - 1]
+                var dateStr = normalizeTradeDate(lastBar.date)
+                if (dateStr) {
+                    var session = MARKET_SESSION[data.market] || MARKET_SESSION.cn
+                    data.quoteTime = marketLocalTimeToUnix(
+                        data.market,
+                        dateStr,
+                        session.close[0],
+                        session.close[1]
+                    ) * 1000
+                }
+            }
+            return data
+        }
+
+        function finalizeQuotePayload(data) {
+            if (!data || data.error) return data
+            return resolveQuoteTime(data)
         }
 
         function formatFlow(val) {
@@ -2226,7 +2416,196 @@
                     levels.buy = baseMa * strategy.buyThreshold
                     levels.sell = baseMa * strategy.sellThreshold
                 }
-                result[klines[i].date] = levels
+                result[normalizeTradeDate(klines[i].date)] = levels
+            }
+            return result
+        }
+
+        function buildSimPositionStateByDate(klines, strategy, market, entryStartDate) {
+            klines = sortKlinesByDate(klines)
+            var entryIdx = findKlineIndexOnOrBeforeDate(klines, entryStartDate)
+            if (entryIdx < 0) entryIdx = 0
+            var maPeriods = resolveStrategyMaPeriods(strategy, market)
+            var baseMa = calcMaSeries(klines, maPeriods.baseMaDays)
+            var trailMa = calcMaSeries(klines, maPeriods.trailMaDays)
+            var delay = getTradeDelayDays(strategy)
+            var n = klines.length
+            var cash = 1
+            var shares = 0
+            var inPosition = false
+            var entryPrice = 0
+            var buyStreak = 0
+            var pendingBuyWait = -1
+            var pendingSellWait = -1
+            var pendingSellNote = ''
+            var initialBuyApplied = false
+            var stateByDate = {}
+            var i, bar, close, sellSig, tradedToday
+
+            for (i = 0; i < n; i++) {
+                bar = klines[i]
+                close = bar.close
+                if (close == null || isNaN(close)) continue
+
+                if (i < entryIdx) {
+                    stateByDate[normalizeTradeDate(bar.date)] = {
+                        inPosition: false,
+                        entryPrice: null,
+                        openingInPosition: false,
+                        openingEntryPrice: null
+                    }
+                    continue
+                }
+
+                var openingInPosition = inPosition && shares > 0
+                var openingEntryPrice = openingInPosition ? entryPrice : null
+                tradedToday = false
+
+                if (!initialBuyApplied && cash > 0 && !inPosition) {
+                    shares = cash / close
+                    cash = 0
+                    inPosition = true
+                    entryPrice = close
+                    initialBuyApplied = true
+                    tradedToday = true
+                } else if (delay > 0) {
+                    if (pendingSellWait > 0) pendingSellWait--
+                    if (pendingBuyWait > 0) pendingBuyWait--
+                    if (pendingSellWait === 0 && inPosition && shares > 0) {
+                        cash = shares * close
+                        shares = 0
+                        inPosition = false
+                        entryPrice = 0
+                        pendingSellWait = -1
+                        pendingSellNote = ''
+                        tradedToday = true
+                    } else if (pendingBuyWait === 0 && !inPosition && cash > 0) {
+                        shares = cash / close
+                        cash = 0
+                        inPosition = true
+                        entryPrice = close
+                        pendingBuyWait = -1
+                        tradedToday = true
+                    }
+                }
+
+                if (!tradedToday && pendingSellWait < 0 && pendingBuyWait < 0) {
+                    if (inPosition && shares > 0) {
+                        sellSig = evalStrategySellSignal(strategy, close, entryPrice, baseMa[i], trailMa[i])
+                        if (sellSig.shouldSell) {
+                            if (delay <= 0) {
+                                cash = shares * close
+                                shares = 0
+                                inPosition = false
+                                entryPrice = 0
+                                tradedToday = true
+                            } else {
+                                pendingSellWait = delay
+                                pendingSellNote = sellSig.note
+                            }
+                        }
+                    } else if (cash > 0 && baseMa[i] != null) {
+                        if (close > baseMa[i] * strategy.buyThreshold) {
+                            buyStreak++
+                        } else {
+                            buyStreak = 0
+                        }
+                        if (buyStreak >= strategy.confirmDays) {
+                            if (delay <= 0) {
+                                shares = cash / close
+                                cash = 0
+                                inPosition = true
+                                entryPrice = close
+                                buyStreak = 0
+                                tradedToday = true
+                            } else {
+                                pendingBuyWait = delay
+                                buyStreak = 0
+                            }
+                        }
+                    }
+                }
+
+                stateByDate[normalizeTradeDate(bar.date)] = {
+                    inPosition: inPosition && shares > 0,
+                    entryPrice: inPosition && shares > 0 ? entryPrice : null,
+                    openingInPosition: openingInPosition,
+                    openingEntryPrice: openingEntryPrice
+                }
+            }
+            return stateByDate
+        }
+
+        function buildSimDetailGuideByDate(klines, market, currentPrice, entryStartDate) {
+            klines = sortKlinesByDate(klines)
+            var strategy = getTradeStrategy(market)
+            var maPeriods = resolveStrategyMaPeriods(strategy, market)
+            var levelsByDate = buildStrategyLevelsByDate(klines, market, currentPrice)
+            var trailMaSeries = calcMaSeries(klines, maPeriods.trailMaDays)
+            var positionByDate = buildSimPositionStateByDate(klines, strategy, market, entryStartDate)
+            var maPeriod = getRefMaDays(market)
+            var maByDate = buildDailyMaByDate(klines, currentPrice, market, maPeriod)
+            var trailMaByDate = buildDailyMaByDate(klines, currentPrice, market, maPeriods.trailMaDays)
+            var maBaseLabel = 'MA' + maPeriods.baseMaDays
+            var maTrailLabel = 'MA' + maPeriods.trailMaDays
+            var marketToday = getMarketDateString(market)
+            var livePrice = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
+            var result = {}
+            var i
+
+            for (i = 0; i < klines.length; i++) {
+                var k = klines[i]
+                var d = normalizeTradeDate(k.date)
+                var lv = levelsByDate[d] || {}
+                var close = k.close
+                if (livePrice != null && d === marketToday) close = livePrice
+                var entry = {
+                    close: close,
+                    ma: maByDate[d] != null ? maByDate[d] : maByDate[k.date],
+                    maLabel: maBaseLabel,
+                    buy: lv.buy,
+                    sell: lv.sell,
+                    stop: null,
+                    trailProfit: null,
+                    trailActive: false
+                }
+                var pos = positionByDate[d]
+                var refEntry = null
+                if (pos) {
+                    if (pos.openingInPosition && pos.openingEntryPrice > 0) {
+                        refEntry = pos.openingEntryPrice
+                    } else if (pos.inPosition && pos.entryPrice > 0) {
+                        refEntry = pos.entryPrice
+                    }
+                }
+                if (refEntry != null) {
+                    if (isStopLossEnabled(strategy)) {
+                        entry.stop = refEntry * (1 + strategy.stopLossPct / 100)
+                    }
+                    var pnlPct = close != null && !isNaN(close)
+                        ? ((close - refEntry) / refEntry) * 100
+                        : null
+                    var useTrail = pnlPct != null && shouldUseTrailProfit(strategy, pnlPct)
+                    var trailMaVal = null
+                    if (useTrail) {
+                        trailMaVal = trailMaByDate[d] != null ? trailMaByDate[d] : trailMaByDate[k.date]
+                        if (trailMaVal == null && trailMaSeries[i] != null) trailMaVal = trailMaSeries[i]
+                        if (trailMaVal != null) {
+                            entry.ma = trailMaVal
+                            entry.maLabel = maTrailLabel
+                        }
+                    }
+                    if (isTrailProfitEnabled(strategy)) {
+                        if (useTrail && trailMaVal != null) {
+                            entry.trailProfit = trailMaVal * strategy.sellThreshold
+                            entry.trailActive = true
+                            entry.sell = entry.trailProfit
+                        } else {
+                            entry.trailProfit = refEntry * (1 + strategy.trailProfitPct / 100)
+                        }
+                    }
+                }
+                result[d] = entry
             }
             return result
         }
@@ -3362,7 +3741,8 @@
                 code: parts[2] || key,
                 price: price,
                 preClose: preClose,
-                changePct: changePct
+                changePct: changePct,
+                quoteTime: parseMarketTimestampString(parts[30], 'cn')
             }
         }
 
@@ -3428,7 +3808,7 @@
                 var changePct = quote && !isNaN(quote.changePct) ? quote.changePct : (last.changePct || 0)
                 var name = (quote && quote.name) || displaySymbol
 
-                return enrichWithIntraday({
+                return finalizeQuotePayload(enrichWithIntraday({
                     market: market,
                     symbol: quote && quote.code ? quote.code : displaySymbol,
                     name: name,
@@ -3437,8 +3817,9 @@
                     klines: klines,
                     flow: [],
                     flowLabel: flowLabel || '量能参考',
-                    tencentSymbol: tencentSymbol
-                })
+                    tencentSymbol: tencentSymbol,
+                    quoteTime: quote && quote.quoteTime != null ? quote.quoteTime : null
+                }))
             } catch (e) {
                 return null
             }
@@ -3648,6 +4029,9 @@
                 payload.price = estimate.price
                 payload.changePct = estimate.changePct
                 payload.name = estimate.name || payload.name
+                if (estimate.navDate) {
+                    payload.quoteTime = quoteTimeFromNavDate(estimate.navDate, 'cn')
+                }
             } else if (ping) {
                 payload.price = ping.price
                 payload.changePct = ping.changePct
@@ -3666,7 +4050,7 @@
             payload.flow = []
             payload.flowLabel = '场外基金（无主力流向）'
             payload.isMutualFund = true
-            return payload
+            return finalizeQuotePayload(payload)
         }
 
         async function fetchCNMutualFundPackage(code) {
@@ -3681,7 +4065,7 @@
             var name = (estimate && estimate.name) || (ping && ping.name) || code
             if (price == null || isNaN(price)) return null
 
-            return enrichWithIntraday({
+            return finalizeQuotePayload(enrichWithIntraday({
                 market: 'cn',
                 symbol: code,
                 name: name,
@@ -3691,14 +4075,15 @@
                 flow: [],
                 flowLabel: '场外基金（无主力流向）',
                 secid: '150.' + code,
-                isMutualFund: true
-            })
+                isMutualFund: true,
+                quoteTime: estimate && estimate.navDate ? quoteTimeFromNavDate(estimate.navDate, 'cn') : null
+            }))
         }
 
         async function fetchEMQuote(secid) {
             try {
                 var url = 'https://push2.eastmoney.com/api/qt/stock/get?secid=' + secid +
-                    '&fields=f57,f58,f43,f44,f45,f46,f47,f48,f60,f169,f170,f171,f168,f162,f167&ut=fa5fd1943c7b386f172d6893dbfba107&fltt=2&invt=2&_=' + Date.now()
+                    '&fields=f57,f58,f43,f44,f45,f46,f47,f48,f60,f86,f169,f170,f171,f168,f162,f167&ut=fa5fd1943c7b386f172d6893dbfba107&fltt=2&invt=2&_=' + Date.now()
                 var data = await fetchDirectJSON(url)
                 if (!data || !data.data || data.data.f43 == null || data.data.f43 === '') return null
                 var d = data.data
@@ -3707,7 +4092,8 @@
                     name: d.f58,
                     price: d.f43,
                     changePct: d.f170,
-                    secid: secid
+                    secid: secid,
+                    quoteTime: parseMarketTimestampString(d.f86, 'cn')
                 }
             } catch (e) {
                 return null
@@ -3817,6 +4203,199 @@
             return points
         }
 
+        function applyLiveQuoteFromIntraday(data) {
+            if (!data || !data.intraday || !data.intraday.points || !data.intraday.points.length) return data
+            var points = data.intraday.points
+            var lastPoint = points[points.length - 1]
+            var price = lastPoint.price
+            if (price == null || isNaN(price)) return data
+            var preClose = data.intraday.preClose
+            if (preClose == null || isNaN(preClose)) {
+                preClose = getIntradayPreClose(data.klines, data.market)
+            }
+            data.price = price
+            if (preClose != null && !isNaN(preClose) && preClose > 0) {
+                data.changePct = ((price - preClose) / preClose) * 100
+            }
+            if (lastPoint.time) {
+                data.quoteTime = lastPoint.time * 1000
+            }
+            return data
+        }
+
+        function needsTWLiveQuote(data) {
+            if (!data || data.market !== 'tw' || !data.klines || !data.klines.length) return false
+            var last = data.klines[data.klines.length - 1]
+            var today = getMarketDateString('tw')
+            return normalizeTradeDate(last.date) !== today || isMarketOpen('tw')
+        }
+
+        function parseTWSEPriceField(val) {
+            if (val == null || val === '' || val === '-') return null
+            var n = parseFloat(val)
+            return isNaN(n) ? null : n
+        }
+
+        function parseTWSEBookSide(field) {
+            if (!field || field === '-') return null
+            return parseTWSEPriceField(field.split('_')[0])
+        }
+
+        function parseTWSEQuoteTimestamp(row) {
+            if (!row) return null
+            if (row.tlong) {
+                var ts = parseInt(row.tlong, 10)
+                if (!isNaN(ts)) return ts
+            }
+            var d = row.d || row['^']
+            var t = row.t || row['%']
+            if (!d || !t) return null
+            var ds = String(d)
+            if (ds.length < 8) return null
+            var dateStr = ds.slice(0, 4) + '-' + ds.slice(4, 6) + '-' + ds.slice(6, 8)
+            var tparts = String(t).split(':')
+            var hour = parseInt(tparts[0], 10)
+            var minute = parseInt(tparts[1], 10)
+            if (isNaN(hour) || isNaN(minute)) return null
+            return marketLocalTimeToUnix('tw', dateStr, hour, minute) * 1000
+        }
+
+        function parseTWSEQuoteFromRow(row) {
+            if (!row) return null
+            var price = parseTWSEPriceField(row.z)
+            if (price == null) {
+                var bid = parseTWSEBookSide(row.b)
+                var ask = parseTWSEBookSide(row.a)
+                if (bid != null && ask != null) price = (bid + ask) / 2
+                else if (bid != null) price = bid
+                else if (ask != null) price = ask
+            }
+            if (price == null) return null
+            var preClose = parseTWSEPriceField(row.y)
+            var changePct = null
+            if (preClose != null && preClose > 0) {
+                changePct = ((price - preClose) / preClose) * 100
+            }
+            return {
+                price: price,
+                changePct: changePct,
+                preClose: preClose,
+                ts: parseTWSEQuoteTimestamp(row)
+            }
+        }
+
+        async function fetchTWSELiveQuote(code) {
+            var normalized = normalizeTWSymbol(code)
+            if (!normalized) return null
+            var prefixes = ['tse', 'otc']
+            var headers = { Referer: 'https://mis.twse.com.tw/stock/index.jsp' }
+            for (var i = 0; i < prefixes.length; i++) {
+                var exCh = prefixes[i] + '_' + normalized + '.tw'
+                var url = 'https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=' +
+                    encodeURIComponent(exCh) + '&json=1&delay=0&_=' + Date.now()
+                try {
+                    var json = await fetchJSON(url, { headers: headers })
+                    if (!json || !json.msgArray || !json.msgArray.length) continue
+                    var row = json.msgArray[0]
+                    if (!row || !row.c) continue
+                    var quote = parseTWSEQuoteFromRow(row)
+                    if (quote && quote.price != null) return quote
+                } catch (e) { /* try next exchange */ }
+            }
+            return null
+        }
+
+        async function fetchYahooTWLiveQuote(code) {
+            var ySymbol = normalizeTWSymbol(code) + '.TW'
+            var url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + encodeURIComponent(ySymbol) +
+                '?interval=1d&range=1d&includePrePost=false'
+            var json = await fetchJSON(url)
+            if (!json || !json.chart || !json.chart.result || !json.chart.result[0]) return null
+            var meta = json.chart.result[0].meta
+            var price = meta.regularMarketPrice
+            if (price == null || isNaN(price)) return null
+            var preClose = meta.chartPreviousClose != null ? meta.chartPreviousClose : meta.previousClose
+            var changePct = meta.regularMarketChangePercent
+            if ((changePct == null || isNaN(changePct)) && preClose != null && preClose > 0) {
+                changePct = ((price - preClose) / preClose) * 100
+            }
+            return {
+                price: price,
+                changePct: changePct != null && !isNaN(changePct) ? changePct : 0,
+                preClose: preClose,
+                ts: meta.regularMarketTime != null ? meta.regularMarketTime * 1000 : null
+            }
+        }
+
+        async function applyTWSELiveQuoteToData(data) {
+            try {
+                var twse = await fetchTWSELiveQuote(data.symbol)
+                if (!twse) return false
+                if (twse.ts != null) {
+                    data.quoteTime = twse.ts
+                }
+                if (twse.price == null) return twse.ts != null
+                data.price = twse.price
+                if (twse.changePct != null && !isNaN(twse.changePct)) {
+                    data.changePct = twse.changePct
+                }
+                if (twse.preClose != null && data.intraday) {
+                    data.intraday.preClose = twse.preClose
+                }
+                return true
+            } catch (e) { /* ignore */ }
+            return false
+        }
+
+        function applyYahooLiveQuoteToData(data, yahoo) {
+            if (!yahoo || yahoo.price == null) return
+            data.price = yahoo.price
+            if (yahoo.changePct != null && !isNaN(yahoo.changePct)) {
+                data.changePct = yahoo.changePct
+            }
+            if (yahoo.preClose != null && data.intraday) {
+                data.intraday.preClose = yahoo.preClose
+            }
+            if (yahoo.ts != null) {
+                data.quoteTime = yahoo.ts
+            }
+        }
+
+        async function enrichTWLiveQuote(data, options) {
+            options = options || {}
+            if (!data) return data
+            if (!needsTWLiveQuote(data)) return finalizeQuotePayload(data)
+
+            var lastBar = data.klines[data.klines.length - 1]
+            var stalePrice = lastBar && lastBar.close != null ? lastBar.close : data.price
+
+            if (options.quoteOnly) {
+                if (await applyTWSELiveQuoteToData(data)) return finalizeQuotePayload(data)
+                try {
+                    var yahooOnly = await fetchYahooTWLiveQuote(data.symbol)
+                    applyYahooLiveQuoteToData(data, yahooOnly)
+                } catch (e) { /* ignore */ }
+                return finalizeQuotePayload(data)
+            }
+
+            await applyTWSELiveQuoteToData(data)
+
+            if (data.price == null || isNaN(data.price) || data.price === stalePrice) {
+                if (!hasIntradayChartData(data.intraday)) {
+                    data.intraday = await fetchIntradayForPayload(data)
+                }
+                applyLiveQuoteFromIntraday(data)
+            }
+
+            if (data.price == null || isNaN(data.price) || data.price === stalePrice) {
+                try {
+                    var yahoo = await fetchYahooTWLiveQuote(data.symbol)
+                    applyYahooLiveQuoteToData(data, yahoo)
+                } catch (e) { /* ignore */ }
+            }
+            return finalizeQuotePayload(data)
+        }
+
         async function fetchFinMindTWIntraday(code, preClose) {
             try {
                 var tradingDate = getMarketDateString('tw')
@@ -3848,8 +4427,11 @@
 
         async function enrichWithIntraday(data) {
             if (!data) return data
+            if (data.market === 'tw') {
+                return finalizeQuotePayload(await enrichTWLiveQuote(data))
+            }
             data.intraday = await fetchIntradayForPayload(data)
-            return data
+            return finalizeQuotePayload(data)
         }
 
         async function fetchEMBySecids(secids, market, symbol, flowLabel) {
@@ -3877,11 +4459,12 @@
                 klines: klineData.klines,
                 flow: flow,
                 flowLabel: flowLabel || '主力净流入',
-                secid: secid
+                secid: secid,
+                quoteTime: quote.quoteTime
             }
             if (market === 'cn' && isCNFundSecid(secid)) {
                 var enriched = await enrichCNMutualFundPayload(payload, symbol.replace(/[^\d]/g, ''))
-                if (enriched) return enriched
+                if (enriched) return finalizeQuotePayload(enriched)
             }
             return enrichWithIntraday(payload)
         }
@@ -3996,7 +4579,10 @@
                 splitAdjusted: true
             }
 
-            if (options.skipIntraday) return payload
+            if (options.skipIntraday) {
+                await enrichTWLiveQuote(payload, { quoteOnly: true })
+                return finalizeQuotePayload(payload)
+            }
             return enrichWithIntraday(payload)
         }
 
@@ -4046,20 +4632,30 @@
                 flow.push({ date: klines[j].date, mainNet: klines[j].volume || 0 })
             }
 
+            var price = meta.regularMarketPrice || last.close
+            var preClose = meta.chartPreviousClose != null ? meta.chartPreviousClose : meta.previousClose
+            var changePct = last.changePct
+            if (preClose != null && preClose > 0 && price != null) {
+                changePct = ((price - preClose) / preClose) * 100
+            } else if (meta.regularMarketChangePercent != null && !isNaN(meta.regularMarketChangePercent)) {
+                changePct = meta.regularMarketChangePercent
+            }
+
             var payload = {
                 market: 'tw',
                 symbol: code,
                 name: meta.longName || meta.shortName || code,
-                price: meta.regularMarketPrice || last.close,
-                changePct: last.changePct,
+                price: price,
+                changePct: changePct,
                 klines: klines.slice(-HISTORY_DAYS),
                 flow: flow,
                 flowLabel: '成交量（量能参考）',
                 secid: null,
-                splitAdjusted: true
+                splitAdjusted: true,
+                quoteTime: meta.regularMarketTime != null ? meta.regularMarketTime * 1000 : null
             }
 
-            if (options.skipIntraday) return payload
+            if (options.skipIntraday) return finalizeQuotePayload(payload)
             return enrichWithIntraday(payload)
         }
 
@@ -4071,7 +4667,16 @@
             var cached = twDataCache[code]
             if (options.useCache !== false && cached && cached.data) {
                 var ttl = options.lightweight ? TW_CACHE_TTL_LIGHT : TW_CACHE_TTL_FULL
-                if (Date.now() - cached.ts < ttl) {
+                var cacheValid = Date.now() - cached.ts < ttl
+                if (cacheValid && options.lightweight && needsTWLiveQuote(cached.data)) {
+                    var quoteAge = Date.now() - (cached.quoteTs || 0)
+                    if (quoteAge >= TW_QUOTE_REFRESH_MS) {
+                        await enrichTWLiveQuote(cached.data, { quoteOnly: true })
+                        twDataCache[code] = { data: cached.data, ts: cached.ts, quoteTs: Date.now() }
+                    }
+                    return cached.data
+                }
+                if (cacheValid) {
                     return cached.data
                 }
             }
@@ -4083,7 +4688,7 @@
                         cachedData: cached.data,
                         skipIntraday: true
                     })
-                    twDataCache[code] = { data: lightData, ts: Date.now() }
+                    twDataCache[code] = { data: lightData, ts: Date.now(), quoteTs: Date.now() }
                     return lightData
                 } catch (e) {
                     if (cached.data) return cached.data
@@ -4094,14 +4699,14 @@
                 var finData = await fetchFinMindTWData(code, {
                     skipIntraday: !!options.skipIntraday
                 })
-                twDataCache[code] = { data: finData, ts: Date.now() }
+                twDataCache[code] = { data: finData, ts: Date.now(), quoteTs: Date.now() }
                 return finData
             } catch (finErr) {
                 try {
                     var yahooData = await fetchYahooTWData(code, {
                         skipIntraday: !!options.skipIntraday
                     })
-                    twDataCache[code] = { data: yahooData, ts: Date.now() }
+                    twDataCache[code] = { data: yahooData, ts: Date.now(), quoteTs: Date.now() }
                     return yahooData
                 } catch (yahooErr) {
                     if (cached && cached.data) return cached.data
@@ -4148,6 +4753,7 @@
         var SERIES_LABEL_OPTS = {
             priceLineVisible: false,
             lastValueVisible: false,
+            crosshairMarkerVisible: false,
             title: ''
         }
 
@@ -4157,7 +4763,116 @@
         var CHART_MA5_COLOR = '#f0883e'
         var CHART_STRATEGY_BUY_COLOR = '#f85149'
         var CHART_STRATEGY_SELL_COLOR = '#3fb950'
+        var CHART_STRATEGY_STOP_COLOR = '#3fb950'
+        var CHART_STRATEGY_TRAIL_COLOR = '#f85149'
         var CHART_LINE_STYLE_DASHED = 2
+
+        function buildChartTooltipTag(label, color) {
+            return '<span class="chart-tooltip-tag" style="color:' + color + ';border-color:' + color + '">' +
+                escapeHtml(label) + '</span>'
+        }
+
+        function buildChartTooltipRow(label, value, color, market) {
+            return '<div class="chart-tooltip-row">' + buildChartTooltipTag(label, color) +
+                '<span class="chart-tooltip-val">' + escapeHtml(formatPrice(value, market)) + '</span></div>'
+        }
+
+        function buildChartTooltipOptionalRow(label, value, color, market) {
+            var valHtml = value != null && !isNaN(value)
+                ? escapeHtml(formatPrice(value, market))
+                : '--'
+            return '<div class="chart-tooltip-row">' + buildChartTooltipTag(label, color) +
+                '<span class="chart-tooltip-val">' + valHtml + '</span></div>'
+        }
+
+        function buildChartTooltipTextRow(label, text, color) {
+            return '<div class="chart-tooltip-row">' + buildChartTooltipTag(label, color) +
+                '<span class="chart-tooltip-val">' + escapeHtml(text) + '</span></div>'
+        }
+
+        function positionChartTooltip(tooltip, container, param) {
+            tooltip.style.display = 'block'
+            var pad = 10
+            var maxX = container.clientWidth - tooltip.offsetWidth - pad
+            var maxY = container.clientHeight - tooltip.offsetHeight - pad
+            var x = param.point.x + 14
+            var y = param.point.y + 14
+            if (x > maxX) x = param.point.x - tooltip.offsetWidth - 14
+            if (y > maxY) y = param.point.y - tooltip.offsetHeight - 14
+            tooltip.style.left = Math.max(pad, x) + 'px'
+            tooltip.style.top = Math.max(pad, y) + 'px'
+        }
+
+        function buildSimDetailGuideSeriesData(slice, guideByDate, key) {
+            var data = []
+            slice.forEach(function (k) {
+                var g = guideByDate[k.date]
+                if (g && g[key] != null && !isNaN(g[key])) {
+                    data.push({ time: k.date, value: g[key] })
+                }
+            })
+            return data
+        }
+
+        function addSimDetailGuideLines(chart, slice, guideByDate) {
+            addStrategyGuideLineSeries(
+                chart,
+                buildSimDetailGuideSeriesData(slice, guideByDate, 'buy'),
+                CHART_STRATEGY_BUY_COLOR,
+                1.5,
+                CHART_LINE_STYLE_DASHED
+            )
+            addStrategyGuideLineSeries(
+                chart,
+                buildSimDetailGuideSeriesData(slice, guideByDate, 'sell'),
+                CHART_STRATEGY_SELL_COLOR,
+                1.5,
+                CHART_LINE_STYLE_DASHED
+            )
+            addStrategyGuideLineSeries(
+                chart,
+                buildSimDetailGuideSeriesData(slice, guideByDate, 'stop'),
+                CHART_STRATEGY_STOP_COLOR,
+                1.5,
+                0
+            )
+            addStrategyGuideLineSeries(
+                chart,
+                buildSimDetailGuideSeriesData(slice, guideByDate, 'trailProfit'),
+                CHART_STRATEGY_TRAIL_COLOR,
+                1.5,
+                0
+            )
+            addStrategyGuideLineSeries(
+                chart,
+                buildSimDetailGuideSeriesData(slice, guideByDate, 'ma'),
+                CHART_MA5_COLOR,
+                1.5,
+                0
+            )
+        }
+
+        function buildSimDetailTooltipHtml(dateStr, guide, market, maLabel, trade) {
+            if (!guide || guide.close == null || isNaN(guide.close)) return ''
+            maLabel = maLabel || getMaLabel(market)
+            var html = '<div class="chart-tooltip-date">' + escapeHtml(dateStr) + '</div>'
+            if (trade && trade.label) {
+                var opCls = trade.action === 'buy' ? 'chart-tooltip-op op-buy' : 'chart-tooltip-op op-sell'
+                html += '<div class="' + opCls + '">' + escapeHtml(trade.label) + '</div>'
+            }
+            html += buildChartTooltipRow('价格', guide.close, CHART_LINE_COLOR, market)
+            html += buildChartTooltipOptionalRow(
+                guide.maLabel || maLabel,
+                guide.ma,
+                CHART_MA5_COLOR,
+                market
+            )
+            html += buildChartTooltipOptionalRow('建议买入', guide.buy, CHART_STRATEGY_BUY_COLOR, market)
+            html += buildChartTooltipOptionalRow('建议卖出', guide.sell, CHART_STRATEGY_SELL_COLOR, market)
+            html += buildChartTooltipOptionalRow('止盈', guide.trailProfit, CHART_STRATEGY_TRAIL_COLOR, market)
+            html += buildChartTooltipOptionalRow('止损', guide.stop, CHART_STRATEGY_STOP_COLOR, market)
+            return html
+        }
 
         function buildStrategyLevelSeriesData(daily30, levelsByDate, key) {
             var data = []
@@ -4366,18 +5081,8 @@
 
                 tooltip.innerHTML =
                     '<div class="chart-tooltip-date">' + escapeHtml(formatMarketTimeLabel(market, ts)) + '</div>' +
-                    '<div class="chart-tooltip-value">价格：' + formatPrice(price, market) + '</div>'
-                tooltip.style.display = 'block'
-
-                var pad = 10
-                var maxX = container.clientWidth - tooltip.offsetWidth - pad
-                var maxY = container.clientHeight - tooltip.offsetHeight - pad
-                var x = param.point.x + 14
-                var y = param.point.y + 14
-                if (x > maxX) x = param.point.x - tooltip.offsetWidth - 14
-                if (y > maxY) y = param.point.y - tooltip.offsetHeight - 14
-                tooltip.style.left = Math.max(pad, x) + 'px'
-                tooltip.style.top = Math.max(pad, y) + 'px'
+                    buildChartTooltipRow('价格', price, CHART_LINE_COLOR, market)
+                positionChartTooltip(tooltip, container, param)
             })
         }
 
@@ -4434,7 +5139,7 @@
                 },
                 crosshair: {
                     vertLine: { labelVisible: false },
-                    horzLine: { labelVisible: false }
+                    horzLine: { visible: false, labelVisible: false }
                 },
                 handleScroll: false,
                 handleScale: false
@@ -4487,15 +5192,15 @@
                         return
                     }
                     html = '<div class="chart-tooltip-date">' + escapeHtml(dateStr) + '</div>' +
-                        '<div class="chart-tooltip-value">收盘价：' + formatPrice(entry.close, market) + '</div>'
+                        buildChartTooltipRow('收盘价', entry.close, CHART_LINE_COLOR, market)
                     if (entry.ma != null && !isNaN(entry.ma)) {
-                        html += '<div class="chart-tooltip-value">' + escapeHtml(maLabel) + '：' + formatPrice(entry.ma, market) + '</div>'
+                        html += buildChartTooltipRow(maLabel, entry.ma, CHART_MA5_COLOR, market)
                     }
                     if (entry.buy != null && !isNaN(entry.buy)) {
-                        html += '<div class="chart-tooltip-value chart-tooltip-buy">建议买入：' + formatPrice(entry.buy, market) + '</div>'
+                        html += buildChartTooltipRow('建议买入', entry.buy, CHART_STRATEGY_BUY_COLOR, market)
                     }
                     if (entry.sell != null && !isNaN(entry.sell)) {
-                        html += '<div class="chart-tooltip-value chart-tooltip-sell">建议卖出：' + formatPrice(entry.sell, market) + '</div>'
+                        html += buildChartTooltipRow('建议卖出', entry.sell, CHART_STRATEGY_SELL_COLOR, market)
                     }
                 } else {
                     if (entry == null || isNaN(entry)) {
@@ -4503,21 +5208,11 @@
                         return
                     }
                     html = '<div class="chart-tooltip-date">' + escapeHtml(dateStr) + '</div>' +
-                        '<div class="chart-tooltip-value">' + escapeHtml(maLabel) + '：' + formatPrice(entry, market) + '</div>'
+                        buildChartTooltipRow(maLabel, entry, CHART_MA5_COLOR, market)
                 }
 
                 tooltip.innerHTML = html
-                tooltip.style.display = 'block'
-
-                var pad = 10
-                var maxX = container.clientWidth - tooltip.offsetWidth - pad
-                var maxY = container.clientHeight - tooltip.offsetHeight - pad
-                var x = param.point.x + 14
-                var y = param.point.y + 14
-                if (x > maxX) x = param.point.x - tooltip.offsetWidth - 14
-                if (y > maxY) y = param.point.y - tooltip.offsetHeight - 14
-                tooltip.style.left = Math.max(pad, x) + 'px'
-                tooltip.style.top = Math.max(pad, y) + 'px'
+                positionChartTooltip(tooltip, container, param)
             })
         }
 
@@ -4710,7 +5405,7 @@
                 timeScale: { borderColor: '#30363d', timeVisible: !compact, visible: !compact },
                 crosshair: {
                     vertLine: { labelVisible: false },
-                    horzLine: { labelVisible: false }
+                    horzLine: { visible: false, labelVisible: false }
                 },
                 handleScroll: handleScroll,
                 handleScale: handleScale
@@ -4889,23 +5584,406 @@
 
         function formatSimOperationLabel(op, index) {
             if (op.action === 'holding') return '持仓中'
-            if (op.action === 'buy') {
-                if (index === 0 || (op.note && (op.note.indexOf('首日') >= 0 || op.note.indexOf('建仓') >= 0))) return '建仓'
-                return '买入信号'
-            }
+            if (op.action === 'buy') return '买入'
             var note = op.note || ''
             if (note.indexOf('止损') >= 0) return '止损'
-            if (note.indexOf('止盈') >= 0) return '止盈'
-            return '卖出信号'
+            if (note.indexOf('止盈') >= 0 || note.indexOf('移动止盈') >= 0) return '止盈'
+            return '卖出'
         }
 
         function formatSimOperationClass(op, index) {
             var label = formatSimOperationLabel(op, index)
-            if (label === '持仓中' || label === '建仓') return 'action-hold'
-            if (label === '买入信号') return 'action-buy'
-            if (label === '止盈') return 'action-trail'
-            if (label === '止损') return 'action-stop'
+            if (label === '持仓中') return 'action-hold'
+            if (label === '买入') return 'action-buy'
             return 'action-sell'
+        }
+
+        function getSimTradeMarkerColor(trade) {
+            if (!trade) return CHART_LINE_COLOR
+            if (trade.action === 'buy') return CHART_UP_COLOR
+            return CHART_DOWN_COLOR
+        }
+
+        function buildSimTradeByDate(cached) {
+            var sim = cached.detailSim || cached.sim
+            var ops = sim.operations || []
+            var map = {}
+            ops.forEach(function (op, index) {
+                var d = normalizeTradeDate(op.date)
+                map[d] = {
+                    label: formatSimOperationLabel(op, index),
+                    action: op.action,
+                    price: op.price,
+                    valuePct: op.valuePct,
+                    note: op.note || '',
+                    index: index
+                }
+            })
+            return map
+        }
+
+        function buildSimTradeMarkers(slice, tradeByDate) {
+            var markers = []
+            slice.forEach(function (k) {
+                var trade = tradeByDate[k.date]
+                if (!trade) return
+                markers.push({
+                    time: k.date,
+                    position: 'inBar',
+                    shape: 'circle',
+                    color: getSimTradeMarkerColor(trade),
+                    size: 1
+                })
+            })
+            return markers
+        }
+
+        var simDetailChartState = {
+            chart: null,
+            lineSeries: null,
+            rowMeta: [],
+            klineDates: [],
+            priceByDate: {},
+            guideByDate: {},
+            tradeByDate: {},
+            market: 'cn',
+            maLabel: '',
+            tooltipEl: null,
+            containerEl: null,
+            suppressSync: false
+        }
+
+        function getSimDetailChartKlines(cached) {
+            var klines = sortKlinesByDate(cached.klines || [])
+            if (!klines.length) return []
+            var startDate = normalizeSimEntryDate(klines, cached.entryStartDate || klines[0].date)
+            var startIdx = findKlineIndexOnOrBeforeDate(klines, startDate)
+            if (startIdx < 0) startIdx = 0
+            var slice = klines.slice(startIdx).map(function (k) {
+                return {
+                    date: normalizeTradeDate(k.date),
+                    open: k.open,
+                    close: k.close,
+                    high: k.high,
+                    low: k.low,
+                    volume: k.volume
+                }
+            })
+            var sim = cached.detailSim || cached.sim
+            if (sim && sim.holdingAtEnd && cached.price != null && !isNaN(cached.price)) {
+                var today = formatDateISO(new Date())
+                var last = slice[slice.length - 1]
+                if (last && last.date < today) {
+                    slice.push({
+                        date: today,
+                        open: cached.price,
+                        close: cached.price,
+                        high: cached.price,
+                        low: cached.price,
+                        volume: 0
+                    })
+                } else if (last && last.date === today) {
+                    slice = slice.slice()
+                    slice[slice.length - 1] = Object.assign({}, last, {
+                        close: cached.price,
+                        high: Math.max(last.high, cached.price),
+                        low: Math.min(last.low, cached.price)
+                    })
+                }
+            }
+            return slice
+        }
+
+        function resolveSimChartHoverDate(hoverDate, klineDates) {
+            hoverDate = normalizeTradeDate(hoverDate)
+            if (!hoverDate || !klineDates.length) return null
+            var i
+            for (i = 0; i < klineDates.length; i++) {
+                if (klineDates[i] === hoverDate) return hoverDate
+                if (klineDates[i] > hoverDate) {
+                    return i > 0 ? klineDates[i - 1] : klineDates[0]
+                }
+            }
+            return klineDates[klineDates.length - 1]
+        }
+
+        function findSimRowIndexForDate(targetDate, rowMeta) {
+            targetDate = normalizeTradeDate(targetDate)
+            if (!targetDate || !rowMeta.length) return -1
+            var best = -1
+            var i
+            for (i = 0; i < rowMeta.length; i++) {
+                if (rowMeta[i].date <= targetDate) best = rowMeta[i].index
+                else break
+            }
+            return best
+        }
+
+        function clearSimDetailRowHighlight() {
+            var bodyEl = document.getElementById('simDetailBody')
+            if (!bodyEl) return
+            bodyEl.querySelectorAll('.sim-detail-row-active').forEach(function (tr) {
+                tr.classList.remove('sim-detail-row-active')
+            })
+        }
+
+        function highlightSimDetailRow(rowIndex) {
+            var bodyEl = document.getElementById('simDetailBody')
+            if (!bodyEl || rowIndex == null || rowIndex < 0) {
+                clearSimDetailRowHighlight()
+                return
+            }
+            clearSimDetailRowHighlight()
+            var tr = bodyEl.querySelector('tr[data-sim-row="' + rowIndex + '"]')
+            if (tr) {
+                tr.classList.add('sim-detail-row-active')
+                scrollSimDetailRowIntoView(tr, bodyEl)
+            }
+        }
+
+        function scrollSimDetailRowIntoView(tr, wrapEl) {
+            if (!tr || !wrapEl) return
+            var headerEl = wrapEl.querySelector('.sim-detail-table thead')
+            var headerH = headerEl ? headerEl.offsetHeight : 0
+            var trRect = tr.getBoundingClientRect()
+            var wrapRect = wrapEl.getBoundingClientRect()
+            if (trRect.top < wrapRect.top + headerH) {
+                wrapEl.scrollTop += trRect.top - wrapRect.top - headerH
+            } else if (trRect.bottom > wrapRect.bottom) {
+                wrapEl.scrollTop += trRect.bottom - wrapRect.bottom
+            }
+        }
+
+        function hideSimDetailTooltip() {
+            if (simDetailChartState.tooltipEl) {
+                simDetailChartState.tooltipEl.style.display = 'none'
+            }
+        }
+
+        function updateSimDetailTooltip(resolvedDate, param) {
+            var st = simDetailChartState
+            if (!st.tooltipEl || !st.containerEl || !resolvedDate) {
+                hideSimDetailTooltip()
+                return
+            }
+            var guide = st.guideByDate[resolvedDate]
+            var trade = st.tradeByDate[resolvedDate]
+            var html = buildSimDetailTooltipHtml(resolvedDate, guide, st.market, st.maLabel, trade)
+            if (!html) {
+                hideSimDetailTooltip()
+                return
+            }
+            st.tooltipEl.innerHTML = html
+            if (param && param.point) {
+                positionChartTooltip(st.tooltipEl, st.containerEl, param)
+            } else {
+                st.tooltipEl.style.display = 'block'
+                st.tooltipEl.style.left = '12px'
+                st.tooltipEl.style.top = '12px'
+            }
+        }
+
+        function setSimDetailCrosshair(dateStr) {
+            var st = simDetailChartState
+            if (!st.chart || !st.lineSeries || !dateStr) return
+            dateStr = normalizeTradeDate(dateStr)
+            var resolved = st.priceByDate[dateStr] != null
+                ? dateStr
+                : resolveSimChartHoverDate(dateStr, st.klineDates)
+            if (!resolved) return
+            var price = st.priceByDate[resolved]
+            if (price == null) return
+            st.suppressSync = true
+            try {
+                st.chart.setCrosshairPosition(price, resolved, st.lineSeries)
+            } catch (e) { /* ignore */ }
+            updateSimDetailTooltip(resolved, null)
+            st.suppressSync = false
+        }
+
+        function clearSimDetailCrosshair() {
+            var st = simDetailChartState
+            if (!st.chart) return
+            try {
+                st.chart.clearCrosshairPosition()
+            } catch (e) { /* ignore */ }
+            hideSimDetailTooltip()
+        }
+
+        function destroySimDetailChart() {
+            var chartEl = document.getElementById('simDetailChart')
+            if (chartEl) {
+                destroyChart(chartEl._chartInstance)
+                chartEl.innerHTML = ''
+                delete chartEl._chartInstance
+            }
+            simDetailChartState.chart = null
+            simDetailChartState.lineSeries = null
+            simDetailChartState.klineDates = []
+            simDetailChartState.priceByDate = {}
+            simDetailChartState.guideByDate = {}
+            simDetailChartState.tradeByDate = {}
+            simDetailChartState.tooltipEl = null
+            simDetailChartState.containerEl = null
+            simDetailChartState.suppressSync = false
+        }
+
+        function mountSimDetailChart(cached) {
+            destroySimDetailChart()
+            var chartEl = document.getElementById('simDetailChart')
+            if (!chartEl) return
+
+            var slice = getSimDetailChartKlines(cached)
+            if (!slice.length) {
+                chartEl.innerHTML = '<div class="sim-detail-empty" style="padding:40px 12px">暂无 K 线数据</div>'
+                return
+            }
+
+            var market = cached.market || 'cn'
+            var guideByDate = buildSimDetailGuideByDate(
+                cached.klines || [],
+                market,
+                cached.price,
+                cached.entryStartDate
+            )
+            var priceByDate = {}
+            var klineDates = []
+            var lineData = slice.map(function (k) {
+                priceByDate[k.date] = k.close
+                klineDates.push(k.date)
+                if (guideByDate[k.date]) {
+                    guideByDate[k.date].close = k.close
+                }
+                return { time: k.date, value: k.close }
+            })
+            simDetailChartState.priceByDate = priceByDate
+            simDetailChartState.klineDates = klineDates
+            simDetailChartState.guideByDate = guideByDate
+            simDetailChartState.tradeByDate = buildSimTradeByDate(cached)
+            simDetailChartState.market = market
+            simDetailChartState.maLabel = getMaLabel(market)
+
+            whenChartContainerReady(chartEl, function () {
+                if (!chartEl.isConnected) return
+                var width = Math.max(chartEl.clientWidth, 1)
+                var height = Math.max(chartEl.clientHeight, 1)
+                var tooltip = document.createElement('div')
+                tooltip.className = 'chart-tooltip'
+                chartEl.appendChild(tooltip)
+                simDetailChartState.tooltipEl = tooltip
+                simDetailChartState.containerEl = chartEl
+
+                var chart = LightweightCharts.createChart(chartEl, {
+                    width: width,
+                    height: height,
+                    layout: {
+                        background: { color: '#161b22' },
+                        textColor: '#8b949e',
+                        attributionLogo: false
+                    },
+                    grid: {
+                        vertLines: { visible: false },
+                        horzLines: { color: '#30363d' }
+                    },
+                    rightPriceScale: {
+                        borderColor: '#30363d',
+                        borderVisible: true
+                    },
+                    timeScale: {
+                        borderColor: '#30363d',
+                        timeVisible: true,
+                        fixLeftEdge: true,
+                        fixRightEdge: true
+                    },
+                    crosshair: {
+                        vertLine: { color: '#58a6ff', width: 1, style: 2, labelVisible: true },
+                        horzLine: { visible: false, labelVisible: false }
+                    },
+                    handleScroll: {
+                        mouseWheel: true,
+                        pressedMouseMove: true,
+                        horzTouchDrag: true,
+                        vertTouchDrag: false
+                    },
+                    handleScale: {
+                        mouseWheel: true,
+                        pinch: true,
+                        axisPressedMouseMove: true
+                    }
+                })
+
+                var lineSeries = chart.addLineSeries(Object.assign({
+                    color: CHART_LINE_COLOR,
+                    lineWidth: 2,
+                    lastValueVisible: true,
+                    priceLineVisible: false
+                }, SERIES_LABEL_OPTS))
+                lineSeries.setData(lineData)
+                lineSeries.setMarkers(buildSimTradeMarkers(slice, simDetailChartState.tradeByDate))
+                addSimDetailGuideLines(chart, slice, guideByDate)
+
+                chart.timeScale().fitContent()
+
+                chart.subscribeCrosshairMove(function (param) {
+                    if (simDetailChartState.suppressSync) return
+                    if (!param.time || !param.point ||
+                        param.point.x < 0 || param.point.y < 0 ||
+                        param.point.x > chartEl.clientWidth ||
+                        param.point.y > chartEl.clientHeight) {
+                        clearSimDetailRowHighlight()
+                        hideSimDetailTooltip()
+                        return
+                    }
+                    var hoverDate = formatCrosshairTime(param.time)
+                    var resolved = resolveSimChartHoverDate(hoverDate, simDetailChartState.klineDates)
+                    if (!resolved) {
+                        clearSimDetailRowHighlight()
+                        hideSimDetailTooltip()
+                        return
+                    }
+                    var rowIndex = findSimRowIndexForDate(resolved, simDetailChartState.rowMeta)
+                    if (rowIndex >= 0) {
+                        highlightSimDetailRow(rowIndex)
+                    } else {
+                        clearSimDetailRowHighlight()
+                    }
+                    updateSimDetailTooltip(resolved, param)
+                })
+
+                chartEl.addEventListener('mouseleave', function () {
+                    if (simDetailChartState.suppressSync) return
+                    clearSimDetailRowHighlight()
+                    hideSimDetailTooltip()
+                })
+
+                chartEl._chartInstance = chart
+                simDetailChartState.chart = chart
+                simDetailChartState.lineSeries = lineSeries
+            })
+        }
+
+        function bindSimDetailTableHover() {
+            var bodyEl = document.getElementById('simDetailBody')
+            if (!bodyEl || bodyEl.dataset.simHoverBound === '1') return
+            bodyEl.dataset.simHoverBound = '1'
+
+            bodyEl.addEventListener('mouseover', function (e) {
+                var tr = e.target.closest('tr[data-sim-row]')
+                if (!tr || !bodyEl.contains(tr)) return
+                var rowIndex = parseInt(tr.dataset.simRow, 10)
+                var dateStr = tr.dataset.simDate
+                if (isNaN(rowIndex) || !dateStr) return
+                simDetailChartState.suppressSync = true
+                highlightSimDetailRow(rowIndex)
+                setSimDetailCrosshair(dateStr)
+                simDetailChartState.suppressSync = false
+            })
+
+            bodyEl.addEventListener('mouseleave', function (e) {
+                if (e.relatedTarget && bodyEl.contains(e.relatedTarget)) return
+                clearSimDetailRowHighlight()
+                clearSimDetailCrosshair()
+            })
         }
 
         function appendSimDetailRow(op, index, market, prevPrice) {
@@ -4926,13 +6004,17 @@
                 priceDeltaHtml = '<span class="sim-price-delta muted">(--)</span>'
             }
             return {
-                html: '<tr>' +
+                html: '<tr data-sim-row="' + index + '" data-sim-date="' + escapeHtml(normalizeTradeDate(op.date)) + '">' +
                     '<td>' + escapeHtml(op.date) + '</td>' +
                     '<td class="' + actionCls + '">' + actionLabel + '</td>' +
                     '<td>' + formatPrice(op.price, market) + priceDeltaHtml + '</td>' +
                     '<td class="' + valueCls + '">' + formatSimValuePct(op.valuePct) + '</td>' +
                 '</tr>',
-                prevPrice: op.price
+                prevPrice: op.price,
+                rowMeta: {
+                    index: index,
+                    date: normalizeTradeDate(op.date)
+                }
             }
         }
 
@@ -4964,13 +6046,16 @@
             var market = cached.market
             var ops = sim.operations || []
             if (!ops.length && !sim.holdingAtEnd) {
+                simDetailChartState.rowMeta = []
                 return '<div class="sim-detail-empty">模拟期内无买卖操作</div>'
             }
             var rows = ''
             var prevPrice = null
+            var rowMeta = []
             ops.forEach(function (op, index) {
                 var row = appendSimDetailRow(op, index, market, prevPrice)
                 rows += row.html
+                rowMeta.push(row.rowMeta)
                 prevPrice = row.prevPrice
             })
             if (sim.holdingAtEnd) {
@@ -4979,14 +6064,17 @@
                 if (markPrice != null && sim.holdPrice > 0 && markPrice !== sim.holdPrice) {
                     holdValuePct = sim.holdValuePct * (markPrice / sim.holdPrice)
                 }
+                var holdDate = formatDateISO(new Date())
                 var holdRow = appendSimDetailRow({
-                    date: formatDateISO(new Date()),
+                    date: holdDate,
                     action: 'holding',
                     price: markPrice,
                     valuePct: holdValuePct
                 }, ops.length, market, prevPrice)
                 rows += holdRow.html
+                rowMeta.push(holdRow.rowMeta)
             }
+            simDetailChartState.rowMeta = rowMeta
             return '<table class="sim-detail-table">' +
                 '<thead><tr><th>交易日期</th><th>操作</th><th>成交价</th><th>账户净值</th></tr></thead>' +
                 '<tbody>' + rows + '</tbody>' +
@@ -5000,6 +6088,8 @@
             if (!cached || !controlsEl || !bodyEl) return
             controlsEl.innerHTML = buildSimDetailControlsHtml(itemId, cached)
             bodyEl.innerHTML = buildSimDetailTableHtml(cached)
+            mountSimDetailChart(cached)
+            bindSimDetailTableHover()
         }
 
         function showSimDetailDialog(itemId) {
@@ -5020,11 +6110,15 @@
             var summary = cached.summary || getStrategySummaryText(cached.market)
             titleEl.textContent = (cached.name || cached.symbol) + ' · 模拟操作记录'
             hintEl.textContent = summary
-            renderSimDetailContent(itemId)
             overlay.classList.add('show')
+            renderSimDetailContent(itemId)
         }
 
         function closeSimDetailDialog() {
+            destroySimDetailChart()
+            simDetailChartState.rowMeta = []
+            var bodyEl = document.getElementById('simDetailBody')
+            if (bodyEl) delete bodyEl.dataset.simHoverBound
             var overlay = document.getElementById('simDetailOverlay')
             if (overlay) overlay.classList.remove('show')
         }
@@ -5058,8 +6152,7 @@
                     var sim = rerunSimDetail(itemId, input.value)
                     if (!sim) return
                     input.value = watchlistSimCache[itemId].entryStartDate
-                    var bodyEl = document.getElementById('simDetailBody')
-                    if (bodyEl) bodyEl.innerHTML = buildSimDetailTableHtml(watchlistSimCache[itemId])
+                    renderSimDetailContent(itemId)
                 })
             }
             document.addEventListener('keydown', function (e) {
@@ -5295,7 +6388,8 @@
                 klines: klines,
                 flow: meta.flow,
                 flowLabel: meta.flowLabel,
-                isMutualFund: !!watchlistMutualFundCache[item.id]
+                isMutualFund: !!watchlistMutualFundCache[item.id],
+                quoteTime: meta.quoteTime
             }
         }
 
@@ -5410,7 +6504,7 @@
             detailPanel.innerHTML =
                 '<div class="detail-name">' + buildFundNameHtml(data.name) + '</div>' +
                 '<div class="detail-meta-row">' +
-                    '<div class="detail-meta"><span class="market-badge">' + MARKET_LABELS[data.market] + '</span> ' + escapeHtml(data.symbol) + '</div>' +
+                    '<div class="detail-meta">' + buildSymbolMetaHtml(data.market, data.symbol, data.quoteTime) + '</div>' +
                 '</div>' +
                 holdRowHtml +
                 '<div class="card-stats">' +
@@ -5650,7 +6744,7 @@
                 return '<div class="card-header">' +
                         '<div class="card-title">' + buildFundNameHtml(item.name) + '</div>' +
                         '<div class="card-meta-row">' +
-                            '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
+                            '<div class="card-symbol">' + buildSymbolMetaHtml(item.market, item.symbol, data.quoteTime) + '</div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="card-error">加载失败：' + escapeHtml(data.error) + '</div>'
@@ -5673,7 +6767,7 @@
             return '<div class="card-header">' +
                     '<div class="card-title">' + buildFundNameHtml(data.name || item.name) + '</div>' +
                     '<div class="card-meta-row">' +
-                        '<div class="card-symbol"><span class="market-badge">' + MARKET_LABELS[item.market] + '</span> ' + escapeHtml(item.symbol) + '</div>' +
+                        '<div class="card-symbol">' + buildSymbolMetaHtml(item.market, item.symbol, data.quoteTime) + '</div>' +
                     '</div>' +
                     holdRowHtml +
                 '</div>' +
@@ -5729,7 +6823,8 @@
                 tencentSymbol: data.tencentSymbol,
                 secid: data.secid,
                 isMutualFund: !!data.isMutualFund,
-                klines: data.klines
+                klines: data.klines,
+                quoteTime: data.quoteTime
             }
             watchlistMutualFundCache[item.id] = !!data.isMutualFund
             watchlistMarketCache[item.id] = item.market
@@ -5895,7 +6990,8 @@
                 tencentSymbol: data.tencentSymbol,
                 secid: data.secid,
                 isMutualFund: !!data.isMutualFund,
-                klines: data.klines
+                klines: data.klines,
+                quoteTime: data.quoteTime
             }
 
             mountWatchlistCardChart(item, data)
