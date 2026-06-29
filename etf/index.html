@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETF 投资辅助分析</title>
+    <title>投资辅助分析</title>
     <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; }
@@ -251,6 +251,52 @@
             font-size: .9rem;
         }
 
+        .search-result-panel {
+            padding: 4px 0;
+        }
+
+        .search-result-hint {
+            margin: 0 0 12px;
+            font-size: .85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .search-result-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-result-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+            color: inherit;
+            font: inherit;
+        }
+
+        .search-result-item:hover {
+            border-color: var(--primary);
+        }
+
+        .search-result-name {
+            font-size: .9rem;
+            font-weight: 600;
+        }
+
+        .search-result-meta {
+            font-size: .75rem;
+            color: var(--text-muted);
+        }
+
         .detail-meta {
             display: flex;
             align-items: center;
@@ -403,6 +449,32 @@
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
+        }
+
+        .chart-detail-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 14px;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            font-size: .8rem;
+            color: var(--primary);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .chart-detail-link:hover {
+            border-color: var(--primary);
+            text-decoration: none;
+        }
+
+        .chart-tabs-sm .chart-detail-link {
+            padding: 2px 8px;
+            font-size: .68rem;
+        }
+
+        .detail-panel .chart-detail-link {
+            padding: 4px 9px;
         }
 
         .chart-tabs-sm {
@@ -709,6 +781,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            z-index: 21;
             transition: background .15s, color .15s, border-color .15s;
         }
 
@@ -1572,7 +1646,7 @@
     <div class="app" id="app">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h1>搜索/添加基金</h1>
+                <h1>搜索/添加标的</h1>
                 <button type="button" class="sidebar-toggle-btn" id="sidebarCollapseBtn" aria-expanded="true" aria-label="折叠侧边栏" title="折叠">‹</button>
             </div>
             <div class="sidebar-body" id="sidebarBody">
@@ -1582,16 +1656,16 @@
                         <select id="marketSelect"></select>
                     </div>
                     <div class="form-row">
-                        <label for="symbolInput">ETF 代码</label>
+                        <label for="symbolInput">代码或名称</label>
                         <div class="search-row">
-                            <input type="text" id="symbolInput" autocomplete="off">
+                            <input type="text" id="symbolInput" autocomplete="off" placeholder="如 600519、贵州茅台">
                             <button type="submit" class="btn btn-primary" id="searchBtn">搜索</button>
                             <button type="button" class="btn btn-primary" id="randomSearchBtn">随机</button>
                         </div>
                     </div>
                 </form>
                 <div class="detail-panel" id="detailPanel">
-                    <div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>
+                    <div class="detail-empty">选择市场并输入代码或名称开始搜索</div>
                 </div>
             </div>
         </aside>
@@ -1616,7 +1690,7 @@
             <div id="watchlistContainer">
                 <div class="watchlist-empty">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-                    <p>暂无关注 ETF，搜索后点击「加入关注」</p>
+                    <p>暂无关注标的，搜索后点击「加入关注」</p>
                 </div>
             </div>
         </main>
@@ -1677,6 +1751,9 @@
         var TW_CACHE_TTL_LIGHT = 300000
         var TW_CACHE_TTL_FULL = 600000
         var TW_QUOTE_REFRESH_MS = 5000
+        var CN_MUTUAL_CACHE_TTL_LIGHT = 300000
+        var CN_MUTUAL_CACHE_TTL_FULL = 600000
+        var CN_MUTUAL_QUOTE_REFRESH_MS = 60000
         var STORAGE_KEY = 'etf_watchlist'
         var STRATEGY_STORAGE_KEY = 'etf_trade_strategy'
         var HOLD_POSITION_STORAGE_KEY = 'etf_hold_position'
@@ -1685,13 +1762,15 @@
         var CHART_30DAYS = 30
         var CHART_90DAYS = 90
         var CHART_180DAYS = 180
+        var PRICE_DECIMALS = 4
         var MARKET_LABELS = { cn: '大陆', tw: '台湾' }
 
         var RANDOM_SYMBOL_POOLS = {
             cn: [
-                '510300', '510500', '159915', '512880', '518880', '588000', '512690',
-                '512660', '513050', '512480', '510050', '159922', '512000', '515790',
-                '016185', '110022', '161725', '006327', '512170', '159869'
+                '600519', '000858', '601318', '300750', '002594',
+                '510300', '510500', '159915', '512880', '518880',
+                '588000', '512690', '512660', '513050', '512480',
+                '110022', '161725', '006327', '512170', '159869'
             ],
             tw: [
                 '0050', '0056', '00878', '006208', '00713', '00919', '00929', '00881',
@@ -1754,6 +1833,27 @@
         var CORS_PROXY_IO_PREFIX = 'https://corsproxy.io/?url='
         var twDataCache = {}
         var twSplitEventCache = {}
+        var cnMutualFundCache = {}
+        var twStockInfoCache = null
+        var twStockInfoLoading = null
+        var CN_SEARCH_CLASSIFY_LABELS = {
+            AStock: '股票',
+            Fund: 'ETF/场内基金',
+            OTCFUND: '场外基金',
+            Index: '指数'
+        }
+        var CN_SEARCH_ALLOWED_CLASSIFY = {
+            AStock: 1,
+            Fund: 1,
+            OTCFUND: 1,
+            Index: 1
+        }
+        var CN_CODE_CLASSIFY_PRIORITY = {
+            AStock: 0,
+            Fund: 1,
+            Index: 2,
+            OTCFUND: 3
+        }
 
         /* ===== DOM ===== */
         var searchForm = document.getElementById('searchForm')
@@ -1805,10 +1905,55 @@
         }
 
         /* ===== 工具函数 ===== */
+        function roundPrice(val) {
+            if (val == null || isNaN(val)) return null
+            return Number(Number(val).toFixed(PRICE_DECIMALS))
+        }
+
+        function roundKlineBar(bar) {
+            if (!bar) return bar
+            ;['open', 'high', 'low', 'close'].forEach(function (field) {
+                if (bar[field] != null && !isNaN(bar[field])) {
+                    bar[field] = roundPrice(bar[field])
+                }
+            })
+            return bar
+        }
+
+        function roundKlines(klines) {
+            if (!klines || !klines.length) return klines
+            return klines.map(function (bar) { return roundKlineBar(bar) })
+        }
+
+        function roundIntraday(intraday) {
+            if (!intraday) return intraday
+            if (intraday.preClose != null && !isNaN(intraday.preClose)) {
+                intraday.preClose = roundPrice(intraday.preClose)
+            }
+            if (intraday.points && intraday.points.length) {
+                intraday.points.forEach(function (point) {
+                    if (point.price != null && !isNaN(point.price)) {
+                        point.price = roundPrice(point.price)
+                    }
+                })
+            }
+            return intraday
+        }
+
+        function calcThresholdPrice(maVal, threshold) {
+            if (maVal == null || isNaN(maVal) || threshold == null || isNaN(threshold)) return null
+            return roundPrice(maVal * threshold)
+        }
+
+        function calcPriceFromEntryPct(entry, pct) {
+            if (entry == null || entry <= 0 || pct == null || isNaN(pct)) return null
+            return roundPrice(entry * (1 + pct / 100))
+        }
+
         function formatPrice(val, market) {
             if (val == null || isNaN(val)) return '--'
-            var decimals = market === 'tw' ? 2 : 3
-            return Number(val).toFixed(decimals)
+            var rounded = roundPrice(val)
+            return rounded == null ? '--' : rounded.toFixed(PRICE_DECIMALS)
         }
 
         function formatPct(val) {
@@ -1871,29 +2016,113 @@
             return marketLocalTimeToUnix(market || 'cn', dateStr, 15, 0) * 1000
         }
 
-        function resolveQuoteTime(data) {
-            if (!data || data.quoteTime != null) return data
-            if (data.market === 'tw' && needsTWLiveQuote(data)) {
-                return data
+        function parseCNGzTimeString(raw, market) {
+            if (raw == null || raw === '') return null
+            var s = String(raw).trim()
+            var m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?$/)
+            if (!m) return null
+            var dateStr = m[1] + '-' + m[2] + '-' + m[3]
+            var marketKey = market || 'cn'
+            var hour = m[4] != null ? parseInt(m[4], 10) : null
+            var minute = m[5] != null ? parseInt(m[5], 10) : 0
+            if (hour == null) {
+                if (isMarketOpen(marketKey)) return getMarketNowTimestamp()
+                hour = 15
+                minute = 0
             }
-            if (data.intraday && data.intraday.points && data.intraday.points.length) {
-                var lastPoint = data.intraday.points[data.intraday.points.length - 1]
-                if (lastPoint.time) {
-                    data.quoteTime = lastPoint.time * 1000
+            if (isNaN(hour) || isNaN(minute)) return null
+            return marketLocalTimeToUnix(marketKey, dateStr, hour, minute) * 1000
+        }
+
+        function normalizeCNMutualFundEstimateRow(row) {
+            if (!row) return null
+            var navDate = row.jzrq || row.PDATE || row.FSRQ || ''
+            var gztime = row.gztime || row.GZTIME || ''
+            var navDateNorm = normalizeTradeDate(navDate)
+            var gzDateNorm = gztime ? normalizeTradeDate(String(gztime).slice(0, 10)) : ''
+            var publishedToday = navDateNorm && gzDateNorm && navDateNorm === gzDateNorm && !isMarketOpen('cn')
+            var estimateRaw = row.gsz != null ? row.gsz : row.GSZ
+            var hasLiveEstimate = estimateRaw != null && estimateRaw !== '' && !isNaN(parseFloat(estimateRaw))
+            if (isMarketOpen('cn') && !publishedToday && !hasLiveEstimate) return null
+            var price = publishedToday
+                ? parseFloat(row.dwjz != null ? row.dwjz : row.NAV)
+                : parseFloat(estimateRaw)
+            if (isNaN(price)) price = parseFloat(row.dwjz != null ? row.dwjz : row.NAV)
+            if (isNaN(price)) return null
+            var changePct = publishedToday
+                ? parseFloat(row.NAVCHGRT != null ? row.NAVCHGRT : row.gszzl)
+                : parseFloat(row.gszzl != null ? row.gszzl : row.GSZZL)
+            if (isNaN(changePct)) changePct = 0
+            var preClose = parseFloat(row.dwjz != null ? row.dwjz : row.NAV)
+            return {
+                name: row.name || row.SHORTNAME || row.FCODE || '',
+                price: roundPrice(price),
+                changePct: changePct,
+                navDate: navDate,
+                gztime: gztime,
+                preClose: isNaN(preClose) ? null : roundPrice(preClose),
+                quoteTime: parseCNGzTimeString(gztime, 'cn') ||
+                    (navDateNorm ? quoteTimeFromNavDate(navDateNorm, 'cn') : null),
+                isEstimate: !publishedToday
+            }
+        }
+
+        function getMarketNowTimestamp() {
+            return Date.now()
+        }
+
+        function isQuoteTimeInFuture(tsMs) {
+            if (tsMs == null || isNaN(tsMs)) return false
+            return tsMs > Date.now() + 60000
+        }
+
+        function getSessionCloseTimestamp(market, dateStr) {
+            var session = MARKET_SESSION[market] || MARKET_SESSION.cn
+            return marketLocalTimeToUnix(market, dateStr, session.close[0], session.close[1]) * 1000
+        }
+
+        function quoteTimeFromIntraday(data) {
+            if (!data || !data.intraday || !data.intraday.points || !data.intraday.points.length) return null
+            var lastPoint = data.intraday.points[data.intraday.points.length - 1]
+            return lastPoint.time ? lastPoint.time * 1000 : null
+        }
+
+        function resolveQuoteTime(data) {
+            if (!data || data.error) return data
+            var market = data.market || 'cn'
+            var intradayTs = quoteTimeFromIntraday(data)
+
+            if (intradayTs != null) {
+                if (data.quoteTime == null || isQuoteTimeInFuture(data.quoteTime) || isMarketOpen(market)) {
+                    data.quoteTime = intradayTs
                     return data
                 }
             }
+
+            if (data.quoteTime != null) {
+                if (isQuoteTimeInFuture(data.quoteTime)) {
+                    data.quoteTime = isMarketOpen(market) ? getMarketNowTimestamp() : data.quoteTime
+                }
+                return data
+            }
+
+            if (data.market === 'tw' && needsTWLiveQuote(data)) {
+                if (isMarketOpen(market)) {
+                    data.quoteTime = getMarketNowTimestamp()
+                }
+                return data
+            }
+
             if (data.klines && data.klines.length) {
                 var lastBar = data.klines[data.klines.length - 1]
                 var dateStr = normalizeTradeDate(lastBar.date)
                 if (dateStr) {
-                    var session = MARKET_SESSION[data.market] || MARKET_SESSION.cn
-                    data.quoteTime = marketLocalTimeToUnix(
-                        data.market,
-                        dateStr,
-                        session.close[0],
-                        session.close[1]
-                    ) * 1000
+                    var today = getMarketDateString(market)
+                    if (dateStr === today && isMarketOpen(market)) {
+                        data.quoteTime = getMarketNowTimestamp()
+                    } else {
+                        data.quoteTime = getSessionCloseTimestamp(market, dateStr)
+                    }
                 }
             }
             return data
@@ -1901,6 +2130,9 @@
 
         function finalizeQuotePayload(data) {
             if (!data || data.error) return data
+            if (data.price != null && !isNaN(data.price)) data.price = roundPrice(data.price)
+            if (data.klines) data.klines = roundKlines(data.klines)
+            if (data.intraday) data.intraday = roundIntraday(data.intraday)
             return resolveQuoteTime(data)
         }
 
@@ -2024,7 +2256,7 @@
             var cost = rec.costPrice
             return {
                 held: true,
-                costPrice: cost != null && !isNaN(cost) && cost > 0 ? Number(cost) : null
+                costPrice: cost != null && !isNaN(cost) && cost > 0 ? roundPrice(cost) : null
             }
         }
 
@@ -2034,8 +2266,8 @@
             if (held) {
                 var rec = { held: true }
                 var prevCost = map[itemId] && map[itemId].costPrice
-                var nextCost = costPrice != null && costPrice > 0 ? costPrice : prevCost
-                if (nextCost != null && nextCost > 0) rec.costPrice = Number(nextCost)
+                var nextCost = costPrice != null && costPrice > 0 ? roundPrice(costPrice) : prevCost
+                if (nextCost != null && nextCost > 0) rec.costPrice = nextCost
                 map[itemId] = rec
             } else {
                 delete map[itemId]
@@ -2049,7 +2281,7 @@
             var rec = map[itemId]
             if (!rec || !rec.held) return
             if (costPrice != null && costPrice > 0) {
-                rec.costPrice = Number(costPrice)
+                rec.costPrice = roundPrice(costPrice)
             } else {
                 delete rec.costPrice
             }
@@ -2061,8 +2293,7 @@
             if (val == null || String(val).trim() === '') return null
             var n = parseFloat(val)
             if (isNaN(n) || n <= 0) return null
-            var decimals = market === 'tw' ? 2 : 3
-            return Number(n.toFixed(decimals))
+            return roundPrice(n)
         }
 
         function getCurrentPriceForItem(itemId) {
@@ -2120,7 +2351,7 @@
             var lastIdx = klines.length - 1
             var lastDate = klines[lastIdx].date
             var marketToday = getMarketDateString(market)
-            var livePrice = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
+            var livePrice = currentPrice != null && !isNaN(currentPrice) ? roundPrice(currentPrice) : null
             var sessionOpen = isMarketOpen(market)
 
             if (sessionOpen && livePrice != null) {
@@ -2128,16 +2359,17 @@
                     if (klines.length < period) return null
                     var sumToday = livePrice
                     for (var i = lastIdx - period + 1; i < lastIdx; i++) sumToday += klines[i].close
-                    return sumToday / period
+                    return roundPrice(sumToday / period)
                 }
                 if (klines.length < period - 1) return null
                 var sumNewDay = livePrice
                 for (var j = lastIdx - (period - 2); j <= lastIdx; j++) sumNewDay += klines[j].close
-                return sumNewDay / period
+                return roundPrice(sumNewDay / period)
             }
 
             if (klines.length < period) return null
-            return calcMaSeries(klines, period)[lastIdx]
+            var maVal = calcMaSeries(klines, period)[lastIdx]
+            return maVal == null ? null : roundPrice(maVal)
         }
 
         function buildDailyMaByDate(klines, currentPrice, market, period) {
@@ -2167,12 +2399,12 @@
         function getBarEffectiveClose(klines, index, currentPrice, market) {
             var bar = klines[index]
             if (!bar || bar.close == null || isNaN(bar.close)) return null
-            if (index !== klines.length - 1) return bar.close
-            var live = currentPrice != null && !isNaN(currentPrice) ? Number(currentPrice) : null
-            if (live == null) return bar.close
+            if (index !== klines.length - 1) return roundPrice(bar.close)
+            var live = currentPrice != null && !isNaN(currentPrice) ? roundPrice(currentPrice) : null
+            if (live == null) return roundPrice(bar.close)
             var marketToday = getMarketDateString(market)
             if (bar.date === marketToday || isMarketOpen(market)) return live
-            return bar.close
+            return roundPrice(bar.close)
         }
 
         function formatThresholdOffset(threshold) {
@@ -2387,7 +2619,7 @@
                 }
                 sum = 0
                 for (j = i - p + 1; j <= i; j++) sum += klines[j].close
-                result.push(sum / p)
+                result.push(roundPrice(sum / p))
             }
             return result
         }
@@ -2413,8 +2645,8 @@
                 levels = { buy: null, sell: null }
 
                 if (baseMa != null) {
-                    levels.buy = baseMa * strategy.buyThreshold
-                    levels.sell = baseMa * strategy.sellThreshold
+                    levels.buy = calcThresholdPrice(baseMa, strategy.buyThreshold)
+                    levels.sell = calcThresholdPrice(baseMa, strategy.sellThreshold)
                 }
                 result[normalizeTradeDate(klines[i].date)] = levels
             }
@@ -2791,7 +3023,7 @@
         function buildHoldPositionRowHtml(itemId, market, holdPos, adviceHtml, rowClass) {
             var held = !!(holdPos && holdPos.held)
             var costVal = holdPos && holdPos.costPrice != null ? formatPrice(holdPos.costPrice, market) : ''
-            var step = market === 'tw' ? '0.01' : '0.001'
+            var step = '0.0001'
             return '<div class="' + (rowClass || 'card-hold-row') + '">' +
                 '<label class="hold-position-check">' +
                     '<input type="checkbox" class="hold-position-input" data-item-id="' + escapeHtml(itemId) + '"' +
@@ -2914,13 +3146,13 @@
                 refs.push({
                     label: '止损',
                     op: 'lt',
-                    price: simEntry * (1 + strategy.stopLossPct / 100)
+                    price: calcPriceFromEntryPct(simEntry, strategy.stopLossPct)
                 })
                 return refs
             }
 
             var sellMaVal = (sellReason === 'trail' || useTrail) ? sellMaConfig.trailMa : sellMaConfig.baseMa
-            var sellLine = sellMaVal != null ? sellMaVal * strategy.sellThreshold : null
+            var sellLine = calcThresholdPrice(sellMaVal, strategy.sellThreshold)
             if (sellLine != null) {
                 refs.push({
                     label: sellReason === 'trail' || useTrail ? '止盈' : '卖',
@@ -2941,14 +3173,14 @@
                 refs.push({
                     label: '止损',
                     op: 'lt',
-                    price: simEntry * (1 + strategy.stopLossPct / 100)
+                    price: calcPriceFromEntryPct(simEntry, strategy.stopLossPct)
                 })
             }
             if (hasSimEntry && isTrailProfitEnabled(strategy) && !useTrail) {
                 refs.push({
                     label: '止盈+' + strategy.trailProfitPct + '%',
                     op: 'gt',
-                    price: simEntry * (1 + strategy.trailProfitPct / 100)
+                    price: calcPriceFromEntryPct(simEntry, strategy.trailProfitPct)
                 })
             }
             return refs
@@ -2980,7 +3212,7 @@
             sellMaLabel = useTrail ? sellMaConfig.trailLabel : sellMaConfig.baseLabel
             sellLine = null
             if (sellMaVal != null) {
-                sellLine = sellMaVal * strategy.sellThreshold
+                sellLine = calcThresholdPrice(sellMaVal, strategy.sellThreshold)
                 if (close < sellLine) {
                     return {
                         action: 'sell',
@@ -3066,7 +3298,7 @@
             }
 
             if (state.pendingBuy) {
-                buyLine = baseMa != null ? baseMa * strategy.buyThreshold : null
+                buyLine = calcThresholdPrice(baseMa, strategy.buyThreshold)
                 return {
                     action: 'add',
                     label: '建议买入',
@@ -3075,7 +3307,7 @@
                 }
             }
 
-            buyLine = baseMa != null ? baseMa * strategy.buyThreshold : null
+            buyLine = calcThresholdPrice(baseMa, strategy.buyThreshold)
             streak = state.buyStreak
             todayMeetsBuy = baseMa != null && close > buyLine
             if (todayMeetsBuy) {
@@ -3163,7 +3395,7 @@
             operations.push({
                 date: date,
                 action: action,
-                price: price,
+                price: roundPrice(price),
                 valuePct: startEquity ? (equity / startEquity) * 100 : 100,
                 note: note || ''
             })
@@ -3454,23 +3686,43 @@
 
         async function fetchRemote(url, options) {
             options = options || {}
+            var timeoutMs = options.timeoutMs != null ? options.timeoutMs : 30000
             var fetchOpts = {}
             if (options.headers) fetchOpts.headers = options.headers
-            var asJson = options.asJson === true
-            var allowHtml = options.allowHtml === true
+
+            async function fetchWithTimeout(targetUrl) {
+                if (typeof AbortController === 'undefined' || timeoutMs <= 0) {
+                    return fetch(targetUrl, fetchOpts)
+                }
+                var controller = new AbortController()
+                var timer = setTimeout(function () {
+                    controller.abort()
+                }, timeoutMs)
+                var reqOpts = Object.assign({}, fetchOpts, { signal: controller.signal })
+                try {
+                    return await fetch(targetUrl, reqOpts)
+                } catch (e) {
+                    if (e && e.name === 'AbortError') {
+                        throw new Error('请求超时')
+                    }
+                    throw e
+                } finally {
+                    clearTimeout(timer)
+                }
+            }
 
             async function parseResponse(resp) {
                 if (!resp.ok) throw new Error('HTTP ' + resp.status)
                 var text = await resp.text()
-                if (!allowHtml && text.trim().charAt(0) === '<') {
+                if (!options.allowHtml && text.trim().charAt(0) === '<') {
                     throw new Error('接口返回异常')
                 }
-                return asJson ? JSON.parse(text) : text
+                return options.asJson ? JSON.parse(text) : text
             }
 
             var lastErr = null
             try {
-                return await parseResponse(await fetch(url, fetchOpts))
+                return await parseResponse(await fetchWithTimeout(url))
             } catch (e) {
                 lastErr = e
             }
@@ -3478,7 +3730,7 @@
             var proxies = buildCorsProxyUrls(url)
             for (var i = 0; i < proxies.length; i++) {
                 try {
-                    return await parseResponse(await fetch(proxies[i], fetchOpts))
+                    return await parseResponse(await fetchWithTimeout(proxies[i]))
                 } catch (e) {
                     lastErr = e
                 }
@@ -3875,6 +4127,41 @@
             return secid && secid.indexOf('150.') === 0
         }
 
+        async function fetchCNMutualFundEstimateFundGz(code) {
+            try {
+                var text = await fetchFundText(
+                    'https://fundgz.1234567.com.cn/js/' + encodeURIComponent(code) + '.js?_=' + Date.now()
+                )
+                if (text) {
+                    var match = text.match(/jsonpgz\(\s*(\{[\s\S]*?\})\s*\)/)
+                    if (match) {
+                        var parsed = normalizeCNMutualFundEstimateRow(JSON.parse(match[1]))
+                        if (parsed) return parsed
+                    }
+                }
+            } catch (e) { /* ignore */ }
+            return fetchCNMutualFundEstimateJSONP(code)
+        }
+
+        function buildCNMutualFundIntradayFromEstimate(estimate) {
+            if (!estimate || estimate.quoteTime == null || estimate.price == null) return null
+            var tradingDate = getMarketDateString('cn')
+            var quoteSec = Math.floor(estimate.quoteTime / 1000)
+            var gzMatch = String(estimate.gztime || '').match(/(\d{1,2}):(\d{2})/)
+            var label = gzMatch
+                ? pad2(parseInt(gzMatch[1], 10)) + ':' + pad2(parseInt(gzMatch[2], 10))
+                : ''
+            return {
+                tradingDate: tradingDate,
+                preClose: estimate.preClose,
+                points: [{
+                    time: quoteSec,
+                    price: estimate.price,
+                    label: label
+                }]
+            }
+        }
+
         function fetchCNMutualFundEstimateJSONP(code) {
             return new Promise(function (resolve) {
                 var timer = setTimeout(function () { cleanup(); resolve(null) }, 8000)
@@ -3889,24 +4176,7 @@
 
                 window.jsonpgz = function (data) {
                     cleanup()
-                    if (!data) {
-                        resolve(null)
-                        return
-                    }
-                    var price = parseFloat(data.gsz)
-                    if (isNaN(price)) price = parseFloat(data.dwjz)
-                    if (isNaN(price)) {
-                        resolve(null)
-                        return
-                    }
-                    var changePct = parseFloat(data.gszzl)
-                    if (isNaN(changePct)) changePct = 0
-                    resolve({
-                        name: data.name || code,
-                        price: price,
-                        changePct: changePct,
-                        navDate: data.jzrq || ''
-                    })
+                    resolve(normalizeCNMutualFundEstimateRow(data))
                 }
 
                 script.onerror = function () { cleanup(); resolve(null) }
@@ -3915,30 +4185,103 @@
             })
         }
 
-        async function fetchCNMutualFundEstimate(code) {
-            var jsonpResult = await fetchCNMutualFundEstimateJSONP(code)
-            if (jsonpResult) return jsonpResult
-
+        async function fetchCNMutualFundEstimateEastMoney(code) {
             try {
-                var text = await fetchFundText('https://fundgz.1234567.com.cn/js/' + encodeURIComponent(code) + '.js?_=' + Date.now())
-                if (!text) return null
-                var match = text.match(/jsonpgz\(\s*(\{[\s\S]*\})\s*\)/)
-                if (!match) return null
-                var data = JSON.parse(match[1])
-                var price = parseFloat(data.gsz)
-                if (isNaN(price)) price = parseFloat(data.dwjz)
-                if (isNaN(price)) return null
-                var changePct = parseFloat(data.gszzl)
-                if (isNaN(changePct)) changePct = 0
-                return {
-                    name: data.name || code,
-                    price: price,
-                    changePct: changePct,
-                    navDate: data.jzrq || ''
-                }
+                var url = 'https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo?' +
+                    'FCODES=' + encodeURIComponent(code) +
+                    '&pageIndex=1&pageSize=1&plat=Android&appType=ttjj&product=EFund&Version=1&deviceid=wap&_=' + Date.now()
+                var json = await fetchJSON(url, {
+                    headers: { Referer: 'https://fund.eastmoney.com/' }
+                })
+                var row = json && json.Datas && json.Datas[0]
+                return normalizeCNMutualFundEstimateRow(row)
             } catch (e) {
                 return null
             }
+        }
+
+        async function fetchCNMutualFundEstimate(code) {
+            if (isMarketOpen('cn')) {
+                var gzResult = await fetchCNMutualFundEstimateFundGz(code)
+                if (gzResult) return gzResult
+            }
+
+            var emResult = await fetchCNMutualFundEstimateEastMoney(code)
+            if (emResult) return emResult
+
+            if (!isMarketOpen('cn')) {
+                return fetchCNMutualFundEstimateFundGz(code)
+            }
+
+            return null
+        }
+
+        async function fetchCNMutualFundIntradayEstimate(code) {
+            try {
+                var url = 'https://fundmobapi.eastmoney.com/FundMApi/FundVarietieValuationDetail.ashx?' +
+                    'FCODE=' + encodeURIComponent(code) +
+                    '&deviceid=wap&plat=Iphone&product=EFund&version=6.2.8&appType=ttjj&_=' + Date.now()
+                var json = await fetchJSON(url, {
+                    headers: { Referer: 'https://fund.eastmoney.com/' }
+                })
+                var rows = json && json.Datas
+                if (!rows || !rows.length) {
+                    var estimate = await fetchCNMutualFundEstimate(code)
+                    return buildCNMutualFundIntradayFromEstimate(estimate)
+                }
+                var tradingDate = getMarketDateString('cn')
+                var preClose = json.Expansion && json.Expansion.DWJZ != null
+                    ? parseFloat(json.Expansion.DWJZ)
+                    : null
+                var points = []
+                rows.forEach(function (row) {
+                    var parts = String(row).split(',')
+                    if (parts.length < 2) return
+                    var hm = parts[0].trim()
+                    var hmParts = hm.split(':')
+                    if (hmParts.length < 2) return
+                    var hour = parseInt(hmParts[0], 10)
+                    var minute = parseInt(hmParts[1], 10)
+                    var price = parseFloat(parts[1])
+                    if (isNaN(hour) || isNaN(minute) || isNaN(price)) return
+                    points.push({
+                        time: marketLocalTimeToUnix('cn', tradingDate, hour, minute),
+                        price: price,
+                        label: pad2(hour) + ':' + pad2(minute)
+                    })
+                })
+                if (!points.length) return null
+                points.sort(function (a, b) { return a.time - b.time })
+                return { tradingDate: tradingDate, preClose: preClose, points: points }
+            } catch (e) {
+                return null
+            }
+        }
+
+        function needsCNMutualFundLiveQuote(data) {
+            if (!data || !data.isMutualFund) return false
+            return isMarketOpen('cn')
+        }
+
+        async function enrichCNMutualFundLiveQuote(data, options) {
+            options = options || {}
+            if (!data || !data.isMutualFund) return finalizeQuotePayload(data)
+
+            var estimate = await fetchCNMutualFundEstimate(data.symbol)
+            if (estimate) {
+                data.price = estimate.price
+                data.changePct = estimate.changePct
+                if (estimate.name) data.name = estimate.name
+                if (estimate.quoteTime != null) data.quoteTime = estimate.quoteTime
+            }
+
+            if (!options.quoteOnly && !options.skipIntraday) {
+                if (isMarketOpen('cn') || !hasIntradayChartData(data.intraday)) {
+                    var intraday = await fetchCNMutualFundIntradayEstimate(data.symbol)
+                    if (intraday) data.intraday = intraday
+                }
+            }
+            return finalizeQuotePayload(data)
         }
 
         async function fetchCNMutualFundPingZhongData(code) {
@@ -4029,9 +4372,7 @@
                 payload.price = estimate.price
                 payload.changePct = estimate.changePct
                 payload.name = estimate.name || payload.name
-                if (estimate.navDate) {
-                    payload.quoteTime = quoteTimeFromNavDate(estimate.navDate, 'cn')
-                }
+                if (estimate.quoteTime != null) payload.quoteTime = estimate.quoteTime
             } else if (ping) {
                 payload.price = ping.price
                 payload.changePct = ping.changePct
@@ -4053,7 +4394,8 @@
             return finalizeQuotePayload(payload)
         }
 
-        async function fetchCNMutualFundPackage(code) {
+        async function fetchCNMutualFundPackage(code, options) {
+            options = options || {}
             var ping = await fetchCNMutualFundPingZhongData(code)
             var estimate = await fetchCNMutualFundEstimate(code)
             var klines = ping && ping.klines.length ? ping.klines : await fetchCNMutualFundNavHistory(code)
@@ -4065,7 +4407,7 @@
             var name = (estimate && estimate.name) || (ping && ping.name) || code
             if (price == null || isNaN(price)) return null
 
-            return finalizeQuotePayload(enrichWithIntraday({
+            var payload = {
                 market: 'cn',
                 symbol: code,
                 name: name,
@@ -4076,8 +4418,57 @@
                 flowLabel: '场外基金（无主力流向）',
                 secid: '150.' + code,
                 isMutualFund: true,
-                quoteTime: estimate && estimate.navDate ? quoteTimeFromNavDate(estimate.navDate, 'cn') : null
-            }))
+                quoteTime: estimate && estimate.quoteTime != null ? estimate.quoteTime : null
+            }
+
+            if (options.skipIntraday) {
+                return enrichCNMutualFundLiveQuote(payload, { quoteOnly: true, skipIntraday: true })
+            }
+            return enrichWithIntraday(payload, options)
+        }
+
+        async function fetchCNMutualFundDataCached(code, options) {
+            options = options || {}
+            var cached = cnMutualFundCache[code]
+            var ttl = options.lightweight ? CN_MUTUAL_CACHE_TTL_LIGHT : CN_MUTUAL_CACHE_TTL_FULL
+
+            if (options.useCache !== false && cached && cached.data) {
+                var cacheValid = Date.now() - cached.ts < ttl
+                if (cacheValid && options.lightweight && needsCNMutualFundLiveQuote(cached.data)) {
+                    var quoteAge = Date.now() - (cached.quoteTs || 0)
+                    if (quoteAge >= CN_MUTUAL_QUOTE_REFRESH_MS) {
+                        await enrichCNMutualFundLiveQuote(cached.data, {
+                            quoteOnly: true,
+                            skipIntraday: !!options.skipIntraday
+                        })
+                        cnMutualFundCache[code] = {
+                            data: cached.data,
+                            ts: cached.ts,
+                            quoteTs: Date.now()
+                        }
+                    }
+                    return cached.data
+                }
+                if (cacheValid) return cached.data
+            }
+
+            if (options.lightweight && cached && cached.data) {
+                try {
+                    var lightData = await fetchCNMutualFundPackage(code, {
+                        skipIntraday: !!options.skipIntraday
+                    })
+                    cnMutualFundCache[code] = { data: lightData, ts: Date.now(), quoteTs: Date.now() }
+                    return lightData
+                } catch (e) {
+                    if (cached.data) return cached.data
+                }
+            }
+
+            var data = await fetchCNMutualFundPackage(code, options)
+            if (data) {
+                cnMutualFundCache[code] = { data: data, ts: Date.now(), quoteTs: Date.now() }
+            }
+            return data
         }
 
         async function fetchEMQuote(secid) {
@@ -4412,7 +4803,10 @@
         }
 
         async function fetchIntradayForPayload(data) {
-            if (!data || data.isMutualFund) return null
+            if (!data) return null
+            if (data.isMutualFund) {
+                return fetchCNMutualFundIntradayEstimate(data.symbol)
+            }
             var preClose = getIntradayPreClose(data.klines, data.market)
             if (data.tencentSymbol) {
                 var tencent = await fetchTencentIntraday(data.tencentSymbol, data.market)
@@ -4425,12 +4819,28 @@
             return null
         }
 
-        async function enrichWithIntraday(data) {
+        async function enrichWithIntraday(data, options) {
+            options = options || {}
             if (!data) return data
             if (data.market === 'tw') {
-                return finalizeQuotePayload(await enrichTWLiveQuote(data))
+                return finalizeQuotePayload(await enrichTWLiveQuote(data, options))
             }
-            data.intraday = await fetchIntradayForPayload(data)
+            if (data.isMutualFund) {
+                data = await enrichCNMutualFundLiveQuote(data, options)
+                if (!options.skipIntraday && !hasIntradayChartData(data.intraday)) {
+                    data.intraday = await fetchIntradayForPayload(data)
+                }
+                if (isMarketOpen('cn') && hasIntradayChartData(data.intraday)) {
+                    applyLiveQuoteFromIntraday(data)
+                }
+                return finalizeQuotePayload(data)
+            }
+            if (!options.skipIntraday) {
+                data.intraday = await fetchIntradayForPayload(data)
+            }
+            if (isMarketOpen('cn') && hasIntradayChartData(data.intraday)) {
+                applyLiveQuoteFromIntraday(data)
+            }
             return finalizeQuotePayload(data)
         }
 
@@ -4469,21 +4879,269 @@
             return enrichWithIntraday(payload)
         }
 
-        async function fetchCNData(symbol) {
-            var s = symbol.replace(/[^\d]/g, '')
-            if (isLikelyCNMutualFundCode(s)) {
-                var mutualFirst = await fetchCNMutualFundPackage(s)
-                if (mutualFirst) return mutualFirst
+        async function fetchCNData(symbol, options) {
+            options = options || {}
+            var resolved = options.resolved || await resolveCNSymbolByCode(symbol)
+            var s = (resolved && resolved.symbol ? resolved.symbol : symbol).replace(/[^\d]/g, '')
+            var isMutual = resolved ? !!resolved.isMutualFund : false
+
+            if (isMutual) {
+                var mutual = await fetchCNMutualFundDataCached(s, options)
+                if (mutual) return mutual
+                if (resolved && resolved.isMutualFund) {
+                    throw new Error('未找到该基金，请检查代码或名称是否正确')
+                }
             }
+
+            if (resolved && resolved.secid && !resolved.isMutualFund) {
+                var secidData = await fetchEMBySecids([resolved.secid], 'cn', resolved.symbol || s, '主力净流入')
+                if (secidData) {
+                    if (resolved.isIndex) secidData.isIndex = true
+                    return secidData
+                }
+            }
+
             var tencentSym = getTencentCNSymbol(s)
             var tencentData = await fetchTencentPackage(tencentSym, 'cn', s, '量能参考')
             if (tencentData) return tencentData
 
             var data = await fetchEMBySecids(getCNSecids(s), 'cn', s, '主力净流入')
             if (data) return data
-            var mutual = await fetchCNMutualFundPackage(s)
-            if (mutual) return mutual
-            throw new Error('未找到该 ETF/基金，请检查代码是否正确（如 510300、016185）')
+
+            if (!isMutual) {
+                var mutualFallback = await fetchCNMutualFundPackage(s, options)
+                if (mutualFallback) return mutualFallback
+            }
+
+            throw new Error('未找到该标的，请检查代码或名称是否正确（如 600519、510300）')
+        }
+
+        function normalizeSearchKeyword(keyword) {
+            return String(keyword || '').trim()
+        }
+
+        function mapCNSearchRow(row) {
+            if (!row || !row.Code) return null
+            var secid = row.QuoteID || ''
+            return {
+                market: 'cn',
+                symbol: row.Code,
+                name: row.Name || row.Code,
+                secid: secid,
+                classify: row.Classify || '',
+                isMutualFund: row.Classify === 'OTCFUND' || secid.indexOf('150.') === 0,
+                isIndex: row.Classify === 'Index'
+            }
+        }
+
+        function getSearchResultMeta(item) {
+            if (!item) return ''
+            if (item.market === 'tw') return item.symbol
+            var typeLabel = CN_SEARCH_CLASSIFY_LABELS[item.classify] || '标的'
+            return typeLabel + ' · ' + item.symbol
+        }
+
+        async function searchCNEastMoney(keyword) {
+            var url = 'https://searchapi.eastmoney.com/api/suggest/get?' +
+                'input=' + encodeURIComponent(keyword) +
+                '&type=14&token=DIOcOjNECzj&count=30'
+            var json = await fetchJSON(url)
+            var rows = json && json.QuotationCodeTable && json.QuotationCodeTable.Data
+            if (!rows || !rows.length) return []
+            var matches = []
+            rows.forEach(function (row) {
+                if (!CN_SEARCH_ALLOWED_CLASSIFY[row.Classify]) return
+                var mapped = mapCNSearchRow(row)
+                if (mapped) matches.push(mapped)
+            })
+            return matches
+        }
+
+        function pickCNCodeDisambig(matches) {
+            return matches.slice().sort(function (a, b) {
+                var pa = CN_CODE_CLASSIFY_PRIORITY[a.classify]
+                var pb = CN_CODE_CLASSIFY_PRIORITY[b.classify]
+                if (pa !== pb) return pa - pb
+                return String(a.name).length - String(b.name).length
+            })[0]
+        }
+
+        function pickBestCNMatch(keyword, matches) {
+            if (!matches || !matches.length) return null
+            var key = normalizeSearchKeyword(keyword)
+            var keyUpper = key.toUpperCase()
+            var keyDigits = key.replace(/[^\d]/g, '')
+
+            if (/^\d{6}$/.test(keyDigits)) {
+                var codeMatches = matches.filter(function (m) { return m.symbol === keyDigits })
+                if (codeMatches.length === 1) return codeMatches[0]
+                if (codeMatches.length > 1) return null
+            }
+
+            var exactName = matches.filter(function (m) { return m.name === key })
+            if (exactName.length === 1) return exactName[0]
+
+            var exactSymbol = matches.filter(function (m) {
+                return m.symbol === key || m.symbol.toUpperCase() === keyUpper
+            })
+            if (exactSymbol.length === 1) return exactSymbol[0]
+
+            if (matches.length === 1) return matches[0]
+            return null
+        }
+
+        async function resolveCNSymbolByCode(symbol) {
+            var digits = String(symbol || '').replace(/[^\d]/g, '')
+            if (!/^\d{6}$/.test(digits)) return null
+            try {
+                var matches = await searchCNEastMoney(digits)
+                var codeMatches = matches.filter(function (m) { return m.symbol === digits })
+                if (codeMatches.length === 1) return codeMatches[0]
+                if (codeMatches.length > 1) return pickCNCodeDisambig(codeMatches)
+            } catch (e) { /* ignore */ }
+            if (isLikelyCNMutualFundCode(digits)) {
+                return {
+                    market: 'cn',
+                    symbol: digits,
+                    name: digits,
+                    secid: '150.' + digits,
+                    classify: 'OTCFUND',
+                    isMutualFund: true,
+                    isIndex: false
+                }
+            }
+            return null
+        }
+
+        async function loadTWStockInfo() {
+            if (twStockInfoCache) return twStockInfoCache
+            if (twStockInfoLoading) return twStockInfoLoading
+            twStockInfoLoading = fetchFinMindJSON(
+                'https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockInfo'
+            ).then(function (json) {
+                twStockInfoCache = json && json.data ? json.data : []
+                return twStockInfoCache
+            }).catch(function () {
+                twStockInfoCache = []
+                return twStockInfoCache
+            }).finally(function () {
+                twStockInfoLoading = null
+            })
+            return twStockInfoLoading
+        }
+
+        async function searchTWSymbols(keyword) {
+            var list = await loadTWStockInfo()
+            if (!list.length) return []
+            var key = normalizeSearchKeyword(keyword)
+            if (!key) return []
+            var keyUpper = key.toUpperCase()
+            var keyLower = key.toLowerCase()
+            var exact = []
+            var partial = []
+            list.forEach(function (row) {
+                if (!row || !row.stock_id) return
+                var id = String(row.stock_id)
+                var name = String(row.stock_name || '')
+                var idUpper = id.toUpperCase()
+                if (idUpper === keyUpper) {
+                    exact.push({
+                        market: 'tw',
+                        symbol: id,
+                        name: name,
+                        classify: row.industry_category || row.type || 'tw'
+                    })
+                    return
+                }
+                if (name.indexOf(key) >= 0 || name.toUpperCase().indexOf(keyUpper) >= 0 ||
+                    idUpper.indexOf(keyUpper) >= 0) {
+                    partial.push({
+                        market: 'tw',
+                        symbol: id,
+                        name: name,
+                        classify: row.industry_category || row.type || 'tw'
+                    })
+                }
+            })
+            var results = exact.length ? exact : partial
+            return results.slice(0, 20)
+        }
+
+        function pickBestTWMatch(keyword, matches) {
+            if (!matches || !matches.length) return null
+            var key = normalizeSearchKeyword(keyword)
+            var keyUpper = key.toUpperCase()
+            var exactId = matches.filter(function (m) {
+                return m.symbol.toUpperCase() === keyUpper
+            })
+            if (exactId.length === 1) return exactId[0]
+            var exactName = matches.filter(function (m) { return m.name === key })
+            if (exactName.length === 1) return exactName[0]
+            if (matches.length === 1) return matches[0]
+            return null
+        }
+
+        async function resolveSearchQuery(market, keyword) {
+            keyword = normalizeSearchKeyword(keyword)
+            if (!keyword) throw new Error('请输入代码或名称')
+
+            if (market === 'cn') {
+                var cnMatches = await searchCNEastMoney(keyword)
+                if (!cnMatches.length) {
+                    throw new Error('未找到匹配的标的，请检查代码或名称')
+                }
+                return {
+                    single: pickBestCNMatch(keyword, cnMatches),
+                    matches: cnMatches
+                }
+            }
+
+            if (market === 'tw') {
+                var twMatches = await searchTWSymbols(keyword)
+                if (!twMatches.length) {
+                    throw new Error('未找到匹配的标的，请检查代码或名称')
+                }
+                return {
+                    single: pickBestTWMatch(keyword, twMatches),
+                    matches: twMatches
+                }
+            }
+
+            throw new Error('暂不支持该市场')
+        }
+
+        function buildResolvedFromItem(item) {
+            if (!item) return null
+            if (item.market === 'cn' && (item.secid || item.isMutualFund != null)) {
+                return {
+                    market: 'cn',
+                    symbol: item.symbol,
+                    name: item.name || item.symbol,
+                    secid: item.secid || null,
+                    isMutualFund: !!item.isMutualFund,
+                    isIndex: !!item.isIndex
+                }
+            }
+            if (item.market === 'tw') {
+                return {
+                    market: 'tw',
+                    symbol: item.symbol,
+                    name: item.name || item.symbol
+                }
+            }
+            return null
+        }
+
+        function buildResolvedFromMeta(item, meta) {
+            if (!item || item.market !== 'cn' || !meta) return buildResolvedFromItem(item)
+            return {
+                market: 'cn',
+                symbol: meta.symbol || item.symbol,
+                name: meta.name || item.name || item.symbol,
+                secid: meta.secid || item.secid || null,
+                isMutualFund: meta.isMutualFund != null ? !!meta.isMutualFund : !!item.isMutualFund,
+                isIndex: !!meta.isIndex || !!item.isIndex
+            }
         }
 
         async function fetchFinMindTWData(symbol, options) {
@@ -4722,7 +5380,7 @@
         }
 
         async function fetchETFData(market, symbol, options) {
-            if (market === 'cn') return fetchCNData(symbol)
+            if (market === 'cn') return fetchCNData(symbol, options)
             if (market === 'tw') return fetchTWData(symbol, options)
             throw new Error('暂不支持该市场')
         }
@@ -4950,6 +5608,11 @@
             }
         }
 
+        function buildCNMutualFundDetailUrl(code) {
+            if (!code) return null
+            return 'https://h5.1234567.com.cn/?page=jjxq&code=' + encodeURIComponent(code)
+        }
+
         function buildFundProductUrl(meta) {
             if (!meta) return null
             if (meta.market === 'tw') {
@@ -4958,9 +5621,9 @@
                 return 'https://www.cnyes.com/twstock/' + encodeURIComponent(twCode)
             }
             var digits = String(meta.symbol || '').replace(/[^\d]/g, '')
-            if (meta.isMutualFund || isLikelyCNMutualFundCode(digits)) {
+            if (meta.isMutualFund || isLikelyCNMutualFundCode(digits) || isCNFundSecid(meta.secid)) {
                 if (!digits) return null
-                return 'https://fund.eastmoney.com/' + encodeURIComponent(digits) + '.html'
+                return buildCNMutualFundDetailUrl(digits)
             }
             if (meta.secid) {
                 return 'https://quote.eastmoney.com/unify/r/' + encodeURIComponent(meta.secid)
@@ -4973,13 +5636,22 @@
             return 'https://gu.qq.com/' + prefix + digits + '/gp'
         }
 
-        function openFundProductPage(meta) {
-            var url = buildFundProductUrl(meta)
-            if (url) window.open(url, '_blank', 'noopener,noreferrer')
-        }
-
         function hasIntradayChartData(intraday) {
             return !!(intraday && intraday.points && intraday.points.length)
+        }
+
+        function buildChartTabsOptions(data, includeDetailLink, item) {
+            var opts = { showToday: hasIntradayChartData(data && data.intraday) }
+            if (includeDetailLink && (data || item)) {
+                var meta = buildFundProductMeta(data || {})
+                if (item) {
+                    meta.market = meta.market || item.market
+                    meta.symbol = meta.symbol || item.symbol
+                }
+                var url = buildFundProductUrl(meta)
+                if (url) opts.detailUrl = url
+            }
+            return opts
         }
 
         function activateChartTabs(tabsEl, mode) {
@@ -4990,11 +5662,6 @@
         }
 
         function trySwitchToTodayChart(context) {
-            var productMeta = context.productMeta || buildFundProductMeta(context.meta)
-            if (productMeta.isMutualFund || (context.meta && context.meta.isMutualFund)) {
-                openFundProductPage(productMeta)
-                return
-            }
             if (hasIntradayChartData(context.intraday)) {
                 context.onSuccess(context.intraday)
                 return
@@ -5004,28 +5671,37 @@
                 if (hasIntradayChartData(fetched)) {
                     context.onSuccess(fetched)
                 } else {
-                    openFundProductPage(productMeta)
+                    showChartEmpty(context.chartEl, '暂无当日分时数据（非交易日或数据源暂不可用）')
                 }
             })
         }
 
-        function buildChartTabsHtml(mode, cardId) {
+        function buildChartTabsHtml(mode, cardId, tabOptions) {
+            tabOptions = tabOptions || {}
             var cls = cardId ? ' chart-tabs-sm' : ''
-            var idAttr = cardId ? ' data-card-id="' + escapeHtml(cardId) + '"' : ''
+            var idAttr = cardId
+                ? ' data-card-id="' + escapeHtml(cardId) + '"'
+                : ' id="detailChartTabs"'
             var tabs = [
                 { mode: 'day30', label: '30日' },
                 { mode: 'day90', label: '90日' },
                 { mode: 'day180', label: '180日' },
                 { mode: 'year1', label: '年(值)' },
-                { mode: 'year5d', label: '年(MA)' },
-                { mode: 'today', label: '今日' }
+                { mode: 'year5d', label: '年(MA)' }
             ]
-            return '<div class="chart-tabs' + cls + '"' + idAttr + '>' +
-                tabs.map(function (t) {
-                    return '<button type="button" class="chart-tab' + (mode === t.mode ? ' active' : '') +
-                        '" data-mode="' + t.mode + '">' + t.label + '</button>'
-                }).join('') +
-            '</div>'
+            var html = tabs.map(function (t) {
+                return '<button type="button" class="chart-tab' + (mode === t.mode ? ' active' : '') +
+                    '" data-mode="' + t.mode + '">' + t.label + '</button>'
+            }).join('')
+            if (tabOptions.showToday) {
+                html += '<button type="button" class="chart-tab' + (mode === 'today' ? ' active' : '') +
+                    '" data-mode="today">今日</button>'
+            }
+            if (tabOptions.detailUrl) {
+                html += '<a class="chart-detail-link" href="' + escapeHtml(tabOptions.detailUrl) +
+                    '" target="_blank" rel="noopener noreferrer">详情</a>'
+            }
+            return '<div class="chart-tabs' + cls + '"' + idAttr + '>' + html + '</div>'
         }
 
         function formatCrosshairTime(time) {
@@ -5089,9 +5765,6 @@
         function renderTodayChart(container, intraday, market, opts) {
             opts = opts || {}
             var compact = !!opts.compact
-            if (opts.isMutualFund) {
-                return showChartEmpty(container, '场外基金无场内分时，请查看近30日净值走势')
-            }
             if (!intraday || !intraday.points || !intraday.points.length) {
                 return showChartEmpty(container, '暂无当日分时数据（非交易日或数据源暂不可用）')
             }
@@ -5496,7 +6169,54 @@
                 destroyChart(detailChart)
                 detailChart = null
             }
-            detailPanel.innerHTML = '<div class="detail-empty">选择市场并输入 ETF 代码开始搜索</div>'
+            detailPanel.innerHTML = '<div class="detail-empty">选择市场并输入代码或名称开始搜索</div>'
+        }
+
+        function showSearchResultPicker(matches, market, keyword) {
+            var list = (matches || []).slice(0, 15)
+            detailPanel.innerHTML =
+                '<div class="search-result-panel">' +
+                    '<p class="search-result-hint">找到 ' + list.length + ' 个与「' + escapeHtml(keyword) + '」相关的标的，请选择：</p>' +
+                    '<div class="search-result-list">' +
+                        list.map(function (item, idx) {
+                            return '<button type="button" class="search-result-item" data-pick-index="' + idx + '">' +
+                                '<span class="search-result-name">' + escapeHtml(item.name || item.symbol) + '</span>' +
+                                '<span class="search-result-meta">' + escapeHtml(getSearchResultMeta(item)) + '</span>' +
+                            '</button>'
+                        }).join('') +
+                    '</div>' +
+                '</div>'
+            detailPanel._searchMatches = list
+            detailPanel._searchMarket = market
+        }
+
+        async function loadSearchPick(market, resolved) {
+            setSearchControlsDisabled(true)
+            showDetailLoading(market, resolved.name || resolved.symbol)
+            try {
+                var data = await fetchETFData(market, resolved.symbol, { resolved: resolved })
+                detailChartMode = 'day30'
+                renderDetailPanel(data)
+            } catch (err) {
+                showDetailError(err.message || '加载失败，请检查网络后重试')
+            } finally {
+                setSearchControlsDisabled(false)
+            }
+        }
+
+        var searchResultPickerBound = false
+        function bindSearchResultPicker() {
+            if (searchResultPickerBound || !detailPanel) return
+            searchResultPickerBound = true
+            detailPanel.addEventListener('click', function (e) {
+                var btn = e.target.closest('.search-result-item[data-pick-index]')
+                if (!btn || !detailPanel._searchMatches) return
+                var idx = parseInt(btn.dataset.pickIndex, 10)
+                var pick = detailPanel._searchMatches[idx]
+                var market = detailPanel._searchMarket
+                if (!pick || !market) return
+                loadSearchPick(market, pick)
+            })
         }
 
         function buildCardFlowHtml(data) {
@@ -6421,7 +7141,7 @@
                         var holdPos = getHoldPosition(itemId)
                         costPrice = holdPos.costPrice
                         if (costPrice == null) {
-                            costPrice = getCurrentPriceForItem(itemId)
+                            costPrice = roundPrice(getCurrentPriceForItem(itemId))
                         }
                     }
                     setHoldPosition(itemId, input.checked, costPrice)
@@ -6514,7 +7234,7 @@
                     '<div class="card-stat"><div class="label">相对' + escapeHtml(maLabel) + '</div><div class="value ' + (diffPct >= 0 ? 'up' : 'down') + '">' + formatPct(diffPct) + '</div></div>' +
                 '</div>' +
                 '<div class="card-chart-wrap">' +
-                    buildChartTabsHtml(detailChartMode) +
+                    buildChartTabsHtml(detailChartMode, null, buildChartTabsOptions(data, true, detailItem)) +
                     '<div class="chart-container" id="detailChart"></div>' +
                 '</div>' +
                 flowHtml +
@@ -6531,6 +7251,9 @@
                     market: data.market,
                     symbol: data.symbol,
                     name: data.name,
+                    secid: data.secid || null,
+                    isMutualFund: !!data.isMutualFund,
+                    isIndex: !!data.isIndex,
                     addedAt: Date.now()
                 }
                 var prevCount = getWatchlist().length
@@ -6577,16 +7300,22 @@
             if (!chartEl) return
 
             if (mode === 'today') {
+                if (hasIntradayChartData(currentDetail.intraday)) {
+                    detailChartMode = mode
+                    activateChartTabs(tabsEl, mode)
+                    mountDetailChart(mode)
+                    return
+                }
                 trySwitchToTodayChart({
                     meta: currentDetail,
                     intraday: currentDetail.intraday,
                     chartEl: chartEl,
-                    productMeta: buildFundProductMeta(currentDetail),
                     onSuccess: function (intraday) {
                         currentDetail.intraday = intraday
                         detailChartMode = mode
                         activateChartTabs(tabsEl, mode)
                         mountDetailChart(mode)
+                        refreshDetailChartTabs()
                     }
                 })
                 return
@@ -6595,6 +7324,27 @@
             detailChartMode = mode
             activateChartTabs(tabsEl, mode)
             mountDetailChart(mode)
+        }
+
+        function refreshDetailChartTabs() {
+            if (!currentDetail) return
+            var tabsEl = document.getElementById('detailChartTabs')
+            if (!tabsEl) return
+            var hadToday = !!tabsEl.querySelector('.chart-tab[data-mode="today"]')
+            var showToday = hasIntradayChartData(currentDetail.intraday)
+            if (hadToday === showToday && tabsEl.querySelector('.chart-detail-link')) return
+            tabsEl.outerHTML = buildChartTabsHtml(
+                detailChartMode,
+                null,
+                buildChartTabsOptions(currentDetail, true, {
+                    market: currentDetail.market,
+                    symbol: currentDetail.symbol
+                })
+            )
+            if (detailChartMode === 'today' && !showToday) {
+                detailChartMode = 'day30'
+                mountDetailChart('day30')
+            }
         }
 
         var detailChartTabBound = false
@@ -6619,14 +7369,20 @@
             if (randomSearchBtn) randomSearchBtn.disabled = disabled
         }
 
-        async function performSearch(market, symbol) {
-            if (!symbol) return
+        async function performSearch(market, keyword) {
+            keyword = normalizeSearchKeyword(keyword)
+            if (!keyword) return
 
             setSearchControlsDisabled(true)
-            showDetailLoading(market, symbol)
+            showDetailLoading(market, keyword)
 
             try {
-                var data = await fetchETFData(market, symbol)
+                var result = await resolveSearchQuery(market, keyword)
+                if (!result.single) {
+                    showSearchResultPicker(result.matches, market, keyword)
+                    return
+                }
+                var data = await fetchETFData(market, result.single.symbol, { resolved: result.single })
                 detailChartMode = 'day30'
                 renderDetailPanel(data)
             } catch (err) {
@@ -6724,15 +7480,27 @@
         }
 
         async function loadCardData(item, options) {
+            options = options || {}
             if (item.market !== 'cn' && item.market !== 'tw') {
                 return { error: '已移除美国市场，请移除此关注' }
             }
             try {
-                var fetchOpts = item.market === 'tw' ? {
-                    lightweight: !!(options && options.silent),
-                    useCache: true,
-                    skipIntraday: !!(options && options.silent)
-                } : undefined
+                var force = !!options.force
+                var fetchOpts
+                var cnDigits = item.symbol.replace(/[^\d]/g, '')
+                var resolved = buildResolvedFromMeta(item, watchlistMetaCache[item.id])
+                if (resolved) fetchOpts = { resolved: resolved }
+                if (item.market === 'tw') {
+                    fetchOpts = fetchOpts || {}
+                    fetchOpts.lightweight = !!options.silent
+                    fetchOpts.useCache = !force
+                    fetchOpts.skipIntraday = !!options.silent
+                } else if (item.market === 'cn' && (item.isMutualFund || isLikelyCNMutualFundCode(cnDigits))) {
+                    fetchOpts = fetchOpts || {}
+                    fetchOpts.lightweight = !!options.silent
+                    fetchOpts.useCache = !force
+                    fetchOpts.skipIntraday = !!options.silent
+                }
                 return await fetchETFData(item.market, item.symbol, fetchOpts)
             } catch (e) {
                 return { error: e.message }
@@ -6793,6 +7561,7 @@
             }
 
             var chartMode = cardChartModes[item.id] || 'day30'
+            var tabOptions = buildChartTabsOptions(data, true, item)
 
             return '<div class="card" id="' + cardId + '">' +
                 buildCardSortBtns(item) +
@@ -6800,7 +7569,7 @@
                 '<div class="card-body">' +
                 '<div class="card-left">' + buildWatchlistCardLeftInner(item, data) + '</div>' +
                 '<div class="card-right">' +
-                    buildChartTabsHtml(chartMode, item.id) +
+                    buildChartTabsHtml(chartMode, item.id, tabOptions) +
                     '<div class="mini-chart" id="mini-' + escapeHtml(item.id) + '"></div>' +
                 '</div>' +
                 '</div>' +
@@ -6823,12 +7592,17 @@
                 tencentSymbol: data.tencentSymbol,
                 secid: data.secid,
                 isMutualFund: !!data.isMutualFund,
+                isIndex: !!data.isIndex,
                 klines: data.klines,
                 quoteTime: data.quoteTime
             }
             watchlistMutualFundCache[item.id] = !!data.isMutualFund
             watchlistMarketCache[item.id] = item.market
             var mode = cardChartModes[item.id] || 'day30'
+            if (mode === 'today' && !hasIntradayChartData(data.intraday)) {
+                mode = 'day30'
+                cardChartModes[item.id] = 'day30'
+            }
             var miniEl = document.getElementById('mini-' + item.id)
             if (miniEl) {
                 var chartOpts = {
@@ -6965,17 +7739,22 @@
 
             var rightEl = bodyEl.querySelector('.card-right')
             var chartMode = cardChartModes[item.id] || 'day30'
+            if (chartMode === 'today' && !hasIntradayChartData(data.intraday)) {
+                chartMode = 'day30'
+                cardChartModes[item.id] = 'day30'
+            }
+            var tabOptions = buildChartTabsOptions(data, true, item)
             if (!rightEl) {
                 var temp = document.createElement('div')
                 temp.innerHTML = '<div class="card-right">' +
-                    buildChartTabsHtml(chartMode, item.id) +
+                    buildChartTabsHtml(chartMode, item.id, tabOptions) +
                     '<div class="mini-chart" id="mini-' + escapeHtml(item.id) + '"></div>' +
                 '</div>'
                 bodyEl.appendChild(temp.firstElementChild)
             } else {
                 var tabsEl = rightEl.querySelector('.chart-tabs')
                 if (tabsEl) {
-                    tabsEl.outerHTML = buildChartTabsHtml(chartMode, item.id)
+                    tabsEl.outerHTML = buildChartTabsHtml(chartMode, item.id, tabOptions)
                 }
             }
 
@@ -6990,6 +7769,7 @@
                 tencentSymbol: data.tencentSymbol,
                 secid: data.secid,
                 isMutualFund: !!data.isMutualFund,
+                isIndex: !!data.isIndex,
                 klines: data.klines,
                 quoteTime: data.quoteTime
             }
@@ -7010,6 +7790,10 @@
             delete watchlistMutualFundCache[id]
             delete watchlistMarketCache[id]
             delete watchlistSimCache[id]
+            var meta = watchlistMetaCache[id]
+            if (meta && meta.symbol) {
+                delete cnMutualFundCache[String(meta.symbol).replace(/[^\d]/g, '')]
+            }
         }
 
         function getWatchlistEmptyHtml() {
@@ -7071,6 +7855,7 @@
             watchlistMutualFundCache = {}
             watchlistMarketCache = {}
             watchlistSimCache = {}
+            cnMutualFundCache = {}
         }
 
         function syncWatchlistCardsContainer(list) {
@@ -7149,6 +7934,42 @@
             updateAllCardSortBtnStates()
         }
 
+        var refreshInFlight = false
+        var refreshBtnResetTimer = null
+
+        function resetRefreshButtonState() {
+            if (!refreshBtn) return
+            refreshBtn.disabled = false
+            refreshBtn.classList.remove('is-loading')
+        }
+
+        function bindRefreshButton() {
+            if (!refreshBtn) return
+            resetRefreshButtonState()
+            refreshBtn.addEventListener('click', function () {
+                if (getWatchlist().length === 0) return
+                if (refreshInFlight) return
+                refreshInFlight = true
+                refreshBtn.disabled = true
+                refreshBtn.classList.add('is-loading')
+                if (refreshBtnResetTimer) clearTimeout(refreshBtnResetTimer)
+                refreshBtnResetTimer = setTimeout(function () {
+                    refreshInFlight = false
+                    resetRefreshButtonState()
+                }, 120000)
+                Promise.resolve(renderWatchlist({ force: true })).catch(function () {
+                    /* ignore */
+                }).finally(function () {
+                    refreshInFlight = false
+                    if (refreshBtnResetTimer) {
+                        clearTimeout(refreshBtnResetTimer)
+                        refreshBtnResetTimer = null
+                    }
+                    resetRefreshButtonState()
+                })
+            })
+        }
+
         function bindChartTabDelegation() {
             if (chartTabDelegationBound) return
             chartTabDelegationBound = true
@@ -7173,6 +7994,12 @@
                 }
 
                 if (mode === 'today') {
+                    if (hasIntradayChartData(chartOpts.intraday)) {
+                        cardChartModes[cardId] = mode
+                        activateChartTabs(tabsEl, mode)
+                        miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+                        return
+                    }
                     trySwitchToTodayChart({
                         meta: Object.assign({}, meta, {
                             market: chartOpts.market,
@@ -7180,13 +8007,20 @@
                         }),
                         intraday: chartOpts.intraday,
                         chartEl: miniEl,
-                        productMeta: chartOpts.productMeta,
                         onSuccess: function (intraday) {
                             cardChartModes[cardId] = mode
                             activateChartTabs(tabsEl, mode)
                             watchlistIntradayCache[cardId] = intraday
                             chartOpts.intraday = intraday
                             miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
+                            var tabsRefreshEl = tabsEl
+                            if (tabsRefreshEl && !tabsRefreshEl.querySelector('.chart-tab[data-mode="today"]')) {
+                                tabsRefreshEl.outerHTML = buildChartTabsHtml(
+                                    mode,
+                                    cardId,
+                                    buildChartTabsOptions(Object.assign({}, meta, { intraday: intraday }), true, { market: chartOpts.market, symbol: meta.symbol })
+                                )
+                            }
                         }
                     })
                     return
@@ -7238,17 +8072,9 @@
             }, REFRESH_INTERVAL)
         }
 
-        searchForm.addEventListener('submit', handleSearch)
+        if (searchForm) searchForm.addEventListener('submit', handleSearch)
         if (randomSearchBtn) randomSearchBtn.addEventListener('click', handleRandomSearch)
-        refreshBtn.addEventListener('click', function () {
-            if (refreshBtn.disabled || getWatchlist().length === 0) return
-            refreshBtn.disabled = true
-            refreshBtn.classList.add('is-loading')
-            renderWatchlist().finally(function () {
-                refreshBtn.disabled = false
-                refreshBtn.classList.remove('is-loading')
-            })
-        })
+        bindRefreshButton()
 
         window.addEventListener('resize', scheduleChartLayoutRefresh)
 
@@ -7259,6 +8085,7 @@
         bindSimDetailDialog()
         bindStrategyDialog()
         bindHoldPositionControls()
+        bindSearchResultPicker()
         initMarketSelect()
         initSidebarCollapse()
         renderWatchlist()
