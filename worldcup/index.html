@@ -870,6 +870,74 @@ body {
     display: none !important;
 }
 
+.team-tooltip-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.45);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.team-tooltip-backdrop.hidden {
+    display: none !important;
+}
+
+.team-tooltip.is-panel {
+    left: 50% !important;
+    top: auto !important;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(100vw, 420px);
+    max-height: 78vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto;
+    border-radius: 14px 14px 0 0;
+    z-index: 1001;
+    padding-top: 34px;
+}
+
+.tooltip-close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: #f0f2f5;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.team-info-btn {
+    display: none;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: var(--primary-light);
+    cursor: pointer;
+    line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .team-info-btn {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
 .tooltip-header {
     display: flex;
     align-items: center;
@@ -1138,7 +1206,8 @@ body {
         </div>
     </header>
 
-    <div id="team-tooltip" class="team-tooltip hidden" role="tooltip" aria-hidden="true"></div>
+    <div id="team-tooltip-backdrop" class="team-tooltip-backdrop hidden" aria-hidden="true"></div>
+    <div id="team-tooltip" class="team-tooltip hidden" role="dialog" aria-hidden="true" aria-modal="true"></div>
 
     <main class="main">
         <section class="panel bracket-panel">
@@ -1193,8 +1262,14 @@ let teamProfilesData = null
 let groupStageData = null
 let oddsData = null
 let tooltipEl = null
+let tooltipBackdropEl = null
 let tooltipAnchor = null
 let tooltipContext = null
+
+function isTouchUI() {
+    return window.matchMedia('(hover: none)').matches
+        || window.matchMedia('(pointer: coarse)').matches
+}
 
 function init() {
     data = JSON.parse(document.getElementById('worldcup-data').textContent)
@@ -1202,11 +1277,24 @@ function init() {
     groupStageData = JSON.parse(document.getElementById('group-stage-data').textContent)
     oddsData = JSON.parse(document.getElementById('betting-odds-data').textContent)
     tooltipEl = document.getElementById('team-tooltip')
+    tooltipBackdropEl = document.getElementById('team-tooltip-backdrop')
     initMeta()
     initCompletedResults()
     bindGlobalEvents()
+    bindTooltipPanel()
     renderBracket()
     fetchLatestOdds()
+}
+
+function bindTooltipPanel() {
+    tooltipBackdropEl?.addEventListener('click', hideTeamTooltip)
+    tooltipBackdropEl?.addEventListener('touchend', (e) => {
+        if (e.target === tooltipBackdropEl) hideTeamTooltip()
+    })
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideTeamTooltip()
+    })
 }
 
 async function fetchLatestOdds() {
@@ -1390,16 +1478,21 @@ function renderOddsSection(teamId, matchId) {
     `
 }
 
-function showTeamTooltip(el, teamId, matchId) {
+function showTeamTooltip(el, teamId, matchId, asPanel) {
     const team = getTeam(teamId)
     const profile = getTeamProfile(teamId)
     if (!team || !profile || !tooltipEl) return
 
+    const usePanel = asPanel || isTouchUI()
     tooltipAnchor = el
     tooltipContext = { teamId, matchId }
     const overall = profile.overall ?? Math.round((profile.attack + profile.midfield + profile.defense) / 3)
     const styleText = profile.style || ''
+    const closeBtn = usePanel
+        ? '<button type="button" class="tooltip-close" aria-label="关闭">×</button>'
+        : ''
     tooltipEl.innerHTML = `
+        ${closeBtn}
         <div class="tooltip-header">
             <img src="${flagUrl(team)}" alt="">
             <span>${team.name}</span>
@@ -1426,8 +1519,18 @@ function showTeamTooltip(el, teamId, matchId) {
             `).join('')}
         </div>
     `
+    tooltipEl.classList.toggle('is-panel', usePanel)
     tooltipEl.classList.remove('hidden')
     tooltipEl.setAttribute('aria-hidden', 'false')
+    if (usePanel && tooltipBackdropEl) {
+        tooltipBackdropEl.classList.remove('hidden')
+        tooltipBackdropEl.setAttribute('aria-hidden', 'false')
+        document.body.style.overflow = 'hidden'
+        tooltipEl.querySelector('.tooltip-close')?.addEventListener('click', (e) => {
+            e.stopPropagation()
+            hideTeamTooltip()
+        })
+    }
     positionTeamTooltip()
 }
 
@@ -1436,11 +1539,18 @@ function hideTeamTooltip() {
     tooltipContext = null
     if (!tooltipEl) return
     tooltipEl.classList.add('hidden')
+    tooltipEl.classList.remove('is-panel')
     tooltipEl.setAttribute('aria-hidden', 'true')
+    if (tooltipBackdropEl) {
+        tooltipBackdropEl.classList.add('hidden')
+        tooltipBackdropEl.setAttribute('aria-hidden', 'true')
+    }
+    document.body.style.overflow = ''
 }
 
 function positionTeamTooltip() {
     if (!tooltipEl || !tooltipAnchor) return
+    if (tooltipEl.classList.contains('is-panel')) return
 
     const rect = tooltipAnchor.getBoundingClientRect()
     const tipRect = tooltipEl.getBoundingClientRect()
@@ -1464,7 +1574,20 @@ function positionTeamTooltip() {
 function attachTeamTooltip(el, teamId, matchId) {
     if (!teamId || !getTeamProfile(teamId)) return
     el.classList.add('has-team-tooltip')
-    el.addEventListener('mouseenter', () => showTeamTooltip(el, teamId, matchId))
+
+    if (isTouchUI()) {
+        const btn = el.querySelector('.team-info-btn')
+        if (btn) {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                showTeamTooltip(el, teamId, matchId, true)
+            })
+        }
+        return
+    }
+
+    el.addEventListener('mouseenter', () => showTeamTooltip(el, teamId, matchId, false))
     el.addEventListener('mouseleave', hideTeamTooltip)
 }
 
@@ -1677,6 +1800,7 @@ function createMatchCard(matchId, opts = {}) {
                 ${isWinner && isThirdPlace ? '<span class="win-badge third-badge">3RD</span>' : ''}
                 <img class="flag-md" src="${flagUrl(team)}" alt="${team.name}">
                 <span class="team-label">${team.name}</span>
+                <button type="button" class="team-info-btn" aria-label="查看${team.name}详情">详情</button>
             `
             attachTeamTooltip(el, team.id, matchId)
             if (!locked) {
