@@ -212,29 +212,34 @@
         .btn-ghost:hover { background: var(--surface-2); }
 
         .detail-panel,
-        .sim-detail-table-wrap {
+        .sim-detail-table-wrap,
+        .main {
             scrollbar-width: thin;
             scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
         }
 
         .detail-panel::-webkit-scrollbar,
-        .sim-detail-table-wrap::-webkit-scrollbar {
+        .sim-detail-table-wrap::-webkit-scrollbar,
+        .main::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
 
         .detail-panel::-webkit-scrollbar-track,
-        .sim-detail-table-wrap::-webkit-scrollbar-track {
+        .sim-detail-table-wrap::-webkit-scrollbar-track,
+        .main::-webkit-scrollbar-track {
             background: var(--scrollbar-track);
         }
 
         .detail-panel::-webkit-scrollbar-thumb,
-        .sim-detail-table-wrap::-webkit-scrollbar-thumb {
+        .sim-detail-table-wrap::-webkit-scrollbar-thumb,
+        .main::-webkit-scrollbar-thumb {
             background: var(--scrollbar-thumb);
         }
 
         .detail-panel::-webkit-scrollbar-thumb:hover,
-        .sim-detail-table-wrap::-webkit-scrollbar-thumb:hover {
+        .sim-detail-table-wrap::-webkit-scrollbar-thumb:hover,
+        .main::-webkit-scrollbar-thumb:hover {
             background: var(--scrollbar-thumb-hover);
         }
 
@@ -300,8 +305,8 @@
         .detail-meta {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 14px;
+            flex-wrap: nowrap;
+            gap: 6px;
             font-size: .8rem;
             color: var(--text-muted);
             margin-bottom: 12px;
@@ -309,11 +314,22 @@
 
         .market-badge {
             display: inline-block;
-            padding: 1px 8px;
+            padding: 1px 6px;
             font-size: .7rem;
             font-weight: 600;
             background: rgba(56, 139, 253, .15);
             color: #58a6ff;
+            flex-shrink: 0;
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 1px 6px;
+            font-size: .7rem;
+            font-weight: 600;
+            background: rgba(139, 148, 158, .18);
+            color: var(--text-muted);
+            flex-shrink: 0;
         }
 
         .stat-grid {
@@ -511,6 +527,23 @@
             color: var(--text-muted);
             font-size: .8rem;
             line-height: 1.5;
+        }
+
+        .fund-estimate-chart {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .fund-estimate-chart img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .chart-tooltip {
@@ -716,12 +749,6 @@
             padding: 24px;
             overflow-y: auto;
             overflow-x: hidden;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .main::-webkit-scrollbar {
-            display: none;
         }
 
         .main-header {
@@ -1043,7 +1070,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 8px;
             min-width: 0;
         }
 
@@ -1059,26 +1086,30 @@
         .card-symbol {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 14px;
+            flex-wrap: nowrap;
+            gap: 6px;
             font-size: .8rem;
             color: var(--text-muted);
+            min-width: 0;
         }
 
         .symbol-code {
             font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
         }
 
         .data-update-time {
             font-size: .75rem;
             color: var(--text-muted);
             font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .card-stats {
             display: flex;
             flex-wrap: wrap;
-            gap: 24px;
+            gap: 18px;
             margin-bottom: 10px;
         }
 
@@ -1817,8 +1848,6 @@
 
         /* ===== 状态 ===== */
         var currentDetail = null
-        var detailChart = null
-        var detailChartMode = 'day30'
         var miniCharts = {}
         var cardChartModes = {}
         var watchlistDataCache = {}
@@ -1838,12 +1867,14 @@
         var twStockInfoLoading = null
         var CN_SEARCH_CLASSIFY_LABELS = {
             AStock: '股票',
+            BJStock: '股票',
             Fund: 'ETF/场内基金',
             OTCFUND: '场外基金',
             Index: '指数'
         }
         var CN_SEARCH_ALLOWED_CLASSIFY = {
             AStock: 1,
+            BJStock: 1,
             Fund: 1,
             OTCFUND: 1,
             Index: 1
@@ -1989,9 +2020,45 @@
             return mo + '/' + da + ' ' + pad2(hour) + ':' + pad2(minute) + ':' + pad2(second)
         }
 
-        function buildSymbolMetaHtml(market, symbol, quoteTime) {
-            var html = '<span class="market-badge">' + MARKET_LABELS[market] + '</span>' +
-                '<span class="symbol-code">' + escapeHtml(symbol) + '</span>'
+        function resolveAssetTypeLabel(market, info) {
+            info = info || {}
+            if (market === 'tw') return 'ETF'
+            if (market !== 'cn') return ''
+
+            var symbol = String(info.symbol || '').replace(/[^\d]/g, '')
+            var secid = info.secid || ''
+
+            if (isCNExchangeTradableFundCode(symbol)) {
+                return CN_SEARCH_CLASSIFY_LABELS.Fund
+            }
+            if (info.isMutualFund || isLikelyCNMutualFundCode(symbol) || isCNFundSecid(secid)) {
+                return CN_SEARCH_CLASSIFY_LABELS.OTCFUND
+            }
+            if (info.classify && CN_SEARCH_CLASSIFY_LABELS[info.classify]) {
+                return CN_SEARCH_CLASSIFY_LABELS[info.classify]
+            }
+            if (info.isIndex) {
+                return CN_SEARCH_CLASSIFY_LABELS.Index
+            }
+            if (symbol.length === 6) {
+                var first = symbol.charAt(0)
+                if (first === '6' || first === '0' || first === '3') {
+                    return CN_SEARCH_CLASSIFY_LABELS.AStock
+                }
+                if (first === '5') {
+                    return CN_SEARCH_CLASSIFY_LABELS.Fund
+                }
+            }
+            return ''
+        }
+
+        function buildSymbolMetaHtml(market, symbol, quoteTime, typeInfo) {
+            var html = '<span class="market-badge">' + MARKET_LABELS[market] + '</span>'
+            var typeLabel = resolveAssetTypeLabel(market, Object.assign({ symbol: symbol }, typeInfo || {}))
+            if (typeLabel) {
+                html += '<span class="type-badge">' + escapeHtml(typeLabel) + '</span>'
+            }
+            html += '<span class="symbol-code">' + escapeHtml(symbol) + '</span>'
             if (quoteTime) {
                 html += '<span class="data-update-time">行情时间：' +
                     escapeHtml(formatQuoteTime(quoteTime, market)) + '</span>'
@@ -3678,9 +3745,7 @@
             if (host === 'localhost' || host === '127.0.0.1') {
                 urls.push(LOCAL_DEV_PROXY_URL + encodeURIComponent(targetUrl))
             }
-            if (isCorsProxyFreeOrigin()) {
-                urls.push(CORS_PROXY_IO_PREFIX + encodeURIComponent(targetUrl))
-            }
+            urls.push(CORS_PROXY_IO_PREFIX + encodeURIComponent(targetUrl))
             return urls
         }
 
@@ -3963,6 +4028,10 @@
         }
 
         async function fetchTencentText(url) {
+            try {
+                var text = await fetchText(url)
+                if (text) return text
+            } catch (e) { /* fallback */ }
             var resp = await fetch(url)
             if (!resp.ok) throw new Error('HTTP ' + resp.status)
             var buf = await resp.arrayBuffer()
@@ -4060,7 +4129,7 @@
                 var changePct = quote && !isNaN(quote.changePct) ? quote.changePct : (last.changePct || 0)
                 var name = (quote && quote.name) || displaySymbol
 
-                return finalizeQuotePayload(enrichWithIntraday({
+                return enrichWithIntraday({
                     market: market,
                     symbol: quote && quote.code ? quote.code : displaySymbol,
                     name: name,
@@ -4071,7 +4140,7 @@
                     flowLabel: flowLabel || '量能参考',
                     tencentSymbol: tencentSymbol,
                     quoteTime: quote && quote.quoteTime != null ? quote.quoteTime : null
-                }))
+                })
             } catch (e) {
                 return null
             }
@@ -4105,6 +4174,66 @@
                 }
             })
             return { name: data.data.name || '', klines: klines }
+        }
+
+        function parseSinaKlineRows(rows) {
+            return (rows || []).map(function (row, idx, arr) {
+                var close = parseFloat(row.close)
+                var prevClose = idx > 0 ? parseFloat(arr[idx - 1].close) : close
+                var changePct = prevClose ? ((close - prevClose) / prevClose) * 100 : 0
+                return {
+                    date: row.day,
+                    open: parseFloat(row.open),
+                    close: close,
+                    high: parseFloat(row.high),
+                    low: parseFloat(row.low),
+                    volume: parseFloat(row.volume) || 0,
+                    changePct: changePct
+                }
+            })
+        }
+
+        async function fetchSinaKlines(tencentSymbol) {
+            var url = 'https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?' +
+                'symbol=' + encodeURIComponent(tencentSymbol) +
+                '&scale=240&ma=no&datalen=' + HISTORY_DAYS
+            var rows = await fetchJSON(url)
+            if (!rows || !rows.length) return []
+            return parseSinaKlineRows(rows).slice(-HISTORY_DAYS)
+        }
+
+        async function fetchCNStockKlines(symbol, secid) {
+            var digits = String(symbol || '').replace(/[^\d]/g, '')
+            if (!/^\d{6}$/.test(digits)) return { name: '', klines: [] }
+            var tencentSymbol = getTencentCNSymbol(digits)
+
+            if (secid && !isCNFundSecid(secid)) {
+                var emData = await fetchEMKline(secid, HISTORY_DAYS)
+                if (emData.klines && emData.klines.length) return emData
+            }
+
+            try {
+                var block = await fetchTencentKlineBlock(tencentSymbol)
+                if (block) {
+                    var rows = block.qfqday || block.day || []
+                    if (rows.length) {
+                        var qtName = ''
+                        var qt = block.qt && block.qt[tencentSymbol]
+                        if (qt && qt.length > 1) qtName = qt[1]
+                        return {
+                            name: qtName,
+                            klines: parseTencentKlineRows(rows).slice(-HISTORY_DAYS)
+                        }
+                    }
+                }
+            } catch (e) { /* ignore */ }
+
+            try {
+                var sinaKlines = await fetchSinaKlines(tencentSymbol)
+                if (sinaKlines.length) return { name: '', klines: sinaKlines }
+            } catch (e) { /* ignore */ }
+
+            return { name: '', klines: [] }
         }
 
         function getCNSecids(symbol) {
@@ -4494,8 +4623,9 @@
         async function fetchEMKline(secid, limit) {
             var url = 'https://push2his.eastmoney.com/api/qt/stock/kline/get?fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61' +
                 '&klt=101&fqt=1&secid=' + secid + '&beg=0&end=20500101&lmt=' + (limit || HISTORY_DAYS) + '&_=' + Date.now()
+            var opts = { headers: { Referer: 'https://quote.eastmoney.com/' } }
             try {
-                var data = await fetchJSON(url)
+                var data = await fetchJSON(url, opts)
                 return parseEMKlines(data)
             } catch (e) {
                 return { name: '', klines: [] }
@@ -4856,7 +4986,7 @@
             }
             if (!quote || !quote.price) return null
 
-            var klineData = await fetchEMKline(secid, HISTORY_DAYS)
+            var klineData = await fetchCNStockKlines(symbol, secid)
             var flow = await fetchEMFlow(secid)
             if (klineData.name) quote.name = klineData.name
 
@@ -4870,8 +5000,10 @@
                 flow: flow,
                 flowLabel: flowLabel || '主力净流入',
                 secid: secid,
+                tencentSymbol: getTencentCNSymbol(String(symbol).replace(/[^\d]/g, '')),
                 quoteTime: quote.quoteTime
             }
+            if (!payload.klines.length) return null
             if (market === 'cn' && isCNFundSecid(secid)) {
                 var enriched = await enrichCNMutualFundPayload(payload, symbol.replace(/[^\d]/g, ''))
                 if (enriched) return finalizeQuotePayload(enriched)
@@ -4895,7 +5027,7 @@
 
             if (resolved && resolved.secid && !resolved.isMutualFund) {
                 var secidData = await fetchEMBySecids([resolved.secid], 'cn', resolved.symbol || s, '主力净流入')
-                if (secidData) {
+                if (secidData && secidData.klines && secidData.klines.length) {
                     if (resolved.isIndex) secidData.isIndex = true
                     return secidData
                 }
@@ -4941,19 +5073,206 @@
             return typeLabel + ' · ' + item.symbol
         }
 
-        async function searchCNEastMoney(keyword) {
+        async function fetchEastMoneySearchJSON(keyword) {
             var url = 'https://searchapi.eastmoney.com/api/suggest/get?' +
                 'input=' + encodeURIComponent(keyword) +
                 '&type=14&token=DIOcOjNECzj&count=30'
+            return fetchJSON(url)
+        }
+
+        function inferCNClassifyFromCodeTable(row) {
+            var typeName = String(row.securityTypeName || '')
+            if (/沪A|深A|京A|北A|科创板|创业板/.test(typeName)) return 'AStock'
+            if (/ETF|LOF|封闭式基金|Reits/i.test(typeName)) return 'Fund'
+            if (/指数/.test(typeName)) return 'Index'
+            if (/场外|开放式/.test(typeName)) return 'OTCFUND'
+            return ''
+        }
+
+        function buildCNSecidFromCodeTable(row, classify) {
+            var code = String(row.code || '').replace(/[^\d]/g, '')
+            if (!/^\d{6}$/.test(code)) return ''
+            if (classify === 'OTCFUND') return '150.' + code
+            if (row.market === 1) return '1.' + code
+            if (row.market === 0) return '0.' + code
+            if (code.charAt(0) === '6') return '1.' + code
+            if (code.charAt(0) === '0' || code.charAt(0) === '3') return '0.' + code
+            return ''
+        }
+
+        function mapCNCodeTableRow(row) {
+            if (!row || !row.code) return null
+            var classify = inferCNClassifyFromCodeTable(row)
+            if (!classify || !CN_SEARCH_ALLOWED_CLASSIFY[classify]) return null
+            var code = String(row.code).replace(/[^\d]/g, '')
+            if (!/^\d{6}$/.test(code)) return null
+            var secid = buildCNSecidFromCodeTable(row, classify)
+            if (!secid) return null
+            return {
+                market: 'cn',
+                symbol: code,
+                name: row.shortName || code,
+                secid: secid,
+                classify: classify,
+                isMutualFund: classify === 'OTCFUND',
+                isIndex: classify === 'Index'
+            }
+        }
+
+        async function searchCNCodeTable(keyword) {
+            var url = 'https://search-codetable.eastmoney.com/codetable/search/web?' +
+                'client=web&keyword=' + encodeURIComponent(keyword)
             var json = await fetchJSON(url)
-            var rows = json && json.QuotationCodeTable && json.QuotationCodeTable.Data
+            var rows = json && json.result
             if (!rows || !rows.length) return []
+            return rows.map(mapCNCodeTableRow).filter(Boolean)
+        }
+
+        function parseSinaSuggestValue(raw) {
+            if (!raw) return []
+            return raw.split(';').filter(Boolean).map(function (item) {
+                return item.split(',')
+            })
+        }
+
+        function mapSinaSuggestRow(fields) {
+            if (!fields || fields.length < 4) return null
+            var name = fields[0]
+            var type = fields[1]
+            var code = String(fields[2] || '').replace(/[^\d]/g, '')
+            var fullCode = String(fields[3] || '').toLowerCase()
+            if (!/^\d{6}$/.test(code)) return null
+
+            var classify = ''
+            if (type === '11' || type === '12' || type === '13' || type === '14') {
+                classify = 'AStock'
+            } else if (type === '20') {
+                classify = 'Fund'
+            } else {
+                return null
+            }
+
+            var secid = ''
+            if (fullCode.indexOf('sh') === 0) secid = '1.' + code
+            else if (fullCode.indexOf('sz') === 0) secid = '0.' + code
+            else if (code.charAt(0) === '6') secid = '1.' + code
+            else secid = '0.' + code
+
+            return {
+                market: 'cn',
+                symbol: code,
+                name: name || code,
+                secid: secid,
+                classify: classify,
+                isMutualFund: false,
+                isIndex: false
+            }
+        }
+
+        function fetchSinaSuggestRaw(keyword) {
+            return new Promise(function (resolve, reject) {
+                var timer = setTimeout(function () {
+                    finish('')
+                }, 10000)
+                var script = document.createElement('script')
+                var prevSuggest = window.suggestvalue
+                var resolved = false
+
+                function cleanup() {
+                    clearTimeout(timer)
+                    if (script.parentNode) script.parentNode.removeChild(script)
+                    if (prevSuggest === undefined) {
+                        try { delete window.suggestvalue } catch (e) { window.suggestvalue = undefined }
+                    } else {
+                        window.suggestvalue = prevSuggest
+                    }
+                }
+
+                function finish(val) {
+                    if (resolved) return
+                    resolved = true
+                    cleanup()
+                    resolve(val || '')
+                }
+
+                script.onerror = function () {
+                    finish('')
+                }
+                script.onload = function () {
+                    finish(window.suggestvalue || '')
+                }
+
+                script.src = 'https://suggest3.sinajs.cn/suggest/type=11,12,13,14,20&key=' +
+                    encodeURIComponent(keyword) + '&_=' + Date.now()
+                document.head.appendChild(script)
+            })
+        }
+
+        async function searchCNSinaSuggest(keyword) {
+            var raw = await fetchSinaSuggestRaw(keyword)
+            var rows = parseSinaSuggestValue(raw)
             var matches = []
-            rows.forEach(function (row) {
-                if (!CN_SEARCH_ALLOWED_CLASSIFY[row.Classify]) return
-                var mapped = mapCNSearchRow(row)
+            rows.forEach(function (fields) {
+                var mapped = mapSinaSuggestRow(fields)
                 if (mapped) matches.push(mapped)
             })
+            return matches
+        }
+
+        function mapCNFundSuggestRow(item) {
+            if (!item || !item.CODE) return null
+            var code = String(item.CODE)
+            return {
+                market: 'cn',
+                symbol: code,
+                name: item.NAME || item.SHORTNAME || code,
+                secid: '150.' + code,
+                classify: 'OTCFUND',
+                isMutualFund: true,
+                isIndex: false
+            }
+        }
+
+        async function searchCNFundSuggest(keyword) {
+            var url = 'https://fundsuggest.eastmoney.com/FundSearch/api/FundSearchAPI.ashx?m=9&key=' +
+                encodeURIComponent(keyword)
+            var json = await fetchFundJSONP(url)
+            var rows = json && json.Datas
+            if (!rows || !rows.length) return []
+            return rows.map(mapCNFundSuggestRow).filter(Boolean)
+        }
+
+        async function searchCNEastMoney(keyword) {
+            var matches = []
+            try {
+                var json = await fetchEastMoneySearchJSON(keyword)
+                var rows = json && json.QuotationCodeTable && json.QuotationCodeTable.Data
+                if (rows && rows.length) {
+                    rows.forEach(function (row) {
+                        if (!CN_SEARCH_ALLOWED_CLASSIFY[row.Classify]) return
+                        var mapped = mapCNSearchRow(row)
+                        if (mapped) matches.push(mapped)
+                    })
+                }
+            } catch (e) { /* ignore */ }
+
+            if (!matches.length) {
+                try {
+                    matches = await searchCNCodeTable(keyword)
+                } catch (e2) { /* ignore */ }
+            }
+
+            if (!matches.length) {
+                try {
+                    matches = await searchCNSinaSuggest(keyword)
+                } catch (e3) { /* ignore */ }
+            }
+
+            if (!matches.length) {
+                try {
+                    matches = await searchCNFundSuggest(keyword)
+                } catch (e4) { /* ignore */ }
+            }
             return matches
         }
 
@@ -5593,6 +5912,7 @@
                 symbol: data.symbol,
                 secid: data.secid,
                 isMutualFund: !!data.isMutualFund,
+                isIndex: !!data.isIndex,
                 tencentSymbol: data.tencentSymbol
             }
         }
@@ -5604,13 +5924,49 @@
                 symbol: meta.symbol,
                 secid: meta.secid,
                 isMutualFund: !!watchlistMutualFundCache[cardId],
+                isIndex: !!meta.isIndex,
                 tencentSymbol: meta.tencentSymbol
             }
         }
 
-        function buildCNMutualFundDetailUrl(code) {
+        function isCNExchangeTradableFundCode(code) {
+            if (!/^\d{6}$/.test(code || '')) return false
+            var first = code.charAt(0)
+            var first2 = code.slice(0, 2)
+            if (first === '5') return true
+            if (first2 === '15' || first2 === '16' || first2 === '17') return true
+            return false
+        }
+
+        function buildCNExchangeTradableFundQuoteUrl(code) {
             if (!code) return null
-            return 'https://h5.1234567.com.cn/?page=jjxq&code=' + encodeURIComponent(code)
+            if (code.charAt(0) === '5') {
+                return 'https://quote.eastmoney.com/sh' + code + '.html'
+            }
+            return 'https://quote.eastmoney.com/sz' + code + '.html'
+        }
+
+        function buildCNMutualFundDetailUrl(code, meta) {
+            if (!code) return null
+            if (isCNExchangeTradableFundCode(code)) {
+                return buildCNExchangeTradableFundQuoteUrl(code)
+            }
+            return 'https://www.dayfund.cn/fundpre/' + encodeURIComponent(code) + '.html'
+        }
+
+        function buildCNSecidQuoteUrl(secid, meta) {
+            if (!secid) return null
+            if (secid.indexOf('150.') === 0) {
+                return buildCNMutualFundDetailUrl(secid.slice(4), meta)
+            }
+            var dot = secid.indexOf('.')
+            if (dot > 0) {
+                var market = secid.slice(0, dot)
+                var code = secid.slice(dot + 1)
+                if (market === '1') return 'https://quote.eastmoney.com/sh' + code + '.html'
+                if (market === '0') return 'https://quote.eastmoney.com/sz' + code + '.html'
+            }
+            return 'https://quote.eastmoney.com/unify/r/' + encodeURIComponent(secid)
         }
 
         function buildFundProductUrl(meta) {
@@ -5623,10 +5979,10 @@
             var digits = String(meta.symbol || '').replace(/[^\d]/g, '')
             if (meta.isMutualFund || isLikelyCNMutualFundCode(digits) || isCNFundSecid(meta.secid)) {
                 if (!digits) return null
-                return buildCNMutualFundDetailUrl(digits)
+                return buildCNMutualFundDetailUrl(digits, meta)
             }
             if (meta.secid) {
-                return 'https://quote.eastmoney.com/unify/r/' + encodeURIComponent(meta.secid)
+                return buildCNSecidQuoteUrl(meta.secid, meta)
             }
             if (meta.tencentSymbol) {
                 return 'https://gu.qq.com/' + encodeURIComponent(meta.tencentSymbol) + '/gp'
@@ -5640,8 +5996,41 @@
             return !!(intraday && intraday.points && intraday.points.length)
         }
 
+        function isCNMutualFundChartContext(data, item) {
+            var market = (data && data.market) || (item && item.market)
+            if (market !== 'cn') return false
+            if (data && data.isMutualFund) return true
+            if (item && item.isMutualFund) return true
+            var symbol = (data && data.symbol) || (item && item.symbol) || ''
+            return isLikelyCNMutualFundCode(String(symbol).replace(/[^\d]/g, ''))
+        }
+
+        function shouldShowTodayChartTab(data, item) {
+            if (hasIntradayChartData(data && data.intraday)) return true
+            return isCNMutualFundChartContext(data, item)
+        }
+
+        function buildCNMutualFundSinaEstimateChartUrl(code) {
+            var digits = String(code || '').replace(/[^\d]/g, '')
+            if (!digits) return null
+            return 'https://image.sinajs.cn/newchart/v5/fundpre/min_s/' + encodeURIComponent(digits) + '.gif'
+        }
+
+        function renderMutualFundEstimateChart(container, code) {
+            var url = buildCNMutualFundSinaEstimateChartUrl(code)
+            if (!url) {
+                return showChartEmpty(container, '无法加载实时估值图')
+            }
+            url += '?_=' + Date.now()
+            container.innerHTML =
+                '<div class="fund-estimate-chart">' +
+                    '<img src="' + escapeHtml(url) + '" alt="实时估值" loading="lazy">' +
+                '</div>'
+            return { type: 'estimate-img' }
+        }
+
         function buildChartTabsOptions(data, includeDetailLink, item) {
-            var opts = { showToday: hasIntradayChartData(data && data.intraday) }
+            var opts = { showToday: shouldShowTodayChartTab(data, item) }
             if (includeDetailLink && (data || item)) {
                 var meta = buildFundProductMeta(data || {})
                 if (item) {
@@ -5663,6 +6052,10 @@
 
         function trySwitchToTodayChart(context) {
             if (hasIntradayChartData(context.intraday)) {
+                context.onSuccess(context.intraday)
+                return
+            }
+            if (isCNMutualFundChartContext(null, context.meta)) {
                 context.onSuccess(context.intraday)
                 return
             }
@@ -6023,6 +6416,18 @@
             delete container._chartMode
 
             if (mode === 'today') {
+                if (isCNMutualFundChartContext(null, {
+                    market: market,
+                    symbol: opts.symbol,
+                    isMutualFund: opts.isMutualFund
+                })) {
+                    var estimateChart = renderMutualFundEstimateChart(container, opts.symbol)
+                    if (estimateChart) {
+                        container._chartMode = 'today'
+                        observeChartContainer(container)
+                    }
+                    return estimateChart
+                }
                 var todayChart = renderTodayChart(container, opts.intraday, market, opts)
                 if (todayChart) {
                     container._chartMode = 'today'
@@ -6164,11 +6569,6 @@
         function resetSearchPanel() {
             symbolInput.value = ''
             currentDetail = null
-            detailChartMode = 'day30'
-            if (detailChart) {
-                destroyChart(detailChart)
-                detailChart = null
-            }
             detailPanel.innerHTML = '<div class="detail-empty">选择市场并输入代码或名称开始搜索</div>'
         }
 
@@ -6195,7 +6595,6 @@
             showDetailLoading(market, resolved.name || resolved.symbol)
             try {
                 var data = await fetchETFData(market, resolved.symbol, { resolved: resolved })
-                detailChartMode = 'day30'
                 renderDetailPanel(data)
             } catch (err) {
                 showDetailError(err.message || '加载失败，请检查网络后重试')
@@ -7224,7 +7623,7 @@
             detailPanel.innerHTML =
                 '<div class="detail-name">' + buildFundNameHtml(data.name) + '</div>' +
                 '<div class="detail-meta-row">' +
-                    '<div class="detail-meta">' + buildSymbolMetaHtml(data.market, data.symbol, data.quoteTime) + '</div>' +
+                    '<div class="detail-meta">' + buildSymbolMetaHtml(data.market, data.symbol, data.quoteTime, data) + '</div>' +
                 '</div>' +
                 holdRowHtml +
                 '<div class="card-stats">' +
@@ -7233,17 +7632,10 @@
                     '<div class="card-stat"><div class="label">' + escapeHtml(maLabel) + '</div><div class="value">' + formatPrice(maVal, data.market) + '</div></div>' +
                     '<div class="card-stat"><div class="label">相对' + escapeHtml(maLabel) + '</div><div class="value ' + (diffPct >= 0 ? 'up' : 'down') + '">' + formatPct(diffPct) + '</div></div>' +
                 '</div>' +
-                '<div class="card-chart-wrap">' +
-                    buildChartTabsHtml(detailChartMode, null, buildChartTabsOptions(data, true, detailItem)) +
-                    '<div class="chart-container" id="detailChart"></div>' +
-                '</div>' +
                 flowHtml +
                 actualHtml +
                 simHtml +
                 '<button class="btn btn-success" id="addWatchBtn">加入关注</button>'
-
-            detailChartMode = 'day30'
-            mountDetailChart('day30')
 
             document.getElementById('addWatchBtn').addEventListener('click', function () {
                 var item = {
@@ -7275,89 +7667,6 @@
             }
         }
 
-        function mountDetailChart(mode) {
-            if (!currentDetail) return
-            var chartEl = document.getElementById('detailChart')
-            if (!chartEl) return
-            var chartOpts = {
-                disableWheel: true,
-                market: currentDetail.market,
-                currentPrice: currentDetail.price,
-                intraday: currentDetail.intraday,
-                isMutualFund: !!currentDetail.isMutualFund,
-                productMeta: buildFundProductMeta(currentDetail)
-            }
-            detailChart = renderChart(chartEl, currentDetail.klines, mode, chartOpts)
-        }
-
-        function handleDetailChartTabClick(mode) {
-            if (!currentDetail || mode === detailChartMode) return
-            var tabsEl = document.getElementById('detailChartTabs')
-            if (!tabsEl) {
-                tabsEl = document.querySelector('#detailPanel .chart-tabs')
-            }
-            var chartEl = document.getElementById('detailChart')
-            if (!chartEl) return
-
-            if (mode === 'today') {
-                if (hasIntradayChartData(currentDetail.intraday)) {
-                    detailChartMode = mode
-                    activateChartTabs(tabsEl, mode)
-                    mountDetailChart(mode)
-                    return
-                }
-                trySwitchToTodayChart({
-                    meta: currentDetail,
-                    intraday: currentDetail.intraday,
-                    chartEl: chartEl,
-                    onSuccess: function (intraday) {
-                        currentDetail.intraday = intraday
-                        detailChartMode = mode
-                        activateChartTabs(tabsEl, mode)
-                        mountDetailChart(mode)
-                        refreshDetailChartTabs()
-                    }
-                })
-                return
-            }
-
-            detailChartMode = mode
-            activateChartTabs(tabsEl, mode)
-            mountDetailChart(mode)
-        }
-
-        function refreshDetailChartTabs() {
-            if (!currentDetail) return
-            var tabsEl = document.getElementById('detailChartTabs')
-            if (!tabsEl) return
-            var hadToday = !!tabsEl.querySelector('.chart-tab[data-mode="today"]')
-            var showToday = hasIntradayChartData(currentDetail.intraday)
-            if (hadToday === showToday && tabsEl.querySelector('.chart-detail-link')) return
-            tabsEl.outerHTML = buildChartTabsHtml(
-                detailChartMode,
-                null,
-                buildChartTabsOptions(currentDetail, true, {
-                    market: currentDetail.market,
-                    symbol: currentDetail.symbol
-                })
-            )
-            if (detailChartMode === 'today' && !showToday) {
-                detailChartMode = 'day30'
-                mountDetailChart('day30')
-            }
-        }
-
-        var detailChartTabBound = false
-        function bindDetailChartTabDelegation() {
-            if (detailChartTabBound) return
-            detailChartTabBound = true
-            detailPanel.addEventListener('click', function (e) {
-                var tab = e.target.closest('#detailPanel .chart-tabs .chart-tab[data-mode]')
-                if (!tab) return
-                handleDetailChartTabClick(tab.dataset.mode)
-            })
-        }
-
         function pickRandomSymbolForMarket(market) {
             var pool = RANDOM_SYMBOL_POOLS[market]
             if (!pool || !pool.length) return ''
@@ -7383,7 +7692,6 @@
                     return
                 }
                 var data = await fetchETFData(market, result.single.symbol, { resolved: result.single })
-                detailChartMode = 'day30'
                 renderDetailPanel(data)
             } catch (err) {
                 showDetailError(err.message || '加载失败，请检查网络后重试')
@@ -7495,7 +7803,7 @@
                     fetchOpts.lightweight = !!options.silent
                     fetchOpts.useCache = !force
                     fetchOpts.skipIntraday = !!options.silent
-                } else if (item.market === 'cn' && (item.isMutualFund || isLikelyCNMutualFundCode(cnDigits))) {
+                } else if (item.market === 'cn' && item.isMutualFund) {
                     fetchOpts = fetchOpts || {}
                     fetchOpts.lightweight = !!options.silent
                     fetchOpts.useCache = !force
@@ -7512,7 +7820,7 @@
                 return '<div class="card-header">' +
                         '<div class="card-title">' + buildFundNameHtml(item.name) + '</div>' +
                         '<div class="card-meta-row">' +
-                            '<div class="card-symbol">' + buildSymbolMetaHtml(item.market, item.symbol, data.quoteTime) + '</div>' +
+                            '<div class="card-symbol">' + buildSymbolMetaHtml(item.market, item.symbol, data.quoteTime, Object.assign({}, item, data)) + '</div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="card-error">加载失败：' + escapeHtml(data.error) + '</div>'
@@ -7535,7 +7843,7 @@
             return '<div class="card-header">' +
                     '<div class="card-title">' + buildFundNameHtml(data.name || item.name) + '</div>' +
                     '<div class="card-meta-row">' +
-                        '<div class="card-symbol">' + buildSymbolMetaHtml(item.market, item.symbol, data.quoteTime) + '</div>' +
+                        '<div class="card-symbol">' + buildSymbolMetaHtml(item.market, item.symbol, data.quoteTime, Object.assign({}, item, data)) + '</div>' +
                     '</div>' +
                     holdRowHtml +
                 '</div>' +
@@ -7577,7 +7885,7 @@
         }
 
         function mountWatchlistCardChart(item, data) {
-            if (data.error || !data.klines) return
+            if (data.error || !data.klines || !data.klines.length) return
 
             watchlistDataCache[item.id] = data.klines
             watchlistPriceCache[item.id] = data.price
@@ -7599,7 +7907,7 @@
             watchlistMutualFundCache[item.id] = !!data.isMutualFund
             watchlistMarketCache[item.id] = item.market
             var mode = cardChartModes[item.id] || 'day30'
-            if (mode === 'today' && !hasIntradayChartData(data.intraday)) {
+            if (mode === 'today' && !shouldShowTodayChartTab(data, item)) {
                 mode = 'day30'
                 cardChartModes[item.id] = 'day30'
             }
@@ -7608,6 +7916,7 @@
                 var chartOpts = {
                     compact: true,
                     market: item.market,
+                    symbol: data.symbol || item.symbol,
                     currentPrice: data.price,
                     intraday: data.intraday,
                     isMutualFund: !!data.isMutualFund
@@ -7739,7 +8048,7 @@
 
             var rightEl = bodyEl.querySelector('.card-right')
             var chartMode = cardChartModes[item.id] || 'day30'
-            if (chartMode === 'today' && !hasIntradayChartData(data.intraday)) {
+            if (chartMode === 'today' && !shouldShowTodayChartTab(data, item)) {
                 chartMode = 'day30'
                 cardChartModes[item.id] = 'day30'
             }
@@ -7987,6 +8296,7 @@
                 var chartOpts = {
                     compact: true,
                     market: watchlistMarketCache[cardId] || meta.market || 'cn',
+                    symbol: meta.symbol,
                     currentPrice: watchlistPriceCache[cardId],
                     intraday: watchlistIntradayCache[cardId],
                     isMutualFund: !!watchlistMutualFundCache[cardId],
@@ -7994,7 +8304,11 @@
                 }
 
                 if (mode === 'today') {
-                    if (hasIntradayChartData(chartOpts.intraday)) {
+                    if (hasIntradayChartData(chartOpts.intraday) || isCNMutualFundChartContext(null, {
+                        market: chartOpts.market,
+                        symbol: meta.symbol,
+                        isMutualFund: chartOpts.isMutualFund
+                    })) {
                         cardChartModes[cardId] = mode
                         activateChartTabs(tabsEl, mode)
                         miniCharts[cardId] = renderChart(miniEl, watchlistDataCache[cardId] || [], mode, chartOpts)
@@ -8081,7 +8395,6 @@
         bindSortButtonDelegation()
         bindRemoveButtonDelegation()
         bindChartTabDelegation()
-        bindDetailChartTabDelegation()
         bindSimDetailDialog()
         bindStrategyDialog()
         bindHoldPositionControls()
