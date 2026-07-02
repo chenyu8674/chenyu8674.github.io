@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>軍公教調薪試算</title>
+    <style>
+        :root {
+            --bg: #0f1419;
+            --surface: #1a2332;
+            --border: #2d3a4f;
+            --text: #e8edf4;
+            --muted: #8b9cb3;
+            --accent: #3b82f6;
+            --increase: #ef4444;
+            --text-scale: 1.2;
+            --label-size: calc(12px * var(--text-scale));
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            font-size: calc(13px * var(--text-scale));
+            line-height: 1.35;
+            background: var(--bg);
+            color: var(--text);
+            padding: max(8px, env(safe-area-inset-top)) 12px max(8px, env(safe-area-inset-bottom));
+        }
+
+        .app {
+            max-width: 420px;
+            height: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .head h1 {
+            font-size: calc(15px * var(--text-scale));
+            font-weight: 700;
+        }
+
+        .head p {
+            font-size: calc(11px * var(--text-scale));
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .row:last-child { margin-bottom: 0; }
+
+        .row > label {
+            flex: 0 0 4em;
+            display: flex;
+            align-items: center;
+            font-size: var(--label-size);
+            color: var(--muted);
+        }
+
+        .row > label > span {
+            display: block;
+            width: 100%;
+            height: 1em;
+            line-height: 1;
+            text-align: justify;
+            text-align-last: justify;
+            overflow: hidden;
+        }
+
+        .row > label > span::after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            min-width: 0;
+            padding: 6px 8px;
+            font-size: calc(14px * var(--text-scale));
+            font-weight: 600;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            outline: none;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--accent);
+        }
+
+        input::placeholder {
+            color: var(--muted);
+            font-weight: 400;
+            font-size: calc(12px * var(--text-scale));
+        }
+
+        .result {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0.45;
+        }
+
+        .result.visible { opacity: 1; }
+
+        .out-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .out-row {
+            display: grid;
+            grid-template-columns: 4em 1fr 10px 1fr 62px;
+            align-items: center;
+            gap: 2px;
+            font-size: calc(11px * var(--text-scale));
+            padding: 10px 0;
+            min-height: 36px;
+        }
+
+        .out-row.sep {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 2px;
+        }
+
+        .out-row .label {
+            display: flex;
+            align-items: center;
+            color: var(--muted);
+            font-size: var(--label-size);
+        }
+
+        .out-row .label > span {
+            display: block;
+            width: 100%;
+            height: 1em;
+            line-height: 1;
+            text-align: justify;
+            text-align-last: justify;
+            overflow: hidden;
+        }
+
+        .out-row .label > span::after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+        }
+
+        .out-row .old {
+            text-align: right;
+            color: var(--muted);
+            font-size: calc(10px * var(--text-scale));
+        }
+
+        .out-row .arrow {
+            text-align: center;
+            color: var(--muted);
+            font-size: calc(9px * var(--text-scale));
+        }
+
+        .out-row .new {
+            font-weight: 700;
+            font-size: calc(11px * var(--text-scale));
+        }
+
+        .out-row .delta {
+            text-align: right;
+            color: var(--increase);
+            font-size: calc(10px * var(--text-scale));
+            font-weight: 600;
+        }
+
+        .out-row.pct {
+            grid-template-columns: 6em 1fr;
+            padding-top: 10px;
+        }
+
+        .out-row.pct .label {
+            font-size: var(--label-size);
+            color: var(--increase);
+            font-weight: 700;
+        }
+
+        .out-row.pct .pct-val {
+            text-align: right;
+            font-size: calc(20px * var(--text-scale));
+            font-weight: 700;
+            color: var(--increase);
+            line-height: 1;
+        }
+
+        .foot {
+            font-size: calc(10px * var(--text-scale));
+            color: var(--muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="head">
+            <h1>115 年軍公教調薪試算</h1>
+            <p>薪俸通案 4% · 主管加給／專業補助各 +2,000</p>
+        </header>
+
+        <section class="panel">
+            <div class="row">
+                <label for="baseSalary"><span>薪俸</span></label>
+                <input type="number" id="baseSalary" min="0" step="1" value="25000" inputmode="numeric">
+            </div>
+            <div class="row">
+                <label for="supAmount"><span>主管加給</span></label>
+                <input type="number" id="supAmount" min="0" step="1" value="0" inputmode="numeric">
+            </div>
+            <div class="row">
+                <label for="profAmount"><span>專業補助</span></label>
+                <input type="number" id="profAmount" min="0" step="1" value="24000" inputmode="numeric">
+            </div>
+        </section>
+
+        <section class="panel result" id="results">
+            <div class="out-list" id="resultList"></div>
+        </section>
+
+        <p class="foot">試算僅供參考，以人事總處核定為準</p>
+    </div>
+
+    <script>
+        const GENERAL_RATE = 0.04
+        const PROF_INCREASE = 2000
+        const SUP_INCREASE = 2000
+        const STORAGE_KEY = 'salary-calc-inputs'
+        const DEFAULTS = {
+            baseSalary: '25000',
+            supAmount: '0',
+            profAmount: '24000'
+        }
+
+        const baseSalaryInput = document.getElementById('baseSalary')
+        const supAmountInput = document.getElementById('supAmount')
+        const profAmountInput = document.getElementById('profAmount')
+        const resultsEl = document.getElementById('results')
+        const resultListEl = document.getElementById('resultList')
+
+        const formatMoney = (value) => {
+            return new Intl.NumberFormat('zh-TW', {
+                style: 'currency',
+                currency: 'TWD',
+                maximumFractionDigits: 0
+            }).format(value)
+        }
+
+        const formatPercent = (value) => value.toFixed(2) + '%'
+
+        const parseAmount = (input) => {
+            const value = parseFloat(input.value)
+            return Number.isFinite(value) && value >= 0 ? value : 0
+        }
+
+        const normalizeInput = (input) => {
+            const value = parseFloat(input.value)
+            input.value = Number.isFinite(value) && value >= 0 ? String(Math.floor(value)) : '0'
+        }
+
+        const normalizeAllInputs = () => {
+            ;[baseSalaryInput, supAmountInput, profAmountInput].forEach(normalizeInput)
+        }
+
+        const saveInputs = () => {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    baseSalary: baseSalaryInput.value === '' ? '0' : baseSalaryInput.value,
+                    supAmount: supAmountInput.value === '' ? '0' : supAmountInput.value,
+                    profAmount: profAmountInput.value === '' ? '0' : profAmountInput.value
+                }))
+            } catch (e) {}
+        }
+
+        const loadInputs = () => {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY)
+                if (!raw) {
+                    baseSalaryInput.value = DEFAULTS.baseSalary
+                    supAmountInput.value = DEFAULTS.supAmount
+                    profAmountInput.value = DEFAULTS.profAmount
+                    normalizeAllInputs()
+                    return
+                }
+                const data = JSON.parse(raw)
+                baseSalaryInput.value = data.baseSalary ?? DEFAULTS.baseSalary
+                supAmountInput.value = data.supAmount ?? DEFAULTS.supAmount
+                profAmountInput.value = data.profAmount ?? DEFAULTS.profAmount
+                normalizeAllInputs()
+            } catch (e) {
+                baseSalaryInput.value = DEFAULTS.baseSalary
+                supAmountInput.value = DEFAULTS.supAmount
+                profAmountInput.value = DEFAULTS.profAmount
+                normalizeAllInputs()
+            }
+        }
+
+        const formatDelta = (value) => {
+            const prefix = value >= 0 ? '+' : ''
+            return prefix + formatMoney(value)
+        }
+
+        const renderLabel = (text) => `<span class="label"><span>${text}</span></span>`
+
+        const renderItemRow = (label, oldVal, newVal, delta, extraClass) => {
+            return `
+                <div class="out-row${extraClass ? ' ' + extraClass : ''}">
+                    ${renderLabel(label)}
+                    <span class="old">${formatMoney(oldVal)}</span>
+                    <span class="arrow">→</span>
+                    <span class="new">${formatMoney(newVal)}</span>
+                    <span class="delta">${formatDelta(delta)}</span>
+                </div>
+            `
+        }
+
+        const renderResults = (data) => {
+            resultListEl.innerHTML = [
+                renderItemRow('薪俸', data.base, data.newBase, data.baseIncrease, 'sep'),
+                renderItemRow('主管加給', data.supOld, data.newSup, data.supIncrease, 'sep'),
+                renderItemRow('專業補助', data.profOld, data.newProf, data.profIncrease, 'sep'),
+                renderItemRow('總月薪', data.oldMonthly, data.newMonthly, data.monthlyDelta, 'sep'),
+                renderItemRow('總年薪', data.oldAnnual, data.newAnnual, data.annualDelta, 'sep'),
+                `
+                <div class="out-row pct">
+                    ${renderLabel('總收入增加')}
+                    <span class="pct-val">${formatPercent(data.percentIncrease)}</span>
+                </div>
+                `
+            ].join('')
+        }
+
+        const calculate = () => {
+            const base = parseAmount(baseSalaryInput)
+
+            if (base <= 0) {
+                resultsEl.classList.remove('visible')
+                resultListEl.innerHTML = ''
+                return
+            }
+
+            const supOld = parseAmount(supAmountInput)
+            const profOld = parseAmount(profAmountInput)
+            const oldMonthly = base + supOld + profOld
+
+            const newBase = Math.round(base * (1 + GENERAL_RATE))
+            const baseIncrease = newBase - base
+            const supIncrease = supOld > 0 ? SUP_INCREASE : 0
+            const profIncrease = profOld > 0 ? PROF_INCREASE : 0
+            const newSup = supOld + supIncrease
+            const newProf = profOld + profIncrease
+            const newMonthly = newBase + newSup + newProf
+
+            const monthlyDelta = newMonthly - oldMonthly
+            const oldAnnual = oldMonthly * 12
+            const newAnnual = newMonthly * 12
+            const annualDelta = newAnnual - oldAnnual
+            const percentIncrease = oldMonthly > 0 ? (monthlyDelta / oldMonthly) * 100 : 0
+
+            renderResults({
+                base,
+                newBase,
+                baseIncrease,
+                supOld,
+                newSup,
+                supIncrease,
+                profOld,
+                newProf,
+                profIncrease,
+                oldMonthly,
+                newMonthly,
+                monthlyDelta,
+                oldAnnual,
+                newAnnual,
+                annualDelta,
+                percentIncrease
+            })
+
+            resultsEl.classList.add('visible')
+        }
+
+        const handleInputChange = () => {
+            saveInputs()
+            calculate()
+        }
+
+        ;[baseSalaryInput, supAmountInput, profAmountInput].forEach((el) => {
+            el.addEventListener('input', handleInputChange)
+            el.addEventListener('change', handleInputChange)
+            el.addEventListener('blur', () => {
+                normalizeInput(el)
+                saveInputs()
+                calculate()
+            })
+        })
+
+        loadInputs()
+        calculate()
+    </script>
+</body>
+</html>
