@@ -15,6 +15,8 @@
             --increase: #ef4444;
             --text-scale: 1.2;
             --label-size: calc(12px * var(--text-scale));
+            --out-label-width: 5em;
+            --out-label-width-pct: 7.5em;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -141,7 +143,7 @@
 
         .out-row {
             display: grid;
-            grid-template-columns: 4em 1fr 10px 1fr 62px;
+            grid-template-columns: var(--out-label-width) 1fr 10px 1fr 62px;
             align-items: center;
             gap: 2px;
             font-size: calc(11px * var(--text-scale));
@@ -203,12 +205,12 @@
         }
 
         .out-row.pct {
-            grid-template-columns: 6em 1fr;
+            grid-template-columns: var(--out-label-width-pct) 1fr;
             padding-top: 10px;
         }
 
         .out-row.pct .label {
-            font-size: var(--label-size);
+            font-size: calc(14px * var(--text-scale));
             color: var(--increase);
             font-weight: 700;
         }
