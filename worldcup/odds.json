@@ -1,0 +1,297 @@
+{
+    "meta": {
+        "source": "FanDuel Sportsbook",
+        "sourceUrl": "https://www.fanduel.com/research/world-cup-printable-bracket-and-full-schedule-with-odds-round-of-16-2026",
+        "fetchedAt": "2026-07-06",
+        "format": "american",
+        "note": "FanDuel 参考盘口；晋级盘含加时/点球，胜平负为90分钟；m98/m100 待对阵确定后补充"
+    },
+    "matches": {
+        "m73": {
+            "advance": {
+                "home": 260,
+                "away": -340
+            },
+            "moneyline": {
+                "home": 470,
+                "draw": 250,
+                "away": -145
+            }
+        },
+        "m74": {
+            "advance": {
+                "home": -750,
+                "away": 490
+            },
+            "moneyline": {
+                "home": -280,
+                "draw": 400,
+                "away": 800
+            }
+        },
+        "m75": {
+            "advance": {
+                "home": -188,
+                "away": 152
+            },
+            "moneyline": {
+                "home": 110,
+                "draw": 210,
+                "away": 290
+            }
+        },
+        "m76": {
+            "advance": {
+                "home": -310,
+                "away": 240
+            },
+            "moneyline": {
+                "home": -145,
+                "draw": 290,
+                "away": 410
+            }
+        },
+        "m77": {
+            "advance": {
+                "home": -950,
+                "away": 600
+            },
+            "moneyline": {
+                "home": -370,
+                "draw": 490,
+                "away": 1000
+            }
+        },
+        "m78": {
+            "advance": {
+                "home": 156,
+                "away": -190
+            },
+            "moneyline": {
+                "home": 260,
+                "draw": 240,
+                "away": 110
+            }
+        },
+        "m79": {
+            "advance": {
+                "home": -184,
+                "away": 150
+            },
+            "moneyline": {
+                "home": 115,
+                "draw": 210,
+                "away": 280
+            }
+        },
+        "m80": {
+            "advance": {
+                "home": -1200,
+                "away": 700
+            },
+            "moneyline": {
+                "home": -360,
+                "draw": 440,
+                "away": 1100
+            }
+        },
+        "m81": {
+            "advance": {
+                "home": -800,
+                "away": 530
+            },
+            "moneyline": {
+                "home": -280,
+                "draw": 380,
+                "away": 800
+            }
+        },
+        "m82": {
+            "advance": {
+                "home": -194,
+                "away": 158
+            },
+            "moneyline": {
+                "home": 105,
+                "draw": 220,
+                "away": 290
+            }
+        },
+        "m83": {
+            "advance": {
+                "home": -235,
+                "away": 186
+            },
+            "moneyline": {
+                "home": -110,
+                "draw": 230,
+                "away": 330
+            }
+        },
+        "m84": {
+            "advance": {
+                "home": -1200,
+                "away": 670
+            },
+            "moneyline": {
+                "home": -330,
+                "draw": 390,
+                "away": 1100
+            }
+        },
+        "m85": {
+            "advance": {
+                "home": -340,
+                "away": 260
+            },
+            "moneyline": {
+                "home": -155,
+                "draw": 300,
+                "away": 440
+            }
+        },
+        "m86": {
+            "advance": {
+                "home": -2500,
+                "away": 1320
+            },
+            "moneyline": {
+                "home": -650,
+                "draw": 600,
+                "away": 1900
+            }
+        },
+        "m87": {
+            "advance": {
+                "home": -300,
+                "away": 235
+            },
+            "moneyline": {
+                "home": -135,
+                "draw": 250,
+                "away": 410
+            }
+        },
+        "m88": {
+            "advance": {
+                "home": 114,
+                "away": -140
+            },
+            "moneyline": {
+                "home": 230,
+                "draw": 190,
+                "away": 150
+            }
+        },
+        "m93": {
+            "advance": {
+                "home": 178,
+                "away": -220
+            },
+            "moneyline": {
+                "home": 310,
+                "draw": 260,
+                "away": -115
+            }
+        },
+        "m94": {
+            "advance": {
+                "home": -106,
+                "away": -116
+            },
+            "moneyline": {
+                "home": 165,
+                "draw": 240,
+                "away": 160
+            }
+        },
+        "m95": {
+            "advance": {
+                "home": -800,
+                "away": 500
+            },
+            "moneyline": {
+                "home": -300,
+                "draw": 400,
+                "away": 750
+            }
+        },
+        "m96": {
+            "advance": {
+                "home": 132,
+                "away": -162
+            },
+            "moneyline": {
+                "home": 250,
+                "draw": 200,
+                "away": 125
+            }
+        },
+        "m97": {
+            "advance": {
+                "home": -280,
+                "away": 220
+            },
+            "moneyline": {
+                "home": -180,
+                "draw": 380,
+                "away": 500
+            }
+        },
+        "m99": {
+            "advance": {
+                "home": 205,
+                "away": -136
+            },
+            "moneyline": {
+                "home": 330,
+                "draw": 280,
+                "away": -120
+            }
+        },
+        "m89": {
+            "advance": {
+                "home": 1120,
+                "away": -1800
+            },
+            "moneyline": {
+                "home": 1900,
+                "draw": 600,
+                "away": -600
+            }
+        },
+        "m90": {
+            "advance": {
+                "home": 250,
+                "away": -330
+            },
+            "moneyline": {
+                "home": 470,
+                "draw": 240,
+                "away": -140
+            }
+        },
+        "m91": {
+            "advance": {
+                "home": -270,
+                "away": 205
+            },
+            "moneyline": {
+                "home": -130,
+                "draw": 270,
+                "away": 370
+            }
+        },
+        "m92": {
+            "advance": {
+                "home": 112,
+                "away": -136
+            },
+            "moneyline": {
+                "home": 200,
+                "draw": 200,
+                "away": 150
+            }
+        }
+    }
+}
