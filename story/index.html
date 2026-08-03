@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>谐域</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #152029;
+            --ink-soft: #4a5a66;
+            --paper: #eef3f2;
+            --paper-deep: #dde7e4;
+            --accent: #1f6f6a;
+            --accent-soft: #2a8a83;
+            --line: rgba(21, 32, 41, 0.12);
+            --wave: rgba(31, 111, 106, 0.1);
+            --shadow: 0 12px 40px rgba(21, 32, 41, 0.08);
+            --reader-max: 42rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Noto Serif SC", "Songti SC", serif;
+            color: var(--ink);
+            background:
+                radial-gradient(ellipse 80% 50% at 10% -10%, var(--wave), transparent 55%),
+                radial-gradient(ellipse 60% 40% at 90% 0%, rgba(31, 111, 106, 0.07), transparent 50%),
+                linear-gradient(180deg, #f4f8f7 0%, var(--paper) 45%, #e4ecea 100%);
+            line-height: 1.75;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.35;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M0 60 Q30 40 60 60 T120 60' fill='none' stroke='%231f6f6a' stroke-width='0.4' opacity='0.25'/%3E%3Cpath d='M0 80 Q30 60 60 80 T120 80' fill='none' stroke='%231f6f6a' stroke-width='0.3' opacity='0.18'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .app {
+            position: relative;
+            z-index: 1;
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 1.25rem 1rem 4rem;
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-top: 0.25rem;
+        }
+
+        .brand-mark {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.35rem;
+        }
+
+        .brand h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-indent: 0.28em;
+            line-height: 1.15;
+        }
+
+        .brand p {
+            margin-top: 0.35rem;
+            color: var(--ink-soft);
+            font-size: 0.8rem;
+            max-width: 22rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+            gap: 0;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(6px);
+        }
+
+        .toc-item {
+            border-bottom: 1px solid var(--line);
+            border-right: 1px solid var(--line);
+        }
+
+        .toc-item a {
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+            padding: 0.28rem 0.55rem;
+            color: inherit;
+            text-decoration: none;
+            line-height: 1.35;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .toc-item a:hover {
+            background: rgba(31, 111, 106, 0.08);
+            color: var(--accent);
+        }
+
+        .toc-index {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.68rem;
+            color: var(--accent-soft);
+            flex-shrink: 0;
+            min-width: 1.6rem;
+        }
+
+        .toc-title {
+            flex: 1;
+            font-size: 0.82rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .toc-meta {
+            display: none;
+        }
+
+        .reader-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .chapter-title {
+            font-size: clamp(1.4rem, 4vw, 1.85rem);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+
+        .chapter-file {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.75rem;
+            color: var(--ink-soft);
+        }
+
+        .article {
+            max-width: var(--reader-max);
+            margin: 0 auto 5rem;
+            font-size: 1.08rem;
+            letter-spacing: 0.02em;
+        }
+
+        .article p {
+            margin-bottom: 1.15em;
+            text-indent: 2em;
+        }
+
+        .article p.empty {
+            height: 0.85em;
+            text-indent: 0;
+            margin-bottom: 0;
+        }
+
+        .nav-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+            background: rgba(238, 243, 242, 0.92);
+            border-top: 1px solid var(--line);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            appearance: none;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--ink);
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.55rem 1rem;
+            cursor: pointer;
+            min-width: 5.5rem;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .nav-btn.primary:hover:not(:disabled) {
+            background: var(--accent-soft);
+        }
+
+        .status {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--ink-soft);
+        }
+
+        .status.error {
+            color: #8b3a3a;
+        }
+
+        @media (max-width: 560px) {
+            .app {
+                padding: 1.25rem 1rem 5.5rem;
+            }
+
+            .toc-list {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .toc-item a {
+                padding: 0.32rem 0.45rem;
+            }
+
+            .nav-btn {
+                min-width: 0;
+                flex: 1;
+                padding: 0.6rem 0.4rem;
+                font-size: 0.85rem;
+            }
+
+            .article {
+                font-size: 1.02rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <section id="toc-view" class="view active">
+            <header class="brand">
+                <div class="brand-mark">signal // wuxia</div>
+                <h1>谐域</h1>
+                <p>万物皆波。改 bug，亦是练武。</p>
+            </header>
+            <ul id="toc-list" class="toc-list">
+                <li class="status">正在加载目录…</li>
+            </ul>
+        </section>
+
+        <section id="reader-view" class="view">
+            <header class="reader-header">
+                <div>
+                    <h2 id="chapter-title" class="chapter-title"></h2>
+                    <div id="chapter-file" class="chapter-file"></div>
+                </div>
+            </header>
+            <article id="article" class="article"></article>
+        </section>
+    </div>
+
+    <nav id="nav-bar" class="nav-bar" hidden>
+        <button type="button" class="nav-btn" id="btn-toc">目录</button>
+        <button type="button" class="nav-btn" id="btn-prev">上一章</button>
+        <button type="button" class="nav-btn primary" id="btn-next">下一章</button>
+    </nav>
+
+    <script>
+        const PAD = 4
+        const MAX_PROBE = 9999
+
+        const tocView = document.getElementById("toc-view")
+        const readerView = document.getElementById("reader-view")
+        const tocList = document.getElementById("toc-list")
+        const article = document.getElementById("article")
+        const chapterTitle = document.getElementById("chapter-title")
+        const chapterFile = document.getElementById("chapter-file")
+        const navBar = document.getElementById("nav-bar")
+        const btnToc = document.getElementById("btn-toc")
+        const btnPrev = document.getElementById("btn-prev")
+        const btnNext = document.getElementById("btn-next")
+
+        let CHAPTERS = []
+        let currentIndex = -1
+        const cache = new Map()
+
+        function padIndex(n) {
+            return String(n).padStart(PAD, "0")
+        }
+
+        function chapterFileName(n) {
+            return padIndex(n) + ".txt"
+        }
+
+        function toChineseNum(n) {
+            const digits = ["\u96f6", "\u4e00", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d"]
+            if (n < 10) {
+                return digits[n]
+            }
+            if (n < 20) {
+                return n === 10 ? "\u5341" : "\u5341" + digits[n % 10]
+            }
+            if (n < 100) {
+                const tens = Math.floor(n / 10)
+                const ones = n % 10
+                return digits[tens] + "\u5341" + (ones ? digits[ones] : "")
+            }
+            return String(n)
+        }
+
+        function chapterLabel(n) {
+            if (n === 0) {
+                return "\u5e8f\u7ae0"
+            }
+            return "\u7b2c" + toChineseNum(n) + "\u7ae0"
+        }
+
+        function parseChapter(raw) {
+            const text = raw.replace(/^\uFEFF/, "").replace(/\r\n/g, "\n")
+            const lines = text.split("\n")
+            const title = (lines[0] || "").trim() || "\u672a\u547d\u540d"
+            let start = 1
+            while (start < lines.length && lines[start].trim() === "") {
+                start += 1
+            }
+            return {
+                title,
+                body: lines.slice(start).join("\n")
+            }
+        }
+
+        async function discoverChapters() {
+            const list = []
+            for (let n = 0; n <= MAX_PROBE; n += 1) {
+                const file = chapterFileName(n)
+                try {
+                    const res = await fetch(file, { method: "GET", cache: "no-cache" })
+                    if (!res.ok) {
+                        break
+                    }
+                    const parsed = parseChapter(await res.text())
+                    const data = {
+                        file,
+                        index: n,
+                        label: chapterLabel(n),
+                        title: parsed.title,
+                        body: parsed.body
+                    }
+                    list.push(data)
+                    cache.set(file, data)
+                } catch (err) {
+                    break
+                }
+            }
+            return list
+        }
+
+        async function loadChapter(index) {
+            const meta = CHAPTERS[index]
+            if (!meta) {
+                throw new Error("\u7ae0\u8282\u4e0d\u5b58\u5728")
+            }
+            if (cache.has(meta.file)) {
+                return cache.get(meta.file)
+            }
+            const res = await fetch(meta.file)
+            if (!res.ok) {
+                throw new Error("\u65e0\u6cd5\u52a0\u8f7d " + meta.file)
+            }
+            const parsed = parseChapter(await res.text())
+            const data = { ...meta, ...parsed }
+            cache.set(meta.file, data)
+            return data
+        }
+
+        function renderBody(body) {
+            article.innerHTML = ""
+            const blocks = body.split(/\n/)
+            for (const line of blocks) {
+                const p = document.createElement("p")
+                if (line.trim() === "") {
+                    p.className = "empty"
+                } else {
+                    p.textContent = line
+                }
+                article.appendChild(p)
+            }
+        }
+
+        function updateNav() {
+            btnPrev.disabled = currentIndex <= 0
+            btnNext.disabled = currentIndex >= CHAPTERS.length - 1
+            btnNext.textContent = currentIndex >= CHAPTERS.length - 1
+                ? "\u5df2\u662f\u6700\u540e"
+                : "\u4e0b\u4e00\u7ae0"
+        }
+
+        function showToc() {
+            currentIndex = -1
+            tocView.classList.add("active")
+            readerView.classList.remove("active")
+            navBar.hidden = true
+            history.replaceState(null, "", "#")
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        }
+
+        async function openChapter(index) {
+            if (index < 0 || index >= CHAPTERS.length) {
+                return
+            }
+            article.innerHTML = '<p class="status">\u6b63\u5728\u52a0\u8f7d\u2026</p>'
+            tocView.classList.remove("active")
+            readerView.classList.add("active")
+            navBar.hidden = false
+            try {
+                const data = await loadChapter(index)
+                currentIndex = index
+                chapterTitle.textContent = data.title
+                chapterFile.textContent = data.label + " \u00b7 " + data.file
+                renderBody(data.body)
+                updateNav()
+                history.replaceState(null, "", "#" + data.file.replace(".txt", ""))
+                window.scrollTo({ top: 0, behavior: "smooth" })
+            } catch (err) {
+                article.innerHTML = ""
+                const p = document.createElement("p")
+                p.className = "status error"
+                p.textContent = err.message || "\u52a0\u8f7d\u5931\u8d25"
+                article.appendChild(p)
+            }
+        }
+
+        function buildToc() {
+            tocList.innerHTML = ""
+            if (!CHAPTERS.length) {
+                const li = document.createElement("li")
+                li.innerHTML = '<p class="status error">\u672a\u627e\u5230\u7ae0\u8282\u6587\u4ef6\uff08\u9700\u8981 0000.txt \u8d77\u7684\u8fde\u7eed\u7f16\u53f7\uff09</p>'
+                tocList.appendChild(li)
+                return
+            }
+            for (let i = 0; i < CHAPTERS.length; i += 1) {
+                const data = CHAPTERS[i]
+                const li = document.createElement("li")
+                li.className = "toc-item"
+                const a = document.createElement("a")
+                a.href = "#" + data.file.replace(".txt", "")
+                a.title = data.label + " · " + data.file
+                a.innerHTML =
+                    '<span class="toc-index">' + padIndex(data.index) + '</span>' +
+                    '<span class="toc-title"></span>'
+                a.querySelector(".toc-title").textContent = data.title
+                a.addEventListener("click", (e) => {
+                    e.preventDefault()
+                    openChapter(i)
+                })
+                li.appendChild(a)
+                tocList.appendChild(li)
+            }
+        }
+
+        function resolveHash() {
+            const hash = location.hash.replace(/^#/, "")
+            if (!hash) {
+                showToc()
+                return
+            }
+            const idx = CHAPTERS.findIndex((c) => c.file.replace(".txt", "") === hash)
+            if (idx >= 0) {
+                openChapter(idx)
+            } else {
+                showToc()
+            }
+        }
+
+        btnToc.addEventListener("click", showToc)
+        btnPrev.addEventListener("click", () => openChapter(currentIndex - 1))
+        btnNext.addEventListener("click", () => openChapter(currentIndex + 1))
+
+        window.addEventListener("hashchange", resolveHash)
+
+        document.addEventListener("keydown", (e) => {
+            if (!readerView.classList.contains("active")) {
+                return
+            }
+            if (e.key === "ArrowLeft") {
+                openChapter(currentIndex - 1)
+            } else if (e.key === "ArrowRight") {
+                openChapter(currentIndex + 1)
+            } else if (e.key === "Escape") {
+                showToc()
+            }
+        })
+
+        discoverChapters().then((list) => {
+            CHAPTERS = list
+            buildToc()
+            resolveHash()
+        }).catch(() => {
+            tocList.innerHTML = '<li><p class="status error">\u76ee\u5f55\u52a0\u8f7d\u5931\u8d25\uff0c\u8bf7\u901a\u8fc7\u672c\u5730 HTTP \u670d\u52a1\u6253\u5f00</p></li>'
+        })
+    </script>
+</body>
+</html>
