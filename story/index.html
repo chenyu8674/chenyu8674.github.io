@@ -28,11 +28,16 @@
         }
 
         html {
+            height: 100%;
             scroll-behavior: smooth;
         }
 
         body {
-            min-height: 100vh;
+            height: 100%;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             font-family: "Noto Serif SC", "Songti SC", serif;
             color: var(--ink);
             background:
@@ -55,13 +60,38 @@
         .app {
             position: relative;
             z-index: 1;
-            max-width: 72rem;
-            margin: 0 auto;
-            padding: 1.25rem 1rem 4rem;
+            flex: 1;
+            min-height: 0;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-soft) transparent;
+        }
+
+        .app::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .app::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .app::-webkit-scrollbar-thumb {
+            background: var(--accent-soft);
+            border-radius: 999px;
+        }
+
+        .app::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
         }
 
         .view {
             display: none;
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 1.25rem 1rem 2rem;
             animation: fadeIn 0.35s ease;
         }
 
@@ -177,7 +207,7 @@
         .toc-index {
             font-family: "JetBrains Mono", monospace;
             font-size: 0.72rem;
-            font-weight: 500;
+            font-weight: 700;
             letter-spacing: 0.04em;
             color: var(--accent-soft);
             transition: color 0.2s ease;
@@ -189,17 +219,6 @@
 
         .toc-main {
             min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
-        }
-
-        .toc-label {
-            font-family: "JetBrains Mono", monospace;
-            font-size: 0.62rem;
-            letter-spacing: 0.12em;
-            color: var(--ink-soft);
-            text-transform: none;
         }
 
         .toc-title {
@@ -213,7 +232,8 @@
 
         .toc-arrow {
             font-family: "JetBrains Mono", monospace;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
+            font-weight: 700;
             color: var(--ink-soft);
             opacity: 0;
             transform: translateX(-4px);
@@ -223,7 +243,7 @@
         .toc-item a:hover .toc-arrow {
             opacity: 1;
             transform: translateX(0);
-            color: var(--accent);
+            color: var(--accent-soft);
         }
 
         .reader-header {
@@ -267,11 +287,9 @@
         }
 
         .nav-bar {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: relative;
             z-index: 10;
+            flex-shrink: 0;
             display: flex;
             justify-content: center;
             gap: 0.5rem;
@@ -279,6 +297,10 @@
             background: rgba(238, 243, 242, 0.92);
             border-top: 1px solid var(--line);
             backdrop-filter: blur(10px);
+        }
+
+        .nav-bar[hidden] {
+            display: none !important;
         }
 
         .nav-btn {
@@ -326,8 +348,8 @@
         }
 
         @media (max-width: 560px) {
-            .app {
-                padding: 1.25rem 1rem 5.5rem;
+            .view {
+                padding: 1.25rem 1rem 1.75rem;
             }
 
             .brand {
@@ -401,6 +423,7 @@
         const chapterTitle = document.getElementById("chapter-title")
         const chapterFile = document.getElementById("chapter-file")
         const navBar = document.getElementById("nav-bar")
+        const appShell = document.querySelector(".app")
         const btnToc = document.getElementById("btn-toc")
         const btnPrev = document.getElementById("btn-prev")
         const btnNext = document.getElementById("btn-next")
@@ -526,7 +549,7 @@
             readerView.classList.remove("active")
             navBar.hidden = true
             history.replaceState(null, "", "#")
-            window.scrollTo({ top: 0, behavior: "smooth" })
+            appShell.scrollTo({ top: 0, behavior: "smooth" })
         }
 
         async function openChapter(index) {
@@ -545,7 +568,7 @@
                 renderBody(data.body)
                 updateNav()
                 history.replaceState(null, "", "#" + data.file.replace(".txt", ""))
-                window.scrollTo({ top: 0, behavior: "smooth" })
+                appShell.scrollTo({ top: 0, behavior: "smooth" })
             } catch (err) {
                 article.innerHTML = ""
                 const p = document.createElement("p")
@@ -572,12 +595,8 @@
                 a.title = data.label + " · " + data.file
                 a.innerHTML =
                     '<span class="toc-index">' + padIndex(data.index) + '</span>' +
-                    '<span class="toc-main">' +
-                        '<span class="toc-label"></span>' +
-                        '<span class="toc-title"></span>' +
-                    '</span>' +
+                    '<span class="toc-main"><span class="toc-title"></span></span>' +
                     '<span class="toc-arrow" aria-hidden="true">→</span>'
-                a.querySelector(".toc-label").textContent = data.label
                 a.querySelector(".toc-title").textContent = data.title
                 a.addEventListener("click", (e) => {
                     e.preventDefault()
